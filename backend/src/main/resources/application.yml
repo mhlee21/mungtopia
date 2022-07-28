@@ -1,0 +1,15 @@
+# DB 설정
+# ubuntu@ip-172-26-8-54
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://172.26.8.54:3360/mungtopia?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: d209
+    password: mung209pro@
+
+# JPA 설정
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true

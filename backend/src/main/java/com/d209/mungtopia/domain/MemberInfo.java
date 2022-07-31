@@ -6,7 +6,7 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 @Getter
-public class UserInfo {
+public class MemberInfo {
     private String name;
     private String birth;
     private char gender;

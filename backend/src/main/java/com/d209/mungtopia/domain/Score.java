@@ -8,15 +8,16 @@ import javax.persistence.*;
 @Getter
 public class Score {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "score_id")
     private Long scoreId;
     private Integer result;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "score_id")
-    private User user;
+    @JoinColumn(name = "user_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "score_id")
+    @JoinColumn(name = "game_tag_id")
     private GameTag gameTag;
 }

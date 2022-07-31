@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 public class ChatRoom {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "chat_room_id")
     private Long chatRoomId;
 
     private Long protectorId;
@@ -19,6 +20,6 @@ public class ChatRoom {
     private LocalDateTime createtime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_room_id")
+    @JoinColumn(name = "adoption_process_id")
     private AdoptionProcess adoptionProcess;
 }

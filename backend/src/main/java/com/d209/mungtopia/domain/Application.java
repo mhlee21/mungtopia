@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Getter
 public class Application {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "application_id")
     private Long applicationId;
 
     private boolean send;
@@ -16,9 +17,9 @@ public class Application {
     private Long boardId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "application_id")
-    private User user;
+    @JoinColumn(name = "user_id")
+    private Member member;
 
     @Embedded
-    private UserInfo userInfo;
+    private MemberInfo memberInfo;
 }

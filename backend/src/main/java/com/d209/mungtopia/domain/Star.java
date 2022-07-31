@@ -9,16 +9,17 @@ import java.time.LocalDateTime;
 @Getter
 public class Star {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "star_id")
     private Long starId;
 
     private LocalDateTime createtime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "star_id")
-    private User user;
+    @JoinColumn(name = "user_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "star_id")
+    @JoinColumn(name = "board_id")
     private Board board;
 }

@@ -9,15 +9,16 @@ import java.time.LocalDateTime;
 @Getter
 public class Like {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "like_id")
     private Long likeId;
     private LocalDateTime createtime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "like_id")
-    private User user;
+    @JoinColumn(name = "user_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "like_id")
+    @JoinColumn(name = "board_id")
     private Board board;
 }

@@ -8,8 +8,9 @@ import java.util.List;
 
 @Entity
 @Getter
-public class User {
-    @Id @GeneratedValue
+public class Member {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long userId;
 
     private int status;
@@ -18,13 +19,13 @@ public class User {
     private String profile;
 
     @Embedded
-    private UserInfo userinfo;
+    private MemberInfo userinfo;
 
-    @OneToMany(mappedBy = "user")
-    private List<Like> LikeList;
+    @OneToMany(mappedBy = "member")
+    private List<Like> likeList;
 
-    @OneToMany(mappedBy = "user")
-    private List<Star> LikeStar;
+    @OneToMany(mappedBy = "member")
+    private List<Star> starList;
     private LocalDateTime createtime;
 
 }

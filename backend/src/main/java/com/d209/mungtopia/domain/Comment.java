@@ -9,7 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 public class Comment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_id")
     private Long commentId;
     private String email;
     private String author;
@@ -18,6 +19,6 @@ public class Comment {
     private LocalDateTime createtime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id")
+    @JoinColumn(name = "board_id")
     private Board board;
 }

@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Getter
 public class ImageStorage {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "image_storage_id")
     private Long imageStorageId;
 
     private Integer order;
@@ -16,7 +17,7 @@ public class ImageStorage {
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "image_storage_id")
+    @JoinColumn(name = "board_id")
     private Board board;
 
 }

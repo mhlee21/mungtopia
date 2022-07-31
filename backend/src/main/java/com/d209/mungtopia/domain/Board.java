@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 public class Board {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "board_id")
     private Long boardId;
 
     private String contents;
@@ -19,6 +20,6 @@ public class Board {
     private BoardTag boardTag;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private User user;
+    @JoinColumn(name = "user_id")
+    private Member member;
 }

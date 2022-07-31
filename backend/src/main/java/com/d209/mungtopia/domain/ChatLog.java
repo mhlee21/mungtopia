@@ -9,13 +9,14 @@ import java.time.LocalDateTime;
 @Getter
 public class ChatLog {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "chat_log_id")
     private Long chatLogId;
     private String user_nickname;
     private String chat_context;
     private LocalDateTime createtime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_log_id")
+    @JoinColumn(name = "chat_room_id")
     private ChatRoom chatRoom;
 }

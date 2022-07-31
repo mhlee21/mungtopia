@@ -1,6 +1,7 @@
 package com.d209.mungtopia.domain;
 
 import lombok.Getter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -8,12 +9,16 @@ import javax.persistence.*;
 @Getter
 public class AdoptionProcess {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "adoption_process_id")
     private Long adoptionProcessId;
     private Integer step;
+
+    @Column(name = "step_status", columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean stepStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adoption_process_id")
+    @JoinColumn(name = "application_id")
     private Application application;
 }

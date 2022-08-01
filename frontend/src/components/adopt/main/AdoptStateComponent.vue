@@ -22,19 +22,17 @@
 <script>
 import AdoptStateTitle from '@/components/adopt/main/AdoptStateTitle';
 import ApplicationList from '@/components/adopt/main/ApplicationList';
-import { computed, reactive } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 export default {
 	components: { AdoptStateTitle, ApplicationList },
 	setup() {
 		const store = useStore();
-		const adoptType = store.getters['adopt/adoptType'];
-		console.log(adoptType);
-		const titleList = reactive(
-			store.getters['adopt/isApplicant']
+		let titleList = computed(() => {
+			return store.getters['adopt/isApplicant']
 				? ['입양중이예요!', '새로운 가족이 되었어요!']
-				: ['새로운 가족을 찾고 있어요!', '새로운 가족을 찾았어요!'],
-		);
+				: ['새로운 가족을 찾고 있어요!', '새로운 가족을 찾았어요!'];
+		});
 		const applicationList = computed(() => {
 			return [
 				store.getters['adopt/applicationList'].filter(

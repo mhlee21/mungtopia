@@ -1,7 +1,7 @@
 package com.d209.mungtopia.oauth.handler;
 
-import com.d209.mungtopia.api.entity.user.UserRefreshToken;
-import com.d209.mungtopia.api.repository.user.UserRefreshTokenRepository;
+import com.d209.mungtopia.entity.user.UserRefreshToken;
+import com.d209.mungtopia.repository.user.UserRefreshTokenRepository;
 import com.d209.mungtopia.config.properties.AppProperties;
 import com.d209.mungtopia.oauth.entity.ProviderType;
 import com.d209.mungtopia.oauth.entity.RoleType;

@@ -1,6 +1,6 @@
 package com.d209.mungtopia.config.security;
 
-import com.d209.mungtopia.api.repository.user.UserRefreshTokenRepository;
+import com.d209.mungtopia.repository.user.UserRefreshTokenRepository;
 import com.d209.mungtopia.config.properties.AppProperties;
 import com.d209.mungtopia.config.properties.CorsProperties;
 import com.d209.mungtopia.oauth.entity.RoleType;

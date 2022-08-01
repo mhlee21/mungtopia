@@ -1,9 +1,9 @@
 import { createStore } from 'vuex';
 
+// Vue.useAttrs(Vuex);
+
+import game from '@/store/modules/game';
+
 export default createStore({
-	state: {},
-	getters: {},
-	mutations: {},
-	actions: {},
-	modules: {},
+	modules: { game },
 });

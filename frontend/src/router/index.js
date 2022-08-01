@@ -1,6 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginView from '@/views/login/LoginView';
 import BoardView from '@/views/board/BoardView';
+import AdoptMainView from '@/views/adopt/AdoptMainView';
+import ApplicantDetailView from '@/views/adopt/ApplicantDetailView';
+import ProtectorDetailView from '@/views/adopt/ProtectorDetailView';
+import ChatView from '@/views/adopt/ChatView';
+import MeetingView from '@/views/adopt/MeetingView';
 
 const routes = [
 	{
@@ -12,6 +17,31 @@ const routes = [
 		path: '/',
 		name: 'board',
 		component: BoardView,
+	},
+	{
+		path: '/adopt/:appicantId',
+		name: 'adopt',
+		component: AdoptMainView,
+	},
+	{
+		path: '/adopt/applicant/:applicantId/detail',
+		name: 'applicantDetail',
+		component: ApplicantDetailView,
+	},
+	{
+		path: '/adopt/protector/:protectorId/detail',
+		name: 'protectorDetail',
+		component: ProtectorDetailView,
+	},
+	{
+		path: '/adopt/chat/:chatRoomId',
+		name: 'chat',
+		component: ChatView,
+	},
+	{
+		path: '/adopt/meeting/:meetingRoomId',
+		name: 'meeting',
+		component: MeetingView,
 	},
 	// {
 	// 	path: '/about',

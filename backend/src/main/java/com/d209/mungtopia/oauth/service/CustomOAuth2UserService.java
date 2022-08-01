@@ -1,7 +1,7 @@
 package com.d209.mungtopia.oauth.service;
 
-import com.d209.mungtopia.api.entity.user.User;
-import com.d209.mungtopia.api.repository.user.UserRepository;
+import com.d209.mungtopia.entity.user.User;
+import com.d209.mungtopia.repository.user.UserRepository;
 import com.d209.mungtopia.oauth.entity.ProviderType;
 import com.d209.mungtopia.oauth.entity.RoleType;
 import com.d209.mungtopia.oauth.entity.UserPrincipal;

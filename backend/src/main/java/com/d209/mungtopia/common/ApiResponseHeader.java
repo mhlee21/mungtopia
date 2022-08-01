@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 public class ApiResponseHeader {
-    private int code;
-    private String message;
+    private int code; // 200,400, 500 코드
+    private String message; // success, fail, 메소드
 }

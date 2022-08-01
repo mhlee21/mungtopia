@@ -35,6 +35,8 @@ import static com.d209.mungtopia.oauth.repository.OAuth2AuthorizationRequestBase
 
 @Component
 @RequiredArgsConstructor
+// 인증이 성공하면 Spring Security는 SecurityConfig에 구성된
+// OAuth2AuthenticationSuccessHandler의 onAuthenticationSuccess() 메소드를 호출
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final AuthTokenProvider tokenProvider;
@@ -43,6 +45,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
     @Override
+    // 몇가지 유효성 검사를 수행하고, JWT 인증 토큰을 만들고, 쿼리 문자열에 추가된 JWT 토큰을 사용하여
+    // 클라이언트가 지정한 redirect_uri로 사용자를 리디렉션
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         String targetUrl = determineTargetUrl(request, response, authentication);
 
@@ -67,7 +71,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
         ProviderType providerType = ProviderType.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
-
+        // Odic - OpenIDConnect - 내부적으로 인증로직이 돌고, 토큰을 바로 반환해주고 이토큰으로 로그인을 처리하고 싶을 때 사용
         OidcUser user = ((OidcUser) authentication.getPrincipal());
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
         Collection<? extends GrantedAuthority> authorities = ((OidcUser) authentication.getPrincipal()).getAuthorities();

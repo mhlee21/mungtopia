@@ -60,11 +60,13 @@ public class User {
     @Column(name = "PROVIDER_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
     @NotNull
+    // provider Enum 타입
     private ProviderType providerType;
 
     @Column(name = "ROLE_TYPE", length = 20)
     @Enumerated(EnumType.STRING)
     @NotNull
+    // RoleType Enum 타입
     private RoleType roleType;
 
     @Column(name = "CREATED_AT")

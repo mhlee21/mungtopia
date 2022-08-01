@@ -19,6 +19,8 @@ import static com.d209.mungtopia.oauth.repository.OAuth2AuthorizationRequestBase
 
 @Component
 @RequiredArgsConstructor
+// 인증 중 오류가 발생하면 Spring Security는
+// OAuth2AuthenticationFailureHandler의 onAuthenticationFailure() 호출
 public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
@@ -30,7 +32,7 @@ public class OAuth2AuthenticationFailureHandler extends SimpleUrlAuthenticationF
                 .orElse(("/"));
 
         exception.printStackTrace();
-
+        // 쿼리 문자열에 추가된 오류메시지와 함께 사용자를 프론트엔드 클라이언트로 보냄
         targetUrl = UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("error", exception.getLocalizedMessage())
                 .build().toUriString();

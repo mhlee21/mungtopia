@@ -21,11 +21,13 @@ import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
+// DefaultOAuth2UserService를 상속 받고 laodUser() 메소드를 구현
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
     @Override
+    // OAuth2 공급자로부터 액세스 토큰을 얻은 후에 호출
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User user = super.loadUser(userRequest);
 
@@ -42,10 +44,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private OAuth2User process(OAuth2UserRequest userRequest, OAuth2User user) {
         ProviderType providerType = ProviderType.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
 
+        // OAuth2 제공 업체에서 사용자의 세부 정보를 가져온다.
+        // 동일한 ID를 사용하는 사용자가 이미 데이터베이스에 있으면 세부정보를 업데이트하고
+        // 그렇지 않으면 새 사용자 등록
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
         User savedUser = userRepository.findByUserId(userInfo.getId());
 
-        if (savedUser != null) {
+        if (savedUser != null) { // 업데이트
             if (providerType != savedUser.getProviderType()) {
                 throw new OAuthProviderMissMatchException(
                         "Looks like you're signed up with " + providerType +
@@ -53,7 +58,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 );
             }
             updateUser(savedUser, userInfo);
-        } else {
+        } else { // 새 사용자 등록
             savedUser = createUser(userInfo, providerType);
         }
 

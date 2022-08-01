@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+// 사용자 정보를 가지고 오는 클래스
 public class UserController {
 
     private final UserService userService;
@@ -18,10 +19,12 @@ public class UserController {
     @GetMapping
     public ApiResponse getUser() {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
+        System.out.println("---------hi-----------");
         // user 이름을 리턴해준다.
         User user = userService.getUser(principal.getUsername());
 
         return ApiResponse.success("user", user);
     }
+
+
 }

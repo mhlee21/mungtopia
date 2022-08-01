@@ -78,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(
                             "/v2/api-docs", "/swagger-resources/**",
                             "/swagger-ui/index.html", "/swagger-ui.html",
-                            "/webjars/**", "/swagger/**").permitAll()
+                            "/webjars/**", "/swagger/**", "/test/**").permitAll()
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 // 패턴과 맞을 때 특정 권한을 갖는 사용자만 접근 가능
                     .antMatchers("/api/**").hasAnyAuthority(RoleType.USER.getCode())

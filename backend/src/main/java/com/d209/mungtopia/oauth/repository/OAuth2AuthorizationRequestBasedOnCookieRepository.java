@@ -7,7 +7,8 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+// 인증 요청을 쿠키에 저장하고 검색하는 기능을 함
+// OAuth2 프로토콜은 CSRF 공격을 방지하기 위해 state 매개 변수 사용 권장
 public class OAuth2AuthorizationRequestBasedOnCookieRepository implements AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
     public final static String OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME = "oauth2_auth_request";

@@ -33,6 +33,7 @@ import java.util.Arrays;
 @Configuration
 @RequiredArgsConstructor
 // WebSecurityConfigurerAdapter -> deprecated 됨
+// 기본적으로 서로 다른 구성요소를 연결하여 응용 프로그램 전체의 보안 정책 결정
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CorsProperties corsProperties;
@@ -88,11 +89,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .oauth2Login() // OAuth2 기반의 로그인인 경우
                 // baseUri와 이어지는 내용
-                // 각 OAuth 클ㄹ라이언트 링크와 baseuri가 일치해야함
+                // 각 OAuth 클라라이언트 링크와 baseuri가 일치해야함
                 //  <a href="/login/oauth2/authorization/google">Google</a> 이렇게
+                // 인증 요청을 받으면! baseurl + provider의 authorizationurl로 리디렉션
                     .authorizationEndpoint()
                     .baseUri("/oauth2/authorization")
                 // 인가 요청을 시작한 시점부터 인가 요청을 받는 시점까지 OAuth2AuthorizationRequest를 유지해준다.
+                // 권한 요청과 관련된 모든 상태는 authorizationRequestRepository를 사용하여 저장
                     .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())
                 .and()
                 // 서버가 리소스 소유자의 user-agent를 통해 가져온 인가 응답을 클라이언트에게 전송할 때 사용

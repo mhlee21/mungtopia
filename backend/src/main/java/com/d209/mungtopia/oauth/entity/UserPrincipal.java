@@ -22,6 +22,8 @@ import java.util.Map;
 @AllArgsConstructor
 @RequiredArgsConstructor
 // Spring Security가 인증된 유저를 담는 클래스
+// 인증되 Spring Security의 principa(본인의 정보)를 나태냄
+// -> 인증된 사용자의 세부 사항 포함
 public class UserPrincipal implements OAuth2User, UserDetails, OidcUser {
     private final String userId;
     private final String password;

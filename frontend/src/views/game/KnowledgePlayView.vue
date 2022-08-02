@@ -23,7 +23,7 @@ export default {
 	},
 	setup() {
 		// const Qlist = Qdata
-		console.log(gameType);
+		// console.log(gameType);
 		return {};
 	},
 };

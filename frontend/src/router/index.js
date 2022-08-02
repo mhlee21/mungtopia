@@ -24,12 +24,12 @@ const routes = [
 		component: AdoptMainView,
 	},
 	{
-		path: '/adopt/applicant/:applicantId/detail',
+		path: '/adopt/applicant/:applicationId/detail',
 		name: 'applicantDetail',
 		component: ApplicantDetailView,
 	},
 	{
-		path: '/adopt/protector/:protectorId/detail',
+		path: '/adopt/protector/:boardId/detail',
 		name: 'protectorDetail',
 		component: ProtectorDetailView,
 	},

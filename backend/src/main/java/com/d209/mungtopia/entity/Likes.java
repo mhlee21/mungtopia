@@ -8,30 +8,29 @@ import java.util.Objects;
 
 @Entity
 @Getter
-public class Comment {
+public class Likes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "comment_id")
-    private long commentId;
-    @Basic
-    @Column(name = "user_seq")
-    private Long userSeq;
-    @Basic
-    @Column(name = "user_nickname")
-    private String userNickname;
-    @Basic
-    @Column(name = "contents")
-    private String contents;
-    @Basic
-    @Column(name = "secret")
-    private Byte secret;
+    @Column(name = "like_id")
+    private long likeId;
     @Basic
     @Column(name = "createtime")
     private Timestamp createtime;
 
     @ManyToOne
+    @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
+    private User userByUserSeq;
+    @ManyToOne
     @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
     private Board boardByBoardId;
+
+    public User getUserByUserSeq() {
+        return userByUserSeq;
+    }
+
+    public void setUserByUserSeq(User userByUserSeq) {
+        this.userByUserSeq = userByUserSeq;
+    }
 
     public Board getBoardByBoardId() {
         return boardByBoardId;

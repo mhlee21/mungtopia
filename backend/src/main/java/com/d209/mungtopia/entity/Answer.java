@@ -6,19 +6,18 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "adoption_process", schema = "mungtopia", catalog = "")
 @Getter
-public class AdoptionProcess {
+public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "adoption_process_id")
-    private long adoptionProcessId;
+    @Column(name = "answer_id")
+    private long answerId;
     @Basic
-    @Column(name = "step")
-    private Integer step;
+    @Column(name = "order")
+    private Integer order;
     @Basic
-    @Column(name = "step_status")
-    private Byte stepStatus;
+    @Column(name = "answer")
+    private String answer;
 
     @ManyToOne
     @JoinColumn(name = "application_id", referencedColumnName = "application_id", nullable = false)

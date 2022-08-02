@@ -1,5 +1,5 @@
 package com.d209.mungtopia.controller;
-import com.d209.mungtopia.entity.user.User;
+import com.d209.mungtopia.entity.User;
 import com.d209.mungtopia.service.UserService;
 import com.d209.mungtopia.common.ApiResponse;
 import lombok.RequiredArgsConstructor;

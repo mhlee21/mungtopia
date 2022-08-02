@@ -3,23 +3,27 @@ package com.d209.mungtopia.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Getter
 public class Board {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "board_id")
-    private Long boardId;
-
+    private long boardId;
+    @Basic
+    @Column(name = "board_tag")
+    private String boardTag;
+    @Basic
+    @Column(name = "contents")
     private String contents;
-    private LocalDateTime createtime;
+    @Basic
+    @Column(name = "createtime")
+    private Timestamp createtime;
+    @Basic
+    @Column(name = "user_seq")
+    private long userSeq;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_tag_id")
-    private BoardTag boardTag;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Member member;
 }

@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 /*
 토큰이
 {
-	Authorization : Bearer +토큰
+	Authorization : Bearer + 토큰
 }
 이러한 형태로 들어올 때 확인하는 Util
 */

@@ -3,27 +3,23 @@ package com.d209.mungtopia.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
 @Getter
-public class Star {
+@Table(name = "user_dog_nature", schema = "mungtopia", catalog = "")
+public class UserDogNature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "star_id")
-    private long starId;
+    @Column(name = "user_dog_nature_id")
+    private long userDogNatureId;
     @Basic
-    @Column(name = "createtime")
-    private Timestamp createtime;
+    @Column(name = "feature")
+    private String feature;
 
     @ManyToOne
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
     private User userByUserSeq;
-    @ManyToOne
-    @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
-    private Board boardByBoardId;
-
 
     public User getUserByUserSeq() {
         return userByUserSeq;
@@ -31,13 +27,5 @@ public class Star {
 
     public void setUserByUserSeq(User userByUserSeq) {
         this.userByUserSeq = userByUserSeq;
-    }
-
-    public Board getBoardByBoardId() {
-        return boardByBoardId;
-    }
-
-    public void setBoardByBoardId(Board boardByBoardId) {
-        this.boardByBoardId = boardByBoardId;
     }
 }

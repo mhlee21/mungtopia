@@ -10,6 +10,11 @@ import MbtiPlayView from '@/views/game/MbtiPlayView';
 import MbtiFinishView from '@/views/game/MbtiFinishView';
 import MatchPlayView from '@/views/game/MatchPlayView';
 import MatchFinishView from '@/views/game/MatchFinishView';
+import AdoptMainView from '@/views/adopt/AdoptMainView';
+import ApplicantDetailView from '@/views/adopt/ApplicantDetailView';
+import ProtectorDetailView from '@/views/adopt/ProtectorDetailView';
+import ChatView from '@/views/adopt/ChatView';
+import MeetingView from '@/views/adopt/MeetingView';
 
 const routes = [
 	{
@@ -67,6 +72,31 @@ const routes = [
 		path: '/game/4/finish',
 		name: 'MatchFinish',
 		component: MatchFinishView,
+	},
+	{
+		path: '/adopt/:appicantId',
+		name: 'adopt',
+		component: AdoptMainView,
+	},
+	{
+		path: '/adopt/applicant/:applicationId/detail',
+		name: 'applicantDetail',
+		component: ApplicantDetailView,
+	},
+	{
+		path: '/adopt/protector/:boardId/detail',
+		name: 'protectorDetail',
+		component: ProtectorDetailView,
+	},
+	{
+		path: '/adopt/chat/:chatRoomId',
+		name: 'chat',
+		component: ChatView,
+	},
+	{
+		path: '/adopt/meeting/:meetingRoomId',
+		name: 'meeting',
+		component: MeetingView,
 	},
 	// {
 	// 	path: '/about',

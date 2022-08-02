@@ -1,0 +1,122 @@
+server:
+  port: 8081
+spring:
+#
+#  profiles.active: local
+  # 데이터 소스 설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://i7d209.p.ssafy.io:3306/mungtopia?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    username: d209
+    password: mung209pro@
+#     DB Connection Pool
+    hikari:
+      pool-name: jpa-hikari-pool
+      maximum-pool-size: 5
+      jdbc-url: ${spring.datasource.url}
+      username: ${spring.datasource.username}
+      password: ${spring.datasource.password}
+      driver-class-name: ${spring.datasource.driver-class-name}
+      # insert 쿼리를 합쳐서 실행한다.
+      data-source-properties:
+        rewriteBatchedStatements: true
+
+  # JPA 설정
+  jpa:
+    generate-ddl: true
+    # 자동 업데이트 - 배포 환경에 사용하면 안됨
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        # DB 방언 설정
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        hbm2ddl.import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        default_batch_fetch_size: ${chunkSize:100}
+        jdbc.batch_size: 20
+        order_inserts: true
+        order_updates: true
+        format_sql: true
+
+  # Security OAuth
+  # 모든 oauth2 공급자와 해당 세부정보 정의
+  security:
+    oauth2.client:
+      registration:
+        google:
+          clientId: 857572006189-cri5l7ed9bfaugif0rknbi1d2pp0694p.apps.googleusercontent.com
+          clientSecret: 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
+          scope:
+            - email
+            - profile
+#        facebook:
+#          clientId: '{페이스북 client-id}'
+#          clientSecret: '{페이스북 client-secret}'
+#          scope:
+#            - email
+#            - public_profile
+#        naver:
+#          clientId: '{네이버 client-id}'
+#          clientSecret: '{네이버 client-secret}'
+#          clientAuthenticationMethod: post
+#          authorizationGrantType: authorization_code
+#          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+#          scope:
+#            - nickname
+#            - email
+#            - profile_image
+#          clientName: Naver
+        kakao:
+          clientId: 2c34fdcf7e5490edd9486200d59e9aab
+          clientSecret: IaJUKapzeCPgQFTaMYciJSVM0vcR6LAM
+          clientAuthenticationMethod: post
+          authorizationGrantType: authorization_code
+          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+          scope:
+            - profile_nickname
+            - profile_image
+            - account_email
+          clientName: Kakao
+      # Provider 설정
+      provider:
+#        naver:
+#          authorizationUri: https://nid.naver.com/oauth2.0/authorize
+#          tokenUri: https://nid.naver.com/oauth2.0/token
+#          userInfoUri: https://openapi.naver.com/v1/nid/me
+#          userNameAttribute: response
+        kakao:
+          authorizationUri: https://kauth.kakao.com/oauth/authorize
+          tokenUri: https://kauth.kakao.com/oauth/token
+          userInfoUri: https://kapi.kakao.com/v2/user/me
+          userNameAttribute: id
+
+# cors 설정
+cors:
+  # 들어오는 url cors - 배포 후 변경 필요
+  # 프론트엔드 클라이언트가 다른 출처의 API에 액세스 할 수 있도록 CORS를 활성화
+  # 다음 구성에서 모든 origin을 활성화
+  # 하지만 프로덕션 애플리케이션에서는 더 엄격하게 만들어야합니다.
+  allowed-origins: 'http://localhost:3000'
+  allowed-methods: GET,POST,PUT,DELETE,OPTIONS
+  allowed-headers: '*'
+  max-age: 3600
+
+# jwt secret key 설정
+jwt.secret: '8sknjlO3NPTBqo319DHLNqsQAfRJEdKsETOds'
+
+# 토큰 관련 secret Key 및 RedirectUri 설정
+# 사용자가 성공적으로 로그인 한 후 인증 토큰을 생성하는데 사용
+app:
+  auth:
+    tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
+    tokenExpiry: 1800000
+    refreshTokenExpiry: 604800000
+  oauth2:
+    # 해당 클라이언트를 식별하고 식별값(AccessToken)전달
+    # OAuth2 공급자로 성공적으로 인증 한 후 사용자에 대한 인증 토큰을 생성하고 토큰을
+    # 프론트 엔드 클라이언트가 /oauth2/authorize 요청에서 지정한 redirectUri입니다.
+    # 쿠키는 모바일 클라이언트에서 잘 작동하지 않기 때문에 사용하지 않습니다.
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth/redirect

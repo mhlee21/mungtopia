@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="adopt-main-view">
 		<!-- 입양하기 입양보내기 버튼 -->
 		<div style="display: flex; justify-content: center">
 			<button
@@ -65,5 +65,11 @@ export default {
 }
 .adopt-type-active {
 	background-color: white;
+}
+.adopt-main-view {
+	padding: 10%;
+	overflow: auto;
+	height: 80%;
+	background-color: #ff9898;
 }
 </style>

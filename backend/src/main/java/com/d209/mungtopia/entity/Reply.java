@@ -3,21 +3,39 @@ package com.d209.mungtopia.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Getter
 public class Reply {
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "reply_id")
-    private Long replyId;
-    private String email;
-    private String author;
+    private long replyId;
+    @Basic
+    @Column(name = "user_seq")
+    private Long userSeq;
+    @Basic
+    @Column(name = "user_nickname")
+    private String userNickname;
+    @Basic
+    @Column(name = "contents")
     private String contents;
-    private LocalDateTime createtime;
+    @Basic
+    @Column(name = "createtime")
+    private Timestamp createtime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id")
-    private Comment comment;
+    @ManyToOne
+    @JoinColumn(name = "comment_id", referencedColumnName = "comment_id", nullable = false)
+    private Comment commentByCommentId;
+
+
+    public Comment getCommentByCommentId() {
+        return commentByCommentId;
+    }
+
+    public void setCommentByCommentId(Comment commentByCommentId) {
+        this.commentByCommentId = commentByCommentId;
+    }
 }

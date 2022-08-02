@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     * */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        // DB에서 유저 정보를 가져오는 역할?
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }

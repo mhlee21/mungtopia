@@ -150,6 +150,98 @@
       "question_type": 4,
       "question": "반려견 몽이와 산책을 갈 때 나는",
       "answer" : ["몽이야 오늘은 이 산책로로 계획했어~", "몽이야 너가 가고싶은 곳 골라봐!"]
+    }
+  ],
+  "MATCH": [
+    {
+      "question_type": 1,
+      "question": "평소에 자주 청소하시나요?",
+      "answer" : ["YES", "NO"]
     },
+    {
+      "question_type": 1,
+      "question": "테이프 클리너 (돌돌이) 사용하는 것을 즐기십니까?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 1,
+      "question": "털이 풍성한 강아지를 좋아하시나요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 2,
+      "question": "평소에 운동을 즐겨하십니까?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 2,
+      "question": "반려견과의 여행을 자주 계획할 예정인가요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 2,
+      "question": "반려견과 산책을 많이 할 예정이신가요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 3,
+      "question": "집에 반려동물이 있습니까?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 3,
+      "question": "반려견이 있는 지인들과 반려견과 함께하는 여행을 꿈꾸십니까?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 3,
+      "question": "강아지 카페를 자주 이용하실 예정인가요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 4,
+      "question": "아파트나 빌라에서 거주 중이신가요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 4,
+      "question": "집에 갓난아이가 있나요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 4,
+      "question": "시끄러운 분위기 보다는 정적인 분위기를 즐기나요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 5,
+      "question": "대형견을 힘으로 컨트롤 하지 못하는 가족 구성원이 있나요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 5,
+      "question": " 반려견에게 넓은 사육 공간을 제공 가능하신가요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 5,
+      "question": "대형견에 대한 지식을 많이 알고 계신가요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 6,
+      "question": "평소 소유욕이 있으신가요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 6,
+      "question": "든든한 부하같은 반려견을 원하시나요?",
+      "answer" : ["YES", "NO"]
+    },
+    {
+      "question_type": 6,
+      "question": " 낯선 사람을 마주할 때 반려견이 경계심을 가지는 것이 좋나요?",
+      "answer" : ["YES", "NO"]
+    }
   ]
 }

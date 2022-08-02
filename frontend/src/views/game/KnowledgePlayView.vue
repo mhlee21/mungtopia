@@ -3,11 +3,7 @@
 		<div class="status">
 			<h3>상태창</h3>
 		</div>
-		<div>
-			<h2 class="content">
-				Q1. 반려견에게 일반 우유를 간식으로 주어도 문제가 없다.
-			</h2>
-		</div>
+		<GameQuestion></GameQuestion>
 		<div style="text-align: center">
 			<img src="" alt="" />
 		</div>
@@ -17,11 +13,17 @@
 
 <script>
 import GameZicoButton from '@/components/game/GameZicoButton.vue';
+// import Qdata from '@/assets/Qdata.json';
+import GameQuestion from '@/components/game/GameQuestion.vue';
+
 export default {
 	components: {
 		GameZicoButton,
+		GameQuestion,
 	},
 	setup() {
+		// const Qlist = Qdata
+		console.log(gameType);
 		return {};
 	},
 };

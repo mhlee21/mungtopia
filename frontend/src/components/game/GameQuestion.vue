@@ -1,23 +1,25 @@
-<!-- <template>
-	<label
-		:for="key"
-		v-for="(question, key) in knowledgeQlist[index]['answers']"
-	></label>
+<template>
+	<div>
+		<h2 class="content">
+			{{ Qlist['knowledge'][0]['question'] }}
+		</h2>
+	</div>
 </template>
 
 <script>
+import Qdata from '@/assets/Qdata.json';
 export default {
 	setup() {
-		const knowledgeQlist = reactive([
-			{
-				id: 1,
-				question: '반려견에게 일반 우유를 간식으로 주어도 문제가 없다?',
-				answers: 'false',
-			},
-		]);
-		return { knowledgeQlist };
+		const Qlist = Qdata;
+		return { Qlist };
 	},
 };
 </script>
 
-<style lang="scss" scoped></style> -->
+<style lang="scss" scoped>
+.content {
+	text-align: center;
+	margin: 10px;
+	padding: 10px;
+}
+</style>

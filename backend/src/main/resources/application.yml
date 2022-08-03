@@ -1,9 +1,9 @@
 server:
   port: 8081
   ssl:
-          key-store: classpath:keystore.p12
-          key-store-type: PKCS12
-          key-store-password: mung209pro@
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: mung209pro@
 spring:
 #
 #  profiles.active: local
@@ -61,17 +61,17 @@ spring:
 #          scope:
 #            - email
 #            - public_profile
-#        naver:
-#          clientId: '{네이버 client-id}'
-#          clientSecret: '{네이버 client-secret}'
-#          clientAuthenticationMethod: post
-#          authorizationGrantType: authorization_code
-#          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
-#          scope:
-#            - nickname
-#            - email
-#            - profile_image
-#          clientName: Naver
+        naver:
+          clientId: 0ojcutYsrSdgQ3gOJH7r
+          clientSecret: 5kwSG33tlE
+          clientAuthenticationMethod: post
+          authorizationGrantType: authorization_code
+          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+          scope:
+            - nickname
+            - email
+            - profile_image
+          clientName: Naver
         kakao:
           clientId: 2c34fdcf7e5490edd9486200d59e9aab
           clientSecret: IaJUKapzeCPgQFTaMYciJSVM0vcR6LAM
@@ -85,11 +85,11 @@ spring:
           clientName: Kakao
       # Provider 설정
       provider:
-#        naver:
-#          authorizationUri: https://nid.naver.com/oauth2.0/authorize
-#          tokenUri: https://nid.naver.com/oauth2.0/token
-#          userInfoUri: https://openapi.naver.com/v1/nid/me
-#          userNameAttribute: response
+        naver:
+          authorizationUri: https://nid.naver.com/oauth2.0/authorize
+          tokenUri: https://nid.naver.com/oauth2.0/token
+          userInfoUri: https://openapi.naver.com/v1/nid/me
+          userNameAttribute: response
         kakao:
           authorizationUri: https://kauth.kakao.com/oauth/authorize
           tokenUri: https://kauth.kakao.com/oauth/token

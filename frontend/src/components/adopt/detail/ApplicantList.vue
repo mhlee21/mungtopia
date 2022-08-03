@@ -1,10 +1,10 @@
 <template>
 	<div>
 		<h3>
-			신청자 <small>{{ protectorDetail.application_list.length }}</small>
+			신청자 <small>{{ protectorDetail.applicationList.length }}</small>
 		</h3>
 		<div
-			v-for="(applicant, index) in protectorDetail['application_list']"
+			v-for="(applicant, index) in protectorDetail['applicationList']"
 			:key="index"
 		>
 			<div
@@ -12,8 +12,8 @@
 				@click="
 					clickApplicantComponent(
 						index,
-						applicant.user_id,
-						applicant.application_status,
+						applicant.userId,
+						applicant.applicationStatus,
 					)
 				"
 			>
@@ -22,7 +22,7 @@
 					{{ applicant.name }}
 				</div>
 				<div style="width: 40%">
-					<button @click="goChatRoom(applicant.chat_room_id)">채팅</button>
+					<button @click="goChatRoom(applicant.chatRoomId)">채팅</button>
 					<button>취소</button>
 				</div>
 			</div>
@@ -53,7 +53,7 @@ export default {
 			} else {
 				store.dispatch('adopt/updateActiveApplicant', index);
 				store.dispatch('adopt/fetchProtectorAdoptProcess', {
-					boardId: protectorDetail.value['board_id'],
+					boardId: protectorDetail.value['boardId'],
 					userId,
 					applicationStatus,
 				});

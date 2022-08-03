@@ -1,12 +1,12 @@
 <template>
 	<div
 		style="display: flex; align-items: center"
-		@click="clickBoard(board.board_id)"
+		@click="clickBoard(board.boardId)"
 	>
-		<img :src="board.dog_img" alt="dog image" class="board-dog-img" />
+		<img :src="board.dogImg" alt="dog image" class="board-dog-img" />
 		<div class="board-dog-info">
 			<h4 style="margin: 20% 10%">
-				{{ board.dog_name }}
+				{{ board.dogName }}
 			</h4>
 		</div>
 	</div>

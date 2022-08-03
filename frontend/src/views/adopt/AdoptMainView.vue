@@ -25,16 +25,23 @@
 import AdoptStateComponent from '@/components/adopt/main/AdoptStateComponent';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-
+import { useRoute } from 'vue-router';
 export default {
 	components: { AdoptStateComponent },
 	setup() {
 		const store = useStore();
+		const route = useRoute();
 		const clickApplicantTab = () => {
-			store.dispatch('adopt/changeAdoptType', 'applicant');
+			store.dispatch('adopt/changeAdoptType', {
+				adoptType: 'applicant',
+				userId: route.params.userId,
+			});
 		};
 		const clickProtectorTab = () => {
-			store.dispatch('adopt/changeAdoptType', 'protector');
+			store.dispatch('adopt/changeAdoptType', {
+				adoptType: 'protector',
+				userId: route.params.userId,
+			});
 		};
 
 		return {

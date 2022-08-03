@@ -6,12 +6,14 @@ export default {
 	state() {
 		return {
 			user: null,
-			token: null,
+			token: localStorage.getItem('token') || '',
 		};
 	},
 	getters: {
 		user: state => state.user,
 		token: state => state.token,
+		authHeader: state =>
+			state.token ? { Authorization: `Token ${state.token}` } : '',
 	},
 	mutations: {
 		setToken(state, token) {
@@ -22,6 +24,10 @@ export default {
 		},
 	},
 	actions: {
+		saveToken({ commit }, token) {
+			commit('setToken', token);
+			localStorage.setItem('token', token);
+		},
 		fetchUser({ commit, getters }) {
 			axios({
 				url: api.auth.getUser(),

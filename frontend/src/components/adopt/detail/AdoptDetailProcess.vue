@@ -10,7 +10,7 @@
 				<!-- 단계 -->
 				<div
 					class="applicant-detail-process-step-num"
-					:class="{ 'step-num-todo': !step.step_status }"
+					:class="{ 'step-num-todo': !step.stepStatus }"
 				>
 					<h5 style="margin: auto">
 						{{ step.step }}
@@ -19,7 +19,7 @@
 				<!-- 절차 -->
 				<div
 					class="applicant-detail-process-step-title"
-					:class="{ 'step-title-todo': !step.step_status }"
+					:class="{ 'step-title-todo': !step.stepStatus }"
 				>
 					<div>{{ adoptProcessTitle[index] }}</div>
 					<small v-if="step.date">{{ step.date }}</small>
@@ -27,11 +27,11 @@
 				<!-- 아이콘 -->
 				<div
 					class="applicant-detail-process-step-icon"
-					:class="{ 'step-icon-todo': !step.step_status }"
+					:class="{ 'step-icon-todo': !step.stepStatus }"
 				>
 					<button
 						@click="clickAdoptProcessIcon(step.step)"
-						:disabled="!step.step_status"
+						:disabled="!step.stepStatus"
 					>
 						{{ adoptProcessIcon[index] }}
 					</button>
@@ -117,7 +117,7 @@ export default {
 		const adoptNextStep = step => {
 			const newStep = {
 				step: step + 1,
-				step_status: true,
+				stepStatus: true,
 			};
 			store.dispatch('adopt/updateAdoptProcess', {
 				step: newStep,

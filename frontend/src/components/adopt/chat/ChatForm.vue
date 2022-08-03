@@ -16,7 +16,7 @@ export default {
 		const message = ref('');
 		const sendMessage = () => {
 			const chat = {
-				user_id: 2,
+				userId: store.getters.auth.user.userId,
 				time: Date.now(),
 				message: message.value,
 			};

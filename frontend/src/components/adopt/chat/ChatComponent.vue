@@ -2,7 +2,7 @@
 	<div class="chat-component">
 		<div class="chat-messages">
 			<div v-for="chat in chatList" :key="chat.id">
-				<div v-if="isYou(chat.user_id)">
+				<div v-if="isYou(chat.userId)">
 					<div>
 						{{ you.nickname }}
 					</div>
@@ -14,7 +14,7 @@
 
 				<ChatMessage
 					:message="chat.message"
-					:isMe="!isYou(chat.user_id)"
+					:isMe="!isYou(chat.userId)"
 				></ChatMessage>
 			</div>
 		</div>
@@ -34,7 +34,7 @@ export default {
 
 		const you = computed(() => store.getters['adopt/you']);
 		const chatList = computed(() => store.getters['adopt/chatList']);
-		const isYou = userId => userId === you.value.user_id;
+		const isYou = userId => userId === you.value.userId;
 
 		return { you, chatList, isYou };
 	},

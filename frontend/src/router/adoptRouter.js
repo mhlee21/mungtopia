@@ -6,7 +6,7 @@ import MeetingView from '@/views/adopt/MeetingView';
 
 export default [
 	{
-		path: '/adopt/:appicantId',
+		path: '/adopt/:userId',
 		name: 'adopt',
 		component: AdoptMainView,
 	},

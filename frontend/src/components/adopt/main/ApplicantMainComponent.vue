@@ -1,16 +1,16 @@
 <template>
 	<div
 		style="display: flex; align-items: center"
-		@click="clickApplication(application.application_id)"
+		@click="clickApplication(application.applicationId)"
 	>
 		<img
-			:src="application.dog_img"
+			:src="application.dogImg"
 			alt="dog image"
 			class="application-dog-img"
 		/>
 		<div class="application-dog-info">
 			<h4 style="margin: 20% 10%">
-				{{ application.dog_name }}
+				{{ application.dogName }}
 			</h4>
 		</div>
 	</div>

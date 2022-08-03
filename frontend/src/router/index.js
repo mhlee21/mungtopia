@@ -1,26 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import LoginView from '@/views/login/LoginView';
-import BoardView from '@/views/board/BoardView';
 import adoptRouter from './adoptRouter';
 import boardRouter from './boardRouter';
-import loginRouter from './loginRouter';
+import authRouter from './authRouter';
 import gameRouter from './gameRouter';
 import profileRouter from './profileRouter';
 
 const routes = [
-	{
-		path: '/',
-		name: 'home',
-		component: LoginView,
-	},
-	{
-		path: '/board',
-		name: 'board',
-		component: BoardView,
-	},
 	...adoptRouter,
 	...boardRouter,
-	...loginRouter,
+	...authRouter,
 	...gameRouter,
 	...profileRouter,
 	// {

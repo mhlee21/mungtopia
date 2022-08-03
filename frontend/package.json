@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve --port 3000",
+    "build": "vue-cli-service build --port 3000",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@vue/cli": "^5.0.8",
+    "axios": "^0.27.2",
     "bootstrap": "^5.2.0",
     "core-js": "^3.8.3",
     "element-plus": "^2.2.11",
@@ -16,7 +17,8 @@
     "sass-loader": "^13.0.2",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
-    "vuex": "^4.0.0"
+    "vuex": "^4.0.0",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

@@ -1,37 +1,89 @@
 <template>
 	<div>
-		<h3>신청자 <small>10</small></h3>
-		<div v-for="applicant in applicantList" :key="applicant.id">
+		<h3>
+			신청자 <small>{{ protectorDetail.application_list.length }}</small>
+		</h3>
+		<div
+			v-for="(applicant, index) in protectorDetail['application_list']"
+			:key="index"
+		>
 			<div
-				style="display: flex; height: 10vh
-						justify-content: center;
-				background-color: white;
-			border-radius: 1rem;
-			padding: 7% 5% 2%;
-			
-			"
+				class="application-list-component"
+				@click="
+					clickApplicantComponent(
+						index,
+						applicant.user_id,
+						applicant.application_status,
+					)
+				"
 			>
-				<div style="width: 20%">이미지</div>
-				<div style="width: 50%">
+				<img style="width: 20%" :src="applicant.profile" />
+				<div style="width: 40%">
 					{{ applicant.name }}
 				</div>
-				<div style="width: 30%">채팅</div>
+				<div style="width: 40%">
+					<button @click="goChatRoom(applicant.chat_room_id)">채팅</button>
+					<button>취소</button>
+				</div>
 			</div>
-			<AdoptDetailProcedure></AdoptDetailProcedure>
+			<AdoptDetailProcess v-if="activeApplicant === index"></AdoptDetailProcess>
 		</div>
 	</div>
 </template>
 
 <script>
-import AdoptDetailProcedure from '@/components/adopt/detail/AdoptDetailProcedure';
-import { reactive } from 'vue';
+import AdoptDetailProcess from '@/components/adopt/detail/AdoptDetailProcess';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import router from '@/router';
 export default {
-	components: { AdoptDetailProcedure },
+	components: { AdoptDetailProcess },
 	setup() {
-		const applicantList = reactive([{ id: 1, name: '황희원' }]);
-		return { applicantList };
+		const store = useStore();
+		const protectorDetail = computed(
+			() => store.getters['adopt/protectorDetail'],
+		);
+		const activeApplicant = computed(
+			() => store.getters['adopt/activeApplicant'],
+		);
+		store.dispatch('adopt/updateActiveApplicant', -1);
+		const clickApplicantComponent = (index, userId, applicationStatus) => {
+			if (activeApplicant.value === index) {
+				store.dispatch('adopt/updateActiveApplicant', -1);
+			} else {
+				store.dispatch('adopt/updateActiveApplicant', index);
+				store.dispatch('adopt/fetchProtectorAdoptProcess', {
+					boardId: protectorDetail.value['board_id'],
+					userId,
+					applicationStatus,
+				});
+			}
+		};
+		const goChatRoom = chatRoomId => {
+			router.push({
+				name: 'chat',
+				params: {
+					chatRoomId,
+				},
+			});
+		};
+		return {
+			protectorDetail,
+			activeApplicant,
+			clickApplicantComponent,
+			goChatRoom,
+		};
 	},
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.application-list-component {
+	display: flex;
+	height: 10vh;
+	justify-content: center;
+	background-color: white;
+	border-radius: 1rem;
+	padding: 7% 5% 2%;
+}
+</style>

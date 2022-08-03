@@ -1,33 +1,38 @@
 <template>
-	<div
-		style="
-			display: flex;
-			justify-content: center;
-			background-color: white;
-			border-radius: 1rem;
-			padding: 2% 5%;
-		"
-	>
-		<div
-			style="
-				width: 30%;
-				height: 70px;
-				background-color: gold;
-				border-radius: 1rem;
-			"
-		>
-			강아지 사진
-		</div>
-		<div style="width: 70%; padding: 5%">몽이</div>
+	<div class="protector-detail-component">
+		<img
+			class="protector-detail-component-dog-image"
+			:src="protectorDetail.dog_img"
+		/>
+		<div style="width: 70%; padding: 5%">{{ protectorDetail.dog_name }}</div>
 	</div>
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 export default {
 	setup() {
-		return {};
+		const store = useStore();
+		const protectorDetail = computed(
+			() => store.getters['adopt/protectorDetail'],
+		);
+		return { protectorDetail };
 	},
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.protector-detail-component {
+	display: flex;
+	justify-content: center;
+	background-color: white;
+	border-radius: 1rem;
+	padding: 2% 5%;
+}
+.protector-detail-component-dog-image {
+	width: 30%;
+	height: 70px;
+	border-radius: 1rem;
+}
+</style>

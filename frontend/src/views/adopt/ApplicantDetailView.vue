@@ -1,28 +1,41 @@
 <template>
-	<div>
-		<button @click="goAdoptMain">back</button>
+	<div class="applicant-detail-view">
+		<button @click="goBack">back</button>
 		<ApplicantDetailComponent></ApplicantDetailComponent>
-		<AdoptDetailProcedure></AdoptDetailProcedure>
+		<AdoptDetailProcess></AdoptDetailProcess>
 	</div>
 </template>
 
 <script>
 import router from '@/router';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import ApplicantDetailComponent from '@/components/adopt/detail/ApplicantDetailComponent';
-import AdoptDetailProcedure from '@/components/adopt/detail/AdoptDetailProcedure';
+import AdoptDetailProcess from '@/components/adopt/detail/AdoptDetailProcess';
 
 export default {
+	components: { ApplicantDetailComponent, AdoptDetailProcess },
 	setup() {
-		const goAdoptMain = () => {
-			router.push({
-				name: 'adopt',
-				// params: { appicantId },
-			});
+		const store = useStore();
+		const route = useRoute();
+		store.dispatch('adopt/fetchApplicantDetail', route.params.applicationId);
+		store.dispatch(
+			'adopt/fetchApplicantAdoptProcess',
+			route.params.applicationId,
+		);
+		const goBack = () => {
+			router.go(-1);
 		};
-		return { goAdoptMain };
+		return { goBack };
 	},
-	components: { ApplicantDetailComponent, AdoptDetailProcedure },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.applicant-detail-view {
+	padding: 10%;
+	overflow: auto;
+	height: 80%;
+	background-color: #ff9898;
+}
+</style>

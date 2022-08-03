@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import router from '@/router';
-
+import { useRouter } from 'vue-router';
 export default {
 	props: { board: Object },
 	setup() {
+		const router = useRouter();
 		const clickBoard = boardId => {
 			router.push({
 				name: 'protectorDetail',

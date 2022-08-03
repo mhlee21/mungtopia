@@ -31,10 +31,10 @@ export default {
 	setup() {
 		const store = useStore();
 		const clickApplicantTab = () => {
-			store.dispatch('adopt/change_adopt_type', 'applicant');
+			store.dispatch('adopt/changeAdoptType', 'applicant');
 		};
 		const clickProtectorTab = () => {
-			store.dispatch('adopt/change_adopt_type', 'protector');
+			store.dispatch('adopt/changeAdoptType', 'protector');
 		};
 
 		return {

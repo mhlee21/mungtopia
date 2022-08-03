@@ -40,7 +40,6 @@ export default {
 	},
 	setup() {
 		const store = useStore();
-		const isApplicant = computed(() => store.getters['adopt/isApplicant']);
 		const applicantMainTitle = reactive([
 			'입양중이예요!',
 			'새로운 가족이 되었어요!',
@@ -49,9 +48,9 @@ export default {
 			'새로운 가족을 찾고 있어요!',
 			'새로운 가족을 찾았어요!',
 		]);
+		store.dispatch('adopt/fetchApplicantMainList');
 
-		store.dispatch('adopt/fetch_applicant_main_list');
-
+		const isApplicant = computed(() => store.getters['adopt/isApplicant']);
 		const applicantMainList = computed(() => {
 			return [
 				store.getters['adopt/applicantMainList'].filter(

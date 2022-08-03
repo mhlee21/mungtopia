@@ -17,11 +17,12 @@
 </template>
 
 <script>
-import router from '@/router';
+import { useRouter } from 'vue-router';
 
 export default {
 	props: { application: Object },
 	setup() {
+		const router = useRouter();
 		const clickApplication = applicationId => {
 			router.push({
 				name: 'applicantDetail',

@@ -1,4 +1,6 @@
-const HOST = 'https://mungtopia.com/api/v1';
+// const HOST = 'https://mungtopia.com/api/v1/';
+// const HOST = 'http://localhost:8080/api/v1/';
+const HOST = 'https://i7d209.p.ssafy.io:8081/api/v1/';
 
 const AUTH = 'auth/';
 const BOARD = 'board/';
@@ -9,7 +11,8 @@ const USER = 'user/';
 export default {
 	auth: {
 		// 로그인
-		login: () => HOST + AUTH,
+		login: () => HOST + AUTH + 'login/',
+		getUser: () => HOST + 'users/',
 	},
 	board: {
 		// 전체 글 불러오기
@@ -69,7 +72,8 @@ export default {
 		// 입양보내기 메인
 		protectorMain: userId => HOST + ADOPT + `protector/` + `${userId}/`,
 		// 입양보내기 상세
-		protectorDetail: boardId => HOST + ADOPT + `protector/` + `${boardId}/`,
+		protectorDetail: boardId =>
+			HOST + ADOPT + `protector/` + `detail/` + `${boardId}/`,
 		// 입양 보내기 상세 - 입양 절차
 		protectorDetailProcess: (boardId, userId) =>
 			HOST + ADOPT + `protector/` + `${boardId}/` + `${userId}/`,
@@ -85,7 +89,7 @@ export default {
 		chats: chatRoomId => HOST + ADOPT + `${chatRoomId}/`,
 		// 채팅 보내기
 		chatCreate: (chatRoomId, userId) =>
-			HOST + ADOPT + `${chatRoomId}/` + `${userId}`,
+			HOST + ADOPT + `${chatRoomId}/` + `${userId}/`,
 		// 일정 가져오기
 		schedules: adoptionProcessId => HOST + ADOPT + `${adoptionProcessId}/`,
 		// 일정 예약
@@ -97,8 +101,8 @@ export default {
 	},
 	user: {
 		// 유저 정보
-		profile: userId => HOST + USER + `${userId}`,
+		profile: userId => HOST + USER + `${userId}/`,
 		// 유저 정보 수정
-		profileUpdate: userId => HOST + USER + `${userId}`,
+		profileUpdate: userId => HOST + USER + `${userId}/`,
 	},
 };

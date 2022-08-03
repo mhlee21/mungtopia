@@ -12,7 +12,7 @@ export default {
 		const router = useRouter();
 		const token = route.query.token;
 		if (token) {
-			store.commit('auth/setToken', token);
+			store.dispatch('auth/saveToken', token);
 			store.dispatch('auth/fetchUser');
 		}
 		router.replace('/board');

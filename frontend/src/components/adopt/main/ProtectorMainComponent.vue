@@ -31,8 +31,8 @@ export default {
 
 <style scoped>
 .board-dog-img {
-	width: 35vw;
-	height: 35vw;
+	width: 60%;
+	height: 130px;
 	border-radius: 1rem;
 	box-shadow: 1px 4px 3px rgba(0, 0, 0, 0.2);
 }

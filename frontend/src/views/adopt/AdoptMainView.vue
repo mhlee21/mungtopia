@@ -74,7 +74,7 @@ export default {
 	background-color: white;
 }
 .adopt-main-view {
-	padding: 10%;
+	padding: 10% 7%;
 	overflow: auto;
 	height: 80%;
 	background-color: #ff9898;

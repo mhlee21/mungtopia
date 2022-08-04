@@ -4,6 +4,8 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -26,4 +28,9 @@ public class Board {
     @Column(name = "user_seq")
     private long userSeq;
 
+    @OneToOne(mappedBy = "board", fetch = FetchType.LAZY)
+    private DogInfo dogInfo;
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    private List<ImageStorage> imageStorageList = new ArrayList<>();
 }

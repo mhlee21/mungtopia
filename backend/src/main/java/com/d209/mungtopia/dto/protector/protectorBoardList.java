@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -19,7 +20,7 @@ public class protectorBoardList {
     private String dogImgUrl;
     private String dogName;
     private int adoptionStatus;
-    private List<Application> applicationList;
+    private List<detailApplication> applicationList = new ArrayList<>();
 
     // mainInfo
     public protectorBoardList(Long boardId, String dogImgUrl, String dogName, int adoptionStatus) {
@@ -30,7 +31,7 @@ public class protectorBoardList {
     }
 
     // detailInfo
-    public protectorBoardList(Long boardId, String dogImgUrl, String dogName, int adoptionStatus, List<Application> applicationList) {
+    public protectorBoardList(Long boardId, String dogImgUrl, String dogName, int adoptionStatus, List<detailApplication> applicationList) {
         this.boardId = boardId;
         this.dogImgUrl = dogImgUrl;
         this.dogName = dogName;

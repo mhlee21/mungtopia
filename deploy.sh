@@ -4,8 +4,8 @@ echo
 echo "###### BUILD FRONTEND ######"
 echo
 
-echo ">> cd /jenkins/workspace/frontend/"
-cd /jenkins/workspace/frontend/
+echo ">> cd /jenkins/workspace/mungtopia/frontend/"
+cd /jenkins/workspace/mungtopia/frontend/
 
 echo ">> sudo rm -rf node_modules"
 sudo rm -rf node_modules

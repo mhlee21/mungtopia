@@ -4,9 +4,6 @@ echo
 echo "###### BUILD FRONTEND ######"
 echo
 
-echo ">> sudo -i"
-sudo -i
-
 echo ">> cd /jenkins/workspace/frontend/"
 cd /jenkins/workspace/frontend/
 

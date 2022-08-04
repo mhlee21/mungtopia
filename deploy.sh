@@ -4,8 +4,11 @@ echo
 echo "###### BUILD FRONTEND ######"
 echo
 
-echo ">> cd frontend/"
-sudo cd frontend/
+echo ">> sudo -i"
+sudo -i
+
+echo ">> cd /jenkins/workspace/frontend/"
+cd /jenkins/workspace/frontend/
 
 echo ">> sudo rm -rf node_modules"
 sudo rm -rf node_modules

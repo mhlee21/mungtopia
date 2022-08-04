@@ -18,18 +18,17 @@ import java.util.Map;
 public class ManageProtectorController {
 
     private final ManageProtectorService manageProtectorService;
-    private final ManageProtectorRepository manageProtectorRepository;
 
     @GetMapping("/{user_id}")
     @ApiOperation(value = "mainInfo - 입양보내기 메인", notes = "지금까지 올린 반려견의 리스트를 제공")
-    public ApiResponse mainInfo(@PathVariable(name = "user_id") Long userId){
-        return ApiResponse.success("userList",  manageProtectorRepository.findBoardList(userId));
+    public ApiResponse mainBoardInfo(@PathVariable(name = "user_id") Long userId){
+        return ApiResponse.success("userList", manageProtectorService.mainBoardInfo(userId));
     }
 
     @GetMapping("/detail/{board_id}")
     @ApiOperation(value = "detailInfo - 입양 보내기 상세", notes = "입양글에 대한 신청자 리스트를 제공")
-    public ApiResponse detailInfo(@PathVariable(name = "board_id") Long boardId){
-        return null;
+    public ApiResponse detailApplicantInfo(@PathVariable(name = "board_id") Long boardId){
+        return ApiResponse.success("data", manageProtectorService.detailApplicantInfo(boardId));
     }
 
     @GetMapping("/{board_id}/{user_id}")

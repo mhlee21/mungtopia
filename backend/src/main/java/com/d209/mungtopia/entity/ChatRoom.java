@@ -13,38 +13,31 @@ public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "chat_room_id")
-    private long chatRoomId;
-    @Basic
+    private Long chatRoomId;
+
     @Column(name = "protector_id")
     private Long protectorId;
-    @Basic
+
     @Column(name = "applicant_id")
     private Long applicantId;
-    @Basic
+
     @Column(name = "protector_nickname")
     private String protectorNickname;
-    @Basic
+
     @Column(name = "applicant_nickname")
     private String applicantNickname;
-    @Basic
+
     @Column(name = "createtime")
     private Timestamp createtime;
-    @Basic
+
     @Column(name = "application_id")
     private Long applicationId;
-    @Basic
+
     @Column(name = "application_nickname")
     private String applicationNickname;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id", nullable = false)
-    private AdoptionProcess adoptionProcessByAdoptionProcessId;
+    private AdoptionProcess adoptionProcess;
 
-    public AdoptionProcess getAdoptionProcessByAdoptionProcessId() {
-        return adoptionProcessByAdoptionProcessId;
-    }
-
-    public void setAdoptionProcessByAdoptionProcessId(AdoptionProcess adoptionProcessByAdoptionProcessId) {
-        this.adoptionProcessByAdoptionProcessId = adoptionProcessByAdoptionProcessId;
-    }
 }

@@ -14,29 +14,17 @@ public class MeetingRoom {
     @Id
     @Column(name = "meeting_room_id")
     private long meetingRoomId;
-    @Basic
+
     @Column(name = "host_id")
     private Long hostId;
-    @Basic
+
     @Column(name = "active")
-    private Byte active;
-    @Basic
+    private Boolean active;
+
     @Column(name = "createtime")
     private Timestamp createtime;
-    @Basic
-    @Column(name = "create_time")
-    private Timestamp createTime;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id", nullable = false)
-    private AdoptionProcess adoptionProcessByAdoptionProcessId;
-
-
-    public AdoptionProcess getAdoptionProcessByAdoptionProcessId() {
-        return adoptionProcessByAdoptionProcessId;
-    }
-
-    public void setAdoptionProcessByAdoptionProcessId(AdoptionProcess adoptionProcessByAdoptionProcessId) {
-        this.adoptionProcessByAdoptionProcessId = adoptionProcessByAdoptionProcessId;
-    }
+    private AdoptionProcess adoptionProcess;
 }

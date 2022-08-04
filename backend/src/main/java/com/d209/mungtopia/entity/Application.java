@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -12,54 +13,52 @@ public class Application {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "application_id")
-    private long applicationId;
-    @Basic
+    private Long applicationId;
+
     @Column(name = "board_id")
     private Long boardId;
-    @Basic
+
     @Column(name = "send")
-    private Byte send;
-    @Basic
+    private Boolean send;
+
     @Column(name = "name")
     private String name;
-    @Basic
+
     @Column(name = "birth")
     private String birth;
-    @Basic
+
     @Column(name = "gender")
     private String gender;
-    @Basic
+
     @Column(name = "job")
     private String job;
-    @Basic
+
     @Column(name = "zonecode")
     private String zonecode;
-    @Basic
+
     @Column(name = "road_address")
     private String roadAddress;
-    @Basic
+
     @Column(name = "detail_address")
     private String detailAddress;
-    @Basic
+
     @Column(name = "etc")
     private String etc;
-    @Basic
+
     @Column(name = "createtime")
     private Timestamp createtime;
-    @Basic
+
     @Column(name = "application_status")
-    private String applicationStatus;
+    private Boolean applicationStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
-    private User userByUserSeq;
+    private User user;
 
+    @OneToMany(mappedBy = "application")
+    private List<Answer> answerList;
 
-    public User getUserByUserSeq() {
-        return userByUserSeq;
-    }
+    @OneToOne(mappedBy = "application")
+    private AdoptionProcess adoptionProcess;
 
-    public void setUserByUserSeq(User userByUserSeq) {
-        this.userByUserSeq = userByUserSeq;
-    }
 }

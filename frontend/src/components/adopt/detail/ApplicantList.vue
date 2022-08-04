@@ -12,7 +12,7 @@
 				@click="
 					clickApplicantComponent(
 						index,
-						applicant.userId,
+						applicant.adoptionProcessId,
 						applicant.applicationStatus,
 					)
 				"
@@ -22,7 +22,17 @@
 					{{ applicant.name }}
 				</div>
 				<div style="width: 40%">
-					<button @click="goChatRoom(applicant.chatRoomId)">채팅</button>
+					<button
+						@click="
+							goChatRoom(
+								applicant.chatRoomId,
+								applicant.adoptionProcessId,
+								applicant.applicationStatus,
+							)
+						"
+					>
+						채팅
+					</button>
 					<button>취소</button>
 				</div>
 			</div>
@@ -47,19 +57,28 @@ export default {
 			() => store.getters['adopt/activeApplicant'],
 		);
 		store.dispatch('adopt/updateActiveApplicant', -1);
-		const clickApplicantComponent = (index, userId, applicationStatus) => {
+		const clickApplicantComponent = (
+			index,
+			adoptionProcessId,
+			applicationStatus,
+		) => {
 			if (activeApplicant.value === index) {
 				store.dispatch('adopt/updateActiveApplicant', -1);
 			} else {
 				store.dispatch('adopt/updateActiveApplicant', index);
 				store.dispatch('adopt/fetchProtectorAdoptProcess', {
-					boardId: protectorDetail.value['boardId'],
-					userId,
+					adoptionProcessId,
 					applicationStatus,
 				});
 			}
 		};
-		const goChatRoom = chatRoomId => {
+		const goChatRoom = (chatRoomId, adoptionProcessId, applicationStatus) => {
+			// date 저장
+			store.dispatch('adopt/saveDate', {
+				adoptionProcessId,
+				applicationStatus,
+			});
+			// 채팅 페이지로 이동
 			router.push({
 				name: 'chat',
 				params: {

@@ -44,15 +44,15 @@ public class DogInfo {
     @Column(name = "adoption_status")
     private Byte adoptionStatus;
 
-    @ManyToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
-    private Board boardByBoardId;
+    private Board board;
 
-    public Board getBoardByBoardId() {
-        return boardByBoardId;
+    public Board getBoard() {
+        return board;
     }
 
-    public void setBoardByBoardId(Board boardByBoardId) {
-        this.boardByBoardId = boardByBoardId;
+    public void setBoard(Board boardByBoardId) {
+        this.board = boardByBoardId;
     }
 }

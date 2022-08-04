@@ -23,15 +23,15 @@ public class ImageStorage {
     @Column(name = "origin_filename")
     private String originFilename;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
-    private Board boardByBoardId;
+    private Board board;
 
-    public Board getBoardByBoardId() {
-        return boardByBoardId;
+    public Board getBoard() {
+        return board;
     }
 
-    public void setBoardByBoardId(Board boardByBoardId) {
-        this.boardByBoardId = boardByBoardId;
+    public void setBoard(Board board) {
+        this.board = board;
     }
 }

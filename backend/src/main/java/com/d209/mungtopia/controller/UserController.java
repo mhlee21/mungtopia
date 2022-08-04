@@ -19,7 +19,7 @@ public class UserController {
     @GetMapping
     public ApiResponse getUser() {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println("---------hi-----------");
+
         // user 이름을 리턴해준다.
         User user = userService.getUser(principal.getUsername());
 

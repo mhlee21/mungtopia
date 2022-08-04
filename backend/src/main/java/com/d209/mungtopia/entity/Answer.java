@@ -21,13 +21,5 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name = "application_id", referencedColumnName = "application_id", nullable = false)
-    private Application applicationByApplicationId;
-
-    public Application getApplicationByApplicationId() {
-        return applicationByApplicationId;
-    }
-
-    public void setApplicationByApplicationId(Application applicationByApplicationId) {
-        this.applicationByApplicationId = applicationByApplicationId;
-    }
+    private Application application;
 }

@@ -12,23 +12,21 @@ public class AdoptionProcess {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "adoption_process_id")
-    private long adoptionProcessId;
-    @Basic
+    private Long adoptionProcessId;
+
     @Column(name = "step")
     private Integer step;
-    @Basic
+
     @Column(name = "step_status")
-    private Byte stepStatus;
+    private Boolean stepStatus;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "application_id", referencedColumnName = "application_id", nullable = false)
-    private Application applicationByApplicationId;
+    private Application application;
 
-    public Application getApplicationByApplicationId() {
-        return applicationByApplicationId;
-    }
+    @OneToOne(mappedBy = "adoptionProcess", fetch = FetchType.LAZY)
+    private MeetingRoom meetingRoom;
 
-    public void setApplicationByApplicationId(Application applicationByApplicationId) {
-        this.applicationByApplicationId = applicationByApplicationId;
-    }
+    @OneToOne(mappedBy = "adoptionProcess", fetch = FetchType.LAZY)
+    private ChatRoom chatRoom;
 }

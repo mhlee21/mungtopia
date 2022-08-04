@@ -5,7 +5,7 @@ echo "###### BUILD FRONTEND ######"
 echo
 
 echo ">> cd frontend/"
-cd frontend/
+sudo cd frontend/
 
 echo ">> sudo rm -rf node_modules"
 sudo rm -rf node_modules

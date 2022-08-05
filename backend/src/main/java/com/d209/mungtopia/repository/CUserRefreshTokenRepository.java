@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 @Repository
 @RequiredArgsConstructor
-public class UserRefreshTokenRepository {
+public class CUserRefreshTokenRepository {
     EntityManager em;
 }

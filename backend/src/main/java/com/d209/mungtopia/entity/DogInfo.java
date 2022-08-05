@@ -1,6 +1,8 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -13,39 +15,40 @@ public class DogInfo {
     @Id
     @Column(name = "dog_info_id")
     private long dogInfoId;
-    @Basic
+
     @Column(name = "name")
     private String name;
-    @Basic
+
     @Column(name = "area_sido")
     private String areaSido;
-    @Basic
+
     @Column(name = "area_gugun")
     private String areaGugun;
-    @Basic
+
     @Column(name = "gender")
     private String gender;
-    @Basic
+
     @Column(name = "age")
     private Integer age;
-    @Basic
+
     @Column(name = "weight")
     private String weight;
-    @Basic
+
     @Column(name = "breed")
     private String breed;
-    @Basic
+
     @Column(name = "vaccination")
     private Byte vaccination;
-    @Basic
+
     @Column(name = "neutering")
     private Byte neutering;
-    @Basic
+
     @Column(name = "adoption_status")
     private Byte adoptionStatus;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
+    @JsonIgnore
     private Board board;
 
     public Board getBoard() {

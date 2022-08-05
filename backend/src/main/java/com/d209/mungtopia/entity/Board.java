@@ -1,6 +1,8 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

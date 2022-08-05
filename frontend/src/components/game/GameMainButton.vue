@@ -1,6 +1,6 @@
 <template>
 	<div class="game-btn">
-		<div class="start-btn" @click="gameStart(0)">START</div>
+		<div class="start-btn" @click="gameStart(gameType)">START</div>
 	</div>
 	<div class="game-btn">
 		<div class="start-btn" @click="gameBack">BACK</div>
@@ -10,19 +10,20 @@
 <script>
 import { useStore } from 'vuex';
 import router from '@/router';
+import { computed } from 'vue';
 
 export default {
 	setup() {
 		const store = useStore();
+		const gameType = computed(() => store.getters['game/gameType']);
 		const gameStart = gameType => {
-			store.dispatch('game/gameStart', gameType);
+			store.dispatch('game/solveGame', gameType);
 			router.push({ path: '/game/main/play' });
 		};
 		const gameBack = () => {
-			store.dispatch('game/');
 			router.push({ path: '/game' });
 		};
-		return { gameStart, gameBack };
+		return { gameStart, gameBack, gameType };
 	},
 };
 </script>

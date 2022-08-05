@@ -1,16 +1,33 @@
 <template>
 	<div class="game-btn">
-		<div class="start-btn">YES</div>
+		<div class="start-btn" @click="answerQuestion">YES</div>
 	</div>
 	<div class="game-btn">
-		<div class="start-btn">NO</div>
+		<div class="start-btn" @click="answerQuestion">NO</div>
 	</div>
 </template>
 
 <script>
+// import router from '@/router';
+import { useStore } from 'vuex';
+import router from 'vuex';
+import { computed } from 'vue';
+
 export default {
 	setup() {
-		return {};
+		const store = useStore();
+		const questionNumber = computed(() => store.getters['game/questionNumber']);
+		const answerQuestion = () => {
+			if (questionNumber.value < 10) {
+				store.dispatch('game/plusQuestionNumber');
+			} else {
+				router.push({ path: '/game/main/finish' });
+			}
+		};
+		// const correctAnswer = (userAnswer, questionAnswer) => {
+		// 	store.dispatch('game/plusAnswerPoint', userAnswer, questionAnswer);
+		// };
+		return { answerQuestion };
 	},
 };
 </script>

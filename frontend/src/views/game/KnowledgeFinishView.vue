@@ -1,28 +1,14 @@
 <template>
-	<div class="frame">
-		<div>
-			<h2 class="title">SUCCESS</h2>
-		</div>
-		<div style="text-align: center">
-			<img src="" alt="" />
-		</div>
-		<div class="content">
-			<div>10문제 중 8문제로 성공하였어요!</div>
-		</div>
-		<div class="game-btn">
-			<div class="start-btn">SHARE</div>
-		</div>
-		<div class="game-btn">
-			<div class="start-btn">GAME MENU</div>
-		</div>
-	</div>
+	<KnowledgeGameFinish></KnowledgeGameFinish>
 </template>
 
 <script>
+import KnowledgeGameFinish from '@/components/game/KnowledgeGameFinish';
 export default {
-	setup() {
-		return {};
+	components: {
+		KnowledgeGameFinish,
 	},
+	setup() {},
 };
 </script>
 

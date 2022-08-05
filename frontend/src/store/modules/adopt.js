@@ -17,6 +17,7 @@ export default {
 			you: {},
 			chatList: [],
 			date: '',
+			meetingRoomId: null,
 		};
 	},
 	getters: {
@@ -33,6 +34,7 @@ export default {
 		chatList: state => state.chatList,
 		you: state => state.you,
 		date: state => state.date,
+		meetingRoomId: state => state.meetingRoomId,
 	},
 	mutations: {
 		SET_ADOPT_TYPE: (state, adoptType) => (state.adoptType = adoptType),
@@ -55,6 +57,10 @@ export default {
 		SET_CHAT_LIST: (state, chatList) => (state.chatList = chatList),
 		SET_YOU: (state, you) => (state.you = you),
 		SET_DATE: (state, date) => (state.date = date),
+		SET_MEETING_ROOM_ID: (state, meetingRoomId) =>
+			(state.meetingRoomId = meetingRoomId),
+		SET_OPENVIDU_TOKEN: (state, openviduToken) =>
+			(state.openviduToken = openviduToken),
 		UPDATE_APPLICATION_STATUS: state => {
 			state.applicationStatus += 1;
 		},
@@ -186,6 +192,10 @@ export default {
 			// 		console.log(res.data);
 			// 		commit('SET_APPLICANT_DETAIL', res.data);
 			// 		commit('SET_APPLICATION_STATUS', res.data.applicationStatus);
+			// commit(
+			// 	'SET_MEETING_ROOM_ID',
+			// 	res.data.meetingRoom.meetingRoomId,
+			// );
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -205,6 +215,10 @@ export default {
 			};
 			commit('SET_APPLICANT_DETAIL', newApplicantDetail);
 			commit('SET_APPLICATION_STATUS', newApplicantDetail.applicationStatus);
+			commit(
+				'SET_MEETING_ROOM_ID',
+				newApplicantDetail.meetingRoom.meetingRoomId,
+			);
 		},
 		// 입양하기 - 입양절차
 		fetchApplicantAdoptProcess: ({ commit, rootGetters }, applicationId) => {
@@ -296,10 +310,11 @@ export default {
 		// 입양 보내기 - 입양절차
 		fetchProtectorAdoptProcess: (
 			{ commit, rootGetters },
-			{ adoptionProcessId, applicationStatus },
+			{ adoptionProcessId, applicationStatus, meetingRoomId },
 		) => {
 			commit('SET_APPLICATION_STATUS', applicationStatus);
 			commit('SET_ADOPTION_PROCESS_ID', adoptionProcessId);
+			commit('SET_MEETING_ROOM_ID', meetingRoomId);
 			// axios({
 			// 	url: api.adopt.protectorDetailProcess(adoptionProcessId),
 			// 	method: 'get',
@@ -559,6 +574,29 @@ export default {
 			// 	console.error(err.response);
 			// });
 			commit('SET_DATE', '');
+		},
+
+		// 비디오 토큰 받기
+		getToken: ({ commit }, sessionName) => {
+			axios({
+				url: 'http://localhost:5001/api-sessions/get-token',
+				method: 'post',
+				data: { sessionName },
+				// headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log('here');
+					console.log(res);
+					const openviduToken = res[0]; // Get token from response
+					console.warn(
+						'Request of TOKEN gone WELL (TOKEN:' + openviduToken + ')',
+					);
+					commit('SET_OPENVIDU_TOKEN', openviduToken);
+					// callback(token); // Continue the join operation
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 	},
 };

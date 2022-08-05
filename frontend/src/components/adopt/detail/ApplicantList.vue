@@ -9,13 +9,7 @@
 		>
 			<div
 				class="application-list-component"
-				@click="
-					clickApplicantComponent(
-						index,
-						applicant.adoptionProcessId,
-						applicant.applicationStatus,
-					)
-				"
+				@click="clickApplicantComponent(index, applicant)"
 			>
 				<img style="width: 20%" :src="applicant.profile" />
 				<div style="width: 40%">
@@ -57,18 +51,15 @@ export default {
 			() => store.getters['adopt/activeApplicant'],
 		);
 		store.dispatch('adopt/updateActiveApplicant', -1);
-		const clickApplicantComponent = (
-			index,
-			adoptionProcessId,
-			applicationStatus,
-		) => {
+		const clickApplicantComponent = (index, applicant) => {
 			if (activeApplicant.value === index) {
 				store.dispatch('adopt/updateActiveApplicant', -1);
 			} else {
 				store.dispatch('adopt/updateActiveApplicant', index);
 				store.dispatch('adopt/fetchProtectorAdoptProcess', {
-					adoptionProcessId,
-					applicationStatus,
+					adoptionProcessId: applicant.adoptionProcessId,
+					applicationStatus: applicant.applicationStatus,
+					meetingRoomId: applicant.meetingRoomId,
 				});
 			}
 		};

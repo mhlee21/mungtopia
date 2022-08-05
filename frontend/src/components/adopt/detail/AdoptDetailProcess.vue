@@ -77,15 +77,16 @@
 <script>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-// import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 export default {
 	setup() {
 		const store = useStore();
-		// const router = useRouter();
+		const router = useRouter();
 		const adoptProcess = computed(() => store.getters['adopt/adoptProcess']);
 		const applicationStatus = computed(
 			() => store.getters['adopt/applicationStatus'],
 		);
+		const meetingRoomId = computed(() => store.getters['adopt/meetingRoomId']);
 		const adoptProcessTitle = [
 			'입양신청',
 			'화상 면담',
@@ -97,19 +98,22 @@ export default {
 
 		const clickAdoptProcessIcon = step => {
 			if (step === 1) {
-				// router.push({ name: 'user', params: { username: 'eduardo' }
+				// router.push({ name: 'user', params: { username: 'eduardo' }});
 				console.log(step);
 			} else if (step === 2) {
-				// router.push({ name: 'user', params: { username: 'eduardo' }
+				router.push({
+					name: 'meeting',
+					params: { meetingRoomId },
+				});
 				console.log(step);
 			} else if (step === 3) {
-				// router.push({ name: 'user', params: { username: 'eduardo' }
+				// router.push({ name: 'user', params: { username: 'eduardo' }});
 				console.log(step);
 			} else if (step === 4) {
-				// router.push({ name: 'user', params: { username: 'eduardo' }
+				// router.push({ name: 'user', params: { username: 'eduardo' }});
 				console.log(step);
 			} else {
-				// router.push({ name: 'user', params: { username: 'eduardo' }
+				// router.push({ name: 'user', params: { username: 'eduardo' }});
 				console.log(step);
 			}
 		};

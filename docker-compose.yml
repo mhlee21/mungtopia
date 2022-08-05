@@ -14,6 +14,8 @@ services:
     # [인증서 파일 저장 경로]:/var/www/html
     volumes:
       - /etc/letsencrypt/live/i7d209.p.ssafy.io/:/var/www/html
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
     container_name: "frontend"
   
   backend:
@@ -26,4 +28,6 @@ services:
     # [인증서 파일 저장 경로]:/root 
     volumes:
       - /etc/letsencrypt/live/i7d209.p.ssafy.io/:/root
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
     container_name: "backend"

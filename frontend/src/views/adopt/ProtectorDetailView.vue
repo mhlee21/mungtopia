@@ -29,7 +29,7 @@ export default {
 
 <style scoped>
 .protector-detail-view {
-	padding: 10%;
+	padding: 10% 7%;
 	overflow: auto;
 	height: 80%;
 	background-color: #ff9898;

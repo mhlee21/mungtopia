@@ -5,7 +5,7 @@ const HOST = 'https://i7d209.p.ssafy.io:8081/api/v1/';
 const AUTH = 'auth/';
 const BOARD = 'board/';
 const GAME = 'game/';
-const ADOPT = 'adopt/';
+const ADOPT = 'manage/';
 const USER = 'user/';
 
 export default {
@@ -75,8 +75,13 @@ export default {
 		protectorDetail: boardId =>
 			HOST + ADOPT + `protector/` + `detail/` + `${boardId}/`,
 		// 입양 보내기 상세 - 입양 절차
-		protectorDetailProcess: (boardId, userId) =>
-			HOST + ADOPT + `protector/` + `${boardId}/` + `${userId}/`,
+		protectorDetailProcess: adoptionProcessId =>
+			HOST +
+			ADOPT +
+			`protector/` +
+			`detail/` +
+			`user/` +
+			`${adoptionProcessId}/`,
 		// 입양 반려
 		protectorCancel: adoptionProcessId =>
 			HOST + ADOPT + `protector/` + `${adoptionProcessId}/`,

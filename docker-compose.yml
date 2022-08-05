@@ -1,0 +1,33 @@
+# 프로젝트 Root 폴더
+# 프로젝트Root/docker-compose.yml
+version: '3.7'
+
+services: 
+  frontend:
+    restart: always
+    container_name: "mungtopia_frontend"
+    image: mungtopia_frontend:0.1
+    build:
+      context: frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    # [인증서 파일 저장 경로]:/var/www/html
+    volumes:
+      - /etc/letsencrypt/live/i7d209.p.ssafy.io/:/var/www/html
+    environment:
+      - TZ=Asia/Seoul
+
+  backend:
+    container_name: "mungtopia_backend"
+    image: mungtopia_backend:0.1
+    build:
+      context: backend/
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"  
+    # [인증서 파일 저장 경로]:/root 
+    volumes:
+      - /etc/letsencrypt/live/i7d209.p.ssafy.io/:/root
+    environment:
+      - TZ=Asia/Seoul

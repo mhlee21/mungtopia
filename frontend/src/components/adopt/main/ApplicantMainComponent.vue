@@ -1,27 +1,28 @@
 <template>
 	<div
 		style="display: flex; align-items: center"
-		@click="clickApplication(application.application_id)"
+		@click="clickApplication(application.applicationId)"
 	>
 		<img
-			:src="application.dog_img"
+			:src="application.dogImg"
 			alt="dog image"
 			class="application-dog-img"
 		/>
 		<div class="application-dog-info">
 			<h4 style="margin: 20% 10%">
-				{{ application.dog_name }}
+				{{ application.dogName }}
 			</h4>
 		</div>
 	</div>
 </template>
 
 <script>
-import router from '@/router';
+import { useRouter } from 'vue-router';
 
 export default {
 	props: { application: Object },
 	setup() {
+		const router = useRouter();
 		const clickApplication = applicationId => {
 			router.push({
 				name: 'applicantDetail',
@@ -35,8 +36,8 @@ export default {
 
 <style scoped>
 .application-dog-img {
-	width: 35vw;
-	height: 35vw;
+	width: 60%;
+	height: 130px;
 	border-radius: 1rem;
 	box-shadow: 1px 4px 3px rgba(0, 0, 0, 0.2);
 }

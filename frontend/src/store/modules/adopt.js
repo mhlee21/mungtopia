@@ -1,5 +1,5 @@
 // import api from '@/api/api';
-// import axios from 'axios';
+import axios from 'axios';
 
 export default {
 	namespaced: true,
@@ -18,6 +18,7 @@ export default {
 			chatList: [],
 			date: '',
 			meetingRoomId: null,
+			chatRoomId: null,
 		};
 	},
 	getters: {
@@ -34,6 +35,7 @@ export default {
 		chatList: state => state.chatList,
 		you: state => state.you,
 		date: state => state.date,
+		chatRoomId: state => state.chatRoomId,
 		meetingRoomId: state => state.meetingRoomId,
 	},
 	mutations: {
@@ -59,6 +61,7 @@ export default {
 		SET_DATE: (state, date) => (state.date = date),
 		SET_MEETING_ROOM_ID: (state, meetingRoomId) =>
 			(state.meetingRoomId = meetingRoomId),
+		SET_CHAT_ROOM_ID: (state, chatRoomId) => (state.chatRoomId = chatRoomId),
 		SET_OPENVIDU_TOKEN: (state, openviduToken) =>
 			(state.openviduToken = openviduToken),
 		UPDATE_APPLICATION_STATUS: state => {
@@ -460,6 +463,7 @@ export default {
 			// 		};
 			// 		commit('SET_CHAT_LIST', res.data.chatList);
 			// 		commit('SET_YOU', you);
+			//	commit('SET_CHAT_ROOM_ID', chatRoomId)
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -474,34 +478,34 @@ export default {
 				chatList: [
 					{
 						userId: 1,
-						time: '1시간 전',
+						time: '2022.08.05 13:00:00',
 						message:
 							'안녕하세요! 몽이 입양신청서 작성하신거 보고 연락드렸어요!!',
 					},
 					{
 						userId: 2,
-						time: '1시간 전',
+						time: '2022.08.05 13:00:00',
 						message: '안녕하세요:)',
 					},
 					{
 						userId: 2,
-						time: '30분 전',
+						time: '2022.08.05 13:00:00',
 						message:
 							'면담일정은 어떻게 되나요? 제가 내일은 발표가 있어서 어렵습니다.:)',
 					},
 					{
 						userId: 1,
-						time: '25분 전',
+						time: '2022.08.05 13:00:00',
 						message: '화요일 오후 2시 어떠신가요? 그때가 좋을 것 같습니다^^',
 					},
 					{
 						userId: 2,
-						time: '20분 전',
+						time: '2022.08.05 13:00:00',
 						message: '네 그때 좋습니다^^',
 					},
 					{
 						userId: 1,
-						time: '10분 전',
+						time: '2022.08.05 13:00:00',
 						message: '네 그럼 일정 예약해두겠습니다!',
 					},
 				],
@@ -513,11 +517,12 @@ export default {
 			};
 			commit('SET_CHAT_LIST', data.chatList);
 			commit('SET_YOU', you);
+			commit('SET_CHAT_ROOM_ID', chatRoomId);
 		},
 		// 메세지 보내기
-		sendChat: ({ commit, rootGetters }, { chat, chatRoomId }) => {
+		sendChat: ({ commit, rootGetters, getters }, chat) => {
 			// axios({
-			// 	url: api.adopt.chatCreate(chatRoomId, rootGetters['auth/user'].userId),
+			// 	url: api.adopt.chatCreate(getters['chatRoomId'], rootGetters['auth/user'].userId),
 			// 	method: 'post',
 			// 	data: { message: chat.message },
 			// 	headers: rootGetters['auth/authHeader'],
@@ -530,7 +535,7 @@ export default {
 			// 		console.error(err.response);
 			// 	});
 
-			console.log(rootGetters, chat, chatRoomId);
+			console.log(rootGetters, chat, getters);
 			commit('UPDATE_NEW_CHAT', chat);
 		},
 

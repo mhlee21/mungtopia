@@ -17,9 +17,10 @@ export default {
 		const message = ref('');
 		const userId = computed(() => store.getters['auth/user']['userId']);
 		const sendMessage = () => {
-			console.log(store.getters['auth/user']['userId']);
+			console.log(userId);
 			const chat = {
-				userId,
+				// userId,
+				userId: 2,
 				time: Date.now(),
 				message: message.value,
 			};

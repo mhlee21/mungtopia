@@ -54,16 +54,24 @@ export default {
 		const route = useRoute();
 		const isReservated = computed(() => !(store.getters['adopt/date'] === ''));
 		const isApplicant = computed(() => store.getters['adopt/isApplicant']);
+		store.dispatch('adopt/fetchChatMain', route.params.chatRoomId);
+
+		const chatRoomId = computed(() => store.getters['adopt/chatRoomId']);
+		const adoptSchedule = () => {
+			router.push({ name: 'schedule', params: { chatRoomId } });
+		};
+		const you = computed(() => store.getters['adopt/you']);
 		const goBack = () => {
 			router.go(-1);
 		};
-
-		const adoptSchedule = () => {
-			router.push({ name: 'schedule', params: { chatRoomId: 1 } });
+		return {
+			isReservated,
+			isApplicant,
+			goBack,
+			adoptSchedule,
+			you,
+			chatRoomId,
 		};
-		store.dispatch('adopt/fetchChatMain', route.params.chatRoomId);
-		const you = computed(() => store.getters['adopt/you']);
-		return { isReservated, isApplicant, goBack, adoptSchedule, you };
 	},
 };
 </script>

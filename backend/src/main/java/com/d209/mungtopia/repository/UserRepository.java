@@ -7,6 +7,6 @@ import javax.persistence.EntityManager;
 
 @Repository
 @RequiredArgsConstructor
-public class DogNatureRepository {
+public class UserRepository {
     EntityManager em;
 }

@@ -1,0 +1,29 @@
+# 프로젝트 Root 폴더
+# 프로젝트Root/docker-compose.yml
+version: '3.7'
+
+services: 
+  frontend:
+    image: frontend-vue
+    build:
+      context: frontend/
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443" 
+    # [인증서 파일 저장 경로]:/var/www/html
+    volumes:
+      - /etc/letsencrypt/live/i7d209.p.ssafy.io/:/var/www/html
+    container_name: "frontend"
+  
+  backend:
+    image: backend-spring
+    build:
+      context: backend/
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"  
+    # [인증서 파일 저장 경로]:/root 
+    volumes:
+      - /etc/letsencrypt/live/i7d209.p.ssafy.io/:/root
+    container_name: "backend"

@@ -10,14 +10,8 @@
 			></div>
 		</div>
 		<!-- 문구 -->
-		<div style="text-align: center">대기 중 입니다.</div>
+		<div style="text-align: center; color: white">대기 중 입니다.</div>
 		<div style="height: 10vh"></div>
-		<!-- 버튼 -->
-		<div style="display: flex; justify-content: space-around">
-			<button>영상</button>
-			<button>마이크</button>
-			<button>종료</button>
-		</div>
 	</div>
 </template>
 

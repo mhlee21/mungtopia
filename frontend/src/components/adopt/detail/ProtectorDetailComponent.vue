@@ -2,9 +2,9 @@
 	<div class="protector-detail-component">
 		<img
 			class="protector-detail-component-dog-image"
-			:src="protectorDetail.dog_img"
+			:src="protectorDetail.dogImg"
 		/>
-		<div style="width: 70%; padding: 5%">{{ protectorDetail.dog_name }}</div>
+		<div style="width: 70%; padding: 5%">{{ protectorDetail.dogName }}</div>
 	</div>
 </template>
 

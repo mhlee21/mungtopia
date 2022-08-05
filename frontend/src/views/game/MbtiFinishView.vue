@@ -3,61 +3,16 @@
 		<div>
 			<h2 class="title">당신의 결과는?</h2>
 		</div>
-		<div class="hash">
-			<div style="color: #61378c">
-				#상상력 #순발력 <br />
-				# 직관적<br />
-			</div>
-			<div style="color: #5dbf17">ENFP 비글</div>
-		</div>
-		<div style="text-align: center">
-			<img src="" width="200" height="200" alt="" />
-		</div>
-		<div class="content">
-			<div>당신과 잘 맞는 MBTI는?</div>
-		</div>
-		<div style="display: flex; justify-content: space-between">
-			<div>
-				<div style="text-align: center">
-					ISTJ<br />
-					시베리안 허스키
-				</div>
-				<div style="text-align: center">
-					<img src="" width="100px" height="100px" alt="" />
-				</div>
-			</div>
-			<div>
-				<div style="text-align: center">
-					ISFJ<br />
-					슈나우저
-				</div>
-				<div style="text-align: center">
-					<img src="" width="100px" height="100px" alt="" />
-				</div>
-			</div>
-			<div>
-				<div style="text-align: center">
-					ESFJ<br />
-					닥스훈트
-				</div>
-				<div style="text-align: center">
-					<img src="" width="100px" height="100px" alt="" />
-				</div>
-			</div>
-		</div>
-		<div style="text-align: center">
-			<div class="game-btn" style="margin: 0% 5% 0% 0%">
-				<div class="start-btn">SHARE</div>
-			</div>
-			<div class="game-btn" style="margin: 0% 0% 0% 5%">
-				<div class="start-btn">GAME MENU</div>
-			</div>
-		</div>
+		<MbtiGameFinish></MbtiGameFinish>
 	</div>
 </template>
 
 <script>
+import MbtiGameFinish from '@/components/game/MbtiGameFinish.vue';
 export default {
+	components: {
+		MbtiGameFinish,
+	},
 	setup() {
 		return {};
 	},

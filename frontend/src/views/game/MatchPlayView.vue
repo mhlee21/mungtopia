@@ -61,7 +61,7 @@ img {
 	margin: 5px;
 	padding: 5px;
 }
-.game-btn {
+.MBTI-game-btn {
 	width: 90px;
 	height: 50px;
 	background-color: #0d6aba;
@@ -72,7 +72,7 @@ img {
 	margin: 30px auto;
 	border-radius: 1rem;
 }
-.game-btn {
+.MBTI-game-btn {
 	width: 200px;
 	height: 50px;
 	background-color: #0d6aba;
@@ -83,7 +83,7 @@ img {
 	margin: 30px auto;
 	border-radius: 1rem;
 }
-.start-btn {
+.MBTI-start-btn {
 	width: 100%;
 	color: #fffbf0;
 }

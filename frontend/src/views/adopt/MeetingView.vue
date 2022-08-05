@@ -37,7 +37,7 @@ export default {
 		const router = useRouter();
 
 		// 미팅 대기/ 전화중 여부
-		const meetingStatus = ref('call');
+		const meetingStatus = ref('wait');
 		const isWait = computed(() => meetingStatus.value === 'wait');
 
 		// 카메라
@@ -73,7 +73,7 @@ export default {
 
 <style scoped>
 .meeting-view {
-	background-color: #ff9898;
+	background: linear-gradient(to bottom, #ff9898, rgba(143, 187, 253, 0.58));
 	height: 100%;
 }
 </style>

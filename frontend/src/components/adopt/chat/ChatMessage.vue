@@ -20,7 +20,7 @@ export default {
 	border-radius: 2rem;
 	padding: 0 1rem 3%;
 	display: inline-block;
-	font-size: 14 px;
+	font-size: 14px;
 	max-width: 60%;
 }
 .chat-message-me {

@@ -103,7 +103,7 @@ export default {
 			} else if (step === 2) {
 				router.push({
 					name: 'meeting',
-					params: { meetingRoomId },
+					params: { meetingRoomId: meetingRoomId.value },
 				});
 				console.log(step);
 			} else if (step === 3) {

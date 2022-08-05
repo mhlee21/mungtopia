@@ -1,5 +1,5 @@
 package com.d209.mungtopia.controller;
-import com.d209.mungtopia.entity.user.User;
+import com.d209.mungtopia.entity.User;
 import com.d209.mungtopia.service.UserService;
 import com.d209.mungtopia.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class UserController {
     @GetMapping
     public ApiResponse getUser() {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println("---------hi-----------");
+
         // user 이름을 리턴해준다.
         User user = userService.getUser(principal.getUsername());
 

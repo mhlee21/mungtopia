@@ -1,6 +1,6 @@
 package com.d209.mungtopia.oauth.service;
 
-import com.d209.mungtopia.entity.user.User;
+import com.d209.mungtopia.entity.User;
 import com.d209.mungtopia.repository.user.UserRepository;
 import com.d209.mungtopia.oauth.entity.UserPrincipal;
 import lombok.RequiredArgsConstructor;

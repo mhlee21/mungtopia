@@ -1,5 +1,9 @@
 <template>
-	<div>call</div>
+	<div>
+		<!-- 영상화면 -->
+		<div></div>
+		<div></div>
+	</div>
 </template>
 
 <script>

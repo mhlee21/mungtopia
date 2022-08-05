@@ -1,23 +1,23 @@
 <template>
 	<div
 		style="display: flex; align-items: center"
-		@click="clickBoard(board.board_id)"
+		@click="clickBoard(board.boardId)"
 	>
-		<img :src="board.dog_img" alt="dog image" class="board-dog-img" />
+		<img :src="board.dogImg" alt="dog image" class="board-dog-img" />
 		<div class="board-dog-info">
 			<h4 style="margin: 20% 10%">
-				{{ board.dog_name }}
+				{{ board.dogName }}
 			</h4>
 		</div>
 	</div>
 </template>
 
 <script>
-import router from '@/router';
-
+import { useRouter } from 'vue-router';
 export default {
 	props: { board: Object },
 	setup() {
+		const router = useRouter();
 		const clickBoard = boardId => {
 			router.push({
 				name: 'protectorDetail',
@@ -31,8 +31,8 @@ export default {
 
 <style scoped>
 .board-dog-img {
-	width: 35vw;
-	height: 35vw;
+	width: 60%;
+	height: 130px;
 	border-radius: 1rem;
 	box-shadow: 1px 4px 3px rgba(0, 0, 0, 0.2);
 }

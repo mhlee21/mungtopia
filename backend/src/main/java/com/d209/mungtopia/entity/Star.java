@@ -3,23 +3,41 @@ package com.d209.mungtopia.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Getter
 public class Star {
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     @Column(name = "star_id")
-    private Long starId;
+    private long starId;
+    @Basic
+    @Column(name = "createtime")
+    private Timestamp createtime;
 
-    private LocalDateTime createtime;
+    @ManyToOne
+    @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
+    private User userByUserSeq;
+    @ManyToOne
+    @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
+    private Board boardByBoardId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Member member;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
+    public User getUserByUserSeq() {
+        return userByUserSeq;
+    }
+
+    public void setUserByUserSeq(User userByUserSeq) {
+        this.userByUserSeq = userByUserSeq;
+    }
+
+    public Board getBoardByBoardId() {
+        return boardByBoardId;
+    }
+
+    public void setBoardByBoardId(Board boardByBoardId) {
+        this.boardByBoardId = boardByBoardId;
+    }
 }

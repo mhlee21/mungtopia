@@ -2,7 +2,7 @@
 	<div>
 		<div style="height: 10vh"></div>
 		<!-- 이름 -->
-		<div style="text-align: center"><h3>황희원</h3></div>
+		<div style="text-align: center; color: white"><h3>황희원</h3></div>
 		<!-- 프로필 사진 -->
 		<div style="height: 40vh; display: flex; align-content: center">
 			<div

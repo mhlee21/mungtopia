@@ -4,22 +4,23 @@ version: '3.7'
 
 services: 
   frontend:
-    image: frontend-vue
+    restart: always
+    container_name: "mungtopia_frontend"
+    image: mungtopia_frontend:0.1
     build:
       context: frontend/
       dockerfile: Dockerfile
     ports:
-      - "80:80"
-      - "443:443" 
+      - "3000:80"
     # [인증서 파일 저장 경로]:/var/www/html
     volumes:
       - /etc/letsencrypt/live/i7d209.p.ssafy.io/:/var/www/html
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker
-    container_name: "frontend"
-  
+    environment:
+      - TZ=Asia/Seoul
+
   backend:
-    image: backend-spring
+    container_name: "mungtopia_backend"
+    image: mungtopia_backend:0.1
     build:
       context: backend/
       dockerfile: Dockerfile
@@ -28,6 +29,5 @@ services:
     # [인증서 파일 저장 경로]:/root 
     volumes:
       - /etc/letsencrypt/live/i7d209.p.ssafy.io/:/root
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/bin/docker:/usr/bin/docker
-    container_name: "backend"
+    environment:
+      - TZ=Asia/Seoul

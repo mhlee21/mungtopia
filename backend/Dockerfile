@@ -1,6 +1,7 @@
 # backend/Dockerfile
 # 사용한 java 버전에 맞는 값을 입력해주세요.
-FROM openjdk:11-jdk-alpine
+#FROM openjdk:11-jdk-alpine
+FROM adoptopenjdk/openjdk11
 
 # jar 파일 경로는 직접 입력해주세요.
 COPY /jenkins/jenkins_home/workspace/mungtopia/backend/build/libs/mungtopia-0.0.1-SNAPSHOT.jar mungtopia.jar

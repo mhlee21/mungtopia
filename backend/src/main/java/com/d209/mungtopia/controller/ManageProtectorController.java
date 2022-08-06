@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/manage/protector")
+@RequestMapping("/api/v1/manage/protector")
 @Api(value = "입양관리 - 보호자 API", tags = "Manage Protector Controller - 입양관리(보호자) API")
 @RequiredArgsConstructor
 public class ManageProtectorController {

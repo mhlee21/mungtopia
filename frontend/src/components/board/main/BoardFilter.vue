@@ -1,33 +1,22 @@
 <template>
 	<div>
 		<ul class="top-menu">
-			<li class="menu-item">
-				<a @click.prevent="clickAll()">
-					<img :src="imagePath" class="pink" />
-					<img src="@/assets/img/menu-icon1-on.svg" class="white" />
-					<p>추천</p>
-				</a>
-			</li>
-			<!-- active 클래스 추가 여부로 색상전환 가능 -->
-			<li class="menu-item active">
-				<a @click.prevent="clickAdopt()">
-					<img src="@/assets/img/menu-icon2.svg" class="pink" />
-					<img src="@/assets/img/menu-icon2-on.svg" class="white" />
-					<p>입양</p>
-				</a>
-			</li>
-			<li class="menu-item">
-				<a @click.prevent="clickReview()">
-					<img src="@/assets/img/menu-icon3.svg" class="pink" />
-					<img src="@/assets/img/menu-icon3-on.svg" class="white" />
-					<p>후기</p>
-				</a>
-			</li>
-			<li class="menu-item">
-				<a @click.prevent="clickFreeTalk()">
-					<img src="@/assets/img/menu-icon4.svg" class="pink" />
-					<img src="@/assets/img/menu-icon4-on.svg" class="white" />
-					<p>잡담</p>
+			<li
+				class="menu-item"
+				:class="{ active: tagNo === index }"
+				v-for="(filter, index) in boardFilter"
+				:key="index"
+			>
+				<a @click.prevent="clickFilter(index)">
+					<img
+						:src="require('@/assets/img/menu-icon' + (index + 1) + '.svg')"
+						class="pink"
+					/>
+					<img
+						:src="require('@/assets/img/menu-icon' + (index + 1) + '-on.svg')"
+						class="white"
+					/>
+					<p>{{ filter.name }}</p>
 				</a>
 			</li>
 		</ul>
@@ -35,15 +24,30 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 export default {
 	setup() {
-		const clickAll = () => {};
-		const clickAdopt = () => {};
-		const clickReview = () => {};
-		const clickFreeTalk = () => {};
-		const imagePath = require('@/assets/img/menu-icon1.svg');
+		const store = useStore();
+		const tagNo = computed(() => store.getters['board/tagNo']);
+		const boardFilter = [
+			{ name: '전체' },
+			{ name: '입양' },
+			{ name: '후기' },
+			{ name: '잡담' },
+		];
+		const clickFilter = num => {
+			store.dispatch('board/fetchBoardList', {
+				tagNo: num,
+				pageNum: 0,
+			});
+		};
 
-		return { imagePath, clickAll, clickAdopt, clickReview, clickFreeTalk };
+		return {
+			tagNo,
+			boardFilter,
+			clickFilter,
+		};
 	},
 };
 </script>

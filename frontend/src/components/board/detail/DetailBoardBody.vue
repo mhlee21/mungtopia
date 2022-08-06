@@ -1,7 +1,9 @@
 <template>
 	<div>
-		<DetailBoardContent></DetailBoardContent>
-		<DetailBoardCommentList></DetailBoardCommentList>
+		<div class="complex-container">
+			<DetailBoardContent></DetailBoardContent>
+			<DetailBoardCommentList></DetailBoardCommentList>
+		</div>
 	</div>
 </template>
 

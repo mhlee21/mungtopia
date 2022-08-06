@@ -2,20 +2,44 @@
 	<div>
 		<div class="user-tit-box">
 			<div class="user-info">
-				<img src="@/assets/img/example-user-profile.png" alt="" />
-				<span class="user-name">이연정</span>
+				<img :src="author.profile" alt="author image" class="user-profile" />
+				<span class="user-name">{{ author.nickname }}</span>
 			</div>
-			<span class="time">3시간 전</span>
+			<span class="time">{{ difTime(new Date(createtime)) }}</span>
 		</div>
 	</div>
 </template>
 
 <script>
 export default {
+	props: { author: Object, createtime: String },
 	setup() {
-		return {};
+		const difTime = timeValue => {
+			const today = new Date();
+			const betweenTime = Math.floor(
+				(today.getTime() - timeValue.getTime()) / 1000 / 60,
+			);
+			if (betweenTime < 1) return '방금전';
+			if (betweenTime < 60) {
+				return `${betweenTime}분전`;
+			}
+			const betweenTimeHour = Math.floor(betweenTime / 60);
+			if (betweenTimeHour < 24) {
+				return `${betweenTimeHour}시간전`;
+			}
+			const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+			if (betweenTimeDay < 365) {
+				return `${betweenTimeDay}일전`;
+			}
+			return `${Math.floor(betweenTimeDay / 365)}년전`;
+		};
+		return { difTime };
 	},
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.user-profile {
+	width: 30px;
+}
+</style>

@@ -8,7 +8,7 @@
 export default {};
 </script>
 <style>
-.app {
+/* .app {
 	width: 344px;
 	height: 624px;
 	overflow: hidden;
@@ -16,5 +16,5 @@ export default {};
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-}
+} */
 </style>

@@ -1,6 +1,11 @@
 <template>
 	<div>
-		<DetailBoardComment></DetailBoardComment>
+		<div class="adopt-detail-comment-wrap">
+			<h3>댓글</h3>
+			<div class="comment-wrap">
+				<DetailBoardComment></DetailBoardComment>
+			</div>
+		</div>
 	</div>
 </template>
 

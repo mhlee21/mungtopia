@@ -1,5 +1,5 @@
-// import axios from 'axios';
-// import api from '@/api/api';
+import axios from 'axios';
+import api from '@/api/api';
 
 export default {
 	namespaced: true,
@@ -21,7 +21,7 @@ export default {
 		SET_TAG_NO: (state, tagNo) => (state.tagNo = tagNo),
 	},
 	actions: {
-		// 게시글 가져오기
+		// 전체글 불러오기
 		fetchBoardList: ({ commit, rootGetters }, { tagNo, pageNo }) => {
 			console.log('fetchBoardList', tagNo, pageNo, rootGetters);
 			// axios({
@@ -151,6 +151,259 @@ export default {
 			commit('SET_BOARD_LIST', boardList);
 		},
 
-		//
+		// 상세글 불러오기
+		fetchDetailBoard: ({ commit, rootGetters }, { boardId }) => {
+			console.log('featureDetailBoard', commit, rootGetters);
+			axios({
+				url: api.board.boardDetail(boardId),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 글 쓰기
+		createBoard: ({ commit, rootGetters }, payload) => {
+			console.log('createBoard', commit, rootGetters);
+			axios({
+				url: api.board.boardCreate(),
+				method: 'post',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 글 수정
+		updateBoard: ({ commit, rootGetters }, { boardId, payload }) => {
+			console.log('updateBoard', commit, rootGetters);
+			axios({
+				url: api.board.boardUpdate(boardId),
+				method: 'put',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 글 삭제
+		deleteBoard: ({ commit, rootGetters }, boardId) => {
+			console.log('deleteBoard', commit, rootGetters);
+			axios({
+				url: api.board.boardDelete(boardId),
+				method: 'delete',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 댓글 쓰기
+		createComment: ({ commit, rootGetters }, { boardId, payload }) => {
+			console.log('createComment', commit, rootGetters);
+			axios({
+				url: api.board.commentCreate(boardId),
+				method: 'post',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 댓글 수정
+		updateComment: (
+			{ commit, rootGetters },
+			{ boardId, commentId, payload },
+		) => {
+			console.log('updateComment', commit, rootGetters);
+			axios({
+				url: api.board.commentUpdate(boardId, commentId),
+				method: 'put',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 댓글 삭제
+		deleteComment: ({ commit, rootGetters }, { boardId, commentId }) => {
+			console.log('deleteComment', commit, rootGetters);
+			axios({
+				url: api.board.commentDelete(boardId, commentId),
+				method: 'delete',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 대댓글 쓰기
+		createReply: ({ commit, rootGetters }, { boardId, commentId, payload }) => {
+			console.log('createReply', commit, rootGetters);
+			axios({
+				url: api.board.replyCreate(boardId, commentId),
+				method: 'post',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 대댓글 수정
+		updateReply: (
+			{ commit, rootGetters },
+			{ boardId, commentId, replyId, payload },
+		) => {
+			console.log('updateReply', commit, rootGetters);
+			axios({
+				url: api.board.replyUpdate(boardId, commentId, replyId),
+				method: 'put',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 대댓글 삭제
+		deleteReply: ({ commit, rootGetters }, { boardId, commentId, replyId }) => {
+			console.log('deleteReply', commit, rootGetters);
+			axios({
+				url: api.board.replyDelete(boardId, commentId, replyId),
+				method: 'delete',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+		// 좋아요 하기
+		createLike: ({ commit, rootGetters }, { boardId, payload }) => {
+			console.log('createLike', commit, rootGetters);
+			axios({
+				url: api.board.likeCreate(boardId),
+				method: 'post',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 좋아요 삭제
+		deleteLike: ({ commit, rootGetters }, { boardId, payload }) => {
+			console.log('deleteLike', commit, rootGetters);
+			axios({
+				url: api.board.likeDelete(boardId),
+				method: 'delete',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 별표 하기
+		createStar: ({ commit, rootGetters }, { boardId, payload }) => {
+			console.log('createStar', commit, rootGetters);
+			axios({
+				url: api.board.starCreate(boardId),
+				method: 'post',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+		// 별표 삭제
+		deleteStar: ({ commit, rootGetters }, { boardId, payload }) => {
+			console.log('deleteStar', commit, rootGetters);
+			axios({
+				url: api.board.starDelete(boardId),
+				method: 'delete',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 입양 신청서 작성
+		createApplication: ({ commit, rootGetters }, { boardId, payload }) => {
+			console.log('createApplication', commit, rootGetters);
+			axios({
+				url: api.board.applicationCreate(boardId),
+				method: 'post',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
 	},
 };

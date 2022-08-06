@@ -18,16 +18,18 @@
 			</button>
 		</div>
 		<AdoptStateComponent></AdoptStateComponent>
+		<NavBar></NavBar>
 	</div>
 </template>
 
 <script>
+import NavBar from '@/components/NavBar.vue';
 import AdoptStateComponent from '@/components/adopt/main/AdoptStateComponent';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 export default {
-	components: { AdoptStateComponent },
+	components: { NavBar, AdoptStateComponent },
 	setup() {
 		const store = useStore();
 		const route = useRoute();

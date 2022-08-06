@@ -1,29 +1,61 @@
 <template>
 	<div class="text-wrap">
 		<div class="tit-box">
-			<p class="dog-name">몽이</p>
+			<p class="dog-name">{{ board.dogName }}</p>
 			<ul class="icon-box">
 				<!-- active 클래스 추가 유무로 색상 전환 가능 -->
-				<li class="heart icon active">
+				<li class="star icon" :class="{ active: board.haveInterest }">
+					<i class="fa-solid fa-star"></i>
+				</li>
+				<li class="heart icon" :class="{ active: board.isLike }">
 					<i class="fa-solid fa-heart"></i>
 				</li>
 			</ul>
 		</div>
-		<div class="text-box">
+		<!-- 입양 -->
+		<ul v-if="board.boardTag === 1" class="info-box">
+			<li class="info">
+				<h5>나이</h5>
+				<p>{{ board.dogInfo.age }}</p>
+			</li>
+			<li class="info">
+				<h5>몸무게</h5>
+				<p>{{ board.dogInfo.weight }}</p>
+			</li>
+			<li class="info">
+				<h5>성별</h5>
+				<p>{{ board.dogInfo.gender }}</p>
+			</li>
+			<li class="info">
+				<h5>중성화여부</h5>
+				<p>{{ board.dogInfo.neutering }}</p>
+			</li>
+		</ul>
+		<!-- 후기 잡담 -->
+		<div v-else class="text-box">
 			<p>
-				오늘 몽이랑 같이 산책 다녀왔어요! 몽이랑 같이 벚꽃 구경해서 너무
-				행복합니닿ㅎ 다들 갱얼쥐랑 꽃구경 다녀오세요^^
+				{{ board.contents }}
 			</p>
 		</div>
 		<div class="brief-box">
+			<ol v-if="board.boardTag === 1" class="hashtag-box">
+				<li>{{ board.dogInfo.areaSido }}</li>
+				<li>{{ board.dogInfo.breed }}</li>
+			</ol>
 			<div class="indicator-box">
 				<div class="indicator indicator-likes">
 					<p class="tit">좋아요</p>
-					<p class="cont"><span>3</span>개</p>
+					<p class="cont">
+						<span>{{ board.likeCount }}</span
+						>개
+					</p>
 				</div>
 				<div class="indicator indicator-comment">
 					<p class="tit">댓글</p>
-					<p class="cont"><span>5</span>개</p>
+					<p class="cont">
+						<span>{{ board.commentCount }}</span
+						>개
+					</p>
 				</div>
 			</div>
 		</div>
@@ -32,6 +64,9 @@
 
 <script>
 export default {
+	props: {
+		board: Object,
+	},
 	setup() {
 		return {};
 	},

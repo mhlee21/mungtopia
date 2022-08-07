@@ -1,6 +1,7 @@
 package com.d209.mungtopia.repository;
 
 import com.d209.mungtopia.entity.Board;
+import com.d209.mungtopia.entity.ImageStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -17,8 +18,21 @@ public class BoardRepository {
                 .getResultList();
     }
 
-    public Board findByBoardId(Long boardId){
+    public Board findOne(Long boardId){
         return em.find(Board.class, boardId);
     }
 
+    public List<ImageStorage> findImageStorage(Long boardId){
+        return em.createQuery("select b.imageStorageList from Board b")
+                .getResultList();
+    }
+
+    public String findMainImg(Long boardId){
+        List<ImageStorage> imageStorage = findImageStorage(boardId);
+        for (ImageStorage img: imageStorage) {
+            if (img.getOrders().equals(1))
+                return img.getFilename();
+        }
+        return null;
+    }
 }

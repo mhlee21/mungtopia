@@ -17,7 +17,14 @@ public class BoardServiceImpl implements BoardService {
     private final DogInfoRepository dogInfoRepository;
 
     @Override
-    public List<Board> findBoardAll(Long tag_no) {
+    public List<Board> findBoardAll(Long tagNo, int pageNo) {
+        /*
+         * 전체 : 0
+         * 입양 : 1 (추천하는 강아지 글 3개 먼저 보여주고 나머지는 최신순으로 보여줌
+         * 후기 : 2
+         * 자유 : 3
+         */
+//        System.out.printf("%d %d\n", tagNo, pageNo);
         List<Board> boardList = boardRepository.findBoardAll();
         List<DogInfo> dogInfoList = dogInfoRepository.findDogInfoAll();
 
@@ -27,6 +34,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Board findBoardDetail(Long boardId) {
-        return null;
+        return boardRepository.findOne(boardId);
     }
 }

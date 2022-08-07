@@ -19,6 +19,7 @@ public class BoardRepository {
     }
 
     public Board findOne(Long boardId){
+        System.out.println("boardId = " + boardId);
         return em.find(Board.class, boardId);
     }
 

@@ -10,7 +10,7 @@ spring:
   # 데이터 소스 설정
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://i7d209.p.ssafy.io:3306/mungtopia?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://i7d209.p.ssafy.io:3306/mungtopia?useSSL=false&serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true
     username: d209
     password: mung209pro@
 #     DB Connection Pool

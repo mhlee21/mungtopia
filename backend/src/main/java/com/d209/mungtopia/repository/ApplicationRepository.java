@@ -13,6 +13,10 @@ import java.util.List;
 public class ApplicationRepository {
     private final EntityManager em;
 
+    public Application findOne(Long appId){
+        return em.find(Application.class, appId);
+    }
+
     public List<Application> findApplicationByUserId(Long userId) {
         User user = em.find(User.class, userId);
         return em.createQuery("select a from Application a where a.user =: user")

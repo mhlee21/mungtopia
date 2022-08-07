@@ -1,31 +1,42 @@
 package com.d209.mungtopia.service;
 
-import com.d209.mungtopia.dto.protector.detailApplication;
-import com.d209.mungtopia.dto.protector.protectorBoardList;
+import com.d209.mungtopia.dto.protector.ApplicantProcessDto;
+import com.d209.mungtopia.dto.protector.DetailApplicationDto;
+import com.d209.mungtopia.dto.protector.ProtectorBoardListDto;
+import com.d209.mungtopia.dto.protector.StepUpdateDto;
 import com.d209.mungtopia.entity.*;
+import com.d209.mungtopia.repository.AdoptionProcessRepository;
 import com.d209.mungtopia.repository.ManageProtectorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 // BL
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ManageProtectorServiceImpl implements ManageProtectorService{
 
     private final ManageProtectorRepository manageProtectorRepository;
+    private final AdoptionProcessRepository adoptionProcessRepository;
 
+    /**
+     * 입양 보내기 메인
+     * @param userId
+     * @return
+     */
     @Override
-    public List<protectorBoardList> mainBoardInfo(Long userId) {
-        List<protectorBoardList> protectorBoardLists = new ArrayList<>();
+    public List<ProtectorBoardListDto> mainBoardInfo(Long userId) {
+        List<ProtectorBoardListDto> protectorBoardLists = new ArrayList<>();
 
         List<Board> boardList = manageProtectorRepository.findBoardList(userId);
 
         for (int i = 0; i < boardList.size(); i++) {
-            protectorBoardList protectorBoard = new protectorBoardList();
+            ProtectorBoardListDto protectorBoard = new ProtectorBoardListDto();
 
             Board board = boardList.get(i);
 
@@ -36,7 +47,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
             for (int j = 0; j < board.getImageStorageList().size(); j++) {
                 Integer orders = board.getImageStorageList().get(j).getOrders();
                 if (orders.equals(1)){
-                    protectorBoard.setDogImgUrl(board.getImageStorageList().get(j).getFilename());
+                    protectorBoard.setDogImg(board.getImageStorageList().get(j).getFilename());
                 }
             }
 
@@ -46,9 +57,14 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
         return protectorBoardLists;
     }
 
+    /**
+     * 입양 보내기 상세
+     * @param boardId
+     * @return
+     */
     @Override
-    public protectorBoardList detailApplicantInfo(Long boardId) {
-        protectorBoardList applicantList = new protectorBoardList();
+    public ProtectorBoardListDto detailApplicantInfo(Long boardId) {
+        ProtectorBoardListDto applicantList = new ProtectorBoardListDto();
 
         Board board = manageProtectorRepository.findByBoardId(boardId);
         // board_id 값 세팅
@@ -59,7 +75,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
         for (int i = 0; i < board.getImageStorageList().size(); i++) {
             ImageStorage imageStorage = board.getImageStorageList().get(i);
             if (imageStorage.getOrders().equals(1)){
-                applicantList.setDogImgUrl(imageStorage.getFilename());
+                applicantList.setDogImg(imageStorage.getFilename());
             }
         }
 
@@ -70,7 +86,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
         for (Application curApplication : applicants) {
             // 현재 applicant
             // list에 넣을 객체
-            detailApplication detailApplication = new detailApplication();
+            DetailApplicationDto detailApplication = new DetailApplicationDto();
             // userId
             detailApplication.setUserId(curApplication.getUser().getUserSeq());
             // userImg
@@ -79,7 +95,6 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
             detailApplication.setUsername(curApplication.getName());
             // applicationStatus
             detailApplication.setApplicationStatus(curApplication.getApplicationStatus());
-            System.out.println("curApplication.getApplicationStatus() = " + curApplication.getApplicationStatus());
             AdoptionProcess adoptionProcess = curApplication.getAdoptionProcess();
             detailApplication.setAdoptionProcessId(adoptionProcess.getAdoptionProcessId());
 
@@ -91,5 +106,79 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
         }
 
         return applicantList;
+    }
+
+    /**
+     * 입양 신청자 상세 정보
+     * @param adoptionProcessId
+     * @return
+     */
+    @Override
+    public List<ApplicantProcessDto> applicantDetailProcess(Long adoptionProcessId) {
+        AdoptionProcess adoptionProcess = manageProtectorRepository.findByAdoptionProcessId(adoptionProcessId);
+
+        List<ApplicantProcessDto> applicantProcessList = new ArrayList<>();
+        int curStep = adoptionProcess.getStep();
+        List<AdoptionStepDate> adoptionStepDateList = adoptionProcess.getAdoptionStepDateList();
+        adoptionStepDateList.sort(new Comparator<AdoptionStepDate>() {
+            @Override
+            public int compare(AdoptionStepDate o1, AdoptionStepDate o2) {
+                return Integer.compare(o1.getStep(), o2.getStep());
+            }
+        });
+
+        for (AdoptionStepDate adoptionStepDate : adoptionStepDateList) {
+            ApplicantProcessDto process = new ApplicantProcessDto();
+            process.setStep(adoptionStepDate.getStep());
+
+//            Date date = new Date(adoptionStepDate.getDate() * 1000);
+
+            process.setDate(adoptionStepDate.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+            if (adoptionStepDate.getStep() < curStep) {
+                process.setStepStatus(true);
+            } else  {
+                process.setStepStatus(adoptionProcess.getStepStatus());
+            }
+
+            applicantProcessList.add(process);
+        }
+
+        return applicantProcessList;
+    }
+
+    /**
+     * 입양 반려
+     * @param processId
+     * @return
+     */
+    @Transactional
+    public Boolean deleteProcess(Long processId){
+        AdoptionProcess adoptionProcess = adoptionProcessRepository.find(processId);
+        Application application = adoptionProcess.getApplication();
+        application.setApplicationStatus(8); // protector가 취소한 경우 8로 저장
+        return application.getApplicationStatus().equals(8);
+    }
+
+    /**
+     * 입양 상태 변경
+     * @param adoptionProcessId
+     * @param stepUpdateInfo
+     * @return
+     */
+    @Transactional
+    public List<ApplicantProcessDto> updateProcessStatus(Long adoptionProcessId, StepUpdateDto stepUpdateInfo){
+        AdoptionProcess adoptionProcess = adoptionProcessRepository.find(adoptionProcessId);
+        adoptionProcess.setStep(stepUpdateInfo.getStep());
+        if (stepUpdateInfo.getStep() == 5){ // true
+            List<AdoptionStepDate> adoptionStepDateList = adoptionProcess.getAdoptionStepDateList();
+            for (AdoptionStepDate adoptionStepDate : adoptionStepDateList) {
+                if(adoptionStepDate.getStep().equals(5)){
+                    adoptionStepDate.setDate(LocalDateTime.now());
+                }
+            }
+        }
+        adoptionProcess.setStepStatus(stepUpdateInfo.getStepStatus());
+        return applicantDetailProcess(adoptionProcessId);
     }
 }

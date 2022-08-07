@@ -105,5 +105,4 @@ public class User {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
-
 }

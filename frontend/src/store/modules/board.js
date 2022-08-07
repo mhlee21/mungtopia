@@ -14,6 +14,8 @@ export default {
 			reply: {},
 			modalType: null,
 			isAdopting: null,
+			category: 0,
+			applicationPageNum: 1,
 		};
 	},
 	getters: {
@@ -27,6 +29,8 @@ export default {
 		reply: state => state.reply,
 		modalType: state => state.modalType,
 		isAdopting: state => state.isAdopting,
+		category: state => state.category,
+		applicationPageNum: state => state.applicationPageNum,
 	},
 	mutations: {
 		SET_BOARD_LIST: (state, boardList) => (state.boardList = boardList),
@@ -38,6 +42,9 @@ export default {
 		SET_REPLY: (state, reply) => (state.reply = reply),
 		SET_MODAL_TYPE: (state, modalType) => (state.modalType = modalType),
 		SET_IS_ADOPTING: (state, isAdopting) => (state.isAdopting = isAdopting),
+		SET_CATEGORY: (state, category) => (state.category = category),
+		SET_APPLICATION_PAGE_NUM: (state, applicationPageNum) =>
+			(state.applicationPageNum = applicationPageNum),
 		UPDATE_IS_LIKE: state => (state.board.isLike = !state.board.isLike),
 		UPDATE_HAVE_INTEREST: state =>
 			(state.board.haveInterest = !state.board.haveInterest),
@@ -574,6 +581,16 @@ export default {
 				.catch(err => {
 					console.error(err.response);
 				});
+		},
+
+		// 카테고리 설정
+		selectCategory: ({ commit }, category) => {
+			commit('SET_CATEGORY', category);
+		},
+
+		// 신청서 페이지 설정
+		setApplicationPageNum: ({ commit }, pageNum) => {
+			commit('SET_APPLICATION_PAGE_NUM', pageNum);
 		},
 	},
 };

@@ -1,13 +1,11 @@
 package com.d209.mungtopia.repository;
 
-import com.d209.mungtopia.dto.protector.protectorBoardList;
 import com.d209.mungtopia.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -39,22 +37,8 @@ public class ManageProtectorRepository {
         return em.find(Board.class, boardId);
     }
 
-    public AdoptionProcess findAdoptionProcess(Long applicationId){
-        return null;
-    }
-
-    public ChatRoom findChatRoomByAppdId(Long applicationId){
-//        return em.createQuery("select c from ChatRoom c where ")
-        return null;
-    }
-
-    public MeetingRoom findMeetingRoomByBoardId(Long applicationId){
-
-        return null;
-    }
-
-    public void findApplicantDetailList(Long applicationProcessId){
-
-    }
+   public AdoptionProcess findByAdoptionProcessId(Long adoptionProcessId){
+        return em.find(AdoptionProcess.class, adoptionProcessId);
+   }
 
 }

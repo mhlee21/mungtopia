@@ -12,9 +12,7 @@ import java.util.List;
 public class CUserRepository {
     private final EntityManager em;
 
-    public List<User> findUserList(Long userId) {
-        return em.createQuery("select u from User u where u.userSeq =: userId")
-                .setParameter("userId", userId)
-                .getResultList();
+    public User findOne(Long userId) {
+        return em.find(User.class, userId);
     }
 }

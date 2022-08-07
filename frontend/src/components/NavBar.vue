@@ -43,10 +43,10 @@ export default {
 				case 'profile':
 					router.push({
 						name,
-						params: { userId: 1 },
-						// params: { userId: store.getters['auth/user']['userId'] },
+						params: { userSeq: 1 },
+						// params: { userSeq: store.getters['auth/user']['userSeq'] },
 					});
-					console.log(store.getters['auth/user']['userId']);
+					console.log(store.getters['auth/user']['userSeq']);
 					break;
 				default:
 					break;

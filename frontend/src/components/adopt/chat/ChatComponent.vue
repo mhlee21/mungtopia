@@ -2,7 +2,7 @@
 	<div class="chat-component">
 		<div class="chat-messages">
 			<div v-for="(chat, index) in chatList" :key="index">
-				<div v-if="isYou(chat.userId)">
+				<div v-if="isYou(chat.userSeq)">
 					<div>
 						<img
 							style="width: 20px; height: 20px"
@@ -12,14 +12,14 @@
 					</div>
 				</div>
 				<div>
-					<small v-if="!isYou(chat.userId)" class="chat-time">{{
+					<small v-if="!isYou(chat.userSeq)" class="chat-time">{{
 						difTime(new Date(chat.time))
 					}}</small>
 					<ChatMessage
 						:message="chat.message"
-						:isMe="!isYou(chat.userId)"
+						:isMe="!isYou(chat.userSeq)"
 					></ChatMessage>
-					<small v-if="isYou(chat.userId)" class="chat-time">{{
+					<small v-if="isYou(chat.userSeq)" class="chat-time">{{
 						difTime(new Date(chat.time))
 					}}</small>
 				</div>
@@ -43,7 +43,7 @@ export default {
 
 		const you = computed(() => store.getters['adopt/you']);
 		const chatList = computed(() => store.getters['adopt/chatList']);
-		const isYou = userId => userId === you.value.userId;
+		const isYou = userSeq => userSeq === you.value.userSeq;
 
 		// 시간 처리
 		const difTime = timeValue => {

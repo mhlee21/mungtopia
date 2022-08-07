@@ -1,37 +1,35 @@
 <template>
-	<div>
-		<div class="adopt-detail-pg">
-			<div class="dog-banner-container">
-				<div class="motion-btn-box">
-					<!-- 뒤로가기 눌렀을 때 메인 입양 페이지로 이동하게 설정했습니다. -->
-					<a class="back-btn" @click="goBoardMain()">
-						<img src="@/assets/img/back-icon--white.svg" alt="" />
-					</a>
-					<ul class="favor-btn-wrap">
-						<!-- 관심 -->
-						<li
-							class="favor star"
-							:class="{ active: haveInterest }"
-							@click="clickStar()"
-						>
-							<i class="fa-solid fa-star"></i>
-						</li>
-						<!-- 좋아요 -->
-						<li
-							class="favor heart"
-							:class="{ active: isLike }"
-							@click="clickLike()"
-						>
-							<i class="fa-solid fa-heart"></i>
-						</li>
-					</ul>
-				</div>
-				<DetailBoardImage></DetailBoardImage>
-				<DetailBoardHeader></DetailBoardHeader>
+	<div class="adopt-detail-pg">
+		<div class="dog-banner-container">
+			<div class="motion-btn-box">
+				<!-- 뒤로가기 눌렀을 때 메인 입양 페이지로 이동하게 설정했습니다. -->
+				<a class="back-btn" @click="goBoardMain()">
+					<img src="@/assets/img/back-icon--white.svg" alt="" />
+				</a>
+				<ul class="favor-btn-wrap">
+					<!-- 관심 -->
+					<li
+						class="favor star"
+						:class="{ active: haveInterest }"
+						@click="clickStar()"
+					>
+						<i class="fa-solid fa-star"></i>
+					</li>
+					<!-- 좋아요 -->
+					<li
+						class="favor heart"
+						:class="{ active: isLike }"
+						@click="clickLike()"
+					>
+						<i class="fa-solid fa-heart"></i>
+					</li>
+				</ul>
 			</div>
-			<DetailBoardBody></DetailBoardBody>
-			<DetailCommentForm></DetailCommentForm>
+			<DetailBoardImage></DetailBoardImage>
+			<DetailBoardHeader></DetailBoardHeader>
 		</div>
+		<DetailBoardBody></DetailBoardBody>
+		<DetailCommentForm></DetailCommentForm>
 	</div>
 </template>
 

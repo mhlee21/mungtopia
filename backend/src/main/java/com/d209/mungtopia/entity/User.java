@@ -18,7 +18,6 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "Application")
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

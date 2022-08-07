@@ -1,5 +1,6 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class ImageStorage {
     private String originFilename;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonManagedReference // 순환 참조 방지
     @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
     private Board board;
 

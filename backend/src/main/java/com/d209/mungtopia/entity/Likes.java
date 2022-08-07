@@ -12,7 +12,7 @@ public class Likes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "like_id")
-    private long likeId;
+    private Long likeId;
     @Basic
     @Column(name = "createtime")
     private Timestamp createtime;

@@ -1,5 +1,6 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.ToString;
@@ -8,7 +9,6 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -16,7 +16,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "board_id")
-    private long boardId;
+    private Long boardId;
     @Basic
     @Column(name = "board_tag")
     private String boardTag;
@@ -34,5 +34,6 @@ public class Board {
     private DogInfo dogInfo;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @JsonBackReference //순환 참조 방지
     private List<ImageStorage> imageStorageList = new ArrayList<>();
 }

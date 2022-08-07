@@ -15,12 +15,12 @@ export default {
 	setup() {
 		const store = useStore();
 		const message = ref('');
-		const userId = computed(() => store.getters['auth/user']['userId']);
+		const userSeq = computed(() => store.getters['auth/user']['userSeq']);
 		const sendMessage = () => {
-			console.log(userId);
+			console.log(userSeq);
 			const chat = {
-				// userId,
-				userId: 2,
+				// userSeq,
+				userSeq: 2,
 				time: Date.now(),
 				message: message.value,
 			};

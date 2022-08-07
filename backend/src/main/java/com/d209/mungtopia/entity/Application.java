@@ -6,7 +6,6 @@ import lombok.Getter;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -50,7 +49,7 @@ public class Application {
     private Timestamp createtime;
 
     @Column(name = "application_status")
-    private Boolean applicationStatus;
+    private Integer applicationStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -63,4 +62,7 @@ public class Application {
     @OneToOne(mappedBy = "application")
     private AdoptionProcess adoptionProcess;
 
+    public void setApplicationStatus(Integer applicationStatus) {
+        this.applicationStatus = applicationStatus;
+    }
 }

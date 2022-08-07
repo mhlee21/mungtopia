@@ -1,6 +1,5 @@
 package com.d209.mungtopia.dto.protector;
 
-import com.d209.mungtopia.entity.Application;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,25 +14,25 @@ import java.util.List;
  * ManageProtectorController - mainInfo 사용
  *
  */
-public class protectorBoardList {
+public class ProtectorBoardListDto {
     private Long boardId;
-    private String dogImgUrl;
+    private String dogImg;
     private String dogName;
     private int adoptionStatus;
-    private List<detailApplication> applicationList = new ArrayList<>();
+    private List<DetailApplicationDto> applicationList = new ArrayList<>();
 
     // mainInfo
-    public protectorBoardList(Long boardId, String dogImgUrl, String dogName, int adoptionStatus) {
+    public ProtectorBoardListDto(Long boardId, String dogImg, String dogName, int adoptionStatus) {
         this.boardId = boardId;
-        this.dogImgUrl = dogImgUrl;
+        this.dogImg = dogImg;
         this.dogName = dogName;
         this.adoptionStatus = adoptionStatus;
     }
 
     // detailInfo
-    public protectorBoardList(Long boardId, String dogImgUrl, String dogName, int adoptionStatus, List<detailApplication> applicationList) {
+    public ProtectorBoardListDto(Long boardId, String dogImg, String dogName, int adoptionStatus, List<DetailApplicationDto> applicationList) {
         this.boardId = boardId;
-        this.dogImgUrl = dogImgUrl;
+        this.dogImg = dogImg;
         this.dogName = dogName;
         this.adoptionStatus = adoptionStatus;
         this.applicationList = applicationList;

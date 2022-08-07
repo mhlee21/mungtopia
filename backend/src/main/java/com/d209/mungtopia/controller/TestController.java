@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/api/v1/test")
 public class TestController {
 
     @GetMapping("/")

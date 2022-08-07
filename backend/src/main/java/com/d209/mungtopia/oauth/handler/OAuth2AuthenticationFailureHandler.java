@@ -3,6 +3,7 @@ package com.d209.mungtopia.oauth.handler;
 import com.d209.mungtopia.oauth.repository.OAuth2AuthorizationRequestBasedOnCookieRepository;
 import com.d209.mungtopia.utils.CookieUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;

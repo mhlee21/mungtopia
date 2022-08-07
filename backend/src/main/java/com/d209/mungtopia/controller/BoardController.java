@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/api/v1/board")
 @Api(value = "게시판 API", tags = "Board Controller - 게시판 API")
 @RequiredArgsConstructor
 public class BoardController {

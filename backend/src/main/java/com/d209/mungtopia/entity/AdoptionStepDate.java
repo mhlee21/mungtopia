@@ -4,6 +4,7 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -19,17 +20,14 @@ public class AdoptionStepDate {
     private Integer step;
     @Basic
     @Column(name = "date")
-    private Timestamp date;
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id", nullable = false)
-    private AdoptionProcess adoptionProcessByAdoptionProcessId;
+    private AdoptionProcess adoptionProcess;
 
-    public AdoptionProcess getAdoptionProcessByAdoptionProcessId() {
-        return adoptionProcessByAdoptionProcessId;
-    }
 
-    public void setAdoptionProcessByAdoptionProcessId(AdoptionProcess adoptionProcessByAdoptionProcessId) {
-        this.adoptionProcessByAdoptionProcessId = adoptionProcessByAdoptionProcessId;
+    public void setDate(LocalDateTime localDateTime){
+        this.date = date;
     }
 }

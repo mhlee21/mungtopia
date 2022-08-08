@@ -2,7 +2,7 @@
 	<div class="applicant-detail-component">
 		<div>
 			<div style="width: 100px; height: 100px; border: solid black 1px"></div>
-			<div style="text-align: center">{{ dog_name }}</div>
+			<div style="text-align: center">{{ dogName }}</div>
 		</div>
 		<div class="applicant-detail-component-buttons">
 			<button @click="goDetail">입양글 보기</button>
@@ -20,8 +20,8 @@ export default {
 	setup() {
 		const store = useStore();
 		const router = useRouter();
-		const dog_name = computed(
-			() => store.getters['adopt/applicantDetail'].dog_name,
+		const dogName = computed(
+			() => store.getters['adopt/applicantDetail'].dogName,
 		);
 
 		const goDetail = () => {};
@@ -29,12 +29,12 @@ export default {
 			router.push({
 				name: 'chat',
 				params: {
-					chatRoomId: store.getters['adopt/applicantDetail']['chat_room_id'],
+					chatRoomId: store.getters['adopt/applicantDetail']['chatRoomId'],
 				},
 			});
 		};
 		const cancelAdoption = () => {};
-		return { dog_name, goDetail, goChatRoom, cancelAdoption };
+		return { dogName, goDetail, goChatRoom, cancelAdoption };
 	},
 };
 </script>

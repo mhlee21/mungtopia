@@ -3,28 +3,27 @@
 		<div class="status">
 			<h3>상태창</h3>
 		</div>
-		<GameQuestion></GameQuestion>
 		<div style="text-align: center">
 			<img src="" alt="" />
 		</div>
-		<GameZicoButton></GameZicoButton>
+		<GameQuestion :gameQuestion="gameQuestion"></GameQuestion>
 	</div>
 </template>
 
 <script>
-import GameZicoButton from '@/components/game/GameZicoButton.vue';
 // import Qdata from '@/assets/Qdata.json';
 import GameQuestion from '@/components/game/GameQuestion.vue';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 
 export default {
 	components: {
-		GameZicoButton,
 		GameQuestion,
 	},
 	setup() {
-		// const Qlist = Qdata
-		// console.log(gameType);
-		return {};
+		const store = useStore();
+		let gameQuestion = computed(() => store.getters['game/gameQuestion']);
+		return { gameQuestion };
 	},
 };
 </script>

@@ -10,7 +10,7 @@
 				<!-- 단계 -->
 				<div
 					class="applicant-detail-process-step-num"
-					:class="{ 'step-num-todo': !step.step_status }"
+					:class="{ 'step-num-todo': !step.stepStatus }"
 				>
 					<h5 style="margin: auto">
 						{{ step.step }}
@@ -19,19 +19,19 @@
 				<!-- 절차 -->
 				<div
 					class="applicant-detail-process-step-title"
-					:class="{ 'step-title-todo': !step.step_status }"
+					:class="{ 'step-title-todo': !step.stepStatus }"
 				>
 					<div>{{ adoptProcessTitle[index] }}</div>
-					<small v-if="step.date">{{ step.date }}</small>
+					<small v-if="step.date">{{ format(new Date(step.date)) }}</small>
 				</div>
 				<!-- 아이콘 -->
 				<div
 					class="applicant-detail-process-step-icon"
-					:class="{ 'step-icon-todo': !step.step_status }"
+					:class="{ 'step-icon-todo': !step.stepStatus }"
 				>
 					<button
 						@click="clickAdoptProcessIcon(step.step)"
-						:disabled="!step.step_status"
+						:disabled="!step.stepStatus"
 					>
 						{{ adoptProcessIcon[index] }}
 					</button>
@@ -77,15 +77,16 @@
 <script>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-// import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 export default {
 	setup() {
 		const store = useStore();
-		// const router = useRouter();
+		const router = useRouter();
 		const adoptProcess = computed(() => store.getters['adopt/adoptProcess']);
 		const applicationStatus = computed(
 			() => store.getters['adopt/applicationStatus'],
 		);
+		const meetingRoomId = computed(() => store.getters['adopt/meetingRoomId']);
 		const adoptProcessTitle = [
 			'입양신청',
 			'화상 면담',
@@ -97,19 +98,22 @@ export default {
 
 		const clickAdoptProcessIcon = step => {
 			if (step === 1) {
-				// router.push({ name: 'user', params: { username: 'eduardo' }
+				// router.push({ name: 'user', params: { username: 'eduardo' }});
 				console.log(step);
 			} else if (step === 2) {
-				// router.push({ name: 'user', params: { username: 'eduardo' }
+				router.push({
+					name: 'meeting',
+					params: { meetingRoomId: meetingRoomId.value },
+				});
 				console.log(step);
 			} else if (step === 3) {
-				// router.push({ name: 'user', params: { username: 'eduardo' }
+				// router.push({ name: 'user', params: { username: 'eduardo' }});
 				console.log(step);
 			} else if (step === 4) {
-				// router.push({ name: 'user', params: { username: 'eduardo' }
+				// router.push({ name: 'user', params: { username: 'eduardo' }});
 				console.log(step);
 			} else {
-				// router.push({ name: 'user', params: { username: 'eduardo' }
+				// router.push({ name: 'user', params: { username: 'eduardo' }});
 				console.log(step);
 			}
 		};
@@ -117,7 +121,7 @@ export default {
 		const adoptNextStep = step => {
 			const newStep = {
 				step: step + 1,
-				step_status: true,
+				stepStatus: true,
 			};
 			store.dispatch('adopt/updateAdoptProcess', {
 				step: newStep,
@@ -125,7 +129,23 @@ export default {
 			});
 		};
 
+		// 날짜 변환
+		const format = date => {
+			const year = date.getFullYear();
+			const month =
+				date.getMonth() + 1 > 9
+					? date.getMonth() + 1
+					: '0' + (date.getMonth() + 1);
+			const day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
+			const hour =
+				date.getHours() > 9 ? date.getHours() : '0' + date.getHours();
+			const minute =
+				date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
+			return `${year}.${month}.${day} ${hour}:${minute}`;
+		};
+
 		return {
+			format,
 			adoptProcess,
 			applicationStatus,
 			adoptProcessTitle,

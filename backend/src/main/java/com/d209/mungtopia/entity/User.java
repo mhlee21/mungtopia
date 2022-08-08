@@ -2,16 +2,15 @@ package com.d209.mungtopia.entity;
 
 import com.d209.mungtopia.oauth.entity.ProviderType;
 import com.d209.mungtopia.oauth.entity.RoleType;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,31 +18,25 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "Application")
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "user_seq")
     private long userSeq;
-    @Basic
     @Column(name = "status")
     private Integer status;
-    @Basic
     @Column(name = "email")
     private String email;
-    @Basic
     @Column(name = "nickname")
     private String nickname;
-    @Basic
     @Column(name = "email_verified_yn")
     private String emailVerifiedYn;
-    @Basic
     @Column(name = "password")
     private String password;
-    @Basic
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
-    @Basic
     @Column(name = "provider_type")
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -54,40 +47,41 @@ public class User {
     @NotNull
     private RoleType roleType;
 
-    @Basic
     @Column(name = "user_id")
     private String userId;
-    @Basic
     @Column(name = "username")
     private String username;
-    @Basic
+
     @Column(name = "birth")
     private String birth;
-    @Basic
+
     @Column(name = "gender")
     private String gender;
-    @Basic
+
     @Column(name = "job")
     private String job;
-    @Basic
+
     @Column(name = "zonecode")
     private String zonecode;
-    @Basic
+
     @Column(name = "road_address")
     private String roadAddress;
-    @Basic
+
     @Column(name = "detail_address")
     private String detailAddress;
-    @Basic
+
     @Column(name = "etc")
     private String etc;
-    @Basic
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @Basic
+
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 
+    @OneToMany(mappedBy = "user")
+    @JsonBackReference
+    private List<Application> applicationList;
 
     public User(
             @NotNull @Size(max = 64) String userId,
@@ -111,5 +105,4 @@ public class User {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }
-
 }

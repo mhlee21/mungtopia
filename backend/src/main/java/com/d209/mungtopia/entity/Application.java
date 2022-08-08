@@ -1,11 +1,11 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -49,9 +49,10 @@ public class Application {
     private Timestamp createtime;
 
     @Column(name = "application_status")
-    private Boolean applicationStatus;
+    private Integer applicationStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonManagedReference
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
     private User user;
 
@@ -61,4 +62,7 @@ public class Application {
     @OneToOne(mappedBy = "application")
     private AdoptionProcess adoptionProcess;
 
+    public void setApplicationStatus(Integer applicationStatus) {
+        this.applicationStatus = applicationStatus;
+    }
 }

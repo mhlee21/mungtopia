@@ -1,28 +1,32 @@
 <template>
 	<div>
 		<h3>
-			신청자 <small>{{ protectorDetail.application_list.length }}</small>
+			신청자 <small>{{ protectorDetail.applicationList.length }}</small>
 		</h3>
 		<div
-			v-for="(applicant, index) in protectorDetail['application_list']"
+			v-for="(applicant, index) in protectorDetail['applicationList']"
 			:key="index"
 		>
 			<div
 				class="application-list-component"
-				@click="
-					clickApplicantComponent(
-						index,
-						applicant.user_id,
-						applicant.application_status,
-					)
-				"
+				@click="clickApplicantComponent(index, applicant)"
 			>
 				<img style="width: 20%" :src="applicant.profile" />
 				<div style="width: 40%">
 					{{ applicant.name }}
 				</div>
 				<div style="width: 40%">
-					<button @click="goChatRoom(applicant.chat_room_id)">채팅</button>
+					<button
+						@click="
+							goChatRoom(
+								applicant.chatRoomId,
+								applicant.adoptionProcessId,
+								applicant.applicationStatus,
+							)
+						"
+					>
+						채팅
+					</button>
 					<button>취소</button>
 				</div>
 			</div>
@@ -47,19 +51,25 @@ export default {
 			() => store.getters['adopt/activeApplicant'],
 		);
 		store.dispatch('adopt/updateActiveApplicant', -1);
-		const clickApplicantComponent = (index, userId, applicationStatus) => {
+		const clickApplicantComponent = (index, applicant) => {
 			if (activeApplicant.value === index) {
 				store.dispatch('adopt/updateActiveApplicant', -1);
 			} else {
 				store.dispatch('adopt/updateActiveApplicant', index);
 				store.dispatch('adopt/fetchProtectorAdoptProcess', {
-					boardId: protectorDetail.value['board_id'],
-					userId,
-					applicationStatus,
+					adoptionProcessId: applicant.adoptionProcessId,
+					applicationStatus: applicant.applicationStatus,
+					meetingRoomId: applicant.meetingRoomId,
 				});
 			}
 		};
-		const goChatRoom = chatRoomId => {
+		const goChatRoom = (chatRoomId, adoptionProcessId, applicationStatus) => {
+			// date 저장
+			store.dispatch('adopt/saveDate', {
+				adoptionProcessId,
+				applicationStatus,
+			});
+			// 채팅 페이지로 이동
 			router.push({
 				name: 'chat',
 				params: {

@@ -26,7 +26,7 @@ public class BoardRepository {
     public String findMainImg(Long boardId){
         List<ImageStorage> imageStorage = findImageStorage(boardId);
         for (ImageStorage img: imageStorage) {
-            if (img.getOrders().equals(1))
+            if (img.getOrders() == 1)
                 return img.getFilename();
         }
         return null;

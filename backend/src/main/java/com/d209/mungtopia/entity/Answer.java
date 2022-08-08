@@ -7,19 +7,20 @@ import java.util.Objects;
 
 @Entity
 @Getter
+@Table(name = "answer", schema = "mungtopia")
 public class Answer {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answer_id")
     private long answerId;
-    @Basic
+
     @Column(name = "order")
-    private Integer order;
-    @Basic
+    private int order;
+
     @Column(name = "answer")
     private String answer;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id", referencedColumnName = "application_id", nullable = false)
     private Application application;
 }

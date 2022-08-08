@@ -7,26 +7,32 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Table(name = "dog_nature", schema = "mungtopia", catalog = "")
+@Table(name = "dog_nature", schema = "mungtopia")
 public class DogNature {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "dog_nature_id")
     private long dogNatureId;
-    @Basic
-    @Column(name = "feature")
-    private String feature;
 
-    @ManyToOne
+    @Column(name = "nature1")
+    private String nature1;
+
+    @Column(name = "nature2")
+    private String nature2;
+
+    @Column(name = "nature3")
+    private String nature3;
+
+    @Column(name = "nature4")
+    private String nature4;
+
+    @Column(name = "nature5")
+    private String nature5;
+
+    @Column(name = "nature6")
+    private String nature6;
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dog_info_id", referencedColumnName = "dog_info_id", nullable = false)
-    private DogInfo dogInfoByDogInfoId;
-
-
-    public DogInfo getDogInfoByDogInfoId() {
-        return dogInfoByDogInfoId;
-    }
-
-    public void setDogInfoByDogInfoId(DogInfo dogInfoByDogInfoId) {
-        this.dogInfoByDogInfoId = dogInfoByDogInfoId;
-    }
+    private DogInfo dogInfo;
 }

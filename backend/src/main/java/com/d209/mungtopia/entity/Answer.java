@@ -8,14 +8,15 @@ import java.util.Objects;
 
 @Entity
 @Getter
+@Table(name = "answer", schema = "mungtopia")
 public class Answer {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answer_id")
     private long answerId;
 
     @Column(name = "order")
-    private Integer order;
+    private int order;
 
     @Column(name = "answer")
     private String answer;

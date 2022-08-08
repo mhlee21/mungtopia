@@ -7,29 +7,20 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Table(name = "game_result", schema = "mungtopia", catalog = "")
+@Table(name = "game_result", schema = "mungtopia")
 public class GameResult {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "score_id")
     private long scoreId;
-    @Basic
+
     @Column(name = "game_tag")
     private String gameTag;
-    @Basic
+
     @Column(name = "result")
-    private Byte result;
+    private Boolean result;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
-    private User userByUserSeq;
-
-
-    public User getUserByUserSeq() {
-        return userByUserSeq;
-    }
-
-    public void setUserByUserSeq(User userByUserSeq) {
-        this.userByUserSeq = userByUserSeq;
-    }
+    private User user;
 }

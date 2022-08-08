@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Table(name = "chat_log", schema = "mungtopia", catalog = "")
+@Table(name = "chat_log", schema = "mungtopia")
 public class ChatLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -18,14 +18,13 @@ public class ChatLog {
     @Column(name = "user_seq")
     private Long userSeq;
 
-    @Column(name = "chat_content")
-    private String chatContent;
+    @Column(name = "content")
+    private String content;
 
     @Column(name = "createtime")
     private Timestamp createtime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id", referencedColumnName = "chat_room_id", nullable = false)
     private ChatRoom chatRoom;
-
 }

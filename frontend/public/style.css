@@ -996,38 +996,13 @@ body {
 /*게시글 작성-입양페이지*/
 .new-adopt-pg {}
 
-.new-adopt-pg .image-box {
-  width:300px;
-  height:260px;
-  box-sizing:border-box;
-  border-radius: 10px;
-  background-color: #fff;  
-  margin: 20px 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #DBDBDB;
-  padding: 60px;
-} 
-
-.new-adopt-pg .image-box .image-upload-icon {
-  font-size: 130px;
-  margin-bottom: 20px;
-}
-
-.new-adopt-pg .image-box .image-upload-notice {
-  font-size: 16px;
-  text-align: center;
-} 
-
 .new-adopt-pg .category-box {
   width:300px;
   height:50px;
   box-sizing:border-box;
   border-radius: 10px;
   background-color: #fff;  
-  margin: 20px 0;
+  margin: 0 0 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1054,17 +1029,66 @@ body {
 
 .new-adopt-pg .input-box {
   width:300px;
-  box-sizing:border-box;
+  box-sizing: border-box;
   border-radius: 10px;
   background-color: #fff;  
   margin: 10px 0;
   display: flex;
   justify-content: center;
+  flex-direction: column;
   color: #DBDBDB;
-  padding: 5px 30px;
+  padding: 5px 0;
 }
-.new-adopt-pg .input-box .adopt-input-box {
+
+.new-adopt-pg .input-box .image-box {
+  height: 260px;
+  box-sizing:border-box;
+  border-radius: 10px;
+  background-color: #fff;  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #DBDBDB;
+  border: none;
+} 
+
+.new-adopt-pg .input-box .image-box .fileUploadInput {
+  display: none;
+}
+.new-adopt-pg .input-box .image-box .custom-file-label {
   width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+} 
+
+.new-adopt-pg .input-box .image-box .image-upload-icon {
+  font-size: 130px;
+  margin-bottom: 20px;
+}
+
+.new-adopt-pg .input-box .image-box .image-upload-notice {
+  font-size: 16px;
+  text-align: center;
+} 
+
+.new-adopt-pg .input-box .button-box {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px 0;
+} 
+
+.new-adopt-pg .input-box .preview-image {
+  box-sizing: border-box;
+  width: 300px;
+  height: 300px;
+} 
+
+.new-adopt-pg .input-box .adopt-input-box {
+  margin: 0 15px;
 }
 
 .new-adopt-pg .input-box .adopt-input-box .adopt-input-info {
@@ -1072,7 +1096,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px 0 0 0;
 }
 
 .new-adopt-pg .input-box .adopt-input-box .adopt-input-info-icon {
@@ -1092,20 +1115,22 @@ body {
 
 .new-adopt-pg .input-box .adopt-input-form {
   width: 100%;
-  padding: 0 5px;
+  margin: 10px 0;
 }
 .new-adopt-pg .input-box .adopt-input-form .adopt-input-form-box {
   margin: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 }
+
 .new-adopt-pg .input-box .adopt-input-form .label {
   color: black;
   width: 50px;
-  display: block;
+  display: inline-block;
+  font-weight: 700;
 }
+
 .new-adopt-pg .input-box .adopt-input-form .input {
   border-radius: 13px;
   border: none;
@@ -1117,13 +1142,14 @@ body {
   font-size: 14px;
   display: inline-block;
   box-sizing: border-box;
+  font-weight: 700;
 }
 
-.new-adopt-pg .input-box .adopt-input-form .adopt-input-form-btn {
+.new-adopt-pg .input-box .page-btn {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 }
-.new-adopt-pg .input-box .adopt-input-form .btn {
+.new-adopt-pg .input-box .page-btn .btn {
   border-radius: 13px;
   border: none;
   width: 100px;
@@ -1136,4 +1162,64 @@ body {
   box-sizing: border-box;
   text-align: center;
   margin: 10px 0 20px;
+  font-weight: 700;
+}
+
+.new-adopt-pg .input-box .adopt-input-form .adopt-input-form-box2 {
+  margin: 20px 10px;
+}
+.new-adopt-pg .input-box .adopt-input-form .adopt-input-info-title {
+  color: black;
+  width: 100%;
+  display: block;
+  margin: 10px 0;
+  font-weight: 700;
+}
+.new-adopt-pg .input-box .adopt-input-form .adopt-input-info-text {
+  width: 100%;
+  display: block;
+  color: #A4A4A4;
+  padding: 0;
+}
+
+
+.new-adopt-pg .input-box .adopt-input-form .radio-box {
+  color: black;
+  width: 100%;
+  display: block;
+  padding: 0;
+  margin: 20px 0 40px;
+  font-size: 15px;
+}
+
+.new-adopt-pg .input-box .adopt-input-form .radio-question {
+  color: black;
+  width: 100%;
+  display: block;
+  padding: 0;
+  margin: 20px 0;
+  font-weight: 500;
+}
+.new-adopt-pg .input-box .adopt-input-form .radio-answer {
+  color: black;
+  padding: 0;
+  margin: 10px 0;
+}
+.new-adopt-pg .input-box .adopt-input-form .text-area {
+  color: black;
+  margin: 10px 0;
+  width: 100%;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.new-adopt-pg .input-box .adopt-input-form .text-area:focus{
+  color:#000;
+  outline:none;
+  border:#FF9898 1px solid;
+  font-family: 'Noto Sans KR', sans-serif;
+  box-shadow: 0 0 5px #FFDDDD;
+  -webkit-box-shadow: 0 0 5px #FFDDDD;
+  -moz-box-shadow: 0 0 5px #FFDDDD;
 }

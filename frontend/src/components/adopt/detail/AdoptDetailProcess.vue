@@ -5,7 +5,8 @@
 			<div
 				v-for="(step, index) in adoptProcess"
 				:key="step.id"
-				style="display: flex; height: 10vh"
+				class="applicant-detail-process-step"
+				:class="{ 'active-step': applicationStatus === step.step }"
 			>
 				<!-- 단계 -->
 				<div
@@ -18,23 +19,23 @@
 				</div>
 				<!-- 절차 -->
 				<div
-					class="applicant-detail-process-step-title"
+					class="step-title-wrapper"
 					:class="{ 'step-title-todo': !step.stepStatus }"
 				>
-					<div>{{ adoptProcessTitle[index] }}</div>
-					<small v-if="step.date">{{ format(new Date(step.date)) }}</small>
+					<div class="step-title">
+						{{ adoptProcessTitle[index] }}
+					</div>
+					<small v-if="step.date" class="step-date">{{
+						format(new Date(step.date))
+					}}</small>
 				</div>
 				<!-- 아이콘 -->
-				<div
-					class="applicant-detail-process-step-icon"
-					:class="{ 'step-icon-todo': !step.stepStatus }"
-				>
-					<button
+				<div class="step-icon" :class="{ 'step-icon-todo': !step.stepStatus }">
+					<i
+						:class="adoptProcessIcon[index]"
 						@click="clickAdoptProcessIcon(step.step)"
 						:disabled="!step.stepStatus"
-					>
-						{{ adoptProcessIcon[index] }}
-					</button>
+					></i>
 					<!-- 현재까지의 마지막 절차일때, 다음 단계로 넘어가는 버튼 구현 -->
 					<button
 						v-if="
@@ -77,11 +78,12 @@
 <script>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 export default {
 	setup() {
 		const store = useStore();
 		const router = useRouter();
+		const route = useRoute();
 		const adoptProcess = computed(() => store.getters['adopt/adoptProcess']);
 		const applicationStatus = computed(
 			() => store.getters['adopt/applicationStatus'],
@@ -94,11 +96,20 @@ export default {
 			'2차 방문',
 			'입양완료',
 		];
-		const adoptProcessIcon = ['신청서', '화상 면담', '지도', '지도', '체크'];
+		const adoptProcessIcon = [
+			'fa-solid fa-file-lines',
+			'fa-solid fa-video',
+			'fa-solid fa-location-dot',
+			'fa-solid fa-location-dot',
+			'fa-solid fa-circle-check',
+		];
 
 		const clickAdoptProcessIcon = step => {
 			if (step === 1) {
-				// router.push({ name: 'user', params: { username: 'eduardo' }});
+				router.push({
+					name: 'applicationDetail',
+					params: { applicationId: route.params.applicationId },
+				});
 				console.log(step);
 			} else if (step === 2) {
 				router.push({
@@ -157,42 +168,4 @@ export default {
 };
 </script>
 
-<style>
-.applicant-detail-process {
-	margin-top: 2vh;
-	background-color: white;
-	border-radius: 2rem;
-	padding: 3% 1rem;
-}
-
-.applicant-detail-process-step-num {
-	border-radius: 50%;
-	width: 1.5rem;
-	height: 1.5rem;
-	background-color: #ff9898;
-	display: flex;
-	align-items: center;
-	margin: auto 0;
-	color: white;
-}
-
-.step-num-todo {
-	background-color: gray;
-}
-.step-title-todo {
-	color: gray;
-}
-.step-icon-todo {
-	color: gray;
-}
-
-.applicant-detail-process-step-title {
-	padding: 0 10%;
-	width: 50%;
-	margin: auto 0;
-}
-
-.applicant-detail-process-step-icon {
-	margin: auto 0;
-}
-</style>
+<style></style>

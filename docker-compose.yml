@@ -11,7 +11,7 @@ services:
       context: frontend/
       dockerfile: Dockerfile
     ports:
-      - "3000:80"
+      - "3000:3000"
     # [인증서 파일 저장 경로]:/var/www/html
     volumes:
       - /etc/letsencrypt/live/i7d209.p.ssafy.io/:/var/www/html

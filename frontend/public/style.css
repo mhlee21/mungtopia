@@ -79,6 +79,16 @@ body {
   padding: 0 0 85px;
 }
 
+.board-create-view {
+  width: 100%;
+  max-width: 360px;
+  min-height: 100vh;
+  background-color: #FF9898;
+  position: relative;
+  padding: 25px 30px 85px;
+  box-sizing: border-box;
+}
+
 /* 상단 네비게이션 */
 .top-menu {
   display: flex;
@@ -710,6 +720,42 @@ body {
   cursor: pointer;
   font-size: 14px;
 }
+.adopt-detail-pg .reply-form {
+  border: 1px solid #d6d6d6;
+  border-radius: 30px;
+  background-color: #fff;
+  width: 240px;
+  height: 35px;
+  padding: 5px 15px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  margin: 10px 0 0 40px;
+  justify-content: space-between;
+}
+.adopt-detail-pg .reply-form .reply-icon {
+  display: none;
+  cursor: pointer;
+}
+.adopt-detail-pg .reply-form .reply-icon.active {
+  display: block;
+}
+.adopt-detail-pg .reply-form input {
+  width: 150px;
+  margin-left: 5px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+.adopt-detail-pg .reply-form button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  width: calc(100% - 180px);
+  text-align: right;
+  cursor: pointer;
+  font-size: 14px;
+}
 .adopt-detail-pg .dog-banner-container {
   position: relative;
 }
@@ -944,4 +990,150 @@ body {
   display: flex;
   align-items: center;
   margin: 10px 0 0 40px;
+}
+
+
+/*게시글 작성-입양페이지*/
+.new-adopt-pg {}
+
+.new-adopt-pg .image-box {
+  width:300px;
+  height:260px;
+  box-sizing:border-box;
+  border-radius: 10px;
+  background-color: #fff;  
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #DBDBDB;
+  padding: 60px;
+} 
+
+.new-adopt-pg .image-box .image-upload-icon {
+  font-size: 130px;
+  margin-bottom: 20px;
+}
+
+.new-adopt-pg .image-box .image-upload-notice {
+  font-size: 16px;
+  text-align: center;
+} 
+
+.new-adopt-pg .category-box {
+  width:300px;
+  height:50px;
+  box-sizing:border-box;
+  border-radius: 10px;
+  background-color: #fff;  
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #DBDBDB;
+  padding: 5px 30px;
+}
+
+.new-adopt-pg .category-box .category-label{
+  color: black;
+  margin: 0 20px 0 0 ;
+}
+
+.new-adopt-pg .category-box .category-select{
+  width: 140px;
+  margin: auto;
+  border-radius: 13px;
+  background-color: #F2F2F2;
+  border: none;
+  height: 28px;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 0 10px;
+  font-size: 14px;
+}
+
+.new-adopt-pg .input-box {
+  width:300px;
+  box-sizing:border-box;
+  border-radius: 10px;
+  background-color: #fff;  
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+  color: #DBDBDB;
+  padding: 5px 30px;
+}
+.new-adopt-pg .input-box .adopt-input-box {
+  width: 100%;
+}
+
+.new-adopt-pg .input-box .adopt-input-box .adopt-input-info {
+  color: #A4A4A4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 0 0;
+}
+
+.new-adopt-pg .input-box .adopt-input-box .adopt-input-info-icon {
+  font-size: 40px;
+  padding: 0 5px 0 0;
+  color: #DBDBDB;
+}
+
+.new-adopt-pg .input-box .adopt-input-box .adopt-input-info-text {
+  font-size: 14px;
+  padding: 0 5px;
+}
+
+.new-adopt-pg .input-box .review-input-box {
+  width: 100%;
+}
+
+.new-adopt-pg .input-box .adopt-input-form {
+  width: 100%;
+  padding: 0 5px;
+}
+.new-adopt-pg .input-box .adopt-input-form .adopt-input-form-box {
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+.new-adopt-pg .input-box .adopt-input-form .label {
+  color: black;
+  width: 50px;
+  display: block;
+}
+.new-adopt-pg .input-box .adopt-input-form .input {
+  border-radius: 13px;
+  border: none;
+  width: 160px;
+  height: 28px;
+  background-color: #F2F2F2;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 0 10px;
+  font-size: 14px;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+.new-adopt-pg .input-box .adopt-input-form .adopt-input-form-btn {
+  display: flex;
+  justify-content: center;
+}
+.new-adopt-pg .input-box .adopt-input-form .btn {
+  border-radius: 13px;
+  border: none;
+  width: 100px;
+  height: 28px;
+  background-color: #FF9898;
+  color: white;
+  padding: 0 10px;
+  font-size: 14px;
+  display: inline-block;
+  box-sizing: border-box;
+  text-align: center;
+  margin: 10px 0 20px;
 }

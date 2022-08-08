@@ -4,11 +4,12 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Getter
-@Table(name = "chat_room", schema = "mungtopia", catalog = "")
+@Table(name = "chat_room", schema = "mungtopia")
 public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -30,14 +31,10 @@ public class ChatRoom {
     @Column(name = "createtime")
     private Timestamp createtime;
 
-    @Column(name = "application_id")
-    private Long applicationId;
-
-    @Column(name = "application_nickname")
-    private String applicationNickname;
-
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id", nullable = false)
     private AdoptionProcess adoptionProcess;
 
+    @OneToMany(mappedBy = "chatRoom")
+    private List<ChatLog> chatLogList;
 }

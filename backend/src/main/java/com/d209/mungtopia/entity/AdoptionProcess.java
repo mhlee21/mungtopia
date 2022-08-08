@@ -7,21 +7,22 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "adoption_process", schema = "mungtopia", catalog = "")
+@Table(name = "adoption_process", schema = "mungtopia")
 @Getter
 public class AdoptionProcess {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "adoption_process_id")
     private Long adoptionProcessId;
 
-    @Column(name = "step")
-    private Integer step;
+    @Column(name = "step", nullable = false)
+    private int step;
 
     @Column(name = "step_status")
     private Boolean stepStatus;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "application_id", referencedColumnName = "application_id", nullable = false)
     private Application application;
 
@@ -33,6 +34,7 @@ public class AdoptionProcess {
 
     @OneToMany(mappedBy = "adoptionProcess", fetch = FetchType.LAZY)
     private List<AdoptionStepDate> adoptionStepDateList;
+
 
     // == 비즈니스 로직 ==
     public void setStep(int step){

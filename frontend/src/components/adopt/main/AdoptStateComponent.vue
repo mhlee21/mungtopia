@@ -50,7 +50,7 @@ export default {
 			'새로운 가족을 찾고 있어요!',
 			'새로운 가족을 찾았어요!',
 		]);
-		store.dispatch('adopt/fetchApplicantMainList', route.params.userId);
+		store.dispatch('adopt/fetchApplicantMainList', route.params.userSeq);
 
 		const isApplicant = computed(() => store.getters['adopt/isApplicant']);
 		const applicantMainList = computed(() => {

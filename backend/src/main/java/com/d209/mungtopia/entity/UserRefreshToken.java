@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
-@Table(name = "user_refresh_token", schema = "mungtopia", catalog = "")
+@Table(name = "user_refresh_token", schema = "mungtopia")
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserRefreshToken {
@@ -21,13 +21,12 @@ public class UserRefreshToken {
     @Id
     @Column(name = "refresh_token_seq")
     private long refreshTokenSeq;
-    @Basic
+
     @Column(name = "refresh_token")
     private String refreshToken;
-    @Basic
+
     @Column(name = "user_id")
     private String userId;
-
 
     public UserRefreshToken(
             @NotNull @Size(max = 64) String userId,

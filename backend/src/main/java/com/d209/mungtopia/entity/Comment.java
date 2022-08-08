@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 @Getter
@@ -13,31 +13,27 @@ public class Comment {
     @Id
     @Column(name = "comment_id")
     private long commentId;
-    @Basic
+
     @Column(name = "user_seq")
     private Long userSeq;
-    @Basic
+
     @Column(name = "user_nickname")
     private String userNickname;
-    @Basic
+
     @Column(name = "contents")
     private String contents;
-    @Basic
+
     @Column(name = "secret")
-    private Byte secret;
-    @Basic
+    private boolean secret;
+
     @Column(name = "createtime")
     private Timestamp createtime;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
-    private Board boardByBoardId;
+    private Board board;
 
-    public Board getBoardByBoardId() {
-        return boardByBoardId;
-    }
+    @OneToMany(mappedBy = "comment")
+    private List<Reply> replyList;
 
-    public void setBoardByBoardId(Board boardByBoardId) {
-        this.boardByBoardId = boardByBoardId;
-    }
 }

@@ -13,19 +13,27 @@ public class UserDogNature {
     @Id
     @Column(name = "user_dog_nature_id")
     private long userDogNatureId;
-    @Basic
-    @Column(name = "feature")
-    private String feature;
 
-    @ManyToOne
+    @Column(name = "nature1")
+    private int nature1;
+
+    @Column(name = "nature2")
+    private int nature2;
+
+    @Column(name = "nature3")
+    private int nature3;
+
+    @Column(name = "nature4")
+    private int nature4;
+
+    @Column(name = "nature5")
+    private int nature5;
+
+    @Column(name = "nature6")
+    private int nature6;
+
+    // referencedColumnName : 외래 키가 참조하는 대상 테이블의 컬럼명
+    @OneToOne
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
-    private User userByUserSeq;
-
-    public User getUserByUserSeq() {
-        return userByUserSeq;
-    }
-
-    public void setUserByUserSeq(User userByUserSeq) {
-        this.userByUserSeq = userByUserSeq;
-    }
+    private User user;
 }

@@ -1,6 +1,5 @@
 package com.d209.mungtopia.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -9,9 +8,11 @@ import java.util.List;
 
 @Entity
 @Getter
+@Table(name = "application", schema = "mungtopia")
 public class Application {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "application_id")
     private Long applicationId;
 
@@ -24,26 +25,8 @@ public class Application {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "birth")
-    private String birth;
-
-    @Column(name = "gender")
-    private String gender;
-
-    @Column(name = "job")
-    private String job;
-
-    @Column(name = "zonecode")
-    private String zonecode;
-
-    @Column(name = "road_address")
-    private String roadAddress;
-
-    @Column(name = "detail_address")
-    private String detailAddress;
-
-    @Column(name = "etc")
-    private String etc;
+    @Embedded
+    private UserInfo userInfo;
 
     @Column(name = "createtime")
     private Timestamp createtime;
@@ -52,17 +35,17 @@ public class Application {
     private Integer applicationStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonManagedReference
+//    @JsonManagedReference
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "application")
+    @OneToMany(mappedBy = "application", fetch = FetchType.LAZY)
     private List<Answer> answerList;
 
-    @OneToOne(mappedBy = "application")
+    @OneToOne(mappedBy = "application", fetch = FetchType.LAZY)
     private AdoptionProcess adoptionProcess;
 
-    public void setApplicationStatus(Integer applicationStatus) {
+    public void changeApplicationStatus(Integer applicationStatus) {
         this.applicationStatus = applicationStatus;
     }
 }

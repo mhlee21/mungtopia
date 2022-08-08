@@ -14,4 +14,8 @@ public class AdoptionStepDateRepository{
     public void save(AdoptionStepDate adoptionStepDate) {
         em.persist(adoptionStepDate);
     }
+
+    public AdoptionStepDate findOne(Long adoptionStepDateId){
+        return em.find(AdoptionStepDate.class, adoptionStepDateId);
+    }
 }

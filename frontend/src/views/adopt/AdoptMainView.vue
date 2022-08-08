@@ -36,13 +36,13 @@ export default {
 		const clickApplicantTab = () => {
 			store.dispatch('adopt/changeAdoptType', {
 				adoptType: 'applicant',
-				userId: route.params.userId,
+				userSeq: route.params.userSeq,
 			});
 		};
 		const clickProtectorTab = () => {
 			store.dispatch('adopt/changeAdoptType', {
 				adoptType: 'protector',
-				userId: route.params.userId,
+				userSeq: route.params.userSeq,
 			});
 		};
 

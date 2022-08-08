@@ -18,21 +18,28 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+//@ToString(exclude = "Application")
 public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "user_seq")
     private long userSeq;
+
     @Column(name = "status")
     private Integer status;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "nickname")
     private String nickname;
+
     @Column(name = "email_verified_yn")
     private String emailVerifiedYn;
+
     @Column(name = "password")
     private String password;
+
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
@@ -40,6 +47,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @NotNull
     private ProviderType providerType;
+
     @Basic
     @Column(name = "role_type")
     @Enumerated(EnumType.STRING)
@@ -48,29 +56,12 @@ public class User {
 
     @Column(name = "user_id")
     private String userId;
+
     @Column(name = "username")
     private String username;
 
-    @Column(name = "birth")
-    private String birth;
-
-    @Column(name = "gender")
-    private String gender;
-
-    @Column(name = "job")
-    private String job;
-
-    @Column(name = "zonecode")
-    private String zonecode;
-
-    @Column(name = "road_address")
-    private String roadAddress;
-
-    @Column(name = "detail_address")
-    private String detailAddress;
-
-    @Column(name = "etc")
-    private String etc;
+    @Embedded
+    private UserInfo userInfo;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -79,8 +70,23 @@ public class User {
     private LocalDateTime modifiedAt;
 
     @OneToMany(mappedBy = "user")
-    @JsonBackReference
+//    @JsonBackReference
     private List<Application> applicationList;
+
+    @OneToMany(mappedBy = "user")
+    private List<GameResult> gameResultList;
+
+    @OneToOne(mappedBy = "user")
+    private UserDogNature userDogNature;
+
+    @OneToMany(mappedBy = "user")
+    private List<Likes> likesList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Star> starList;
+
+    @OneToMany(mappedBy = "user")
+    private List<Board> boardList;
 
     public User(
             @NotNull @Size(max = 64) String userId,
@@ -103,5 +109,6 @@ public class User {
         this.roleType = roleType;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+        this.status = 1; // 회원가입시 1, 탈퇴시 0
     }
 }

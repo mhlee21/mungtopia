@@ -1,11 +1,31 @@
 <template>
-	<div></div>
+	<div class="category-box">
+		<label for="boardTag" class="category-label">카테고리</label>
+		<select
+			name="boardTag"
+			id=""
+			class="category-select"
+			v-model="category"
+			@change="selectCategory()"
+		>
+			<option :value="0">입양</option>
+			<option :value="1">후기</option>
+			<option :value="2">잡담</option>
+		</select>
+	</div>
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import { ref } from 'vue';
 export default {
 	setup() {
-		return {};
+		const store = useStore();
+		const category = ref(0);
+		const selectCategory = () => {
+			store.dispatch('board/selectCategory', category.value);
+		};
+		return { category, selectCategory };
 	},
 };
 </script>

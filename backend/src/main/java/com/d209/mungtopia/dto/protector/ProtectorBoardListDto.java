@@ -18,11 +18,11 @@ public class ProtectorBoardListDto {
     private Long boardId;
     private String dogImg;
     private String dogName;
-    private int adoptionStatus;
+    private boolean adoptionStatus;
     private List<DetailApplicationDto> applicationList = new ArrayList<>();
 
     // mainInfo
-    public ProtectorBoardListDto(Long boardId, String dogImg, String dogName, int adoptionStatus) {
+    public ProtectorBoardListDto(Long boardId, String dogImg, String dogName, boolean adoptionStatus) {
         this.boardId = boardId;
         this.dogImg = dogImg;
         this.dogName = dogName;
@@ -30,7 +30,7 @@ public class ProtectorBoardListDto {
     }
 
     // detailInfo
-    public ProtectorBoardListDto(Long boardId, String dogImg, String dogName, int adoptionStatus, List<DetailApplicationDto> applicationList) {
+    public ProtectorBoardListDto(Long boardId, String dogImg, String dogName, boolean adoptionStatus, List<DetailApplicationDto> applicationList) {
         this.boardId = boardId;
         this.dogImg = dogImg;
         this.dogName = dogName;

@@ -74,7 +74,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
         // dog_url 값 세팅
         for (int i = 0; i < board.getImageStorageList().size(); i++) {
             ImageStorage imageStorage = board.getImageStorageList().get(i);
-            if (imageStorage.getOrders().equals(1)){
+            if (imageStorage.getOrders() == 1){
                 applicantList.setDogImg(imageStorage.getFilename());
             }
         }
@@ -156,7 +156,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
     public Boolean deleteProcess(Long processId){
         AdoptionProcess adoptionProcess = adoptionProcessRepository.find(processId);
         Application application = adoptionProcess.getApplication();
-        application.setApplicationStatus(8); // protector가 취소한 경우 8로 저장
+        application.changeApplicationStatus(8); // protector가 취소한 경우 8로 저장
         return application.getApplicationStatus().equals(8);
     }
 
@@ -173,8 +173,8 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
         if (stepUpdateInfo.getStep() == 5){ // true
             List<AdoptionStepDate> adoptionStepDateList = adoptionProcess.getAdoptionStepDateList();
             for (AdoptionStepDate adoptionStepDate : adoptionStepDateList) {
-                if(adoptionStepDate.getStep().equals(5)){
-                    adoptionStepDate.setDate(LocalDateTime.now());
+                if(adoptionStepDate.getStep() == 5){
+                    adoptionStepDate.changeDate(LocalDateTime.now());
                 }
             }
         }

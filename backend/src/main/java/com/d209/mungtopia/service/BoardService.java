@@ -9,4 +9,8 @@ public interface BoardService {
 
     Board findBoardDetail(Long boardId);
 
+    Boolean postBoardLike(Long boardId);
+    Boolean deleteBoardLike(Long boardId);
+    Boolean postBoardStar(Long boardId);
+    Boolean deleteBoardStar(Long boardId);
 }

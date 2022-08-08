@@ -36,4 +36,24 @@ public class BoardServiceImpl implements BoardService {
     public Board findBoardDetail(Long boardId) {
         return boardRepository.findOne(boardId);
     }
+
+    @Override
+    public Boolean postBoardLike(Long boardId) {
+        return null;
+    }
+
+    @Override
+    public Boolean deleteBoardLike(Long boardId) {
+        return null;
+    }
+
+    @Override
+    public Boolean postBoardStar(Long boardId) {
+        return null;
+    }
+
+    @Override
+    public Boolean deleteBoardStar(Long boardId) {
+        return null;
+    }
 }

@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +54,7 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
 
             List<ImageStorage> imageStorageList = board.getImageStorageList();
             for (ImageStorage imageStorage: imageStorageList) {
-               if (imageStorage.getOrders().equals(1)){
+               if (imageStorage.getOrders() == 1){
                    info.setDogImg(imageStorage.getFilename());
                    break;
                }
@@ -131,7 +130,7 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
     public Boolean cancelAdoption(Long adoptionProcessId) {
         AdoptionProcess adoptionProcess = adoptionProcessRepository.find(adoptionProcessId);
         Application application = adoptionProcess.getApplication();
-        application.setApplicationStatus(7);
+        application.changeApplicationStatus(7);
         return applicationRepository.findOne(application.getApplicationId()).getApplicationStatus().equals(7);
     }
 }

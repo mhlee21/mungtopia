@@ -1,7 +1,7 @@
 import ProfileView from '@/views/profile/ProfileView';
 export default [
 	{
-		path: '/profile/:userId',
+		path: '/profile/:userSeq',
 		name: 'profile',
 		component: ProfileView,
 	},

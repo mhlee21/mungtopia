@@ -3,7 +3,11 @@
 		<div class="adopt-detail-comment-wrap">
 			<h3>댓글</h3>
 			<div class="comment-wrap">
-				<DetailBoardComment></DetailBoardComment>
+				<DetailBoardComment
+					v-for="comment in commentList"
+					:key="comment.commentId"
+					:comment="comment"
+				></DetailBoardComment>
 			</div>
 		</div>
 	</div>
@@ -11,10 +15,13 @@
 
 <script>
 import DetailBoardComment from '@/components/board/detail/DetailBoardComment.vue';
+import { useStore } from 'vuex';
 export default {
 	components: { DetailBoardComment },
 	setup() {
-		return {};
+		const store = useStore();
+		const commentList = store.getters['board/board']['commentList'];
+		return { commentList };
 	},
 };
 </script>

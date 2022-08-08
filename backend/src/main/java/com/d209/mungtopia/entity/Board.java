@@ -12,23 +12,26 @@ import java.util.Objects;
 
 @Entity
 @Getter
+@Table(name = "board", schema = "mungtopia")
 public class Board {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
     private long boardId;
-    @Basic
+
     @Column(name = "board_tag")
     private String boardTag;
-    @Basic
+
     @Column(name = "contents")
     private String contents;
-    @Basic
+
     @Column(name = "createtime")
     private Timestamp createtime;
-    @Basic
-    @Column(name = "user_seq")
-    private long userSeq;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_seq")
+    private User user;
 
     @OneToOne(mappedBy = "board", fetch = FetchType.LAZY)
     private DogInfo dogInfo;

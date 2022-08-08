@@ -27,4 +27,28 @@ public class BoardController {
     public ApiResponse boardDetailInfo(@PathVariable("board_id") Long boardId) {
         return ApiResponse.success("data", boardService.findBoardDetail(boardId));
     }
+
+    @PostMapping("like/{board_id}")
+    @ApiOperation(value = "postBoardLike - 좋아요 하기", notes = "좋아요 하기")
+    public ApiResponse postBoardLike(@PathVariable("board_id") Long boardId) {
+        return ApiResponse.success("data", boardService.postBoardLike(boardId));
+    }
+
+    @DeleteMapping("like/{board_id}")
+    @ApiOperation(value = "deleteBoardLike - 좋아요 삭제", notes = "좋아요 삭제")
+    public ApiResponse deleteBoardLike(@PathVariable("board_id") Long boardId) {
+        return ApiResponse.success("data", boardService.deleteBoardLike(boardId));
+    }
+
+    @PostMapping("star/{board_id}")
+    @ApiOperation(value = "postBoardStar - 별표 하기", notes = "별표 하기")
+    public ApiResponse postBoardStar(@PathVariable("board_id") Long boardId) {
+        return ApiResponse.success("data", boardService.postBoardStar(boardId));
+    }
+
+    @DeleteMapping("star/{board_id}")
+    @ApiOperation(value = "deleteBoardStar - 별표 삭제", notes = "별표 삭제")
+    public ApiResponse deleteBoardStar(@PathVariable("board_id") Long boardId) {
+        return ApiResponse.success("data", boardService.deleteBoardStar(boardId));
+    }
 }

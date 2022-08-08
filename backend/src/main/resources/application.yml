@@ -30,7 +30,7 @@ spring:
     generate-ddl: false
     # 자동 업데이트 - 배포 환경에 사용하면 안됨
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

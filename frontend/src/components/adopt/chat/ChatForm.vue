@@ -8,15 +8,19 @@
 </template>
 
 <script>
+import { computed } from '@vue/reactivity';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 export default {
 	setup() {
 		const store = useStore();
 		const message = ref('');
+		const userSeq = computed(() => store.getters['auth/user']['userSeq']);
 		const sendMessage = () => {
+			console.log(userSeq);
 			const chat = {
-				user_id: 2,
+				// userSeq,
+				userSeq: 2,
 				time: Date.now(),
 				message: message.value,
 			};

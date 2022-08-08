@@ -6,7 +6,7 @@
 				<AdoptStateTitle :title="mainTitle"></AdoptStateTitle>
 				<div
 					v-for="application in applicantMainList[index]"
-					:key="application.appication_id"
+					:key="application.appicationId"
 				>
 					<ApplicantMainComponent
 						:application="application"
@@ -18,7 +18,7 @@
 		<div v-else>
 			<div v-for="(mainTitle, index) in protectorMainTitle" :key="index">
 				<AdoptStateTitle :title="mainTitle"></AdoptStateTitle>
-				<div v-for="board in protectorMainList[index]" :key="board.board_id">
+				<div v-for="board in protectorMainList[index]" :key="board.boardId">
 					<ProtectorMainComponent :board="board"></ProtectorMainComponent>
 				</div>
 			</div>
@@ -32,6 +32,7 @@ import ApplicantMainComponent from '@/components/adopt/main/ApplicantMainCompone
 import ProtectorMainComponent from '@/components/adopt/main/ProtectorMainComponent';
 import { computed, reactive } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 export default {
 	components: {
 		AdoptStateTitle,
@@ -40,6 +41,7 @@ export default {
 	},
 	setup() {
 		const store = useStore();
+		const route = useRoute();
 		const applicantMainTitle = reactive([
 			'입양중이예요!',
 			'새로운 가족이 되었어요!',
@@ -48,26 +50,26 @@ export default {
 			'새로운 가족을 찾고 있어요!',
 			'새로운 가족을 찾았어요!',
 		]);
-		store.dispatch('adopt/fetchApplicantMainList');
+		store.dispatch('adopt/fetchApplicantMainList', route.params.userSeq);
 
 		const isApplicant = computed(() => store.getters['adopt/isApplicant']);
 		const applicantMainList = computed(() => {
 			return [
 				store.getters['adopt/applicantMainList'].filter(
-					application => application.application_status < 6,
+					application => application.applicationStatus < 6,
 				),
 				store.getters['adopt/applicantMainList'].filter(
-					application => application.application_status === 6,
+					application => application.applicationStatus === 6,
 				),
 			];
 		});
 		const protectorMainList = computed(() => {
 			return [
 				store.getters['adopt/protectorMainList'].filter(
-					application => application.adoption_status === 0,
+					application => application.adoptionStatus === 0,
 				),
 				store.getters['adopt/protectorMainList'].filter(
-					application => application.adoption_status === 1,
+					application => application.adoptionStatus === 1,
 				),
 			];
 		});

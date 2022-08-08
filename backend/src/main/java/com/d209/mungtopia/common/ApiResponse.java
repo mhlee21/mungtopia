@@ -1,13 +1,15 @@
 package com.d209.mungtopia.common;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
+//@RequiredArgsConstructor
 // API 서버 구성 요소 중 응답이 있는데 Response 구성하는 여러가지 방법 중
 // 직접 Header, body, ErrorCode를 써서 구성하는 방법
 // Header와 Body를 담아서 보낼 ApiResponse class
@@ -23,8 +25,21 @@ public class ApiResponse<T> {
     private final static String INVALID_REFRESH_TOKEN = "Invalid refresh token.";
     private final static String NOT_EXPIRED_TOKEN_YET = "Not expired token yet.";
 
-    private final ApiResponseHeader header;
-    private final Map<String, T> body;
+    private ApiResponseHeader header;
+    private Map<String, T> body;
+
+    public ApiResponse(ApiResponseHeader header) {
+        this.header = header;
+    }
+
+    public ApiResponse(Map<String, T> body) {
+        this.body = body;
+    }
+
+    public ApiResponse(ApiResponseHeader header, Map<String, T> body) {
+        this.header = header;
+        this.body = body;
+    }
 
     // 성공
     public static <T> ApiResponse<T> success(String name, T body) {
@@ -33,6 +48,12 @@ public class ApiResponse<T> {
 
         return new ApiResponse(new ApiResponseHeader(SUCCESS, SUCCESS_MESSAGE), map);
     }
+    public static <T> ApiResponse<T> success() {
+        Map<String, T> map = new HashMap<>();
+
+        return new ApiResponse(new ApiResponseHeader(SUCCESS, SUCCESS_MESSAGE));
+    }
+
     // 실패
     public static <T> ApiResponse<T> fail() {
         return new ApiResponse(new ApiResponseHeader(FAILED, FAILED_MESSAGE), null);

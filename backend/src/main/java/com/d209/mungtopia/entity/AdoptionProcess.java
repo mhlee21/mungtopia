@@ -3,6 +3,7 @@ package com.d209.mungtopia.entity;
 import lombok.Getter;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -29,4 +30,16 @@ public class AdoptionProcess {
 
     @OneToOne(mappedBy = "adoptionProcess", fetch = FetchType.LAZY)
     private ChatRoom chatRoom;
+
+    @OneToMany(mappedBy = "adoptionProcess", fetch = FetchType.LAZY)
+    private List<AdoptionStepDate> adoptionStepDateList;
+
+    // == 비즈니스 로직 ==
+    public void setStep(int step){
+        this.step = step;
+    }
+
+    public void setStepStatus(boolean stepStatus){
+        this.stepStatus = stepStatus;
+    }
 }

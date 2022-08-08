@@ -31,7 +31,7 @@ public class AdoptionProcess {
     @OneToOne(mappedBy = "adoptionProcess", fetch = FetchType.LAZY)
     private ChatRoom chatRoom;
 
-    @OneToMany(mappedBy = "adoptionProcess", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "adoptionProcess", cascade = CascadeType.ALL)
     private List<AdoptionStepDate> adoptionStepDateList;
 
     // == 비즈니스 로직 ==

@@ -1,5 +1,5 @@
 # frontend/Dockerfile
-FROM node:lts-alpine as build-stage
+FROM node:lts-alpine as builder
 
 WORKDIR /app
 
@@ -17,9 +17,10 @@ RUN mkdir /app
 
 WORKDIR /app
 
-RUN mkdir ./build
+RUN mkdir ./dist
 
-ADD ./build ./build
+#ADD ./dist /app/dist
+COPY --from=builder /app/dist /app/dist
 
 RUN rm /etc/nginx/conf.d/default.conf
 

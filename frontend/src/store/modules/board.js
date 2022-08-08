@@ -1,5 +1,6 @@
 import axios from 'axios';
 import api from '@/api/api';
+import router from '@/router';
 
 export default {
 	namespaced: true,
@@ -53,22 +54,23 @@ export default {
 		// 전체글 불러오기
 		fetchBoardList: ({ commit, rootGetters }, { tagNo, pageNo }) => {
 			console.log('fetchBoardList', tagNo, pageNo, rootGetters);
-			// axios({
-			// 	url: api.board.boardMain(tagNo),
-			// 	method: 'get',
-			// 	headers: rootGetters['auth/authHeader'],
-			// 	params: {
-			// 		pageNo,
-			// 	},
-			// })
-			// 	.then(res => {
-			// 		console.log(res);
-			// 		commit('SET_PAGE_NO', pageNo + 1);
-			// 		commit('SET_BOARD_LIST', res.body.data.boardList);
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
+
+			axios({
+				url: api.board.boardMain(tagNo),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+				params: {
+					pageNo,
+				},
+			})
+				.then(res => {
+					console.log(res);
+					commit('SET_PAGE_NO', pageNo + 1);
+					commit('SET_BOARD_LIST', res.body.data.boardList);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 			const data = {
 				boardList: [
 					{
@@ -123,23 +125,23 @@ export default {
 				rootGetters,
 				keyword,
 			);
-			// axios({
-			// 	url: api.board.boardSearch(getters['tagNo']),
-			// 	method: 'get',
-			// 	headers: rootGetters['auth/authHeader'],
-			// 	params: {
-			// 		keyword,
-			// 		pageNo,
-			// 	},
-			// })
-			// 	.then(res => {
-			// 		console.log(res);
-			// 		commit('SET_BOARD_LIST', res.body.data.boardList);
-			// 		commit('SET_PAGE_NO', pageNo + 1);
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
+			axios({
+				url: api.board.boardSearch(getters['tagNo']),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+				params: {
+					keyword,
+					pageNo,
+				},
+			})
+				.then(res => {
+					console.log(res);
+					commit('SET_BOARD_LIST', res.body.data.boardList);
+					commit('SET_PAGE_NO', pageNo + 1);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 			const data = {
 				boardList: [
 					{
@@ -293,19 +295,27 @@ export default {
 
 		// 글 쓰기
 		createBoard: ({ commit, rootGetters }, payload) => {
-			console.log('createBoard', commit, rootGetters);
-			axios({
-				url: api.board.boardCreate(),
-				method: 'post',
-				headers: rootGetters['auth/authHeader'],
-				data: payload,
-			})
-				.then(res => {
-					console.log(res.body.data);
-				})
-				.catch(err => {
-					console.error(err.response);
-				});
+			console.log('createBoard', commit, rootGetters, payload);
+			router.push({
+				name: 'boardDetail',
+				params: { boardId: 1 },
+			});
+			// axios({
+			// 	url: api.board.boardCreate(),
+			// 	method: 'post',
+			// 	headers: {rootGetters['auth/authHeader'], "Content-Type": "multipart/form-data"},
+			// 	data: payload,
+			// })
+			// 	.then(res => {
+			// 		console.log(res.body.data.boardId);
+			// 		this.$router.push({
+			// 			name: 'boardDetail',
+			// 			params: { boardId: res.body.data.boardId },
+			// 		});
+			// 	})
+			// 	.catch(err => {
+			// 		console.error(err.response);
+			// 	});
 		},
 
 		// 글 수정

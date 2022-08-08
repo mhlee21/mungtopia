@@ -8,34 +8,23 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Table(name = "chat_log", schema = "mungtopia", catalog = "")
+@Table(name = "chat_log", schema = "mungtopia")
 public class ChatLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "chat_log_id")
-    private long chatLogId;
-    @Basic
-    @Column(name = "user_nickname")
-    private String userNickname;
-    @Basic
-    @Column(name = "chat_content")
-    private String chatContent;
-    @Basic
+    private Long chatLogId;
+
+    @Column(name = "user_seq")
+    private Long userSeq;
+
+    @Column(name = "content")
+    private String content;
+
     @Column(name = "createtime")
     private Timestamp createtime;
-    @Basic
-    @Column(name = "chat_context")
-    private String chatContext;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id", referencedColumnName = "chat_room_id", nullable = false)
-    private ChatRoom chatRoomByChatRoomId;
-
-    public ChatRoom getChatRoomByChatRoomId() {
-        return chatRoomByChatRoomId;
-    }
-
-    public void setChatRoomByChatRoomId(ChatRoom chatRoomByChatRoomId) {
-        this.chatRoomByChatRoomId = chatRoomByChatRoomId;
-    }
+    private ChatRoom chatRoom;
 }

@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Table(name = "dog_info", schema = "mungtopia", catalog = "")
+@Table(name = "dog_info", schema = "mungtopia")
 public class DogInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -38,24 +38,19 @@ public class DogInfo {
     private String breed;
 
     @Column(name = "vaccination")
-    private Byte vaccination;
+    private Boolean vaccination;
 
     @Column(name = "neutering")
-    private Byte neutering;
+    private Boolean neutering;
 
     @Column(name = "adoption_status")
-    private Byte adoptionStatus;
+    private Boolean adoptionStatus;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
-    @JsonIgnore
+//    @JsonIgnore
     private Board board;
 
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board boardByBoardId) {
-        this.board = boardByBoardId;
-    }
+    @OneToOne(mappedBy = "dogInfo", fetch = FetchType.LAZY)
+    private DogNature dogNature;
 }

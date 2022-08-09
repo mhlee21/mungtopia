@@ -1,5 +1,5 @@
 <template>
-	<div class="adopt-main-view">
+	<div class="adopt-main-pg">
 		<!-- 입양하기 입양보내기 버튼 -->
 		<div style="display: flex; justify-content: center">
 			<button
@@ -55,30 +55,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.adopt-type-applicant-btn {
-	background-color: #ffd8d8;
-	border: none;
-	border-radius: 1rem 1rem 0 0;
-	width: 35%;
-	height: 2rem;
-	margin: 0 2% 0;
-}
-.adopt-type-protector-btn {
-	background-color: #ffd8d8;
-	border: none;
-	border-radius: 1rem 1rem 0 0;
-	width: 35%;
-	height: 2rem;
-	margin: 0 2% 0;
-}
-.adopt-type-active {
-	background-color: white;
-}
-.adopt-main-view {
-	padding: 10% 7%;
-	overflow: auto;
-	height: 80%;
-	background-color: #ff9898;
-}
-</style>
+<style scoped></style>

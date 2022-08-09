@@ -1,7 +1,7 @@
 import BoardMainView from '@/views/board/BoardMainView';
 import BoardDetailView from '@/views/board/BoardDetailView';
 import BoardCreateView from '@/views/board/BoardCreateView';
-import ApplicationView from '@/views/board/ApplicationView';
+import ApplicationCreateView from '@/views/board/ApplicationCreateView';
 export default [
 	{
 		path: '/board',
@@ -19,8 +19,8 @@ export default [
 		component: BoardCreateView,
 	},
 	{
-		path: '/board/application',
+		path: '/board/:boardId/application/create',
 		name: 'applicationCreate',
-		component: ApplicationView,
+		component: ApplicationCreateView,
 	},
 ];

@@ -48,7 +48,7 @@ public class DogInfo {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
-//    @JsonIgnore
+    @JsonIgnore
     private Board board;
 
     @OneToOne(mappedBy = "dogInfo", fetch = FetchType.LAZY)

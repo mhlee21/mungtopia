@@ -19,11 +19,10 @@ public class BoardRepository {
     }
 
     public Board findOne(Long boardId){
-        System.out.println("boardId = " + boardId);
         return em.find(Board.class, boardId);
     }
 
-    public List<ImageStorage> findImageStorage(Long boardId){
+    public List findImageStorage(Long boardId){
         return em.createQuery("select b.imageStorageList from Board b")
                 .getResultList();
     }

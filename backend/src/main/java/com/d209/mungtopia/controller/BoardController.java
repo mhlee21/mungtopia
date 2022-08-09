@@ -1,11 +1,20 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
+import com.d209.mungtopia.entity.Board;
+import com.d209.mungtopia.entity.User;
+import com.d209.mungtopia.repository.CUserRepository;
+import com.d209.mungtopia.repository.InfBoardRepository;
+import com.d209.mungtopia.repository.InfUserRepository;
 import com.d209.mungtopia.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/board")
@@ -13,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class BoardController {
 
+    private final InfBoardRepository boardRepository;
+    private final InfUserRepository userRepository;
     private final BoardService boardService;
 
     @GetMapping("{tag_no}")
@@ -29,15 +40,25 @@ public class BoardController {
     }
 
     @PostMapping("like/{board_id}")
-    @ApiOperation(value = "postBoardLike - 좋아요 하기", notes = "좋아요 하기")
-    public ApiResponse postBoardLike(@PathVariable("board_id") Long boardId) {
-        return ApiResponse.success("data", boardService.postBoardLike(boardId));
+    @ApiOperation(value = "likes - 좋아요 하기", notes = "좋아요 하기")
+    public ApiResponse likes(
+            @PathVariable("board_id") Long boardId,
+            @RequestBody Long userId
+        ) {
+        User user = userRepository.getReferenceById(userId);
+        Board board = boardRepository.getReferenceById(boardId);
+        return ApiResponse.success("data", boardService.likes(user, board));
     }
 
     @DeleteMapping("like/{board_id}")
-    @ApiOperation(value = "deleteBoardLike - 좋아요 삭제", notes = "좋아요 삭제")
-    public ApiResponse deleteBoardLike(@PathVariable("board_id") Long boardId) {
-        return ApiResponse.success("data", boardService.deleteBoardLike(boardId));
+    @ApiOperation(value = "unlikes - 좋아요 삭제", notes = "좋아요 삭제")
+    public ApiResponse unlikes(
+            @PathVariable("board_id") Long boardId,
+            @RequestBody Long userId
+    ) {
+        User user = userRepository.getReferenceById(userId);
+        Board board = boardRepository.getReferenceById(boardId);
+        return ApiResponse.success("data", boardService.unlikes(user, board));
     }
 
     @PostMapping("star/{board_id}")

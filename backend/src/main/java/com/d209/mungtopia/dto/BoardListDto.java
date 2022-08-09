@@ -14,6 +14,7 @@ public class BoardListDto {
         private String boardTag;
         private Long boardId;
         private String dogName;
+
         private String contents;
         private Timestamp createtime;
         private boolean isLike;

@@ -1,5 +1,6 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -34,5 +35,6 @@ public class DogNature {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dog_info_id", referencedColumnName = "dog_info_id", nullable = false)
+    @JsonIgnore
     private DogInfo dogInfo;
 }

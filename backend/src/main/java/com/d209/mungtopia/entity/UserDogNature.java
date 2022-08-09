@@ -1,5 +1,6 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -35,5 +36,6 @@ public class UserDogNature {
     // referencedColumnName : 외래 키가 참조하는 대상 테이블의 컬럼명
     @OneToOne
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
+    @JsonIgnore
     private User user;
 }

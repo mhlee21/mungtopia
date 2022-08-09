@@ -1,19 +1,25 @@
 package com.d209.mungtopia.service;
 
-import com.d209.mungtopia.entity.Board;
-import com.d209.mungtopia.entity.DogInfo;
-import com.d209.mungtopia.repository.BoardRepository;
-import com.d209.mungtopia.repository.DogInfoRepository;
+import com.d209.mungtopia.dto.LikesDto;
+import com.d209.mungtopia.entity.*;
+import com.d209.mungtopia.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BoardServiceImpl implements BoardService {
 
-    private final BoardRepository boardRepository;
+//    private final BoardRepository boardRepository;
+    private final InfBoardRepository boardRepository;
+    private final InfLikeRepository likeRepository;
+    private final InfCommentRepository commentRepository;
     private final DogInfoRepository dogInfoRepository;
 
     @Override
@@ -25,7 +31,7 @@ public class BoardServiceImpl implements BoardService {
          * 자유 : 3
          */
 //        System.out.printf("%d %d\n", tagNo, pageNo);
-        List<Board> boardList = boardRepository.findBoardAll();
+        List<Board> boardList = boardRepository.findAll();
         List<DogInfo> dogInfoList = dogInfoRepository.findDogInfoAll();
 
 
@@ -33,19 +39,40 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board findBoardDetail(Long boardId) {
-        return boardRepository.findOne(boardId);
+    @Transactional(readOnly = true)
+    public Optional<Board> findBoardDetail(Long boardId) {
+        return boardRepository.findById(boardId);
     }
 
     @Override
-    public Boolean postBoardLike(Long boardId) {
-        return null;
+    public Boolean likes(User user, Board board) {
+        LikesDto likesDto = new LikesDto(user, board);
+
+        //이미 좋아요 한 board 인 경우 409 에러
+        if (likeRepository.findLikesByUserAndBoard(user,board).isPresent()) {
+            return false;
+        }
+
+        Likes likes = Likes.builder() //롬복의 @Builder 어노테이션 사용
+                .createtime(new Timestamp(System.currentTimeMillis()))
+                .user(user)
+                .board(board)
+                .build();
+        likeRepository.save(likes);
+
+        return true;
     }
 
     @Override
-    public Boolean deleteBoardLike(Long boardId) {
-        return null;
-    }
+    public Boolean unlikes(User user, Board board) {
+        Optional<Likes> likes = likeRepository.findLikesByUserAndBoard(user, board);
+        if (likes.isEmpty()) {
+            return false;
+        }
+
+        likeRepository.delete(likes.get());
+        return true;
+    };
 
     @Override
     public Boolean postBoardStar(Long boardId) {
@@ -56,4 +83,22 @@ public class BoardServiceImpl implements BoardService {
     public Boolean deleteBoardStar(Long boardId) {
         return null;
     }
+
+    @Override
+    public List<Comment> CommentAll() {
+        return commentRepository.findAll();
+    }
+
+    public List<Comment> saveComment(Comment cmt) {
+        commentRepository.save(cmt);
+        return commentRepository.findAll();
+    }
+
+    @Override
+    public List<Comment> deleteComment(Comment cmt) {
+        commentRepository.delete(cmt);
+        return commentRepository.findAll();
+    }
+
+
 }

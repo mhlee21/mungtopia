@@ -1,5 +1,6 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class Star {
 
     @ManyToOne
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
+    @JsonManagedReference
     private User user;
 
     @ManyToOne

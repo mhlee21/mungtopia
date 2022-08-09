@@ -3,6 +3,7 @@ package com.d209.mungtopia.entity;
 import com.d209.mungtopia.oauth.entity.ProviderType;
 import com.d209.mungtopia.oauth.entity.RoleType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -48,7 +49,6 @@ public class User {
     @NotNull
     private ProviderType providerType;
 
-    @Basic
     @Column(name = "role_type")
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -70,22 +70,26 @@ public class User {
     private LocalDateTime modifiedAt;
 
     @OneToMany(mappedBy = "user")
-//    @JsonBackReference
+    @JsonBackReference
     private List<Application> applicationList;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<GameResult> gameResultList;
 
     @OneToOne(mappedBy = "user")
     private UserDogNature userDogNature;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<Likes> likesList;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<Star> starList;
 
     @OneToMany(mappedBy = "user")
+    @JsonBackReference
     private List<Board> boardList;
 
     public User(

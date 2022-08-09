@@ -1,7 +1,5 @@
-// const BACKEND_PORT = 8080;
-// const BACKEND_URL = `http://localhost:${BACKEND_PORT}`;
 const BACKEND_PORT = 8081;
-const BACKEND_URL = `https://i7d209.p.ssafy.io:${BACKEND_PORT}`;
+const BACKEND_URL = `https://i7d209.p.ssafy.io:${BACKEND_PORT}/api/v1`;
 
 const FRONTEND_PORT = 3000;
 // const REDIRECT_URI = `http://localhost:${FRONTEND_PORT}/oauth/redirect`;

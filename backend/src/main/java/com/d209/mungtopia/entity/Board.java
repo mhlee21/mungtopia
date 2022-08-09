@@ -43,4 +43,8 @@ public class Board {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @JsonBackReference //순환 참조 방지
     private List<ImageStorage> imageStorageList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Comment> commentList = new ArrayList<>();
 }

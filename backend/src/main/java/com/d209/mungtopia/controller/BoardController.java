@@ -1,10 +1,13 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
+import com.d209.mungtopia.dto.CommentDto;
 import com.d209.mungtopia.entity.Board;
+import com.d209.mungtopia.entity.Comment;
 import com.d209.mungtopia.entity.User;
 import com.d209.mungtopia.repository.CUserRepository;
 import com.d209.mungtopia.repository.InfBoardRepository;
+import com.d209.mungtopia.repository.InfCommentRepository;
 import com.d209.mungtopia.repository.InfUserRepository;
 import com.d209.mungtopia.service.BoardService;
 import io.swagger.annotations.Api;
@@ -23,6 +26,7 @@ import java.util.Optional;
 public class BoardController {
 
     private final InfBoardRepository boardRepository;
+    private final InfCommentRepository commentRepository;
     private final InfUserRepository userRepository;
     private final BoardService boardService;
 
@@ -82,4 +86,49 @@ public class BoardController {
         Board board = boardRepository.getReferenceById(boardId);
         return ApiResponse.success("data", boardService.unstar(user, board));
     }
+
+    @GetMapping("{board_id}/comments")
+    @ApiOperation(value = "getCommentList - 댓글 목록 가져오기", notes = "댓글 목록 가져오기")
+    public ApiResponse getCommentList (@PathVariable("board_id") Long boardId) {
+        Board board = boardRepository.getReferenceById(boardId);
+        return ApiResponse.success("data", boardService.CommentAll(board));
+    }
+
+    @PostMapping("{board_id}/comments")
+    @ApiOperation(value = "saveComment - 댓글 달기", notes = "댓글 달기")
+    public ApiResponse saveComment(
+            @PathVariable("board_id") Long boardId,
+            @RequestBody CommentDto commentDto
+    ) {
+        Board board = boardRepository.findById(boardId).get();
+        // userSeq 와 userNickname 비교하여 유효성 검사 필요
+        return ApiResponse.success("data", boardService.saveComment(board, commentDto));
+    }
+
+    @PutMapping("{board_id}/comments/{comment_id}")
+    @ApiOperation(value = "updateComment - 댓글 수정", notes = "댓글 수정")
+    public ApiResponse updateComment (
+            @PathVariable("board_id") Long boardId,
+            @PathVariable("comment_id") Long commentId,
+            @RequestBody CommentDto commentDto
+    ) {
+        Board board = boardRepository.findById(boardId).get();
+        Comment comment = commentRepository.findById(commentId).get();
+        // 기존 userSeq 와 userNickname 비교하여 유효성 검사 필요
+        return ApiResponse.success("data", boardService.updateComment(board, comment, commentDto));
+    }
+
+    @DeleteMapping("{board_id}/comments/{comment_id}")
+    @ApiOperation(value = "deleteComment - 댓글 삭제", notes = "댓글 삭제")
+    public ApiResponse deleteComment (
+            @PathVariable("board_id") Long boardId,
+            @PathVariable("comment_id") Long commentId,
+            @RequestBody CommentDto commentDto
+    ) {
+        Board board = boardRepository.findById(boardId).get();
+        Comment comment = commentRepository.findById(commentId).get();
+        // 기존 userSeq 와 userNickname 비교하여 유효성 검사 필요
+        return ApiResponse.success("data", boardService.deleteComment(board, comment, commentDto));
+    }
+
 }

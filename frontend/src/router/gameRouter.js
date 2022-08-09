@@ -34,18 +34,18 @@ export default [
 		component: MbtiPlayView,
 	},
 	{
-		path: '/game/2/finish',
+		path: '/game/2/finish/:mbtiResult',
 		name: 'MbtiFinish',
 		component: MbtiFinishView,
 	},
 
 	{
-		path: '/game/4/play',
+		path: '/game/3/play',
 		name: 'MatchPlay',
 		component: MatchPlayView,
 	},
 	{
-		path: '/game/4/finish',
+		path: '/game/3/:matchResult',
 		name: 'MatchFinish',
 		component: MatchFinishView,
 	},

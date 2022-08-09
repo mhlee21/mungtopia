@@ -1,6 +1,7 @@
 package com.d209.mungtopia.entity;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -8,9 +9,19 @@ import javax.persistence.Transient;
 
 @Embeddable
 @Getter
+@Setter
 public class UserInfo {
     @Transient
     private String name;
+
+    @Transient
+    private String profile;
+
+    @Transient
+    private String nickname;
+
+    @Transient
+    private String email;
 
     // 번호만 저장
     @Column(name = "phone_number", length = 11)
@@ -20,7 +31,7 @@ public class UserInfo {
     private String birth;
 
     @Column(name = "gender", length = 1)
-    private Character gender;
+    private String gender;
 
     @Column(name = "job")
     private String job;
@@ -43,7 +54,7 @@ public class UserInfo {
 
     public UserInfo(String phoneNumber,
                     String birth,
-                    Character gender,
+                    String gender,
                     String job,
                     String zonecode,
                     String roadAddress,
@@ -60,6 +71,13 @@ public class UserInfo {
     }
 
     public void changeName(String name){
+        this.name = name;
+    }
+
+    public void setInfo(String nickname, String profile, String email, String name){
+        this.nickname = nickname;
+        this.profile = profile;
+        this.email = email;
         this.name = name;
     }
 }

@@ -21,7 +21,7 @@ public class ManageProtectorRepository {
      * @return List<protectorBoardList>
      */
     public List<Board> findBoardList(Long userId){
-        return em.createQuery("select b from Board b where b.userSeq = :userId and b.boardTag =: boardName", Board.class)
+        return em.createQuery("select b from Board b where b.user.userSeq = :userId and b.boardTag =: boardName", Board.class)
                 .setParameter("userId", userId)
                 .setParameter("boardName", "입양")
                 .getResultList();

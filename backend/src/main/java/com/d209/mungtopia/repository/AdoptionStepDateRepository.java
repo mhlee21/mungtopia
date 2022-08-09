@@ -8,10 +8,14 @@ import javax.persistence.EntityManager;
 
 @Repository
 @RequiredArgsConstructor
-public class AdoptionStepDateRepository{
-    EntityManager em;
+public class AdoptionStepDateRepository {
+    private final EntityManager em;
 
-    public void save(AdoptionStepDate adoptionStepDate) {
-        em.persist(adoptionStepDate);
+    public void delete(AdoptionStepDate stepDate){
+        em.remove(stepDate);
+    }
+
+    public AdoptionStepDate find(Long id){
+        return em.find(AdoptionStepDate.class, id);
     }
 }

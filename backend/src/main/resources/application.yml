@@ -27,7 +27,7 @@ spring:
 
   # JPA 설정
   jpa:
-    generate-ddl: true
+    generate-ddl: false
     # 자동 업데이트 - 배포 환경에 사용하면 안됨
     hibernate:
       ddl-auto: none
@@ -120,7 +120,7 @@ app:
   oauth2:
     # 해당 클라이언트를 식별하고 식별값(AccessToken)전달
     # OAuth2 공급자로 성공적으로 인증 한 후 사용자에 대한 인증 토큰을 생성하고 토큰을
-    # 프론트 엔드 클라이언트가 /oauth2/authorize 요청에서 지정한 redirectUri입니다.
+    # 클라이언트가 /oauth2/authorize 요청에서 지정한 redirectUri입니다.
     # 쿠키는 모바일 클라이언트에서 잘 작동하지 않기 때문에 사용하지 않습니다.
     authorizedRedirectUris:
       - https://i7d209.p.ssafy.io/oauth/redirect

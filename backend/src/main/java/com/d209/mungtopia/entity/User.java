@@ -15,7 +15,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Setter
+//@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 //@ToString(exclude = "Application")
@@ -110,5 +110,22 @@ public class User {
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
         this.status = 1; // 회원가입시 1, 탈퇴시 0
+        // 알아서 처리하는 부분
+        this.nickname = username;
+        this.userInfo = new UserInfo("","","","","","","","");
+    }
+
+    public void changeUser(UserInfo userInfo, String nickname, String profileImageUrl){
+        this.userInfo = userInfo;
+        this.nickname = nickname;
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public void changeUserName(String username){
+        this.username = username;
+    }
+
+    public void changeImg(String imgUrl){
+        this.profileImageUrl = imgUrl;
     }
 }

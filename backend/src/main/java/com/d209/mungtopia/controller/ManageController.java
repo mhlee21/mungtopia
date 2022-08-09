@@ -41,19 +41,19 @@ public class ManageController {
     @GetMapping("/schedule/{adoption_process_id}")
     @ApiOperation(value = "getSchedule - 일정 가져오기", notes = "현재 step의 일정을 가져온다")
     public ApiResponse getSchedule(@PathVariable("adoption_process_id") Long adoptionProcessId) {
-        return null;
+        return ApiResponse.success("data", manageService.getSchedule(adoptionProcessId));
     }
 
     @PostMapping("/schedule/{adoption_process_id}")
     @ApiOperation(value = "postSchedule - 일정 수정", notes = "일정을 수정하거나 저장한다")
-    public ApiResponse postSchedule(@PathVariable("adoption_process_id") Long adoptionProcessId, LocalDateTime date) {
+    public ApiResponse postSchedule(@PathVariable("adoption_process_id") Long adoptionProcessId, @RequestBody LocalDateTime date) {
         if (manageService.postSchedule(adoptionProcessId, date))
             return ApiResponse.success();
         else
             return ApiResponse.fail();
     }
 
-    @DeleteMapping("/schedule/{adoption_process_id}/{step}")
+    @DeleteMapping("/schedule/{adoption_process_id}")
     @ApiOperation(value = "deleteSchedule - 일정 삭제", notes = "기존에 있던 일정을 삭제한다")
     public ApiResponse deleteSchedule(@PathVariable("adoption_process_id") Long adoptionProcessId) {
         if (manageService.deleteSchedule(adoptionProcessId))

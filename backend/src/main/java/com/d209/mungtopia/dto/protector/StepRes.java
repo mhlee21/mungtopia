@@ -4,12 +4,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
-public class ApplicantProcessDto {
+//@ToString
+public class StepRes {
     private int step;
-    private boolean stepStatus;
-    private String date;
+    private Boolean stepStatus;
 }

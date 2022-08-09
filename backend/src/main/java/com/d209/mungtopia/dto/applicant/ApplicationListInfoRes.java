@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ApplicationListInfoDto {
-
+public class ApplicationListInfoRes {
     private Long applicationId;
     private String dogImg;
     private String dogName; //dogName

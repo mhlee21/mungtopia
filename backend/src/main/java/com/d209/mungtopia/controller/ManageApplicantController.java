@@ -15,9 +15,9 @@ public class ManageApplicantController {
 
     private final ManageApplicantService manageApplicantService;
 
-    @GetMapping("/{user_id}")
+    @GetMapping("/{user_seq}")
     @ApiOperation(value = "mainApplicationInfo - 입양하기 메인", notes = "지금까지 제출한 입양 신청서 리스트")
-    public ApiResponse mainApplicationInfo(@PathVariable("user_id")Long userId) {
+    public ApiResponse mainApplicationInfo(@PathVariable("user_seq")Long userId) {
         return ApiResponse.success("data", manageApplicantService.mainApplicationInfo(userId));
     }
 

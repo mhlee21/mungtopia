@@ -62,14 +62,24 @@ public class BoardController {
     }
 
     @PostMapping("star/{board_id}")
-    @ApiOperation(value = "postBoardStar - 별표 하기", notes = "별표 하기")
-    public ApiResponse postBoardStar(@PathVariable("board_id") Long boardId) {
-        return ApiResponse.success("data", boardService.postBoardStar(boardId));
+    @ApiOperation(value = "star - 별표 하기", notes = "별표 하기")
+    public ApiResponse star(
+            @PathVariable("board_id") Long boardId,
+            @RequestBody Long userId
+    ) {
+        User user = userRepository.getReferenceById(userId);
+        Board board = boardRepository.getReferenceById(boardId);
+        return ApiResponse.success("data", boardService.star(user, board));
     }
 
     @DeleteMapping("star/{board_id}")
-    @ApiOperation(value = "deleteBoardStar - 별표 삭제", notes = "별표 삭제")
-    public ApiResponse deleteBoardStar(@PathVariable("board_id") Long boardId) {
-        return ApiResponse.success("data", boardService.deleteBoardStar(boardId));
+    @ApiOperation(value = "unstar - 별표 삭제", notes = "별표 삭제")
+    public ApiResponse unstar(
+            @PathVariable("board_id") Long boardId,
+            @RequestBody Long userId
+    ) {
+        User user = userRepository.getReferenceById(userId);
+        Board board = boardRepository.getReferenceById(boardId);
+        return ApiResponse.success("data", boardService.unstar(user, board));
     }
 }

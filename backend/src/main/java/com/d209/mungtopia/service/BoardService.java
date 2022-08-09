@@ -14,8 +14,8 @@ public interface BoardService {
 
     Boolean likes(User user, Board board);
     Boolean unlikes(User user, Board board);
-    Boolean postBoardStar(Long boardId);
-    Boolean deleteBoardStar(Long boardId);
+    Boolean star(User user, Board board);
+    Boolean unstar(User user, Board board);
     List<Comment> CommentAll();
     List<Comment> saveComment(Comment cmt);
     List<Comment> deleteComment(Comment cmt);

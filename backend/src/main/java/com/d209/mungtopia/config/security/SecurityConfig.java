@@ -94,7 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //  <a href="/login/oauth2/authorization/google">Google</a> 이렇게
                 // 인증 요청을 받으면! baseurl + provider의 authorizationurl로 리디렉션
                     .authorizationEndpoint()
-                    .baseUri("/oauth2/authorization")
+                    .baseUri("/api/v1/oauth2/authorization")
                 // 인가 요청을 시작한 시점부터 인가 요청을 받는 시점까지 OAuth2AuthorizationRequest를 유지해준다.
                 // 권한 요청과 관련된 모든 상태는 authorizationRequestRepository를 사용하여 저장
                     .authorizationRequestRepository(oAuth2AuthorizationRequestBasedOnCookieRepository())

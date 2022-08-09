@@ -1,5 +1,6 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -32,7 +33,9 @@ public class AdoptionProcess {
     @OneToOne(mappedBy = "adoptionProcess", fetch = FetchType.LAZY)
     private ChatRoom chatRoom;
 
-    @OneToMany(mappedBy = "adoptionProcess", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "adoptionProcess")
+    // Cascade.All 넣으면 delete 작동 안함!!!!!
+    @JsonBackReference
     private List<AdoptionStepDate> adoptionStepDateList;
 
 

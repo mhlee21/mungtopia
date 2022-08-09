@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +24,7 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
     private final BoardRepository boardRepository;
     private final ApplicationRepository applicationRepository;
     private final AdoptionProcessRepository adoptionProcessRepository;
-    private final AdoptionStepDateRepository adoptionStepDateRepository;
+//    private final AdoptionStepDateRepository adoptionStepDateRepository;
     private final ImageStorageRepository imageStorageRepository;
 
     /**

@@ -5,18 +5,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class AdoptionStepDateRepository{
-    EntityManager em;
+public class AdoptionStepDateRepository {
+    private final EntityManager em;
 
-    public void save(AdoptionStepDate adoptionStepDate) {
-        em.persist(adoptionStepDate);
+    public void delete(AdoptionStepDate stepDate){
+        em.remove(stepDate);
     }
 
-    public AdoptionStepDate findOne(Long adoptionStepDateId){
-        return em.find(AdoptionStepDate.class, adoptionStepDateId);
+    public AdoptionStepDate find(Long id){
+        return em.find(AdoptionStepDate.class, id);
     }
 }

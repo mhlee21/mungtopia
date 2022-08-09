@@ -1,7 +1,7 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -21,11 +21,12 @@ public class AdoptionStepDate {
     @Column(name = "date", nullable = true)
     private LocalDateTime date;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id", nullable = false)
+    @JsonManagedReference
     private AdoptionProcess adoptionProcess;
 
-    public void changeDate(LocalDateTime localDateTime){
+    public void changeDate(LocalDateTime date){
         this.date = date;
     }
 }

@@ -2,6 +2,7 @@ package com.d209.mungtopia.service;
 
 import com.d209.mungtopia.dto.CommentDto;
 import com.d209.mungtopia.dto.LikesDto;
+import com.d209.mungtopia.dto.ReplyDto;
 import com.d209.mungtopia.dto.StarDto;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
@@ -23,6 +24,7 @@ public class BoardServiceImpl implements BoardService {
     private final InfLikeRepository likeRepository;
     private final InfStarRepository starRepository;
     private final InfCommentRepository commentRepository;
+    private final InfReplyRepository replyRepository;
     private final DogInfoRepository dogInfoRepository;
 
     @Override
@@ -129,7 +131,7 @@ public class BoardServiceImpl implements BoardService {
     public List<Comment> updateComment(Board board, Comment comment, CommentDto commentDto) {
         comment.setContents(commentDto.getContents());
         comment.setSecret(commentDto.isSecret());
-        comment.setCreatetime(new Timestamp(System.currentTimeMillis()));
+//        comment.setCreatetime(new Timestamp(System.currentTimeMillis()));
         commentRepository.save(comment);
         return commentRepository.findByBoard(board);
     }
@@ -138,6 +140,35 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<Comment> deleteComment(Board board, Comment comment, CommentDto commentDto) {
         commentRepository.delete(comment);
+        return commentRepository.findByBoard(board);
+    }
+
+    @Override
+    public List<Comment> saveReply(Board board, Comment comment, ReplyDto replyDto) {
+        Reply reply = Reply.builder()
+                .userSeq(replyDto.getUserSeq())
+                .userNickname(replyDto.getUserNickname())
+                .content(replyDto.getContent())
+                .secret(replyDto.isSecret())
+                .createtime(new Timestamp(System.currentTimeMillis()))
+                .comment(comment)
+                .build();
+        replyRepository.save(reply);
+        return commentRepository.findByBoard(board);
+    }
+
+    @Override
+    public List<Comment> updateReply(Board board, Reply reply, ReplyDto replyDto) {
+        reply.setContent(replyDto.getContent());
+        reply.setSecret(replyDto.isSecret());
+//        reply.setCreatetime(new Timestamp(System.currentTimeMillis()));
+        replyRepository.save(reply);
+        return commentRepository.findByBoard(board);
+    }
+
+    @Override
+    public List<Comment> deleteReply(Board board, Reply reply, ReplyDto replyDto) {
+        replyRepository.delete(reply);
         return commentRepository.findByBoard(board);
     }
 }

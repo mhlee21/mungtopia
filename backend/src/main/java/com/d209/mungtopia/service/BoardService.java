@@ -1,8 +1,10 @@
 package com.d209.mungtopia.service;
 
 import com.d209.mungtopia.dto.CommentDto;
+import com.d209.mungtopia.dto.ReplyDto;
 import com.d209.mungtopia.entity.Board;
 import com.d209.mungtopia.entity.Comment;
+import com.d209.mungtopia.entity.Reply;
 import com.d209.mungtopia.entity.User;
 
 import java.util.List;
@@ -21,4 +23,7 @@ public interface BoardService {
     List<Comment> saveComment(Board board, CommentDto commentDto);
     List<Comment> updateComment(Board board, Comment comment, CommentDto commentDto);
     List<Comment> deleteComment(Board board, Comment comment, CommentDto commentDto);
+    List<Comment> saveReply(Board board, Comment comment, ReplyDto replyDto);
+    List<Comment> updateReply(Board board, Reply reply, ReplyDto replyDto);
+    List<Comment> deleteReply(Board board, Reply reply, ReplyDto replyDto);
 }

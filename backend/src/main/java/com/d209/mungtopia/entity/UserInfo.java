@@ -4,10 +4,14 @@ import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 @Embeddable
 @Getter
 public class UserInfo {
+    @Transient
+    private String name;
+
     // 번호만 저장
     @Column(name = "phone_number", length = 11)
     private String phoneNumber;
@@ -53,5 +57,9 @@ public class UserInfo {
         this.roadAddress = roadAddress;
         this.detailAddress = detailAddress;
         this.etc = etc;
+    }
+
+    public void changeName(String name){
+        this.name = name;
     }
 }

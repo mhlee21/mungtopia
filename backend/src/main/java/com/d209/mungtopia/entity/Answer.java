@@ -1,6 +1,7 @@
 package com.d209.mungtopia.entity;
 
 import lombok.Getter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.Objects;

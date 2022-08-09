@@ -1,6 +1,7 @@
 package com.d209.mungtopia.service;
 
 import com.d209.mungtopia.dto.LikesDto;
+import com.d209.mungtopia.dto.StarDto;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class BoardServiceImpl implements BoardService {
 //    private final BoardRepository boardRepository;
     private final InfBoardRepository boardRepository;
     private final InfLikeRepository likeRepository;
+    private final InfStarRepository starRepository;
     private final InfCommentRepository commentRepository;
     private final DogInfoRepository dogInfoRepository;
 
@@ -72,16 +74,35 @@ public class BoardServiceImpl implements BoardService {
 
         likeRepository.delete(likes.get());
         return true;
-    };
-
-    @Override
-    public Boolean postBoardStar(Long boardId) {
-        return null;
     }
 
     @Override
-    public Boolean deleteBoardStar(Long boardId) {
-        return null;
+    public Boolean star(User user, Board board) {
+        StarDto starDto = new StarDto(user, board);
+
+        //이미 좋아요 한 board 인 경우 409 에러
+        if (starRepository.findStarByUserAndBoard(user,board).isPresent()) {
+            return false;
+        }
+
+        Star star = Star.builder() //롬복의 @Builder 어노테이션 사용
+                .createtime(new Timestamp(System.currentTimeMillis()))
+                .user(user)
+                .board(board)
+                .build();
+        starRepository.save(star);
+        return true;
+    }
+
+    @Override
+    public Boolean unstar(User user, Board board) {
+        Optional<Star> star = starRepository.findStarByUserAndBoard(user, board);
+        if (star.isEmpty()) {
+            return false;
+        }
+
+        starRepository.delete(star.get());
+        return true;
     }
 
     @Override

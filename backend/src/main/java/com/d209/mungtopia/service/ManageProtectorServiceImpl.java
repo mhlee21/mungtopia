@@ -1,9 +1,9 @@
 package com.d209.mungtopia.service;
 
-import com.d209.mungtopia.dto.protector.ApplicantProcessDto;
+import com.d209.mungtopia.dto.protector.ApplicantProcessRes;
 import com.d209.mungtopia.dto.protector.DetailApplicationDto;
-import com.d209.mungtopia.dto.protector.ProtectorBoardListDto;
-import com.d209.mungtopia.dto.protector.StepUpdateDto;
+import com.d209.mungtopia.dto.protector.ProtectorBoardListRes;
+import com.d209.mungtopia.dto.protector.StepRes;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.AdoptionProcessRepository;
 import com.d209.mungtopia.repository.ManageProtectorRepository;
@@ -30,13 +30,14 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
      * @return
      */
     @Override
-    public List<ProtectorBoardListDto> mainBoardInfo(Long userId) {
-        List<ProtectorBoardListDto> protectorBoardLists = new ArrayList<>();
+    public List<ProtectorBoardListRes> mainBoardInfo(Long userId) {
+
+        List<ProtectorBoardListRes> protectorBoardLists = new ArrayList<>();
 
         List<Board> boardList = manageProtectorRepository.findBoardList(userId);
 
         for (int i = 0; i < boardList.size(); i++) {
-            ProtectorBoardListDto protectorBoard = new ProtectorBoardListDto();
+            ProtectorBoardListRes protectorBoard = new ProtectorBoardListRes();
 
             Board board = boardList.get(i);
 
@@ -63,8 +64,8 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
      * @return
      */
     @Override
-    public ProtectorBoardListDto detailApplicantInfo(Long boardId) {
-        ProtectorBoardListDto applicantList = new ProtectorBoardListDto();
+    public ProtectorBoardListRes detailApplicantInfo(Long boardId) {
+        ProtectorBoardListRes applicantList = new ProtectorBoardListRes();
 
         Board board = manageProtectorRepository.findByBoardId(boardId);
         // board_id 값 세팅
@@ -88,7 +89,9 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
             // list에 넣을 객체
             DetailApplicationDto detailApplication = new DetailApplicationDto();
             // userId
-            detailApplication.setUserId(curApplication.getUser().getUserSeq());
+            detailApplication.setUserSeq(curApplication.getUser().getUserSeq());
+            // applicationId
+            detailApplication.setApplicationId(curApplication.getApplicationId());
             // userImg
             detailApplication.setProfileImg(curApplication.getUser().getProfileImageUrl());
             // userName
@@ -114,10 +117,10 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
      * @return
      */
     @Override
-    public List<ApplicantProcessDto> applicantDetailProcess(Long adoptionProcessId) {
+    public List<ApplicantProcessRes> applicantDetailProcess(Long adoptionProcessId) {
         AdoptionProcess adoptionProcess = manageProtectorRepository.findByAdoptionProcessId(adoptionProcessId);
 
-        List<ApplicantProcessDto> applicantProcessList = new ArrayList<>();
+        List<ApplicantProcessRes> applicantProcessList = new ArrayList<>();
         int curStep = adoptionProcess.getStep();
         List<AdoptionStepDate> adoptionStepDateList = adoptionProcess.getAdoptionStepDateList();
         adoptionStepDateList.sort(new Comparator<AdoptionStepDate>() {
@@ -128,7 +131,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
         });
 
         for (AdoptionStepDate adoptionStepDate : adoptionStepDateList) {
-            ApplicantProcessDto process = new ApplicantProcessDto();
+            ApplicantProcessRes process = new ApplicantProcessRes();
             process.setStep(adoptionStepDate.getStep());
 
 //            Date date = new Date(adoptionStepDate.getDate() * 1000);
@@ -167,18 +170,22 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
      * @return
      */
     @Transactional
-    public List<ApplicantProcessDto> updateProcessStatus(Long adoptionProcessId, StepUpdateDto stepUpdateInfo){
+    public List<ApplicantProcessRes> updateProcessStatus(Long adoptionProcessId, StepRes stepUpdateInfo){
         AdoptionProcess adoptionProcess = adoptionProcessRepository.find(adoptionProcessId);
-        adoptionProcess.setStep(stepUpdateInfo.getStep());
-        if (stepUpdateInfo.getStep() == 5){ // true
+        if (stepUpdateInfo.getStep() == 5){ // true 스텝이
             List<AdoptionStepDate> adoptionStepDateList = adoptionProcess.getAdoptionStepDateList();
+            // 날짜 저장
             for (AdoptionStepDate adoptionStepDate : adoptionStepDateList) {
                 if(adoptionStepDate.getStep() == 5){
                     adoptionStepDate.changeDate(LocalDateTime.now());
                 }
             }
+            // 5인 경우에 application status를 변경해줘야함!
+            adoptionProcess.getApplication().changeApplicationStatus(6);
         }
-        adoptionProcess.setStepStatus(stepUpdateInfo.getStepStatus());
+
+        adoptionProcess.setStep(stepUpdateInfo.getStep() + 1); // 기존에서 step을 증가 시킴
+        adoptionProcess.setStepStatus(false);
         return applicantDetailProcess(adoptionProcessId);
     }
 }

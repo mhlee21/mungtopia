@@ -1,6 +1,7 @@
 package com.d209.mungtopia.entity;
 
 import lombok.Getter;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ public class AdoptionStepDate {
     @Column(name = "step")
     private int step;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = true)
     private LocalDateTime date;
 
     @ManyToOne

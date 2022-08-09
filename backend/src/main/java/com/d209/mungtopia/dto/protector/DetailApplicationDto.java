@@ -8,7 +8,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class DetailApplicationDto {
-    private Long userId;
+    private Long userSeq;
+    private Long applicationId;
     private String profileImg;
     private String username;
     private Long chatRoomId;

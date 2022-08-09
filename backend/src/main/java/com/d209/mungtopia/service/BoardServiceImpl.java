@@ -1,5 +1,6 @@
 package com.d209.mungtopia.service;
 
+import com.d209.mungtopia.dto.CommentDto;
 import com.d209.mungtopia.dto.LikesDto;
 import com.d209.mungtopia.dto.StarDto;
 import com.d209.mungtopia.entity.*;
@@ -106,20 +107,37 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Comment> CommentAll() {
-        return commentRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<Comment> CommentAll(Board board) {
+        return commentRepository.findByBoard(board);
     }
 
-    public List<Comment> saveComment(Comment cmt) {
-        commentRepository.save(cmt);
-        return commentRepository.findAll();
+    public List<Comment> saveComment(Board board, CommentDto commentDto) {
+        Comment comment = Comment.builder()
+                .userSeq(commentDto.getUserSeq())
+                .userNickname(commentDto.getUserNickname())
+                .contents(commentDto.getContents())
+                .secret(commentDto.isSecret())
+                .createtime(new Timestamp(System.currentTimeMillis()))
+                .board(board)
+                .build();
+        commentRepository.save(comment);
+        return commentRepository.findByBoard(board);
     }
 
     @Override
-    public List<Comment> deleteComment(Comment cmt) {
-        commentRepository.delete(cmt);
-        return commentRepository.findAll();
+    public List<Comment> updateComment(Board board, Comment comment, CommentDto commentDto) {
+        comment.setContents(commentDto.getContents());
+        comment.setSecret(commentDto.isSecret());
+        comment.setCreatetime(new Timestamp(System.currentTimeMillis()));
+        commentRepository.save(comment);
+        return commentRepository.findByBoard(board);
     }
 
 
+    @Override
+    public List<Comment> deleteComment(Board board, Comment comment, CommentDto commentDto) {
+        commentRepository.delete(comment);
+        return commentRepository.findByBoard(board);
+    }
 }

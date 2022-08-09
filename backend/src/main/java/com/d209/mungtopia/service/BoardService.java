@@ -1,5 +1,6 @@
 package com.d209.mungtopia.service;
 
+import com.d209.mungtopia.dto.CommentDto;
 import com.d209.mungtopia.entity.Board;
 import com.d209.mungtopia.entity.Comment;
 import com.d209.mungtopia.entity.User;
@@ -16,9 +17,8 @@ public interface BoardService {
     Boolean unlikes(User user, Board board);
     Boolean star(User user, Board board);
     Boolean unstar(User user, Board board);
-    List<Comment> CommentAll();
-    List<Comment> saveComment(Comment cmt);
-    List<Comment> deleteComment(Comment cmt);
-
-
+    List<Comment> CommentAll(Board board);
+    List<Comment> saveComment(Board board, CommentDto commentDto);
+    List<Comment> updateComment(Board board, Comment comment, CommentDto commentDto);
+    List<Comment> deleteComment(Board board, Comment comment, CommentDto commentDto);
 }

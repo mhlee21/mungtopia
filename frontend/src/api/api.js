@@ -56,6 +56,7 @@ export default {
 	game: {
 		// 게임 기록 저장
 		saveGame: () => HOST + GAME,
+		receiveGame: () => HOST + GAME,
 	},
 	adopt: {
 		// 입양하기 메인

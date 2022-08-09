@@ -24,27 +24,27 @@
 	</div>
 	<div v-else>
 		<div class="MATCH-game-btn">
-			<div class="MATCH-start-btn" @click="plusMbtiAnswer(0)">
+			<div class="MATCH-start-btn" @click="plusMatchAnswer(5)">
 				{{ gameQuestion[questionNumber]['answer'][0] }}
 			</div>
 		</div>
 		<div class="MATCH-game-btn">
-			<div class="MATCH-start-btn" @click="plusMbtiAnswer(1)">
+			<div class="MATCH-start-btn" @click="plusMatchAnswer(4)">
 				{{ gameQuestion[questionNumber]['answer'][1] }}
 			</div>
 		</div>
 		<div class="MATCH-game-btn">
-			<div class="MATCH-start-btn" @click="plusMbtiAnswer(2)">
+			<div class="MATCH-start-btn" @click="plusMatchAnswer(3)">
 				{{ gameQuestion[questionNumber]['answer'][2] }}
 			</div>
 		</div>
 		<div class="MATCH-game-btn">
-			<div class="MATCH-start-btn" @click="plusMbtiAnswer(3)">
+			<div class="MATCH-start-btn" @click="plusMatchAnswer(2)">
 				{{ gameQuestion[questionNumber]['answer'][3] }}
 			</div>
 		</div>
 		<div class="MATCH-game-btn">
-			<div class="MATCH-start-btn" @click="plusMbtiAnswer(4)">
+			<div class="MATCH-start-btn" @click="plusMatchAnswer(1)">
 				{{ gameQuestion[questionNumber]['answer'][4] }}
 			</div>
 		</div>
@@ -61,7 +61,9 @@ export default {
 	setup(props) {
 		const store = useStore();
 		const questionNumber = computed(() => store.getters['game/questionNumber']);
+		const correctAnswer = computed(() => store.getters['game/correctAnswer']);
 		const gameType = computed(() => store.getters['game/gameType']);
+		const matchAnswer = computed(() => store.getters['game/matchAnswer']);
 		const answerQuestion = useranswer => {
 			if (questionNumber.value < 10) {
 				if (useranswer == props.gameQuestion[questionNumber.value]['answer']) {
@@ -69,11 +71,20 @@ export default {
 				}
 				store.dispatch('game/plusQuestionNumber');
 				if (questionNumber.value == 10) {
+					if (correctAnswer.value >= 7) {
+						const payload = {
+							userSeq: store.getters['auth/user']['userSeq'],
+							result: 1,
+							gameType: gameType,
+						};
+						store.dispatch('game/sendResult', payload);
+					}
 					router.push({ path: '/game/main/finish' });
 				}
-			} else {
-				router.push({ path: '/game/main/fisish' });
 			}
+			// else {
+			// 	router.push({ path: '/game/main/fisish' });
+			// }
 		};
 		const plusMbtiAnswer = userAnswer => {
 			store.dispatch('game/plusMbtiAnswer', {
@@ -82,13 +93,51 @@ export default {
 				userAnswer,
 			});
 			if (questionNumber.value == 11) {
-				store.dispatch('game/MbtiDogResult');
-				router.push({ path: '/game/2/finish' });
+				const payload = {
+					userSeq: store.getters['auth/user']['userSeq'],
+					result: 1,
+					gameTag: gameType,
+				};
+				store.dispatch('game/sendResult', payload);
+				router.push({
+					name: 'MbtiFinish',
+					params: { mbtiResult: store.getters['game/mbtiResult'] },
+				});
 			} else {
 				store.dispatch('game/plusQuestionNumber');
 			}
 		};
-		return { questionNumber, answerQuestion, gameType, plusMbtiAnswer };
+
+		const plusMatchAnswer = userAnswer => {
+			store.dispatch('game/plusMatchAnswer', {
+				question_type:
+					props.gameQuestion[questionNumber.value]['question_type'],
+				userAnswer,
+			});
+			if (questionNumber.value == 17) {
+				store.dispatch('game/matchResult');
+
+				const payload = {
+					userSeq: store.getters['auth/user']['userSeq'],
+					matchAnswer: matchAnswer,
+					gameTag: gameType,
+				};
+				store.dispatch('game/sendResult', payload);
+				router.push({
+					name: 'MatchFinish',
+					params: { mbtiResult: store.getters['game/MatchFinish'] },
+				});
+			} else {
+				store.dispatch('game/plusQuestionNumber');
+			}
+		};
+		return {
+			questionNumber,
+			answerQuestion,
+			gameType,
+			plusMbtiAnswer,
+			plusMatchAnswer,
+		};
 	},
 };
 </script>

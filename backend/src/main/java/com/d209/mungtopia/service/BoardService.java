@@ -1,22 +1,23 @@
 package com.d209.mungtopia.service;
 
+import com.d209.mungtopia.dto.AppDto;
 import com.d209.mungtopia.dto.BoardDto;
 import com.d209.mungtopia.dto.CommentDto;
 import com.d209.mungtopia.dto.ReplyDto;
-import com.d209.mungtopia.entity.Board;
-import com.d209.mungtopia.entity.Comment;
-import com.d209.mungtopia.entity.Reply;
-import com.d209.mungtopia.entity.User;
+import com.d209.mungtopia.entity.*;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface BoardService {
     List<Board> findBoardAll(Long tagNo, int pageNo);
+
+    List<Board> search(Long tagNo, int pageNo);
     Board saveBoard(Long tagNo, BoardDto boardDto);
     Board updateBoard(Board board, BoardDto boardDto);
     Boolean deleteBoard(Board board);
     Board findBoardDetail(Long boardId);
+    Application saveApplication(Board board, AppDto appDto);
     Boolean likes(User user, Board board);
     Boolean unlikes(User user, Board board);
     Boolean star(User user, Board board);

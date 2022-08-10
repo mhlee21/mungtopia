@@ -101,8 +101,8 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
             AdoptionProcess adoptionProcess = curApplication.getAdoptionProcess();
             detailApplication.setAdoptionProcessId(adoptionProcess.getAdoptionProcessId());
 
-            detailApplication.setMeetingRoomId(adoptionProcess.getMeetingRoom().getMeetingRoomId());
-            detailApplication.setActive(adoptionProcess.getMeetingRoom().getActive());
+//            detailApplication.setMeetingRoomId(adoptionProcess.getMeetingRoom().getMeetingRoomId());
+//            detailApplication.setActive(adoptionProcess.getMeetingRoom().getActive());
             detailApplication.setChatRoomId(adoptionProcess.getChatRoom().getChatRoomId());
 
             applicantList.getApplicationList().add(detailApplication);

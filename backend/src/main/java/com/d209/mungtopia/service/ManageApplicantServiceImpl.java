@@ -77,8 +77,8 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
 
         AdoptionProcess adoptionProcess = application.getAdoptionProcess();
         reponse.setChatRoomId(adoptionProcess.getChatRoom().getChatRoomId());
-        reponse.setMeetingRoomId(adoptionProcess.getMeetingRoom().getMeetingRoomId());
-        reponse.setMeetingActive(adoptionProcess.getMeetingRoom().getActive());
+//        reponse.setMeetingRoomId(adoptionProcess.getMeetingRoom().getMeetingRoomId());
+//        reponse.setMeetingActive(adoptionProcess.getMeetingRoom().getActive());
 
         Board board = boardRepository.findOne(boardId);
         reponse.setDogName(board.getDogInfo().getName());

@@ -1,7 +1,10 @@
 package com.d209.mungtopia.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
@@ -11,6 +14,9 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "application", schema = "mungtopia")
 public class Application {
 
@@ -50,5 +56,9 @@ public class Application {
 
     public void changeApplicationStatus(Integer applicationStatus) {
         this.applicationStatus = applicationStatus;
+    }
+
+    public void setAnswerList(List<Answer> answerList) {
+        this.answerList = answerList;
     }
 }

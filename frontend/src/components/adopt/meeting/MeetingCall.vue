@@ -34,7 +34,7 @@
 import { useStore } from 'vuex';
 import axios from 'axios';
 import api from '@/api/api';
-import { computed } from 'vue';
+// import { computed } from 'vue';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '@/components/adopt/meeting/UserVideo';
 
@@ -49,7 +49,8 @@ export default {
 		let subscribers = [];
 		let myUserName = 'Participant' + Math.floor(Math.random() * 100);
 
-		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
+		// const userSeq = computed(() => store.getters['auth/user']?.userSeq);
+		const userSeq = 1;
 
 		const getOpenViduToken = userSeq => {
 			return new Promise(resolve => {

@@ -87,7 +87,13 @@ export default {
 		store.dispatch('game/MbtiDogResult', mbtiResult.value);
 		const mbtiDog = computed(() => store.getters['game/mbtiDog']);
 		console.log(mbtiDog);
-		return { mbtiResult, mbtiDog };
+		const share = () => {
+			navigator.share({
+				text: '지금 바로 당신의 MBTI와 이에 맞는 강아지를 알아보세요!',
+				url: '',
+			});
+		};
+		return { mbtiResult, mbtiDog, share };
 	},
 };
 </script>

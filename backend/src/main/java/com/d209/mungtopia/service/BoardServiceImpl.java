@@ -45,12 +45,14 @@ public class BoardServiceImpl implements BoardService {
          * 후기 : 2
          * 자유 : 3
          */
-//        System.out.printf("%d %d\n", tagNo, pageNo);
-        List<Board> boardList = boardRepository.findAll();
-//        List<DogInfo> dogInfoList = dogInfoRepository.findDogInfoAll();
+        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue()-1]);
+        return boardList;
+    }
 
-
-        return null;
+    @Override
+    public List<Board> search(Long tagNo, int pageNo) {
+        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue()-1]);
+        return boardList;
     }
 
     @Override

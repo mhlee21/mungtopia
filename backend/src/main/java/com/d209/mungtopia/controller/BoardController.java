@@ -40,6 +40,13 @@ public class BoardController {
         return ApiResponse.success("data", boardService.findBoardAll(tagNo, pageNo));
     }
 
+    @GetMapping("/search/{tag_no}")
+    @ApiOperation(value = "search - 검색", notes = "검색")
+    public ApiResponse search(@PathVariable("tag_no") Long tagNo,
+                              @RequestParam int pageNo) {
+        return ApiResponse.success("data", boardService.search(tagNo, pageNo));
+    }
+
     @PostMapping("{tag_no}")
     @ApiOperation(value = "saveBoard - 글 쓰기", notes = "글 쓰기")
     public ApiResponse saveBoard(@PathVariable("tag_no") Long tagNo,

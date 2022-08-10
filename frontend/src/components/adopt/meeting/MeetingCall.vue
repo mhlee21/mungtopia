@@ -54,7 +54,7 @@ export default {
 		const userSeq = 1;
 
 		//-------------------------------------------------------------------------------------------------------------
-		const OPENVIDU_SERVER_URL = 'https://i7d209.p.ssafy.io:8442';
+		const OPENVIDU_SERVER_URL = 'https://i7d209.p.ssafy.io:8443';
 		const OPENVIDU_SERVER_SECRET = 'mung209pro';
 
 		const getToken = mySessionId => {

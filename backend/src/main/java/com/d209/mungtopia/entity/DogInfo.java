@@ -1,14 +1,16 @@
 package com.d209.mungtopia.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "dog_info", schema = "mungtopia")
 public class DogInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +31,7 @@ public class DogInfo {
     private String gender;
 
     @Column(name = "age")
-    private Integer age;
+    private String age;
 
     @Column(name = "weight")
     private String weight;

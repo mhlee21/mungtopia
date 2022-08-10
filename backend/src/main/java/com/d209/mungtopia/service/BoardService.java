@@ -1,5 +1,6 @@
 package com.d209.mungtopia.service;
 
+import com.d209.mungtopia.dto.BoardDto;
 import com.d209.mungtopia.dto.CommentDto;
 import com.d209.mungtopia.dto.ReplyDto;
 import com.d209.mungtopia.entity.Board;
@@ -12,9 +13,10 @@ import java.util.Optional;
 
 public interface BoardService {
     List<Board> findBoardAll(Long tagNo, int pageNo);
-
-    Optional<Board> findBoardDetail(Long boardId);
-
+    Board saveBoard(Long tagNo, BoardDto boardDto);
+    Board updateBoard(Board board, BoardDto boardDto);
+    Boolean deleteBoard(Board board);
+    Board findBoardDetail(Long boardId);
     Boolean likes(User user, Board board);
     Boolean unlikes(User user, Board board);
     Boolean star(User user, Board board);

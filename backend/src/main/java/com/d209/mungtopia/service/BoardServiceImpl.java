@@ -1,16 +1,15 @@
 package com.d209.mungtopia.service;
 
-import com.d209.mungtopia.dto.CommentDto;
-import com.d209.mungtopia.dto.LikesDto;
-import com.d209.mungtopia.dto.ReplyDto;
-import com.d209.mungtopia.dto.StarDto;
+import com.d209.mungtopia.dto.*;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
+import com.d209.mungtopia.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,13 +18,18 @@ import java.util.Optional;
 @Transactional
 public class BoardServiceImpl implements BoardService {
 
-//    private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
     private final InfBoardRepository boardRepository;
     private final InfLikeRepository likeRepository;
     private final InfStarRepository starRepository;
     private final InfCommentRepository commentRepository;
     private final InfReplyRepository replyRepository;
-    private final DogInfoRepository dogInfoRepository;
+    private final InfDogInfoRepository dogInfoRepository;
+    private final InfDogNatureRepository dogNatureRepository;
+
+    public Timestamp getNow(){
+        return new Timestamp(System.currentTimeMillis());
+    }
 
     @Override
     public List<Board> findBoardAll(Long tagNo, int pageNo) {
@@ -37,16 +41,87 @@ public class BoardServiceImpl implements BoardService {
          */
 //        System.out.printf("%d %d\n", tagNo, pageNo);
         List<Board> boardList = boardRepository.findAll();
-        List<DogInfo> dogInfoList = dogInfoRepository.findDogInfoAll();
+//        List<DogInfo> dogInfoList = dogInfoRepository.findDogInfoAll();
 
 
         return null;
     }
 
     @Override
+    public Board saveBoard(Long tagNo, BoardDto boardDto) {
+        User user = userRepository.findById(boardDto.getUserSeq()).get();
+        List<ImageStorage> imageStorageList = new ArrayList<>();
+        for (ImageStorageDto imageStorageDto: boardDto.getImageStorageDtoList()) {
+            ImageStorage imageStorage = ImageStorage.builder()
+                    .orders(imageStorageDto.getOrders())
+                    .filename(imageStorageDto.getFilename())
+                    .build();
+            imageStorageList.add(imageStorage);
+        }
+        if (tagNo == 1) { // 입양
+            DogNature dogNature = DogNature.builder()
+                    .nature1(boardDto.getNature1())
+                    .nature2(boardDto.getNature2())
+                    .nature3(boardDto.getNature3())
+                    .nature4(boardDto.getNature4())
+                    .nature5(boardDto.getNature5())
+                    .nature6(boardDto.getNature6())
+                    .build();
+            dogNatureRepository.save(dogNature);
+            System.out.println(dogNature.toString());
+            DogInfo dogInfo = DogInfo.builder()
+                    .name(boardDto.getName())
+                    .areaSido(boardDto.getAreaSido())
+                    .areaGugun(boardDto.getAreaGugun())
+                    .gender(boardDto.getGender())
+                    .age(boardDto.getAge())
+                    .weight(boardDto.getWeight())
+                    .breed(boardDto.getBreed())
+                    .vaccination(boardDto.getVaccination())
+                    .neutering(boardDto.getNeutering())
+                    .adoptionStatus(boardDto.getAdoptionStatus())
+                    .dogNature(dogNature)
+                    .build();
+            dogInfoRepository.save(dogInfo);
+            System.out.println(dogInfo.toString());
+            Board board = Board.builder()
+                    .boardTag("입양")
+                    .contents(boardDto.getContents())
+                    .createtime(getNow())
+                    .user(user)
+                    .dogInfo(dogInfo)
+                    .imageStorageList(imageStorageList)
+                    .build();
+            boardRepository.save(board);
+            return board;
+        } else { // 후기, 자유
+            Board board = Board.builder()
+                    .boardTag("후기")
+                    .contents(boardDto.getContents())
+                    .createtime(getNow())
+                    .user(user)
+                    .imageStorageList(imageStorageList)
+                    .build();
+            boardRepository.save(board);
+            return board;
+        }
+    }
+
+    @Override
+    public Board updateBoard(Board board, BoardDto boardDto) {
+        return null;
+    }
+
+    @Override
+    public Boolean deleteBoard(Board board) {
+        boardRepository.delete(board);
+        return true;
+    }
+
+    @Override
     @Transactional(readOnly = true)
-    public Optional<Board> findBoardDetail(Long boardId) {
-        return boardRepository.findById(boardId);
+    public Board findBoardDetail(Long boardId) {
+        return boardRepository.findById(boardId).get();
     }
 
     @Override
@@ -59,7 +134,7 @@ public class BoardServiceImpl implements BoardService {
         }
 
         Likes likes = Likes.builder() //롬복의 @Builder 어노테이션 사용
-                .createtime(new Timestamp(System.currentTimeMillis()))
+                .createtime(getNow())
                 .user(user)
                 .board(board)
                 .build();
@@ -89,7 +164,7 @@ public class BoardServiceImpl implements BoardService {
         }
 
         Star star = Star.builder() //롬복의 @Builder 어노테이션 사용
-                .createtime(new Timestamp(System.currentTimeMillis()))
+                .createtime(getNow())
                 .user(user)
                 .board(board)
                 .build();
@@ -120,7 +195,7 @@ public class BoardServiceImpl implements BoardService {
                 .userNickname(commentDto.getUserNickname())
                 .contents(commentDto.getContents())
                 .secret(commentDto.isSecret())
-                .createtime(new Timestamp(System.currentTimeMillis()))
+                .createtime(getNow())
                 .board(board)
                 .build();
         commentRepository.save(comment);
@@ -131,7 +206,7 @@ public class BoardServiceImpl implements BoardService {
     public List<Comment> updateComment(Board board, Comment comment, CommentDto commentDto) {
         comment.setContents(commentDto.getContents());
         comment.setSecret(commentDto.isSecret());
-//        comment.setCreatetime(new Timestamp(System.currentTimeMillis()));
+//        comment.setCreatetime(getNow());
         commentRepository.save(comment);
         return commentRepository.findByBoard(board);
     }
@@ -150,7 +225,7 @@ public class BoardServiceImpl implements BoardService {
                 .userNickname(replyDto.getUserNickname())
                 .content(replyDto.getContent())
                 .secret(replyDto.isSecret())
-                .createtime(new Timestamp(System.currentTimeMillis()))
+                .createtime(getNow())
                 .comment(comment)
                 .build();
         replyRepository.save(reply);
@@ -161,7 +236,7 @@ public class BoardServiceImpl implements BoardService {
     public List<Comment> updateReply(Board board, Reply reply, ReplyDto replyDto) {
         reply.setContent(replyDto.getContent());
         reply.setSecret(replyDto.isSecret());
-//        reply.setCreatetime(new Timestamp(System.currentTimeMillis()));
+//        reply.setCreatetime(getNow());
         replyRepository.save(reply);
         return commentRepository.findByBoard(board);
     }

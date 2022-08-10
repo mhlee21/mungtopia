@@ -1,8 +1,42 @@
 <template>
-	<div>
-		<!-- 영상화면 -->
+	<div id="main-container" class="container">
+		<div id="join" v-if="!session">
+			<div id="img-div">
+				<img src="resources/images/openvidu_grey_bg_transp_cropped.png" />
+			</div>
+			<div id="join-dialog" class="jumbotron vertical-center">
+				<h1>Join a video session</h1>
+				<div class="form-group">
+					<p>
+						<label>Participant</label>
+						<input
+							v-model="myUserName"
+							class="form-control"
+							type="text"
+							required
+						/>
+					</p>
+					<p>
+						<label>Session</label>
+						<input
+							v-model="mySessionId"
+							class="form-control"
+							type="text"
+							required
+						/>
+					</p>
+					<p class="text-center">
+						<button class="btn btn-lg btn-success" @click="joinSession()">
+							Join!
+						</button>
+					</p>
+				</div>
+			</div>
+		</div>
+
 		<div id="session" v-if="session">
 			<div id="session-header">
+				<h1 id="session-title">{{ mySessionId }}</h1>
 				<input
 					class="btn btn-large btn-danger"
 					type="button"
@@ -31,174 +65,91 @@
 </template>
 
 <script>
-// import { useStore } from 'vuex';
 import axios from 'axios';
-// import api from '@/api/api';
-// import { computed } from 'vue';
 import { OpenVidu } from 'openvidu-browser';
-import UserVideo from '@/components/adopt/meeting/UserVideo';
+import UserVideo from './UserVideo';
+
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
+const OPENVIDU_SERVER_URL = 'https://i7d209.p.ssafy.io:8081';
+
 export default {
-	components: { UserVideo },
-	setup() {
-		// const store = useStore();
-		let OV = undefined;
-		let session = undefined;
-		let mainStreamManager = undefined;
-		let publisher = undefined;
-		let subscribers = [];
-		let myUserName = 'Participant' + Math.floor(Math.random() * 100);
+	name: 'App',
 
-		// const userSeq = computed(() => store.getters['auth/user']?.userSeq);
-		const userSeq = 1;
+	components: {
+		UserVideo,
+	},
 
-		//-------------------------------------------------------------------------------------------------------------
-		const OPENVIDU_SERVER_URL = 'https://i7d209.p.ssafy.io:8443';
-		const OPENVIDU_SERVER_SECRET = 'mung209pro';
+	data() {
+		return {
+			OV: undefined,
+			session: undefined,
+			mainStreamManager: undefined,
+			publisher: undefined,
+			subscribers: [],
 
-		const getToken = mySessionId => {
-			return createSession(mySessionId).then(sessionId =>
-				createToken(sessionId),
-			);
+			mySessionId: 'SessionA',
+			myUserName: 'Participant' + Math.floor(Math.random() * 100),
 		};
+	},
 
-		// See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
-		const createSession = sessionId => {
-			return new Promise((resolve, reject) => {
-				axios
-					.post(
-						`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
-						JSON.stringify({
-							customSessionId: sessionId,
-						}),
-						{
-							auth: {
-								username: 'OPENVIDUAPP',
-								password: OPENVIDU_SERVER_SECRET,
-							},
-						},
-					)
-					.then(response => response.data)
-					.then(data => resolve(data.id))
-					.catch(error => {
-						if (error.response.status === 409) {
-							resolve(sessionId);
-						} else {
-							console.warn(
-								`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`,
-							);
-							if (
-								window.confirm(
-									`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`,
-								)
-							) {
-								location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
-							}
-							reject(error.response);
-						}
-					});
-			});
-		};
-
-		// See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
-		const createToken = sessionId => {
-			return new Promise((resolve, reject) => {
-				axios
-					.post(
-						`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-						{},
-						{
-							auth: {
-								username: 'OPENVIDUAPP',
-								password: OPENVIDU_SERVER_SECRET,
-							},
-						},
-					)
-					.then(response => response.data)
-					.then(data => resolve(data.token))
-					.catch(error => reject(error.response));
-			});
-		};
-
-		//------------------------------------------------------------------------------------------------------------
-
-		// const getOpenViduToken = userSeq => {
-		// 	return new Promise(resolve => {
-		// 		axios({
-		// 			url: api.meeting.getOpenViduToken(userSeq),
-		// 			method: 'post',
-		// 			headers: store.getters['auth/authHeader'],
-		// 		})
-		// 			.then(res => res.body.data)
-		// 			.then(data => {
-		// 				resolve(data.token);
-		// 				console.log('백엔드에 토큰 요청');
-		// 				console.log(data.token);
-		// 			})
-		// 			.catch(error => {
-		// 				console.log(error);
-		// 			});
-		// 	});
-		// };
-
-		const joinSession = () => {
+	methods: {
+		joinSession() {
 			// --- Get an OpenVidu object ---
+			this.OV = new OpenVidu();
 
-			OV = new OpenVidu();
+			// --- Init a session ---
+			this.session = this.OV.initSession();
 
-			// session 초기화
-			session = OV.initSession();
+			// --- Specify the actions when events take place in the session ---
 
-			// session 내부적으로 일어나는 이벤트 처리
-
-			// 새로운 stream 생성 -> session에 해당 stream을 subscribe하고 subscriber에 추가
-			session.on('streamCreated', ({ stream }) => {
-				const subscriber = session.subscribe(stream);
-				subscribers.push(subscriber);
-				console.log('streamCreated');
+			// On every new Stream received...
+			this.session.on('streamCreated', ({ stream }) => {
+				const subscriber = this.session.subscribe(stream);
+				this.subscribers.push(subscriber);
 			});
 
-			// stream 삭제(미팅에서 나갔을 때) -> 해당 stream을 subscriber에서 삭제
-			session.on('streamDestroyed', ({ stream }) => {
-				const index = subscribers.indexOf(stream.streamManager, 0);
+			// On every Stream destroyed...
+			this.session.on('streamDestroyed', ({ stream }) => {
+				const index = this.subscribers.indexOf(stream.streamManager, 0);
 				if (index >= 0) {
-					subscribers.splice(index, 1);
+					this.subscribers.splice(index, 1);
 				}
-				console.log('streamDestroyed');
 			});
 
-			// 모든 비동기 예외 처리..
-			session.on('exception', ({ exception }) => {
+			// On every asynchronous exception...
+			this.session.on('exception', ({ exception }) => {
 				console.warn(exception);
-				console.log('exception');
 			});
 
-			// 토큰 받고 처리
-			getToken(userSeq).then(token => {
-				console.log('getOpenViduToken 토큰 받고 처리');
-				session
-					.connect(token, { clientData: myUserName })
+			// --- Connect to the session with a valid user token ---
+
+			// 'getToken' method is simulating what your server-side should do.
+			// 'token' parameter should be retrieved and returned by your own backend
+			this.getToken(this.mySessionId).then(token => {
+				this.session
+					.connect(token, { clientData: this.myUserName })
 					.then(() => {
-						console.log('session connect');
-						// 내 stream setting
-						publisher = OV.initPublisher(undefined, {
-							audioSource: undefined, // undefined이면 default microphone
-							videoSource: undefined, // undefined이면 default webcam
-							publishAudio: true, // 시작시 음소거 여부
-							publishVideo: true, // 비디오 켜기 여부
-							resolution: '640x480', // 비디오 해상도
-							frameRate: 30, // 주사율
+						// --- Get your own camera stream with the desired properties ---
+
+						let publisher = this.OV.initPublisher(undefined, {
+							audioSource: undefined, // The source of audio. If undefined default microphone
+							videoSource: undefined, // The source of video. If undefined default webcam
+							publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+							publishVideo: true, // Whether you want to start publishing with your video enabled or not
+							resolution: '640x480', // The resolution of your video
+							frameRate: 30, // The frame rate of your video
 							insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-							mirror: false, // 거울모드 여부
+							mirror: false, // Whether to mirror your local video or not
 						});
 
-						mainStreamManager = publisher;
+						this.mainStreamManager = publisher;
+						this.publisher = publisher;
 
-						// session에 stream publish
-						session.publish(publisher);
-						console.log('session publish');
-					}) // 에러처리
+						// --- Publish your stream ---
+
+						this.session.publish(this.publisher);
+					})
 					.catch(error => {
 						console.log(
 							'There was an error connecting to the session:',
@@ -208,36 +159,68 @@ export default {
 					});
 			});
 
-			// 처음 들어왔을 때 evernListener 추가
-			// beforeuload  이벤트 발생시 leaveSession 처리
-			window.addEventListener('beforeunload', leaveSession);
-		};
+			window.addEventListener('beforeunload', this.leaveSession);
+		},
 
-		const leaveSession = () => {
-			console.log('leaveSession');
-			// session.disconnect 를 이용하여 session 연결 해제
-			if (session) session.disconnect();
-			// 현재 data들 모두 초기화
-			session = undefined;
-			mainStreamManager = undefined;
-			publisher = undefined;
-			subscribers = [];
-			OV = undefined;
+		leaveSession() {
+			// --- Leave the session by calling 'disconnect' method over the Session object ---
+			if (this.session) this.session.disconnect();
 
-			// eventlistener 삭제
-			window.removeEventListener('beforeunload', leaveSession);
-		};
+			this.session = undefined;
+			this.mainStreamManager = undefined;
+			this.publisher = undefined;
+			this.subscribers = [];
+			this.OV = undefined;
 
-		const updateMainVideoStreamManager = stream => {
-			if (mainStreamManager === stream) return;
-			mainStreamManager = stream;
-			console.log('updateMainVideoStreamManager');
-		};
+			window.removeEventListener('beforeunload', this.leaveSession);
+		},
 
-		joinSession(); // 세션 참여
-		return { updateMainVideoStreamManager };
+		updateMainVideoStreamManager(stream) {
+			if (this.mainStreamManager === stream) return;
+			this.mainStreamManager = stream;
+		},
+
+		getToken() {
+			return this.createToken();
+		},
+
+		// See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
+		createToken() {
+			return new Promise((resolve, reject) => {
+				axios
+					.post(`${OPENVIDU_SERVER_URL}/api/v1/meeting/1`)
+					.then(response => response.data)
+					.then(data => resolve(data.token))
+					.catch(error => reject(error.response));
+			});
+		},
+
+		// // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
+		// createSession(sessionId) {
+		// 	return new Promise((resolve, reject) => {
+		// 		axios
+		// 			.post(`${OPENVIDU_SERVER_URL}/api/v1/meeting/1`)
+		// 			.then(response => response.data)
+		// 			.then(data => resolve(data.id))
+		// 			.catch(error => {
+		// 				if (error.response.status === 409) {
+		// 					resolve(sessionId);
+		// 				} else {
+		// 					console.warn(
+		// 						`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`,
+		// 					);
+		// 					if (
+		// 						window.confirm(
+		// 							`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`,
+		// 						)
+		// 					) {
+		// 						location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+		// 					}
+		// 					reject(error.response);
+		// 				}
+		// 			});
+		// 	});
+		// },
 	},
 };
 </script>
-
-<style lang="scss" scoped></style>

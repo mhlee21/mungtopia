@@ -14,18 +14,18 @@ export default [
 		component: GameMainView,
 	},
 	{
-		path: '/game/main',
-		name: 'KnowledgeGame',
+		path: '/game/:gameType',
+		name: 'GameIntro',
 		component: KnowledgeGameView,
 	},
 	{
-		path: '/game/main/play',
-		name: 'KnowledgePlay',
+		path: '/game/:gameType/play',
+		name: 'GamePlay',
 		component: KnowledgePlayView,
 	},
 	{
-		path: '/game/main/finish',
-		name: 'KnowledgeFinish',
+		path: '/game/:gameType/finish',
+		name: 'GameFinish',
 		component: KnowledgeFinishView,
 	},
 	{

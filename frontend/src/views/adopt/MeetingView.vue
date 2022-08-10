@@ -37,7 +37,7 @@ export default {
 		const router = useRouter();
 
 		// 미팅 대기/ 전화중 여부
-		const meetingStatus = ref('wait');
+		const meetingStatus = ref('');
 		const isWait = computed(() => meetingStatus.value === 'wait');
 
 		// 카메라

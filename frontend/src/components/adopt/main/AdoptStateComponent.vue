@@ -2,8 +2,15 @@
 	<div class="adopt-state-component">
 		<!-- 입양하기 -->
 		<div v-if="isApplicant">
-			<div v-for="(mainTitle, index) in applicantMainTitle" :key="index">
-				<AdoptStateTitle :title="mainTitle"></AdoptStateTitle>
+			<div
+				v-for="(mainTitle, index) in applicantMainTitle"
+				:key="index"
+				class="component-wrapper"
+			>
+				<div class="title-wrapper">
+					<i class="fa-solid fa-heart title-icon"></i>
+					<h3 class="title">{{ mainTitle }}</h3>
+				</div>
 				<div
 					v-for="application in applicantMainList[index]"
 					:key="application.appicationId"
@@ -16,8 +23,15 @@
 		</div>
 		<!-- 입양보내기 -->
 		<div v-else>
-			<div v-for="(mainTitle, index) in protectorMainTitle" :key="index">
-				<AdoptStateTitle :title="mainTitle"></AdoptStateTitle>
+			<div
+				v-for="(mainTitle, index) in protectorMainTitle"
+				:key="index"
+				class="component-wrapper"
+			>
+				<div class="title-wrapper">
+					<i class="fa-solid fa-heart title-icon"></i>
+					<h3 class="title">{{ mainTitle }}</h3>
+				</div>
 				<div v-for="board in protectorMainList[index]" :key="board.boardId">
 					<ProtectorMainComponent :board="board"></ProtectorMainComponent>
 				</div>
@@ -27,7 +41,6 @@
 </template>
 
 <script>
-import AdoptStateTitle from '@/components/adopt/main/AdoptStateTitle';
 import ApplicantMainComponent from '@/components/adopt/main/ApplicantMainComponent';
 import ProtectorMainComponent from '@/components/adopt/main/ProtectorMainComponent';
 import { computed, reactive } from 'vue';
@@ -35,7 +48,6 @@ import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 export default {
 	components: {
-		AdoptStateTitle,
 		ApplicantMainComponent,
 		ProtectorMainComponent,
 	},
@@ -43,7 +55,7 @@ export default {
 		const store = useStore();
 		const route = useRoute();
 		const applicantMainTitle = reactive([
-			'입양중이예요!',
+			'입양 중이예요!',
 			'새로운 가족이 되었어요!',
 		]);
 		const protectorMainTitle = reactive([
@@ -85,11 +97,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.adopt-state-component {
-	background-color: white;
-	height: 80%;
-	border-radius: 2rem;
-	padding: 10%;
-}
-</style>
+<style scoped></style>

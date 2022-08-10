@@ -2,9 +2,11 @@ package com.d209.mungtopia.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -30,7 +32,7 @@ public class Application {
     private UserInfo userInfo;
 
     @Column(name = "createtime")
-    private Timestamp createtime;
+    private LocalDateTime createtime;
 
     @Column(name = "application_status")
     private Integer applicationStatus;

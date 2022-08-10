@@ -22,13 +22,16 @@ public class BoardRepository {
         return em.find(Board.class, boardId);
     }
 
-    public List findImageStorage(Long boardId){
-        return em.createQuery("select b.imageStorageList from Board b")
+
+    public List<ImageStorage> findImageStorage(Long boardId){
+        return em.createQuery("select b.imageStorageList from Board b where b.boardId =: boardId")
+                .setParameter("boardId", boardId)
                 .getResultList();
     }
 
     public String findMainImg(Long boardId){
         List<ImageStorage> imageStorage = findImageStorage(boardId);
+//        imageStorage.stream().filter
         for (ImageStorage img: imageStorage) {
             if (img.getOrders() == 1)
                 return img.getFilename();

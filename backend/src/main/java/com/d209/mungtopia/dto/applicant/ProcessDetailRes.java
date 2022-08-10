@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProcessDetailDto {
+public class ProcessDetailRes {
     private String dogName;
     private String dogImg;
     private Long boardId;

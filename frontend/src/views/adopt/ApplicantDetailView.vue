@@ -1,6 +1,8 @@
 <template>
-	<div class="applicant-detail-view">
-		<button @click="goBack">back</button>
+	<div class="adopt-detail-applicant-pg">
+		<div class="back-button-wrapper">
+			<i class="fa-solid fa-angle-left back-button" @click="goBack"></i>
+		</div>
 		<ApplicantDetailComponent></ApplicantDetailComponent>
 		<AdoptDetailProcess></AdoptDetailProcess>
 	</div>
@@ -31,11 +33,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.applicant-detail-view {
-	padding: 10% 7%;
-	overflow: auto;
-	height: 80%;
-	background-color: #ff9898;
-}
-</style>
+<style scoped></style>

@@ -2,13 +2,16 @@ package com.d209.mungtopia.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Table(name = "user_dog_nature", schema = "mungtopia", catalog = "")
+@NoArgsConstructor
 public class UserDogNature {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -38,4 +41,35 @@ public class UserDogNature {
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
     @JsonIgnore
     private User user;
+
+    // 비즈니스 로직
+    public void saveUser(User user, List<Integer> nature){
+        this.user = user;
+        for (int i = 0; i < nature.size(); i++) {
+            switchResult(i + 1,nature.get(i));
+        }
+    }
+
+    private void switchResult(int index, int result){
+        switch (index){
+            case 1:
+                this.nature1 = result;
+                break;
+            case 2:
+                this.nature2 = result;
+                break;
+            case 3:
+                this.nature3 = result;
+                break;
+            case 4:
+                this.nature4 = result;
+                break;
+            case 5:
+                this.nature5 = result;
+                break;
+            case 6:
+                this.nature6 = result;
+                break;
+        }
+    }
 }

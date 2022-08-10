@@ -42,11 +42,11 @@ public class ManageServiceImpl implements ManageService{
         answerList.sort(new Comparator<Answer>() {
             @Override
             public int compare(Answer o1, Answer o2) {
-                return Integer.compare(o1.getOrder(), o2.getOrder());
+                return Integer.compare(o1.getIdx(), o2.getIdx());
             }
         });
         for (Answer answer: answerList) {
-            AnswerDto answerDto = new AnswerDto(answer.getOrder(), answer.getAnswer());
+            AnswerDto answerDto = new AnswerDto(answer.getIdx(), answer.getAnswer());
             answers.add(answerDto);
         }
         result.setAnswer(answers);

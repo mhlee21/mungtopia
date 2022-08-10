@@ -47,7 +47,7 @@ public class BoardController {
     }
 
     @PutMapping("detail/{board_id}/{user_id}")
-    @ApiOperation(value = "updateBoard - 글 수정", notes = "글 수정")
+    @ApiOperation(value = "updateBoard - 글 수정 (boardTag 변경 불가능)", notes = "글 수정 (boardTag 변경 불가능)")
     public ApiResponse updateBoard(@PathVariable("board_id") Long boardId,
                                    @PathVariable("user_id") Long userId,
                                    @RequestBody BoardDto boardDto) {
@@ -196,7 +196,7 @@ public class BoardController {
         return ApiResponse.success("data", boardService.updateReply(board, reply, replyDto));
     }
 
-    @DeleteMapping("{board_id}/comments/{comment_id}reply/{reply_id}")
+    @DeleteMapping("{board_id}/comments/{comment_id}/reply/{reply_id}")
     @ApiOperation(value = "deleteReply - 대댓글 삭제", notes = "대댓글 삭제")
     public ApiResponse deleteReply (
             @PathVariable("board_id") Long boardId,

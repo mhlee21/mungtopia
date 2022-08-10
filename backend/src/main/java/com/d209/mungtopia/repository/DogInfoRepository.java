@@ -12,7 +12,7 @@ import java.util.List;
 public class DogInfoRepository {
     private final EntityManager em;
 
-    public List<DogInfo> findDogInfoList() {
+    public List<DogInfo> findDogInfoAll() {
         return em.createQuery("select d from DogInfo d")
                 .getResultList();
     }

@@ -37,6 +37,7 @@ import api from '@/api/api';
 // import { computed } from 'vue';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '@/components/adopt/meeting/UserVideo';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 export default {
 	components: { UserVideo },

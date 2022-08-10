@@ -1,5 +1,7 @@
 package com.d209.mungtopia.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +28,7 @@ public class GameResult {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
+    @JsonManagedReference
     private User user;
 
     public GameResult(int gameTag,  User user) {

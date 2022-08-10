@@ -1,12 +1,19 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "image_storage", schema = "mungtopia")
 public class ImageStorage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +31,7 @@ public class ImageStorage {
     private String originFilename;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonManagedReference // 순환 참조 방지
     @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
     private Board board;
 }

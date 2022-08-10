@@ -7,16 +7,21 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class BoardRepository {
     private final EntityManager em;
 
+    public List<Board> findBoardAll() {
+        return em.createQuery("select b from Board b")
+                .getResultList();
+    }
+
     public Board findOne(Long boardId){
         return em.find(Board.class, boardId);
     }
+
 
     public List<ImageStorage> findImageStorage(Long boardId){
         return em.createQuery("select b.imageStorageList from Board b where b.boardId =: boardId")

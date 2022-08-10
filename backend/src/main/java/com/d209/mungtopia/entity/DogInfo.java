@@ -1,20 +1,22 @@
 package com.d209.mungtopia.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "dog_info", schema = "mungtopia")
 public class DogInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "dog_info_id")
-    private long dogInfoId;
+    private Long dogInfoId;
 
     @Column(name = "name")
     private String name;
@@ -29,7 +31,7 @@ public class DogInfo {
     private String gender;
 
     @Column(name = "age")
-    private Integer age;
+    private String age;
 
     @Column(name = "weight")
     private String weight;
@@ -48,7 +50,7 @@ public class DogInfo {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
-//    @JsonIgnore
+    @JsonIgnore
     private Board board;
 
     @OneToOne(mappedBy = "dogInfo", fetch = FetchType.LAZY)

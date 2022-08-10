@@ -1,5 +1,6 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import net.minidev.json.annotate.JsonIgnore;
 
@@ -37,7 +38,7 @@ public class Application {
     private Integer applicationStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JsonManagedReference
+    @JsonManagedReference
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
     private User user;
 

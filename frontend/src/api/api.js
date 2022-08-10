@@ -9,6 +9,7 @@ const CHAT = 'chat/';
 const SCHEDULE = 'schedule/';
 const APPLICANT = 'applicant/';
 const PROTECTOR = 'protector/';
+const MEETING = 'meeting/';
 
 export default {
 	auth: {
@@ -109,6 +110,10 @@ export default {
 		// 일정 삭제
 		scheduleDelete: adoptionProcessId =>
 			HOST + ADOPT + SCHEDULE + `${adoptionProcessId}/`,
+	},
+	meeting: {
+		// 오픈비두 토큰 받기
+		getOpenViduToken: userSeq => HOST + MEETING + `${userSeq}`,
 	},
 	user: {
 		// 유저 정보

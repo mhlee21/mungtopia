@@ -97,7 +97,6 @@ export default {
 		ZERO_MATCH_USER_POINT: (state, { question_type, userAnswer }) => {
 			state.matchUserPoint += userAnswer;
 			state.matchNum[question_type] = state.matchUserPoint;
-			console.log(state.matchUserPoint);
 			state.matchUserPoint = 0;
 			state.matchCount = 0;
 		},
@@ -215,7 +214,6 @@ export default {
 		MbtiDogResult: ({ commit }, mbtiResult) => {
 			const res = MbtiList;
 			const data = res[mbtiResult];
-			console.log(data);
 			// (d => ({
 			// 	DogName: d.DogName,
 			// 	DogImg: d.DogImg,
@@ -237,13 +235,11 @@ export default {
 			}
 		},
 
-		matchResult: ({ commit, getters }) => {
-			const matchAnswer = getters.matchAnswer;
+		matchResult: ({ commit }) => {
 			// const matchNum = getters.matchCount;
 			for (var i = 0; i < 6; i++) {
 				commit('PLUS_MATCH_ANSWER', i);
 			}
-			console.log(matchAnswer);
 		},
 
 		sendResult: ({ rootGetters }, payload) => {

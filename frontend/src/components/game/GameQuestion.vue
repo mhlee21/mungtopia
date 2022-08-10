@@ -63,7 +63,7 @@ export default {
 		const questionNumber = computed(() => store.getters['game/questionNumber']);
 		const correctAnswer = computed(() => store.getters['game/correctAnswer']);
 		const gameType = computed(() => store.getters['game/gameType']);
-		const matchAnswer = computed(() => store.getters['game/matchAnswer']);
+		const matchNum = computed(() => store.getters['game/matchNum']);
 		const answerQuestion = useranswer => {
 			if (questionNumber.value < 10) {
 				if (useranswer == props.gameQuestion[questionNumber.value]['answer']) {
@@ -115,12 +115,11 @@ export default {
 				userAnswer,
 			});
 			if (questionNumber.value == 17) {
-				store.dispatch('game/matchResult');
-
 				const payload = {
-					userSeq: store.getters['auth/user']['userSeq'],
-					matchAnswer: matchAnswer,
-					gameTag: gameType,
+					// userSeq: store.getters['auth/user']['userSeq'],
+					userSeq: 1,
+					matchAnswer: matchNum.value,
+					gameTag: gameType.value,
 				};
 				store.dispatch('game/sendResult', payload);
 				router.push({

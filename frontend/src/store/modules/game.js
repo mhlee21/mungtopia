@@ -20,14 +20,7 @@ export default {
 			matchUserPoint: 0,
 			matchNum: [0, 0, 0, 0, 0, 0],
 			matchCount: 0,
-			matchAnswer: [
-				[0, 0],
-				[1, 0],
-				[2, 0],
-				[3, 0],
-				[4, 0],
-				[5, 0],
-			],
+			matchAnswer: {},
 			matchData: [],
 		};
 	},
@@ -107,8 +100,8 @@ export default {
 		PLUS_MATCH_HASH: (state, matchHash) => {
 			state.matchHash += matchHash;
 		},
-		PLUS_MATCH_ANSWER: (state, i) => {
-			state.matchAnswer[i][1] += state.matchNum[i];
+		PLUS_MATCH_ANSWER: (state, data) => {
+			state.matchAnswer += data;
 		},
 		SET_MATCH_DATA: (state, matchData) => {
 			state.matchData = matchData;
@@ -237,14 +230,18 @@ export default {
 			}
 		},
 
-		matchResult: ({ commit, getters }) => {
-			const matchAnswer = getters.matchAnswer;
-			// const matchNum = getters.matchCount;
-			for (var i = 0; i < 6; i++) {
-				commit('PLUS_MATCH_ANSWER', i);
-			}
-			console.log(matchAnswer);
-		},
+		// matchResult: ({ commit, getters }) => {
+		// 	const matchNum = getters.matchNum;
+		// 	// const matchNum = getters.matchCount;
+		// 	for (var i = 0; i < 6; i++) {
+		// 		const data = {
+		// 			index: i,
+		// 			value: matchNum[i],
+		// 		};
+		// 		commit('PLUS_MATCH_ANSWER', data);
+		// 	}
+		// 	console.log(matchNum);
+		// },
 
 		sendResult: ({ rootGetters }, payload) => {
 			axios({

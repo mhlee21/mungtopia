@@ -39,7 +39,10 @@ export default {
 		const store = useStore();
 		const gameEnter = gameType => {
 			store.dispatch('game/enterGame', gameType);
-			router.push({ path: '/game/main' });
+			router.push({
+				name: 'GameIntro',
+				params: { gameType: gameType },
+			});
 		};
 		return { gameEnter };
 	},

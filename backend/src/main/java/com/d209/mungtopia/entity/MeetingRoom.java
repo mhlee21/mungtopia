@@ -1,10 +1,10 @@
 package com.d209.mungtopia.entity;
 
+import io.openvidu.java.client.Session;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -15,16 +15,20 @@ public class MeetingRoom {
     @Column(name = "meeting_room_id")
     private long meetingRoomId;
 
-    @Column(name = "host_id")
-    private Long hostId;
+    @Column(name = "session_name")
+    private String meetingName;
 
-    @Column(name = "active")
-    private Boolean active;
+//    @Column(name = "session")
+//    private Ob session;
 
-    @Column(name = "createtime")
-    private Timestamp createtime;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id", nullable = false)
-    private AdoptionProcess adoptionProcess;
+//    @Column(name = "active")
+//    private Boolean active;
+
+//    @Column(name = "createtime")
+//    private Timestamp createtime;
+
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id", nullable = false)
+//    private AdoptionProcess adoptionProcess;
 }

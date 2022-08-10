@@ -1,9 +1,9 @@
 package com.d209.mungtopia.service;
 
-import com.d209.mungtopia.dto.applicant.ApplicationListInfoDto;
-import com.d209.mungtopia.dto.applicant.DetailProcessDto;
-import com.d209.mungtopia.dto.applicant.ProcessDetailDto;
-import com.d209.mungtopia.dto.protector.ApplicantProcessDto;
+import com.d209.mungtopia.dto.applicant.ApplicationListInfoRes;
+import com.d209.mungtopia.dto.applicant.DetailProcessRes;
+import com.d209.mungtopia.dto.applicant.ProcessDetailRes;
+import com.d209.mungtopia.dto.protector.ApplicantProcessRes;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +24,8 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
     private final BoardRepository boardRepository;
     private final ApplicationRepository applicationRepository;
     private final AdoptionProcessRepository adoptionProcessRepository;
+//    private final AdoptionStepDateRepository adoptionStepDateRepository;
+    private final ImageStorageRepository imageStorageRepository;
 
     /**
      * 입양하기 메인
@@ -31,84 +33,76 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
      * @return
      */
     @Override
-    public List<ApplicationListInfoDto> mainApplicationInfo(Long userId) {
-        User user = userRepository.findOne(userId);
-        List<Application> userApplicationList = user.getApplicationList();
+    public List<ApplicationListInfoRes> mainApplicationInfo(Long userId) {
+        Optional<User> user = Optional.ofNullable(userRepository.findOne(userId));
+
+        if (user.isEmpty()){ // 예외처리
+            return null;
+        }
+
+        List<Application> userApplicationList = user.get().getApplicationList();
 
         if (userApplicationList.isEmpty()){ // 이때까지 한 신청이 없다면 null을 리턴
             return null;
         }
 
-        List<ApplicationListInfoDto> applicationList = new ArrayList<>();
+        List<ApplicationListInfoRes> responseList = new ArrayList<>();
 
         for (Application application : userApplicationList) {
-            ApplicationListInfoDto info = new ApplicationListInfoDto();
-            info.setApplicationId(application.getApplicationId());
-            info.setApplicationStatus(application.getApplicationStatus());
+            ApplicationListInfoRes response = new ApplicationListInfoRes();
+            response.setApplicationId(application.getApplicationId());
+            response.setApplicationStatus(application.getApplicationStatus());
 
             Long boardId = application.getBoardId();
             Board board = boardRepository.findOne(boardId);
 
-            DogInfo dogInfo = board.getDogInfo();
-            info.setDogName(dogInfo.getName());
+            response.setDogName(board.getDogInfo().getName());
 
-            List<ImageStorage> imageStorageList = board.getImageStorageList();
-            for (ImageStorage imageStorage: imageStorageList) {
-               if (imageStorage.getOrders() == 1){
-                   info.setDogImg(imageStorage.getFilename());
-                   break;
-               }
-            }
-            applicationList.add(info);
+            List<ImageStorage> img = imageStorageRepository.findMainOne(boardId);
+            response.setDogImg(img.get(0).getOriginFilename());
+            responseList.add(response);
         }
 
-        return applicationList;
+        return responseList;
     }
 
     @Override
-    public ProcessDetailDto detailProcressInfo(Long appId) {
-        ProcessDetailDto result = new ProcessDetailDto();
+    public ProcessDetailRes detailProcressInfo(Long appId) {
+        ProcessDetailRes reponse = new ProcessDetailRes();
 
         Application application = applicationRepository.findOne(appId);
         Long boardId = application.getBoardId();
-        result.setBoardId(boardId);
-        result.setApplicationStatus(application.getApplicationStatus());
+        reponse.setBoardId(boardId);
+        reponse.setApplicationStatus(application.getApplicationStatus());
 
         AdoptionProcess adoptionProcess = application.getAdoptionProcess();
-        result.setChatRoomId(adoptionProcess.getChatRoom().getChatRoomId());
-        result.setMeetingRoomId(adoptionProcess.getMeetingRoom().getMeetingRoomId());
-        result.setMeetingActive(adoptionProcess.getMeetingRoom().getActive());
+        reponse.setChatRoomId(adoptionProcess.getChatRoom().getChatRoomId());
+        reponse.setMeetingRoomId(adoptionProcess.getMeetingRoom().getMeetingRoomId());
+        reponse.setMeetingActive(adoptionProcess.getMeetingRoom().getActive());
 
         Board board = boardRepository.findOne(boardId);
-        result.setDogName(board.getDogInfo().getName());
-        result.setDogImg(boardRepository.findMainImg(boardId));
-        return result;
+        reponse.setDogName(board.getDogInfo().getName());
+        reponse.setDogImg(boardRepository.findMainImg(boardId));
+        return reponse;
     }
 
     @Override
-    public DetailProcessDto processDetailInfo(Long appId) {
-        DetailProcessDto result = new DetailProcessDto();
+    public DetailProcessRes processDetailInfo(Long appId) {
+        DetailProcessRes response = new DetailProcessRes();
 
         Application application = applicationRepository.findOne(appId);
         Long adoptionProcessId = application.getAdoptionProcess().getAdoptionProcessId();
-        result.setAdoptionProcessId(adoptionProcessId);
+        response.setAdoptionProcessId(adoptionProcessId);
 
         AdoptionProcess adoptionProcess = adoptionProcessRepository.find(adoptionProcessId);
 
-        List<ApplicantProcessDto> applicantProcessList = new ArrayList<>();
         int curStep = adoptionProcess.getStep(); // 지금까지 있는 step
 
-        List<AdoptionStepDate> adoptionStepDateList = adoptionProcess.getAdoptionStepDateList(); // date 저장
-        // step순으로 정렬
-        adoptionStepDateList.sort(new Comparator<AdoptionStepDate>() {
-            @Override
-            public int compare(AdoptionStepDate o1, AdoptionStepDate o2) {
-                return Integer.compare(o1.getStep(), o2.getStep());
-            }
-        });
+        List<AdoptionStepDate> adoptionStepDateList = adoptionProcessRepository.findAdoptionStepDateList(adoptionProcessId);
 
         for (AdoptionStepDate adoptionStepDate : adoptionStepDateList) {
-            ApplicantProcessDto process = new ApplicantProcessDto();
+            ApplicantProcessRes process = new ApplicantProcessRes();
+
             process.setStep(adoptionStepDate.getStep());
             process.setDate(adoptionStepDate.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
@@ -117,12 +111,11 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
             } else  {
                 process.setStepStatus(adoptionProcess.getStepStatus());
             }
-            applicantProcessList.add(process);
+
+            response.getApplicantProcessRes().add(process);
         }
 
-        result.setApplicantProcessDto(applicantProcessList);
-
-        return result;
+        return response;
     }
 
     @Override

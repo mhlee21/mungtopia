@@ -1,5 +1,7 @@
 import Qdata from '@/assets/Qdata.json';
 import MbtiList from '@/assets/MbtiList.json';
+import axios from 'axios';
+import api from '@/api/api';
 
 export default {
 	namespaced: true,
@@ -14,7 +16,19 @@ export default {
 			mbtiResult: '',
 			mbtiUserAnswer: 0,
 			mbtiCount: 0,
-			mbtiDog: [],
+			mbtiDog: {},
+			matchUserPoint: 0,
+			matchNum: [0, 0, 0, 0, 0, 0],
+			matchCount: 0,
+			matchAnswer: [
+				[0, 0],
+				[1, 0],
+				[2, 0],
+				[3, 0],
+				[4, 0],
+				[5, 0],
+			],
+			matchData: [],
 		};
 	},
 	getters: {
@@ -25,9 +39,14 @@ export default {
 		questionNumber: state => state.questionNumber,
 		correctAnswer: state => state.correctAnswer,
 		mbtiResult: state => state.mbtiResult,
+		mbtiDog: state => state.mbtiDog,
 		mbtiUserAnswer: state => state.mbtiUserAnswer,
 		mbtiCount: state => state.mbtiCount,
-		mbtiDog: state => state.mbtiDog,
+		matchUserPoint: state => state.matchUserPoint,
+		matchNum: state => state.matchNum,
+		matchCount: state => state.matchCount,
+		matchAnswer: state => state.matchAnswer,
+		matchData: state => state.matchData,
 	},
 	mutations: {
 		SET_GAME_TYPE: (state, gameType) => {
@@ -70,6 +89,29 @@ export default {
 
 		PLUS_MBTI_RESULT: (state, mbtiResult) => {
 			state.mbtiResult += mbtiResult;
+		},
+		PLUS_MATCH_USER_POINT: (state, userAnswer) => {
+			state.matchUserPoint += userAnswer;
+			state.matchCount += 1;
+		},
+		ZERO_MATCH_USER_POINT: (state, { question_type, userAnswer }) => {
+			state.matchUserPoint += userAnswer;
+			state.matchNum[question_type] = state.matchUserPoint;
+			console.log(state.matchUserPoint);
+			state.matchUserPoint = 0;
+			state.matchCount = 0;
+		},
+		PLUS_MATCH_FOUR: (state, matchFour) => {
+			state.matchFour = matchFour;
+		},
+		PLUS_MATCH_HASH: (state, matchHash) => {
+			state.matchHash += matchHash;
+		},
+		PLUS_MATCH_ANSWER: (state, i) => {
+			state.matchAnswer[i][1] += state.matchNum[i];
+		},
+		SET_MATCH_DATA: (state, matchData) => {
+			state.matchData = matchData;
 		},
 	},
 	actions: {
@@ -133,12 +175,10 @@ export default {
 		plusMbtiAnswer: ({ commit, getters }, { question_type, userAnswer }) => {
 			const mbtiUserAnswer = getters.mbtiUserAnswer;
 			const mbtiCount = getters.mbtiCount;
-			if (mbtiCount < 2) {
+			if (mbtiCount <= 2) {
 				commit('PLUS_MBTI_USER_ANSWER', userAnswer);
 				commit('MBTI_COUNT');
 			} else {
-				console.log(mbtiUserAnswer);
-				console.log(mbtiCount);
 				commit('ZERO_MBTI_COUNT');
 				if (mbtiUserAnswer < 2) {
 					if (question_type == 1) {
@@ -172,18 +212,82 @@ export default {
 			}
 		},
 
-		MbtiDogResult: ({ commit, getters }) => {
-			const mbtiResult = getters.mbtiResult;
+		MbtiDogResult: ({ commit }, mbtiResult) => {
 			const res = MbtiList;
-			const data = res[mbtiResult].map(d => ({
-				DogName: d.DogName,
-				DogImg: d.DogImg,
-				hashtag: d.hashtag,
-				fitWell: d.fitWell,
-				fitWellDog: d.fitWellDog,
-				fitWellImg: d.fitWellImg,
-			}));
+			const data = res[mbtiResult];
+			console.log(data);
+			// (d => ({
+			// 	DogName: d.DogName,
+			// 	DogImg: d.DogImg,
+			// 	hashtag: d.hashtag,
+			// 	fitWell: d.fitWell,
+			// 	fitWellDog: d.fitWellDog,
+			// 	fitWellImg: d.fitWellImg,
+			// }));
 			commit('SET_MBTI_DOG', data);
+		},
+
+		plusMatchAnswer: ({ commit, getters }, { question_type, userAnswer }) => {
+			// const matchUserPoint = getters.matchUserPoint;
+			const matchCount = getters.matchCount;
+			if (matchCount < 2) {
+				commit('PLUS_MATCH_USER_POINT', userAnswer);
+			} else {
+				commit('ZERO_MATCH_USER_POINT', { question_type, userAnswer });
+			}
+		},
+
+		matchResult: ({ commit, getters }) => {
+			const matchAnswer = getters.matchAnswer;
+			// const matchNum = getters.matchCount;
+			for (var i = 0; i < 6; i++) {
+				commit('PLUS_MATCH_ANSWER', i);
+			}
+			console.log(matchAnswer);
+		},
+
+		sendResult: ({ rootGetters }, payload) => {
+			axios({
+				url: api.game.saveGame(),
+				method: 'post',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			}).catch(err => {
+				console.error(err.response);
+			});
+			// .then(res => {
+			// 	console.log(res.body.data);
+
+			// })
+		},
+
+		sendMatchResult: ({ rootGetters }, payload) => {
+			axios({
+				url: api.game.saveGame(),
+				method: 'post',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			}).catch(err => {
+				console.error(err.response);
+			});
+			// .then(res => {
+			// 	console.log(res.body.data);
+
+			// })
+		},
+
+		receiveMatchResult: ({ commit, rootGetters }) => {
+			axios({
+				url: api.game.receiveGame(),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					commit('SET_MATCH_DATA', res.body.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 	},
 };

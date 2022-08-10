@@ -14,7 +14,7 @@ import java.util.List;
  * ManageProtectorController - mainInfo 사용
  *
  */
-public class ProtectorBoardListDto {
+public class ProtectorBoardListRes {
     private Long boardId;
     private String dogImg;
     private String dogName;
@@ -22,7 +22,7 @@ public class ProtectorBoardListDto {
     private List<DetailApplicationDto> applicationList = new ArrayList<>();
 
     // mainInfo
-    public ProtectorBoardListDto(Long boardId, String dogImg, String dogName, boolean adoptionStatus) {
+    public ProtectorBoardListRes(Long boardId, String dogImg, String dogName, boolean adoptionStatus) {
         this.boardId = boardId;
         this.dogImg = dogImg;
         this.dogName = dogName;
@@ -30,7 +30,7 @@ public class ProtectorBoardListDto {
     }
 
     // detailInfo
-    public ProtectorBoardListDto(Long boardId, String dogImg, String dogName, boolean adoptionStatus, List<DetailApplicationDto> applicationList) {
+    public ProtectorBoardListRes(Long boardId, String dogImg, String dogName, boolean adoptionStatus, List<DetailApplicationDto> applicationList) {
         this.boardId = boardId;
         this.dogImg = dogImg;
         this.dogName = dogName;

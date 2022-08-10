@@ -1,14 +1,14 @@
 package com.d209.mungtopia.service;
 
-import com.d209.mungtopia.dto.applicant.ApplicationListInfoDto;
-import com.d209.mungtopia.dto.applicant.DetailProcessDto;
-import com.d209.mungtopia.dto.applicant.ProcessDetailDto;
+import com.d209.mungtopia.dto.applicant.ApplicationListInfoRes;
+import com.d209.mungtopia.dto.applicant.DetailProcessRes;
+import com.d209.mungtopia.dto.applicant.ProcessDetailRes;
 
 import java.util.List;
 
 public interface ManageApplicantService {
-    List<ApplicationListInfoDto> mainApplicationInfo(Long userId);
-    ProcessDetailDto detailProcressInfo(Long appId);
-    DetailProcessDto processDetailInfo(Long appId);
+    List<ApplicationListInfoRes> mainApplicationInfo(Long userId);
+    ProcessDetailRes detailProcressInfo(Long appId);
+    DetailProcessRes processDetailInfo(Long appId);
     Boolean cancelAdoption(Long adoptionProcessId);
 }

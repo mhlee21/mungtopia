@@ -3,12 +3,6 @@
 		<div>
 			<h2 class="title">당신에게 맞는 반려견은?</h2>
 		</div>
-		<div class="hash">
-			<div style="color: #61378c">
-				# 온순함 # 귀여움 <br />
-				# 조용함 # 사람 좋아함<br />
-			</div>
-		</div>
 		<div class="content">
 			<div>현재 당신을 원하는 반려견이 있습니다.</div>
 		</div>

@@ -1,7 +1,10 @@
 package com.d209.mungtopia.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -9,6 +12,8 @@ import java.util.Objects;
 @Entity
 @Getter
 @Table(name = "game_result", schema = "mungtopia")
+@NoArgsConstructor
+@AllArgsConstructor
 public class GameResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +21,7 @@ public class GameResult {
     private long scoreId;
 
     @Column(name = "game_tag")
-    private String gameTag;
+    private Integer gameTag;
 
     @Column(name = "result")
     private Boolean result;
@@ -25,4 +30,10 @@ public class GameResult {
     @JoinColumn(name = "user_seq", referencedColumnName = "user_seq", nullable = false)
     @JsonManagedReference
     private User user;
+
+    public GameResult(int gameTag,  User user) {
+        this.gameTag = gameTag;
+        this.result = true;
+        this.user = user;
+    }
 }

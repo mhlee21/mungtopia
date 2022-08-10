@@ -1,7 +1,7 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
-import com.d209.mungtopia.dto.protector.StepUpdateDto;
+import com.d209.mungtopia.dto.protector.StepRes;
 import com.d209.mungtopia.service.ManageProtectorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,9 +16,9 @@ public class ManageProtectorController {
 
     private final ManageProtectorService manageProtectorService;
 
-    @GetMapping("/{user_id}")
+    @GetMapping("/{user_seq}")
     @ApiOperation(value = "mainInfo - 입양보내기 메인", notes = "지금까지 올린 반려견의 리스트를 제공")
-    public ApiResponse mainBoardInfo(@PathVariable(name = "user_id") Long userId){
+    public ApiResponse mainBoardInfo(@PathVariable(name = "user_seq") Long userId){
         return ApiResponse.success("data", manageProtectorService.mainBoardInfo(userId));
     }
 
@@ -46,7 +46,7 @@ public class ManageProtectorController {
 
     @PutMapping("/{adoption_process_id}")
     @ApiOperation(value = "updateProcessStatus - 입양 상태 변경", notes = "입양 절차에 따라 신청자의 입양 상태를 변경")
-    public ApiResponse updateProcessStatus(@PathVariable("adoption_process_id") Long processId, @RequestBody StepUpdateDto stepUpdateInfo){
+    public ApiResponse updateProcessStatus(@PathVariable("adoption_process_id") Long processId, @RequestBody StepRes stepUpdateInfo){
      return ApiResponse.success("data", manageProtectorService.updateProcessStatus(processId, stepUpdateInfo));
     }
 }

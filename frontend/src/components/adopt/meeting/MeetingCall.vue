@@ -60,7 +60,11 @@ export default {
 					headers: store.getters['auth/authHeader'],
 				})
 					.then(res => res.body.data)
-					.then(data => resolve(data.token))
+					.then(data => {
+						resolve(data.token);
+						console.log('백엔드에 토큰 요청');
+						console.log(data.token);
+					})
 					.catch(error => {
 						console.log(error);
 					});
@@ -81,6 +85,7 @@ export default {
 			session.on('streamCreated', ({ stream }) => {
 				const subscriber = session.subscribe(stream);
 				subscribers.push(subscriber);
+				console.log('streamCreated');
 			});
 
 			// stream 삭제(미팅에서 나갔을 때) -> 해당 stream을 subscriber에서 삭제
@@ -89,18 +94,22 @@ export default {
 				if (index >= 0) {
 					subscribers.splice(index, 1);
 				}
+				console.log('streamDestroyed');
 			});
 
 			// 모든 비동기 예외 처리..
 			session.on('exception', ({ exception }) => {
 				console.warn(exception);
+				console.log('exception');
 			});
 
 			// 토큰 받고 처리
 			getOpenViduToken(userSeq).then(token => {
+				console.log('getOpenViduToken 토큰 받고 처리');
 				session
 					.connect(token, { clientData: myUserName })
 					.then(() => {
+						console.log('session connect');
 						// 내 stream setting
 						publisher = OV.initPublisher(undefined, {
 							audioSource: undefined, // undefined이면 default microphone
@@ -117,6 +126,7 @@ export default {
 
 						// session에 stream publish
 						session.publish(publisher);
+						console.log('session publish');
 					}) // 에러처리
 					.catch(error => {
 						console.log(
@@ -133,6 +143,7 @@ export default {
 		};
 
 		const leaveSession = () => {
+			console.log('leaveSession');
 			// session.disconnect 를 이용하여 session 연결 해제
 			if (this.session) this.session.disconnect();
 			// 현재 data들 모두 초기화
@@ -141,6 +152,7 @@ export default {
 			this.publisher = undefined;
 			this.subscribers = [];
 			this.OV = undefined;
+
 			// eventlistener 삭제
 			window.removeEventListener('beforeunload', this.leaveSession);
 		};
@@ -148,6 +160,7 @@ export default {
 		const updateMainVideoStreamManager = stream => {
 			if (mainStreamManager === stream) return;
 			mainStreamManager = stream;
+			console.log('updateMainVideoStreamManager');
 		};
 
 		joinSession(); // 세션 참여

@@ -116,12 +116,13 @@ export default {
 			});
 			if (questionNumber.value == 17) {
 				store.dispatch('game/matchResult');
-
 				const payload = {
-					userSeq: store.getters['auth/user']['userSeq'],
+					userSeq: 1,
+					// store.getters['auth/user']['userSeq'],
 					matchAnswer: matchAnswer,
 					gameTag: gameType,
 				};
+				console.log(JSON.stringify(payload));
 				store.dispatch('game/sendResult', payload);
 				router.push({
 					name: 'MatchFinish',

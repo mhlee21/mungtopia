@@ -285,7 +285,7 @@ export default {
 				],
 			};
 			commit('SET_BOARD', board);
-			commit('SET_IS_ADOPTING', true);
+			commit('SET_IS_ADOPTING', false);
 		},
 
 		// 입양 신청 여부 확인
@@ -303,7 +303,7 @@ export default {
 			// 	.catch(err => {
 			// 		console.error(err.response);
 			// 	});
-			const adoptStatus = true;
+			const adoptStatus = false;
 			commit('SET_ADOPT_STATUS', adoptStatus);
 		},
 

@@ -152,9 +152,14 @@
 					<div class="adopt-input-form-box2">
 						<label class="adopt-input-info-title">추가사항</label>
 						<small class="adopt-input-info-text"
-							>추가적으로 적고 싶은 내용이 있다면 적어주세요!</small
+							>추가적으로 적고 싶은 내용이 있다면 적어주세요!(300자 이내)</small
 						>
-						<textarea class="text-area" rows="10" v-model="contents"></textarea>
+						<textarea
+							class="text-area"
+							rows="10"
+							v-model="contents"
+							maxlength="300"
+						></textarea>
 					</div>
 				</div>
 			</div>

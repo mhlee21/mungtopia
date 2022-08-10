@@ -103,13 +103,33 @@ export default {
 			'fa-solid fa-location-dot',
 			'fa-solid fa-circle-check',
 		];
+		const activeApplicant = computed(
+			() => store.getters['adopt/activeApplicant'],
+		);
 
 		const clickAdoptProcessIcon = step => {
 			if (step === 1) {
-				router.push({
-					name: 'applicationDetail',
-					params: { applicationId: route.params.applicationId },
-				});
+				// 입양자일 경우
+				if (route.name == 'applicantDetail') {
+					router.push({
+						name: 'application',
+						params: {
+							applicationId: route.params.applicationId,
+						},
+					});
+				}
+				// 보호자일 경우
+				else {
+					router.push({
+						name: 'application',
+						params: {
+							applicationId:
+								store.getters['adopt/protectorDetail']['applicationList'][
+									activeApplicant.value
+								]['applicationId'],
+						},
+					});
+				}
 				console.log(step);
 			} else if (step === 2) {
 				router.push({

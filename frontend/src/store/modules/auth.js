@@ -7,6 +7,7 @@ export default {
 		return {
 			user: null,
 			token: localStorage.getItem('token') || '',
+			userInfo: null,
 		};
 	},
 	getters: {
@@ -14,18 +15,22 @@ export default {
 		token: state => state.token,
 		authHeader: state =>
 			state.token ? { Authorization: `Token ${state.token}` } : '',
+		userInfo: state => state.userInfo,
 	},
 	mutations: {
-		setToken(state, token) {
+		SET_TOKEN(state, token) {
 			state.token = token;
 		},
-		setUser(state, user) {
+		SET_USER(state, user) {
 			state.user = user;
+		},
+		SET_USER_INFO: (state, userInfo) => {
+			state.userInfo = userInfo;
 		},
 	},
 	actions: {
 		saveToken({ commit }, token) {
-			commit('setToken', token);
+			commit('SET_TOKEN', token);
 			localStorage.setItem('token', token);
 		},
 		fetchUser({ commit, getters }) {
@@ -35,7 +40,7 @@ export default {
 				headers: { Authorization: `Bearer ${getters.token}` },
 			})
 				.then(res => {
-					commit('setUser', res.body.data.user);
+					commit('SET_USER', res.body.data.user);
 				})
 				.catch(err => {
 					console.error(err.response);

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,8 @@ public class BoardServiceImpl implements BoardService {
     private final InfDogInfoRepository dogInfoRepository;
     private final InfDogNatureRepository dogNatureRepository;
     private final InfImageStorageRepository imageStorageRepository;
+    private final InfApplicationRepository applicationRepository;
+    private final InfAnswerRepository answerRepository;
 
     public Timestamp getNow(){
         return new Timestamp(System.currentTimeMillis());
@@ -169,6 +172,34 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     public Board findBoardDetail(Long boardId) {
         return boardRepository.findById(boardId).get();
+    }
+
+    @Override
+    public Application saveApplication(Board board, AppDto appDto) {
+        User user = userRepository.findById(appDto.getUserSeq()).get();
+        Application application = Application.builder()
+                .boardId(board.getBoardId())
+                .send(true)
+                .name(user.getUsername())
+                .userInfo(user.getUserInfo())
+                .user(user)
+                .createtime(LocalDateTime.now())
+                .applicationStatus(0)
+                .build();
+
+        List<Answer> answerList = new ArrayList<>();
+        for (AnswerDto answerDto: appDto.getApplicantAnswerList()) {
+            Answer answer = new Answer(answerDto.getIdx().intValue(),
+                                        answerDto.getAnswer(),
+                                        application);
+            answerRepository.save(answer);
+            answerList.add(answer);
+        }
+
+        application.setAnswerList(answerList);
+        applicationRepository.save(application);
+
+        return application;
     }
 
     @Override

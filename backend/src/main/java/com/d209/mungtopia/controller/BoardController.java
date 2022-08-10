@@ -1,6 +1,7 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
+import com.d209.mungtopia.dto.AppDto;
 import com.d209.mungtopia.dto.BoardDto;
 import com.d209.mungtopia.dto.CommentDto;
 import com.d209.mungtopia.dto.ReplyDto;
@@ -78,7 +79,13 @@ public class BoardController {
         return ApiResponse.success("data", boardService.findBoardDetail(boardId));
     }
 
-
+    @PostMapping("detail/{board_id}/applicant")
+    @ApiOperation(value = "saveApplication - 입양 신청서 작성하기", notes = "입양 신청서 작성하기")
+    public ApiResponse saveApplication(@PathVariable("board_id") Long boardId,
+                                       @RequestBody AppDto appDto) {
+        Board board = boardRepository.findById(boardId).get();
+        return ApiResponse.success("data", boardService.saveApplication(board, appDto));
+    }
 
     @PostMapping("like/{board_id}")
     @ApiOperation(value = "likes - 좋아요 하기", notes = "좋아요 하기")

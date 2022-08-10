@@ -1,5 +1,5 @@
 <template>
-	<div class="protector-detail-view">
+	<div class="adopt-detail-protector-pg">
 		<button @click="goBack">back</button>
 		<ProtectorDetailComponent></ProtectorDetailComponent>
 		<ApplicantList></ApplicantList>

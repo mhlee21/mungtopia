@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -49,7 +50,7 @@ public class DogInfo {
     private Boolean adoptionStatus;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id", referencedColumnName = "board_id", nullable = false)
+    @JoinColumn(name = "board_id", referencedColumnName = "board_id")
     @JsonIgnore
     private Board board;
 

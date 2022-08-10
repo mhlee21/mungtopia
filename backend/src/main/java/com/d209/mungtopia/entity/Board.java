@@ -43,10 +43,22 @@ public class Board {
     private DogInfo dogInfo;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    @JsonBackReference //순환 참조 방지
+//    @JsonBackReference //순환 참조 방지
     private List<ImageStorage> imageStorageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Comment> commentList = new ArrayList<>();
+
+    public void setDogInfo(DogInfo dogInfo) {
+        this.dogInfo = dogInfo;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public void setImageStorageList(List<ImageStorage> imageStorageList) {
+        this.imageStorageList = imageStorageList;
+    }
 }

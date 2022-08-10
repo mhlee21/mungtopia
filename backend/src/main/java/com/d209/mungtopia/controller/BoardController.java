@@ -1,6 +1,7 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
+import com.d209.mungtopia.dto.BoardDto;
 import com.d209.mungtopia.dto.CommentDto;
 import com.d209.mungtopia.dto.ReplyDto;
 import com.d209.mungtopia.entity.Board;
@@ -8,6 +9,7 @@ import com.d209.mungtopia.entity.Comment;
 import com.d209.mungtopia.entity.Reply;
 import com.d209.mungtopia.entity.User;
 import com.d209.mungtopia.repository.*;
+import com.d209.mungtopia.repository.user.UserRepository;
 import com.d209.mungtopia.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +29,7 @@ public class BoardController {
     private final InfBoardRepository boardRepository;
     private final InfCommentRepository commentRepository;
     private final InfReplyRepository replyRepository;
-    private final InfUserRepository userRepository;
+    private final UserRepository userRepository;
     private final BoardService boardService;
 
     @GetMapping("{tag_no}")
@@ -37,11 +39,46 @@ public class BoardController {
         return ApiResponse.success("data", boardService.findBoardAll(tagNo, pageNo));
     }
 
+    @PostMapping("{tag_no}")
+    @ApiOperation(value = "saveBoard - 글 쓰기", notes = "글 쓰기")
+    public ApiResponse saveBoard(@PathVariable("tag_no") Long tagNo,
+                                     @RequestBody BoardDto boardDto) {
+        return ApiResponse.success("data", boardService.saveBoard(tagNo, boardDto));
+    }
+
+    @PutMapping("detail/{board_id}/{user_id}")
+    @ApiOperation(value = "updateBoard - 글 수정", notes = "글 수정")
+    public ApiResponse updateBoard(@PathVariable("board_id") Long boardId,
+                                   @PathVariable("user_id") Long userId,
+                                   @RequestBody BoardDto boardDto) {
+        Board board = boardRepository.findById(boardId).get();
+        User user = userRepository.findById(userId).get();
+        if (board.getUser() == user) {
+            return ApiResponse.success("data", boardService.updateBoard(board, boardDto));
+        } else {
+            return ApiResponse.fail();
+        }
+    }
+    @DeleteMapping("detail/{board_id}/{user_id}")
+    @ApiOperation(value = "deleteBoard - 글 삭제", notes = "글 삭제")
+    public ApiResponse deleteBoard(@PathVariable("board_id") Long boardId,
+                                   @PathVariable("user_id") Long userId) {
+        Board board = boardRepository.findById(boardId).get();
+        User user = userRepository.findById(userId).get();
+        if (board.getUser() == user) {
+            return ApiResponse.success("data", boardService.deleteBoard(board));
+        } else {
+            return ApiResponse.fail();
+        }
+    }
+
     @GetMapping("detail/{board_id}")
     @ApiOperation(value = "boardDetailInfo - 상세 글 불러오기", notes = "상세 게시글 정보 가져오기")
     public ApiResponse boardDetailInfo(@PathVariable("board_id") Long boardId) {
         return ApiResponse.success("data", boardService.findBoardDetail(boardId));
     }
+
+
 
     @PostMapping("like/{board_id}")
     @ApiOperation(value = "likes - 좋아요 하기", notes = "좋아요 하기")

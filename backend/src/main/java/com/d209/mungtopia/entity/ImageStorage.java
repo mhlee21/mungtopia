@@ -1,13 +1,19 @@
 package com.d209.mungtopia.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "image_storage", schema = "mungtopia")
 public class ImageStorage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

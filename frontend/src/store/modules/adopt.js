@@ -1,4 +1,4 @@
-// import api from '@/api/api';
+import api from '@/api/api';
 import axios from 'axios';
 
 export default {
@@ -80,112 +80,112 @@ export default {
 		// 입양하기 메인
 		fetchApplicantMainList: ({ commit, rootGetters }, userSeq) => {
 			console.log(rootGetters, userSeq);
-			// axios({
-			// 	url: api.adopt.applicantMain(userSeq),
-			// 	method: 'get',
-			// 	headers: rootGetters['auth/authHeader'],
-			// })
-			// 	.then(res => {
-			// 		console.log(res.body.data.applicationList);
-			// 		commit('SET_ADOPT_TYPE', 'applicant');
-			// 		commit('SET_APPLICANT_MAIN_LIST', res.body.data.applicationList);
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
-			const newApplicationList = [
-				{
-					applicationId: 1,
-					dogImg:
-						'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-					dogName: '처음',
-					applicationStatus: 1,
-				},
-				{
-					applicationId: 2,
-					dogImg:
-						'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-					dogName: '예시',
-					applicationStatus: 6,
-				},
-			];
-			commit('SET_ADOPT_TYPE', 'applicant');
-			commit('SET_APPLICANT_MAIN_LIST', newApplicationList);
+			axios({
+				url: api.adopt.applicantMain(userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.body.data);
+					commit('SET_ADOPT_TYPE', 'applicant');
+					commit('SET_APPLICANT_MAIN_LIST', res.body.data.applicationList);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+			// const newApplicationList = [
+			// 	{
+			// 		applicationId: 1,
+			// 		dogImg:
+			// 			'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
+			// 		dogName: '처음',
+			// 		applicationStatus: 1,
+			// 	},
+			// 	{
+			// 		applicationId: 2,
+			// 		dogImg:
+			// 			'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
+			// 		dogName: '예시',
+			// 		applicationStatus: 6,
+			// 	},
+			// ];
+			// commit('SET_ADOPT_TYPE', 'applicant');
+			// commit('SET_APPLICANT_MAIN_LIST', newApplicationList);
 		},
 		// 입양하기 & 입양보내기 메인
 		changeAdoptType: ({ commit, rootGetters }, { adoptType, userSeq }) => {
 			console.log(commit, rootGetters, adoptType, userSeq);
-			// if (adoptType === 'applicant') {
-			// 	// 입양하기 버튼
-			// 	axios({
-			// 		url: api.adopt.applicantMain(userSeq),
-			// 		method: 'get',
-			// 		headers: rootGetters['auth/authHeader'],
-			// 	})
-			// 		.then(res => {
-			// 			console.log(res.body.data.applicationList);
-			// 			commit('SET_ADOPT_TYPE', 'applicant');
-			// 			commit('SET_APPLICANT_MAIN_LIST', res.body.data.applicationList);
-			// 		})
-			// 		.catch(err => {
-			// 			console.error(err.response);
-			// 		});
-			// } else {
-			// 	// 입양보내기 버튼
-			// 	axios({
-			// 		url: api.adopt.protectorMain(userSeq),
-			// 		method: 'get',
-			// 		headers: rootGetters['auth/authHeader'],
-			// 	})
-			// 		.then(res => {
-			// 			console.log(res.body.data.boardList);
-			// 			commit('SET_ADOPT_TYPE', 'protector');
-			// 			commit('SET_PROTECTOR_MAIN_LIST', res.body.data.boardList);
-			// 		})
-			// 		.catch(err => {
-			// 			console.error(err.response);
-			// 		});
-			// }
-
 			if (adoptType === 'applicant') {
-				const newApplicationList = [
-					{
-						applicationId: 1,
-						dogImg:
-							'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-						dogName: '버튼누르기',
-						applicationStatus: 1,
-					},
-					{
-						applicationId: 2,
-						dogImg:
-							'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-						dogName: '예시',
-						applicationStatus: 6,
-					},
-				];
-				commit('SET_ADOPT_TYPE', 'applicant');
-				commit('SET_APPLICANT_MAIN_LIST', newApplicationList);
+				// 입양하기 버튼
+				axios({
+					url: api.adopt.applicantMain(userSeq),
+					method: 'get',
+					headers: rootGetters['auth/authHeader'],
+				})
+					.then(res => {
+						console.log(res.body.data.applicationList);
+						commit('SET_ADOPT_TYPE', 'applicant');
+						commit('SET_APPLICANT_MAIN_LIST', res.body.data.applicationList);
+					})
+					.catch(err => {
+						console.error(err.response);
+					});
 			} else {
-				const newProtectorMainList = [
-					{
-						boardId: 1,
-						dogImg:
-							'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-						dogName: '보호자 예시',
-						adoptionStatus: 0, // 0, 1, 2
-					},
-					{
-						boardId: 2,
-						dogImg:
-							'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-						dogName: '몽이',
-						adoptionStatus: 1, // 0, 1, 2
-					},
-				];
-				commit('SET_ADOPT_TYPE', 'protector');
-				commit('SET_PROTECTOR_MAIN_LIST', newProtectorMainList);
+				// 입양보내기 버튼
+				axios({
+					url: api.adopt.protectorMain(userSeq),
+					method: 'get',
+					headers: rootGetters['auth/authHeader'],
+				})
+					.then(res => {
+						console.log(res.body.data.boardList);
+						commit('SET_ADOPT_TYPE', 'protector');
+						commit('SET_PROTECTOR_MAIN_LIST', res.body.data.boardList);
+					})
+					.catch(err => {
+						console.error(err.response);
+					});
 			}
+
+			// if (adoptType === 'applicant') {
+			// 	const newApplicationList = [
+			// 		{
+			// 			applicationId: 1,
+			// 			dogImg:
+			// 				'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
+			// 			dogName: '버튼누르기',
+			// 			applicationStatus: 1,
+			// 		},
+			// 		{
+			// 			applicationId: 2,
+			// 			dogImg:
+			// 				'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
+			// 			dogName: '예시',
+			// 			applicationStatus: 6,
+			// 		},
+			// 	];
+			// 	commit('SET_ADOPT_TYPE', 'applicant');
+			// 	commit('SET_APPLICANT_MAIN_LIST', newApplicationList);
+			// } else {
+			// 	const newProtectorMainList = [
+			// 		{
+			// 			boardId: 1,
+			// 			dogImg:
+			// 				'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
+			// 			dogName: '보호자 예시',
+			// 			adoptionStatus: 0, // 0, 1, 2
+			// 		},
+			// 		{
+			// 			boardId: 2,
+			// 			dogImg:
+			// 				'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
+			// 			dogName: '몽이',
+			// 			adoptionStatus: 1, // 0, 1, 2
+			// 		},
+			// 	];
+			// 	commit('SET_ADOPT_TYPE', 'protector');
+			// 	commit('SET_PROTECTOR_MAIN_LIST', newProtectorMainList);
+			// }
 		},
 
 		// 입양하기 상세

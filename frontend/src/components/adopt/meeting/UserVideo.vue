@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import OvVideo from '@/components/adopt/meeting/OvVideo';
+import OvVideo from './OvVideo';
 
 export default {
 	components: {

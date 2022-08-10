@@ -1,9 +1,9 @@
 server:
   port: 8081
-#  ssl:
-#    key-store: classpath:keystore.p12
-#    key-store-type: PKCS12
-#    key-store-password: mung209pro@
+  ssl:
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: mung209pro@
 spring:
 #
 #  profiles.active: local
@@ -128,3 +128,13 @@ app:
 openvidu:
     url: https://i7d209.p.ssafy.io:8443
     secret: mung209pro
+
+#logging
+#logging:
+#  file:
+#    name: /mungtopia-web.log
+#  level:
+#    root: INFO
+#    com.d209.mungtopia.oauth: DEBUG
+#    web: debug
+

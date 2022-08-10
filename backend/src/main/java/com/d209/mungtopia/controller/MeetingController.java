@@ -3,12 +3,10 @@ package com.d209.mungtopia.controller;
 import com.google.gson.JsonObject;
 import io.openvidu.java.client.*;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
@@ -74,6 +72,51 @@ public class MeetingController {
             return new ResponseEntity<>(responseJson, HttpStatus.OK);
         }catch (Exception e){
             return getErrorResponse(e);
+        }
+    }
+
+    @RequestMapping(value = "/remove-user", method = RequestMethod.POST)
+    public ResponseEntity<JSONObject> removeUser(@RequestBody String sessionNameToken, HttpSession httpSession)
+            throws Exception {
+        try {
+            checkUserLogged(httpSession);
+        } catch (Exception e) {
+            return getErrorResponse(e);
+        }
+        System.out.println("Removing user | {sessionName, token}=" + sessionNameToken);
+
+        // Retrieve the params from BODY
+        JSONObject sessionNameTokenJSON = (JSONObject) new JSONParser().parse(sessionNameToken);
+        String sessionName = (String) sessionNameTokenJSON.get("sessionName");
+        String token = (String) sessionNameTokenJSON.get("token");
+
+        // If the session exists
+        if (this.mapSessions.get(sessionName) != null && this.mapSessionNamesTokens.get(sessionName) != null) {
+
+            // If the token exists
+            if (this.mapSessionNamesTokens.get(sessionName).remove(token) != null) {
+                // User left the session
+                if (this.mapSessionNamesTokens.get(sessionName).isEmpty()) { // token 삭제
+                    // Last user left: session must be removed
+                    this.mapSessions.remove(sessionName); // 세션 지우기
+                }
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                // The TOKEN wasn't valid
+                System.out.println("Problems in the app server: the TOKEN wasn't valid");
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+        } else {
+            // The SESSION does not exist
+            System.out.println("Problems in the app server: the SESSION does not exist");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private void checkUserLogged(HttpSession httpSession) throws Exception {
+        if (httpSession == null || httpSession.getAttribute("loggedUser") == null) {
+            throw new Exception("User not logged");
         }
     }
 

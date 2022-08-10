@@ -42,14 +42,14 @@ export default {
 	setup() {
 		const store = useStore();
 		const router = useRouter();
-		const date = ref(store.getters['adopt/date'] || new Date());
+		const date = ref(new Date(store.getters['adopt/date']) || new Date());
 		const isReservated = computed(() => !(store.getters['adopt/date'] === ''));
 		const scheduleReservation = () => {
-			console.log(date);
+			console.log(date.value);
 			if (date.value === null) {
 				alert('날짜를 선택해주세요');
 			} else {
-				store.dispatch('adopt/saveSchedule', date);
+				store.dispatch('adopt/saveSchedule', date.value);
 				router.go(-1);
 			}
 		};

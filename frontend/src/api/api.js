@@ -1,5 +1,3 @@
-// const HOST = 'https://mungtopia.com/api/v1/';
-// const HOST = 'http://localhost:8080/api/v1/';
 const HOST = 'https://i7d209.p.ssafy.io:8081/api/v1/';
 
 const AUTH = 'auth/';

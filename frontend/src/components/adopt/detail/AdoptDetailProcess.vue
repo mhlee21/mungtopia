@@ -132,6 +132,7 @@ export default {
 				}
 				console.log(step);
 			} else if (step === 2) {
+				// 나중에 일정 예약시간 이전에는 disabled 처리할 것
 				router.push({
 					name: 'meeting',
 					params: { meetingRoomId: meetingRoomId.value },

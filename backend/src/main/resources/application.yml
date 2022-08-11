@@ -77,7 +77,7 @@ spring:
           clientSecret: IaJUKapzeCPgQFTaMYciJSVM0vcR6LAM
           clientAuthenticationMethod: post
           authorizationGrantType: authorization_code
-          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+          redirectUri: "{baseUrl}/api/v1/{action}/oauth2/code/{registrationId}"
           scope:
             - profile_nickname
             - profile_image
@@ -125,6 +125,7 @@ app:
     # 쿠키는 모바일 클라이언트에서 잘 작동하지 않기 때문에 사용하지 않습니다.
     authorizedRedirectUris:
       - https://i7d209.p.ssafy.io/oauth/redirect
+#      - https://localhost:3000/oauth/redirect
 # Openvidu 설정
 openvidu:
     url: https://i7d209.p.ssafy.io:8443

@@ -1,4 +1,4 @@
-package com.d209.mungtopia.dto.meeting.service;
+package com.d209.mungtopia.service;
 
 import com.d209.mungtopia.dto.AppDto;
 import com.d209.mungtopia.dto.BoardDto;
@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface BoardService {
     List<Board> findBoardAll(Long tagNo, int pageNo);
 
-    List<Board> search(Long tagNo, int pageNo);
+    List<Board> search(Long tagNo, int pageNo, String keyword);
     Board saveBoard(Long tagNo, BoardDto boardDto);
     Board updateBoard(Board board, BoardDto boardDto);
     Boolean deleteBoard(Board board);

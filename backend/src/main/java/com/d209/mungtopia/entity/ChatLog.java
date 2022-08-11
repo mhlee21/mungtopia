@@ -1,13 +1,19 @@
 package com.d209.mungtopia.entity;
 
-import lombok.Getter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Getter
+@Setter
+@Builder
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "chat_log", schema = "mungtopia")
 public class ChatLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +28,12 @@ public class ChatLog {
     private String content;
 
     @Column(name = "createtime")
-    private Timestamp createtime;
+    private LocalDateTime createtime;
+
+    @Column(name = "is_request")
+    private Boolean isRequest;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "chat_room_id", referencedColumnName = "chat_room_id", nullable = false)
+    @JoinColumn(name = "chat_room_id", referencedColumnName = "chat_room_id")
     private ChatRoom chatRoom;
 }

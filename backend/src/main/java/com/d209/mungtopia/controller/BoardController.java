@@ -11,7 +11,7 @@ import com.d209.mungtopia.entity.Reply;
 import com.d209.mungtopia.entity.User;
 import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;
-import com.d209.mungtopia.dto.meeting.service.BoardService;
+import com.d209.mungtopia.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -39,8 +39,9 @@ public class BoardController {
     @GetMapping("/search/{tag_no}")
     @ApiOperation(value = "search - 검색", notes = "검색")
     public ApiResponse search(@PathVariable("tag_no") Long tagNo,
-                              @RequestParam int pageNo) {
-        return ApiResponse.success("data", boardService.search(tagNo, pageNo));
+                              @RequestParam int pageNo,
+                              @RequestBody String keyword) {
+        return ApiResponse.success("data", boardService.search(tagNo, pageNo, keyword));
     }
 
     @PostMapping("{tag_no}")

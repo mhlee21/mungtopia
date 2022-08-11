@@ -1,4 +1,4 @@
-package com.d209.mungtopia.dto.meeting.service;
+package com.d209.mungtopia.service;
 
 import com.d209.mungtopia.dto.manage.AnswerDto;
 import com.d209.mungtopia.dto.manage.ApplicationDto;

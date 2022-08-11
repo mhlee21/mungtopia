@@ -174,7 +174,6 @@ export default {
 		const createToken = () => {
 			return new Promise((resolve, reject) => {
 				const userSeq = 1;
-				console.log(userSeq);
 				console.log(
 					JSON.stringify({ applicationId: route.params.applicationId }),
 				);

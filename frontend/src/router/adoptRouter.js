@@ -44,7 +44,7 @@ export default [
 		component: ScheduleView,
 	},
 	{
-		path: '/adopt/meeting/:meetingRoomId',
+		path: '/adopt/meeting/:applicationId',
 		name: 'meeting',
 		component: MeetingView,
 	},

@@ -1,23 +1,43 @@
 <template>
 	<ul class="bottom-navigation">
 		<!-- active 클래스 추가여부로 색상전환 가능 -->
-		<li class="nav-item active" @click="clickNavBar('boardMain')">
+		<li
+			class="nav-item"
+			@click="clickNavBar('boardMain')"
+			:class="{ active: isCurrentPage('boardMain') }"
+		>
 			<img src="@/assets/img/nav-icon1.svg" class="gray" />
 			<img src="@/assets/img/nav-icon1-on.svg" class="pink" />
 		</li>
-		<li class="nav-item" @click="clickNavBar('game')">
+		<li
+			class="nav-item"
+			@click="clickNavBar('game')"
+			:class="{ active: isCurrentPage('game') }"
+		>
 			<img src="@/assets/img/nav-icon2.svg" class="gray" />
 			<img src="@/assets/img/nav-icon2-on.svg" class="pink" />
 		</li>
-		<li class="nav-item" @click="clickNavBar('boardCreate')">
+		<li
+			class="nav-item"
+			@click="clickNavBar('boardCreate')"
+			:class="{ active: isCurrentPage('boardCreate') }"
+		>
 			<img src="@/assets/img/nav-icon3.svg" class="gray" />
 			<img src="@/assets/img/nav-icon3-on.svg" class="pink" />
 		</li>
-		<li class="nav-item" @click="clickNavBar('adopt')">
+		<li
+			class="nav-item"
+			@click="clickNavBar('adopt')"
+			:class="{ active: isCurrentPage('adopt') }"
+		>
 			<img src="@/assets/img/nav-icon4.svg" class="gray" />
 			<img src="@/assets/img/nav-icon4-on.svg" class="pink" />
 		</li>
-		<li class="nav-item" @click="clickNavBar('profile')">
+		<li
+			class="nav-item"
+			@click="clickNavBar('profile')"
+			:class="{ active: isCurrentPage('profile') }"
+		>
 			<img src="@/assets/img/nav-icon5.svg" class="gray" />
 			<img src="@/assets/img/nav-icon5-on.svg" class="pink" />
 		</li>
@@ -25,12 +45,13 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
 export default {
 	setup() {
 		const router = useRouter();
+		const route = useRoute();
 		const store = useStore();
 		const clickNavBar = name => {
 			switch (name) {
@@ -44,15 +65,19 @@ export default {
 					router.push({
 						name,
 						params: { userSeq: 1 },
-						// params: { userSeq: store.getters['auth/user']['userSeq'] },
+						// params: { userSeq: store.getters['auth/user']?.userSeq },
 					});
-					console.log(store.getters['auth/user']['userSeq']);
+					console.log(store.getters['auth/user']?.userSeq);
 					break;
 				default:
 					break;
 			}
 		};
-		return { clickNavBar };
+
+		const isCurrentPage = name => {
+			return route.name == name;
+		};
+		return { clickNavBar, isCurrentPage };
 	},
 };
 </script>

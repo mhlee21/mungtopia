@@ -239,7 +239,7 @@ export default {
 				commit('PLUS_MATCH_ANSWER', i);
 			}
 		},
-		
+
 		sendResult: ({ rootGetters }, payload) => {
 			axios({
 				url: api.game.saveGame(),

@@ -5,11 +5,11 @@
 				<div class="image-wrapper">
 					<img src="" alt="" class="profile-img" />
 				</div>
-				<div>사진 변경</div>
+				<a @click="changeProfile">사진 변경</a>
 			</div>
 			<div class="info-component">
 				<div class="username">황희원</div>
-				<div>
+				<div class="btn-wrapper">
 					<button class="info-btn">회원정보</button>
 				</div>
 			</div>
@@ -28,7 +28,8 @@ import NavBar from '@/components/NavBar.vue';
 export default {
 	components: { NavBar },
 	setup() {
-		return {};
+		const changeProfile = () => {};
+		return { changeProfile };
 	},
 };
 </script>

@@ -17,11 +17,15 @@ export default {
 	setup() {
 		const store = useStore();
 		const questionNumber = computed(() => store.getters['game/questionNumber']);
+		const gameType = computed(() => store.getters['game/gameType']);
 		const answerQuestion = () => {
 			if (questionNumber.value < 10) {
 				store.dispatch('game/plusQuestionNumber');
 			} else {
-				router.push({ path: '/game/main/finish' });
+				router.push({
+					name: 'GameFinish',
+					params: { gameType: gameType },
+				});
 			}
 		};
 		// const correctAnswer = (userAnswer, questionAnswer) => {

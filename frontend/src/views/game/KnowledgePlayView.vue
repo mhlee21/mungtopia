@@ -1,7 +1,7 @@
 <template>
 	<div class="frame">
 		<div class="status">
-			<h3>상태창</h3>
+			<GamePlayStatus></GamePlayStatus>
 		</div>
 		<div style="text-align: center">
 			<img src="" alt="" />
@@ -15,10 +15,12 @@
 import GameQuestion from '@/components/game/GameQuestion.vue';
 import { useStore } from 'vuex';
 import { computed } from 'vue';
+import GamePlayStatus from '@/components/game/GamePlayStatus.vue';
 
 export default {
 	components: {
 		GameQuestion,
+		GamePlayStatus,
 	},
 	setup() {
 		const store = useStore();
@@ -30,12 +32,14 @@ export default {
 
 <style lang="scss" scoped>
 .frame {
-	width: 350px;
-	height: 640px;
+	width: 100vw;
+	height: 100vh;
 	background-color: #fffbf0;
-	border: black solid 1px;
 	border-radius: 1rem;
+	box-sizing: border-box;
 	position: relative;
+	padding-top: 50px;
+	flex-direction: column;
 }
 .title {
 	text-align: center;
@@ -48,6 +52,9 @@ export default {
 	margin: 0px;
 	color: #0d6aba;
 	padding: 0px;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 30px;
 }
 
 img {

@@ -1484,6 +1484,60 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
 }
 
+/* 프로필 페이지 */
+
+.profile-pg {
+  background-color: #F9F9F9;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10vw;
+  box-sizing: border-box;
+}
+.profile-pg .info-wrapper {
+  display: flex;
+  background-color: white;
+  margin: 0 0 10px;
+  border-radius: 5px;
+  width: 90vw;
+  box-shadow: -2px 3px 4px rgba(0,0,0,0.2),2px 2px 4px rgba(0,0,0,0.2);
+  padding: 10px 30px;
+  box-sizing: border-box;
+}
+.profile-pg .info-wrapper .info-component {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.profile-pg .image-wrapper {
+  border-radius: 50%;
+  width: 20vw;
+  height: 20vw;
+}
+.profile-pg .board-wrapper {
+  margin: 20px 0;
+  width: 100%;
+}
+.profile-pg .btn-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.profile-pg .btn-wrapper .logout-btn {
+  background-color: white;
+  border: 1px solid #FFC7C7;
+  color: #FFC7C7;
+  border-radius: 5px;
+  font-size: 20px;
+  padding: 5px;
+  width: 100%;
+}
+
+
+/* 프로필 상세 페이지 */
 .profile-info-pg {
   width: 100%;
 	min-height: 100vh;
@@ -1524,7 +1578,6 @@ body {
 }
 .profile-info-pg .label {
   font-weight: 600;
-
 }
 .profile-info-pg .user-info-wrapper .user-info .user-info-input {
   width: max-content;

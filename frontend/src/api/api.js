@@ -113,7 +113,7 @@ export default {
 	},
 	meeting: {
 		// 오픈비두 들어오기
-		getOpenViduToken: applicationId => HOST + MEETING + `${applicationId}`,
+		getOpenViduToken: userSeq => HOST + MEETING + `${userSeq}`,
 		// 오픈비두 나가기
 		sessionDelete: applicationId => HOST + MEETING + `${applicationId}`,
 	},

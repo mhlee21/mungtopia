@@ -1,7 +1,7 @@
 <template>
 	<div class="profile-info-pg">
 		<div class="title-wrapper">
-			<i class="fa-solid fa-user"></i>
+			<i class="fa-solid fa-user profile-icon"></i>
 			<div>회원정보</div>
 		</div>
 		<div class="profile-info-form">
@@ -14,25 +14,31 @@
 				<!-- 성별 -->
 				<div class="user-info">
 					<div class="user-input-label label">성별</div>
-					<input
-						type="radio"
-						name="gender"
-						id="male"
-						v-model="gender"
-						value="남성"
-						:disabled="after"
-						checked
-					/>
-					<label for="male">남성</label>
-					<input
-						type="radio"
-						name="gender"
-						id="female"
-						v-model="gender"
-						value="여성"
-						:disabled="after"
-					/>
-					<label for="female">여성</label>
+					<div class="user-gender">
+						<div>
+							<input
+								type="radio"
+								name="gender"
+								id="male"
+								v-model="gender"
+								value="남성"
+								:disabled="after"
+								checked
+							/>
+							<label for="male">남성</label>
+						</div>
+						<div>
+							<input
+								type="radio"
+								name="gender"
+								id="female"
+								v-model="gender"
+								value="여성"
+								:disabled="after"
+							/>
+							<label for="female">여성</label>
+						</div>
+					</div>
 				</div>
 				<!-- 생년월일 -->
 				<div class="user-info">
@@ -56,7 +62,13 @@
 						<div class="user-info2">
 							<label for="zonecode" class="label">우편번호</label>
 							<div>
-								<input type="text" id="zonecode" v-model="zonecode" disabled />
+								<input
+									type="text"
+									id="zonecode"
+									v-model="zonecode"
+									disabled
+									class="input-round"
+								/>
 								<button v-if="!after">주소검색</button>
 							</div>
 						</div>
@@ -67,6 +79,7 @@
 								id="roadAddress"
 								v-model="roadAddress"
 								disabled
+								class="input-round"
 							/>
 						</div>
 						<div class="user-info2">
@@ -76,6 +89,7 @@
 								id="detailAddress"
 								v-model="detailAddress"
 								:disabled="after"
+								class="input-round"
 							/>
 						</div>
 					</div>

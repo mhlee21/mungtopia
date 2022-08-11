@@ -4,6 +4,7 @@ import com.d209.mungtopia.entity.User;
 import com.d209.mungtopia.repository.user.UserRepository;
 import com.d209.mungtopia.oauth.entity.UserPrincipal;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
+    @Autowired
     private final UserRepository userRepository;
 
     @Override

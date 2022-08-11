@@ -1,9 +1,13 @@
 package com.d209.mungtopia.controller;
 
-import com.google.gson.JsonObject;
+import com.d209.mungtopia.entity.Application;
+import com.d209.mungtopia.entity.Board;
+import com.d209.mungtopia.repository.InfApplicationRepository;
+import com.d209.mungtopia.repository.InfBoardRepository;
 import io.openvidu.java.client.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -19,86 +22,97 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequestMapping("/api/v1/meeting")
 public class MeetingController {
 
-    private OpenVidu openVidu;
-    // DB 대체
-    private Map<String, Session> mapSessions = new ConcurrentHashMap<>();
-    private Map<String, Map<String, OpenViduRole>> mapSessionNamesTokens = new ConcurrentHashMap<>();
+    private final InfApplicationRepository infApplicationRepository;
+    private final InfBoardRepository infBoardRepository;
 
-    // 포트 확인하기!
+    private OpenVidu openVidu;
+
+    // 세션 저장
+    private Map<Long, Session> mapSessions = new ConcurrentHashMap<>();
+    // 세션 이름으로 토큰 저장
+    private Map<Long, Map<Long, String>> mapSessionNamesTokens = new ConcurrentHashMap<>();
+
     private String OPENVIDU_URL = "https://i7d209.p.ssafy.io:8443";
     private String SECRET = "mung209pro";
 
-    public MeetingController() {
+    @Autowired
+    public MeetingController(InfApplicationRepository infApplicationRepository, InfBoardRepository infBoardRepository) {
+        this.infApplicationRepository = infApplicationRepository;
+        this.infBoardRepository = infBoardRepository;
         this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
     }
 
     @PostMapping("/{user_seq}")
-    public ResponseEntity<JSONObject> token(@PathVariable("user_seq") Long userSeq, HttpSession httpSession){
-        // 세션 설정 ?
-        System.out.println("userSeq = " + httpSession.toString());
+    public ResponseEntity<JSONObject> token(@PathVariable("user_seq") long userSeq, HttpSession httpSession, @RequestBody Long applicationId) {
+        // 유저 정보 session에 저장
         httpSession.setAttribute("loggedUser", userSeq);
         String serverData = "{\"serverData\": \"" + httpSession.getAttribute("loggedUser") + "\"}";
+        // connection 설정
         ConnectionProperties connectionProperties = new ConnectionProperties
                 .Builder()
                 .type(ConnectionType.WEBRTC)
                 .data(serverData)
                 .build();
 
+        // output 설정
         JSONObject responseJson = new JSONObject();
-        // 바로 세션 생성
-        try{
-            System.out.println(" ========== 세션 생성 직전");
+
+        //만약에 application_id로 sessionName을 조회했을 때 있으면 token update
+        if (this.mapSessions.containsKey(applicationId)) { // 세션 존재
+            try {
+                String token = this.mapSessions.get(applicationId).createConnection(connectionProperties).getToken();
+
+                // token userSeq를 key값으로 저장
+                this.mapSessionNamesTokens.get(applicationId).put(userSeq, token);
+
+                responseJson.put("token", token);
+                return new ResponseEntity<>(responseJson, HttpStatus.OK);
+            } catch (OpenViduJavaClientException e1) {
+                return getErrorResponse(e1);
+            } catch (OpenViduHttpException e2) {
+                if (404 == e2.getStatus()) {
+                    this.mapSessions.remove(applicationId);
+                    this.mapSessionNamesTokens.remove(applicationId);
+                }
+            }
+        }
+        //세션 없음 ->  세션 생성 후 token 발급
+        try {
             Session session = this.openVidu.createSession();
             String token = session.createConnection(connectionProperties).getToken();
-            String sessionName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm:ss-")) + userSeq;
 
-            // Store the session and the token in our collections
-            // table에 저장해야할 것 같음!
-            // sessionName : session 이렇게 저장
-            this.mapSessions.put(sessionName, session);//
-            this.mapSessionNamesTokens.put(sessionName, new ConcurrentHashMap<>());
-			/*
-			mapSessionNamesTokens -
-			{
-				token : role
-			}
-			* */
-            this.mapSessionNamesTokens.get(sessionName).put(token, OpenViduRole.PUBLISHER);
+            this.mapSessions.put(applicationId, session);
+            this.mapSessionNamesTokens.put(applicationId, new ConcurrentHashMap<>());
+            this.mapSessionNamesTokens.get(applicationId).put(userSeq, token);
 
-            // Prepare the response with the token
+            // 토큰 전송
             responseJson.put("token", token);
 
-            // Return the response to the client
             return new ResponseEntity<>(responseJson, HttpStatus.OK);
-        }catch (Exception e){
+        } catch (Exception e) {
             return getErrorResponse(e);
         }
     }
 
-    @RequestMapping(value = "/remove-user", method = RequestMethod.POST)
-    public ResponseEntity<JSONObject> removeUser(@RequestBody String sessionNameToken, HttpSession httpSession)
-            throws Exception {
+    @DeleteMapping("/{application_id}")
+    public ResponseEntity<JSONObject> removeUser(@PathVariable("application_id") long applicationId, HttpSession httpSession) throws Exception {
         try {
+            // 세션이 있는지 확인
             checkUserLogged(httpSession);
         } catch (Exception e) {
             return getErrorResponse(e);
         }
-        System.out.println("Removing user | {sessionName, token}=" + sessionNameToken);
 
-        // Retrieve the params from BODY
-        JSONObject sessionNameTokenJSON = (JSONObject) new JSONParser().parse(sessionNameToken);
-        String sessionName = (String) sessionNameTokenJSON.get("sessionName");
-        String token = (String) sessionNameTokenJSON.get("token");
+        long userSeq = (long) httpSession.getAttribute("loggedUser");
 
         // If the session exists
-        if (this.mapSessions.get(sessionName) != null && this.mapSessionNamesTokens.get(sessionName) != null) {
-
+        if (this.mapSessions.get(applicationId) != null && this.mapSessionNamesTokens.get(applicationId) != null) {
             // If the token exists
-            if (this.mapSessionNamesTokens.get(sessionName).remove(token) != null) {
+            if (this.mapSessionNamesTokens.get(applicationId).remove(userSeq) != null) {
                 // User left the session
-                if (this.mapSessionNamesTokens.get(sessionName).isEmpty()) { // token 삭제
+                if (this.mapSessionNamesTokens.get(applicationId).isEmpty()) { // token 삭제
                     // Last user left: session must be removed
-                    this.mapSessions.remove(sessionName); // 세션 지우기
+                    this.mapSessions.remove(applicationId); // 세션 지우기
                 }
                 return new ResponseEntity<>(HttpStatus.OK);
             } else {

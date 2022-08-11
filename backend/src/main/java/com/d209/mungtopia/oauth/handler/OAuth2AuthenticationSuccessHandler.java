@@ -48,6 +48,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     // 몇가지 유효성 검사를 수행하고, JWT 인증 토큰을 만들고, 쿼리 문자열에 추가된 JWT 토큰을 사용하여
     // 클라이언트가 지정한 redirect_uri로 사용자를 리디렉션
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        System.out.println("request = " + request);
+        System.out.println("response = " + response);
+        System.out.println("authentication = " + authentication);
+        Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+                .map(Cookie::getValue);
+        System.out.println("BEFORE!!!! :::: =========== determineTargetUrl = " + redirectUri);
         String targetUrl = determineTargetUrl(request, response, authentication);
 
         if (response.isCommitted()) {

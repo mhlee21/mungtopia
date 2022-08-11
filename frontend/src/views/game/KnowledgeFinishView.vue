@@ -14,12 +14,14 @@ export default {
 
 <style lang="scss" scoped>
 .frame {
-	width: 350px;
-	height: 640px;
+	width: 100vw;
+	height: 100vh;
 	background-color: #fffbf0;
-	border: black solid 1px;
 	border-radius: 1rem;
+	box-sizing: border-box;
 	position: relative;
+	padding-top: 50px;
+	flex-direction: column;
 }
 .title {
 	text-align: center;

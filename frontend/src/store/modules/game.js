@@ -22,6 +22,7 @@ export default {
 			matchCount: 0,
 			matchAnswer: {},
 			matchData: [],
+			statusWidth: 0,
 		};
 	},
 	getters: {
@@ -40,6 +41,7 @@ export default {
 		matchCount: state => state.matchCount,
 		matchAnswer: state => state.matchAnswer,
 		matchData: state => state.matchData,
+		statusWidth: state => state.statusWidth,
 	},
 	mutations: {
 		SET_GAME_TYPE: (state, gameType) => {
@@ -105,6 +107,9 @@ export default {
 		},
 		SET_MATCH_DATA: (state, matchData) => {
 			state.matchData = matchData;
+		},
+		PLUS_STATUS_WIDTH: (state, statusWidth) => {
+			state.statusWidth = statusWidth;
 		},
 	},
 	actions: {
@@ -285,6 +290,27 @@ export default {
 				.catch(err => {
 					console.error(err.response);
 				});
+		},
+
+		updateProgressbar: ({ commit, getters }) => {
+			const questionNumber = getters.questionNumber;
+			const gameType = getters.gameType;
+			if (gameType == 0) {
+				let width = (questionNumber / 9) * 100 + '%';
+				width = parseFloat(width).toFixed(2);
+				if (width > 100) width = 100;
+				commit('PLUS_STATUS_WIDTH', width);
+			} else if (gameType == 1) {
+				let width = (questionNumber / 11) * 100 + '%';
+				width = parseFloat(width).toFixed(2);
+				if (width > 100) width = 100;
+				commit('PLUS_STATUS_WIDTH', width);
+			} else {
+				let width = (questionNumber / 17) * 100 + '%';
+				width = parseFloat(width).toFixed(2);
+				if (width > 100) width = 100;
+				commit('PLUS_STATUS_WIDTH', width);
+			}
 		},
 	},
 };

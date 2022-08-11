@@ -1,31 +1,27 @@
 <template>
-	<div class="frame">
-		<!-- 제목 -->
-		<div>
-			<h2 class="title">멍토피아</h2>
-		</div>
-		<!-- 게임 리스트 -->
-		<div class="game-list">
-			<div class="game-btn" @click="gameEnter(0)">
-				<img src="" alt="" />
-				<div class="game-title">강아지식 테스트</div>
+	<div class="game-menu-pg">
+		<div class="frame">
+			<!-- 제목 -->
+			<div>
+				<h2 class="title">멍토피아</h2>
 			</div>
-			<div class="game-btn" @click="gameEnter(1)">
-				<img src="" alt="" />
-				<div class="game-title">댕BTI</div>
+			<!-- 게임 리스트 -->
+			<div class="game-list">
+				<div class="game-btn" @click="gameEnter(0)">
+					<img src="@/assets/images/knowledge.png" alt="" />
+					<div class="game-title">강아지식 테스트</div>
+				</div>
+				<div class="game-btn" @click="gameEnter(1)">
+					<img src="@/assets/images/mbti.jpg" alt="" />
+					<div class="game-title">댕BTI</div>
+				</div>
+				<div class="game-btn" @click="gameEnter(2)">
+					<img src="@/assets/images/matching.png" alt="" />
+					<div class="game-title">나와 잘맞는 반려견은?</div>
+				</div>
 			</div>
-			<div class="game-btn" @click="gameEnter(2)">
-				<img src="" alt="" />
-				<div class="game-title">나와 잘맞는 반려견은?</div>
-			</div>
-		</div>
-		<!-- 네브바 -->
-		<div class="navbar">
-			<button>홈</button>
-			<button>게임</button>
-			<button>추가</button>
-			<button>이력</button>
-			<button>프로필</button>
+			<NavBar></NavBar>
+			<!-- 네브바 -->
 		</div>
 	</div>
 </template>
@@ -33,8 +29,12 @@
 <script>
 import { useStore } from 'vuex';
 import router from '@/router';
+import NavBar from '@/components/NavBar.vue';
 
 export default {
+	components: {
+		NavBar,
+	},
 	setup() {
 		const store = useStore();
 		const gameEnter = gameType => {
@@ -44,7 +44,7 @@ export default {
 				params: { gameType: gameType },
 			});
 		};
-		return { gameEnter };
+		return { gameEnter, NavBar };
 	},
 };
 </script>
@@ -52,8 +52,9 @@ export default {
 <style lang="scss" scoped>
 .game-list {
 	display: flex;
-	align-content: space-between;
+	// align-content: space-between;
 	flex-wrap: wrap;
+	flex-direction: column;
 }
 .game-btn {
 	width: 280px;
@@ -67,23 +68,34 @@ export default {
 }
 .game-title {
 	width: 70%;
+	font-size: 100%;
 }
+// .frame {
+// 	width: 350px;
+// 	height: 640px;
+// 	background-color: #ff9898;
+// 	border: black solid 1px;
+// 	border-radius: 1rem;
+// 	position: relative;
+// }
 .frame {
-	width: 350px;
-	height: 640px;
+	width: 100%;
+	min-height: 100vh;
 	background-color: #ff9898;
-	border: black solid 1px;
-	border-radius: 1rem;
 	position: relative;
+	padding: 25px 30px 85px;
+	box-sizing: border-box;
 }
 img {
 	width: 130px;
 	height: 130px;
+	border-radius: 1rem;
 }
 .title {
 	text-align: center;
 	margin: 0;
 	padding: 10px;
+	font-size: 200%;
 }
 .navbar {
 	display: flex;
@@ -94,5 +106,9 @@ img {
 	bottom: 0;
 	width: 100%;
 	border-radius: 0 0 1rem 1rem;
+}
+.game-menu-pg {
+	display: flex;
+	justify-content: center;
 }
 </style>

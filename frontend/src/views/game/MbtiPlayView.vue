@@ -1,19 +1,29 @@
 <template>
 	<div class="frame">
+		<div class="status">
+			<h3>상태창</h3>
+		</div>
 		<div>
-			<h2 class="title">Fail</h2>
+			<h2 class="content">
+				Q1. 나에게 반려견을 맡긴 친구가 반려견의 안부를 묻는다면?
+			</h2>
 		</div>
 		<div style="text-align: center">
 			<img src="" alt="" />
 		</div>
-		<div class="content">
-			<div>10문제 중 4문제를 맞추었어요ㅠ</div>
+		<div class="game-btn">
+			<div class="start-btn">
+				뽀미는 잘지내!<br />
+				뽀미와의 하루에 대해<br />
+				보고한다.
+			</div>
 		</div>
 		<div class="game-btn">
-			<div class="start-btn">REPLAY</div>
-		</div>
-		<div class="game-btn">
-			<div class="start-btn">GAME MENU</div>
+			<div class="start-btn">
+				사진 폭격!<br />
+				사진을 왕창 보내며<br />
+				파워주접!
+			</div>
 		</div>
 	</div>
 </template>
@@ -40,9 +50,14 @@ export default {
 .title {
 	text-align: center;
 	margin: 20px;
-	color: #000000;
+	color: #0d6aba;
 	padding: 10px;
-	font-size: 50px;
+}
+.status {
+	text-align: center;
+	margin: 0px;
+	color: #0d6aba;
+	padding: 0px;
 }
 
 img {
@@ -52,9 +67,8 @@ img {
 
 .content {
 	text-align: center;
-	margin: 20px;
-	padding: 30px;
-	font-weight: bold;
+	margin: 10px;
+	padding: 10px;
 }
 .game-btn {
 	width: 90px;
@@ -64,13 +78,22 @@ img {
 	align-items: center;
 	text-align: center;
 	padding: 10px;
-	margin: 5px auto;
+	margin: 30px auto;
+	border-radius: 1rem;
+}
+.game-btn {
+	width: 200px;
+	height: 50px;
+	background-color: #0d6aba;
+	display: flex;
+	align-items: center;
+	text-align: center;
+	padding: 10px;
+	margin: 30px auto;
 	border-radius: 1rem;
 }
 .start-btn {
 	width: 100%;
 	color: #fffbf0;
-	font-size: 20px;
-	font-weight: bolder;
 }
 </style>

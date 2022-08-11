@@ -1,17 +1,17 @@
 <template>
-	<div>
-		<!-- 영상화면 -->
-		<div></div>
-		<div></div>
-	</div>
+	<div></div>
 </template>
 
 <script>
+// import OvVideo from '@/components/adopt/meeting/OvVideo';
+
 export default {
+	props: { publisher: Object, subscriber: Object },
 	setup() {
 		return {};
 	},
+	components: {
+		// OvVideo,
+	},
 };
 </script>
-
-<style lang="scss" scoped></style>

@@ -20,15 +20,9 @@ export default {
 			matchUserPoint: 0,
 			matchNum: [0, 0, 0, 0, 0, 0],
 			matchCount: 0,
-			matchAnswer: [
-				[0, 0],
-				[1, 0],
-				[2, 0],
-				[3, 0],
-				[4, 0],
-				[5, 0],
-			],
+			matchAnswer: {},
 			matchData: [],
+			statusWidth: 0,
 		};
 	},
 	getters: {
@@ -47,6 +41,7 @@ export default {
 		matchCount: state => state.matchCount,
 		matchAnswer: state => state.matchAnswer,
 		matchData: state => state.matchData,
+		statusWidth: state => state.statusWidth,
 	},
 	mutations: {
 		SET_GAME_TYPE: (state, gameType) => {
@@ -106,11 +101,14 @@ export default {
 		PLUS_MATCH_HASH: (state, matchHash) => {
 			state.matchHash += matchHash;
 		},
-		PLUS_MATCH_ANSWER: (state, i) => {
-			state.matchAnswer[i][1] += state.matchNum[i];
+		PLUS_MATCH_ANSWER: (state, data) => {
+			state.matchAnswer += data;
 		},
 		SET_MATCH_DATA: (state, matchData) => {
 			state.matchData = matchData;
+		},
+		PLUS_STATUS_WIDTH: (state, statusWidth) => {
+			state.statusWidth = statusWidth;
 		},
 	},
 	actions: {
@@ -284,6 +282,27 @@ export default {
 				.catch(err => {
 					console.error(err.response);
 				});
+		},
+
+		updateProgressbar: ({ commit, getters }) => {
+			const questionNumber = getters.questionNumber;
+			const gameType = getters.gameType;
+			if (gameType == 0) {
+				let width = (questionNumber / 9) * 100 + '%';
+				width = parseFloat(width).toFixed(2);
+				if (width > 100) width = 100;
+				commit('PLUS_STATUS_WIDTH', width);
+			} else if (gameType == 1) {
+				let width = (questionNumber / 11) * 100 + '%';
+				width = parseFloat(width).toFixed(2);
+				if (width > 100) width = 100;
+				commit('PLUS_STATUS_WIDTH', width);
+			} else {
+				let width = (questionNumber / 17) * 100 + '%';
+				width = parseFloat(width).toFixed(2);
+				if (width > 100) width = 100;
+				commit('PLUS_STATUS_WIDTH', width);
+			}
 		},
 	},
 };

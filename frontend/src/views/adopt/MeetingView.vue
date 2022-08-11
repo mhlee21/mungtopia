@@ -65,7 +65,7 @@ import { useStore } from 'vuex';
 import MeetingWait from '@/components/adopt/meeting/MeetingWait';
 import OvVideo from '@/components/adopt/meeting/OvVideo';
 import api from '@/api/api';
-// axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 export default {
 	setup() {
@@ -152,7 +152,6 @@ export default {
 		};
 
 		const leaveSession = () => {
-			// --- Leave the session by calling 'disconnect' method over the Session object ---
 			if (session.value) session.value.disconnect();
 
 			session.value = undefined;
@@ -160,9 +159,11 @@ export default {
 			subscriber.value = undefined;
 			OV.value = undefined;
 			console.log(162, 'userSeq넣기');
-			axios
-				.delete(api.meeting.sessionDelete(1))
-				.catch(error => console.log(error.response));
+			axios({
+				url: api.meeting.sessionDelete(1),
+				method: 'delete',
+				headers: store.getters['auth/authHeader'],
+			}).catch(error => console.log(error.response));
 			window.removeEventListener('beforeunload', leaveSession);
 		};
 
@@ -173,7 +174,9 @@ export default {
 		const createToken = () => {
 			return new Promise((resolve, reject) => {
 				const userSeq = 1;
-				console.log(userSeq);
+				console.log(
+					JSON.stringify({ applicationId: route.params.applicationId }),
+				);
 				axios({
 					url: api.meeting.getOpenViduToken(userSeq),
 					method: 'post',

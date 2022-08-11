@@ -5,11 +5,9 @@ import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.type.LongType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

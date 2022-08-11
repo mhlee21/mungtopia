@@ -1,8 +1,14 @@
 <template>
 	<div class="frame">
 		<GameTitle :gameTitle="gameTitle"></GameTitle>
-		<div style="text-align: center">
-			<img src="" alt="" />
+		<div style="text-align: center" v-if="gameType == 0">
+			<img src="@/assets/images/knowledge.jpg" alt="" />
+		</div>
+		<div style="text-align: center" v-else-if="gameType == 1">
+			<img src="@/assets/images/mbti.jpg" alt="" />
+		</div>
+		<div style="text-align: center" v-else>
+			<img src="@/assets/images/matching.jpg" alt="" />
 		</div>
 		<GameDescription :gameDescription="gameDescription"></GameDescription>
 		<GameMainButton></GameMainButton>
@@ -26,7 +32,8 @@ export default {
 		const store = useStore();
 		let gameTitle = computed(() => store.getters['game/gameTitle']);
 		let gameDescription = computed(() => store.getters['game/gameDescription']);
-		return { gameTitle, gameDescription };
+		let gameType = computed(() => store.getters['game/gameType']);
+		return { gameTitle, gameDescription, gameType };
 	},
 };
 </script>

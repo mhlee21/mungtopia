@@ -178,7 +178,7 @@ export default {
 					url: api.meeting.getOpenViduToken(userSeq),
 					method: 'post',
 					headers: store.getters['auth/authHeader'],
-					data: { applicationId: route.params.applicationId },
+					data: JSON.stringify({ applicationId: route.params.applicationId }),
 				})
 					.then(response => response.data)
 					.then(data => resolve(data.token))

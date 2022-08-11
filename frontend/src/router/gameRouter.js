@@ -2,9 +2,7 @@ import GameMainView from '@/views/game/GameMainView';
 import KnowledgeGameView from '@/views/game/KnowledgeGameView';
 import KnowledgePlayView from '@/views/game/KnowledgePlayView';
 import KnowledgeFinishView from '@/views/game/KnowledgeFinishView';
-import MbtiPlayView from '@/views/game/MbtiPlayView';
 import MbtiFinishView from '@/views/game/MbtiFinishView';
-import MatchPlayView from '@/views/game/MatchPlayView';
 import MatchFinishView from '@/views/game/MatchFinishView';
 
 export default [
@@ -29,21 +27,11 @@ export default [
 		component: KnowledgeFinishView,
 	},
 	{
-		path: '/game/2/play',
-		name: 'MbtiPlay',
-		component: MbtiPlayView,
-	},
-	{
 		path: '/game/2/finish/:mbtiResult',
 		name: 'MbtiFinish',
 		component: MbtiFinishView,
 	},
 
-	{
-		path: '/game/3/play',
-		name: 'MatchPlay',
-		component: MatchPlayView,
-	},
 	{
 		path: '/game/3/:matchResult',
 		name: 'MatchFinish',

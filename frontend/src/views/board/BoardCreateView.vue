@@ -1,6 +1,6 @@
 <template>
-	<div class="board-create-view">
-		<div class="new-adopt-pg">
+	<div class="new-adopt-pg">
+		<div class="form-wrapper">
 			<BoardCategory></BoardCategory>
 			<BoardCreateForm></BoardCreateForm>
 		</div>

@@ -1,6 +1,7 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
+import com.d209.mungtopia.dto.AppDto;
 import com.d209.mungtopia.dto.BoardDto;
 import com.d209.mungtopia.dto.CommentDto;
 import com.d209.mungtopia.dto.ReplyDto;
@@ -39,6 +40,13 @@ public class BoardController {
         return ApiResponse.success("data", boardService.findBoardAll(tagNo, pageNo));
     }
 
+    @GetMapping("/search/{tag_no}")
+    @ApiOperation(value = "search - 검색", notes = "검색")
+    public ApiResponse search(@PathVariable("tag_no") Long tagNo,
+                              @RequestParam int pageNo) {
+        return ApiResponse.success("data", boardService.search(tagNo, pageNo));
+    }
+
     @PostMapping("{tag_no}")
     @ApiOperation(value = "saveBoard - 글 쓰기", notes = "글 쓰기")
     public ApiResponse saveBoard(@PathVariable("tag_no") Long tagNo,
@@ -47,7 +55,7 @@ public class BoardController {
     }
 
     @PutMapping("detail/{board_id}/{user_id}")
-    @ApiOperation(value = "updateBoard - 글 수정", notes = "글 수정")
+    @ApiOperation(value = "updateBoard - 글 수정 (boardTag 변경 불가능)", notes = "글 수정 (boardTag 변경 불가능)")
     public ApiResponse updateBoard(@PathVariable("board_id") Long boardId,
                                    @PathVariable("user_id") Long userId,
                                    @RequestBody BoardDto boardDto) {
@@ -78,7 +86,13 @@ public class BoardController {
         return ApiResponse.success("data", boardService.findBoardDetail(boardId));
     }
 
-
+    @PostMapping("detail/{board_id}/applicant")
+    @ApiOperation(value = "saveApplication - 입양 신청서 작성하기", notes = "입양 신청서 작성하기")
+    public ApiResponse saveApplication(@PathVariable("board_id") Long boardId,
+                                       @RequestBody AppDto appDto) {
+        Board board = boardRepository.findById(boardId).get();
+        return ApiResponse.success("data", boardService.saveApplication(board, appDto));
+    }
 
     @PostMapping("like/{board_id}")
     @ApiOperation(value = "likes - 좋아요 하기", notes = "좋아요 하기")
@@ -196,7 +210,7 @@ public class BoardController {
         return ApiResponse.success("data", boardService.updateReply(board, reply, replyDto));
     }
 
-    @DeleteMapping("{board_id}/comments/{comment_id}reply/{reply_id}")
+    @DeleteMapping("{board_id}/comments/{comment_id}/reply/{reply_id}")
     @ApiOperation(value = "deleteReply - 대댓글 삭제", notes = "대댓글 삭제")
     public ApiResponse deleteReply (
             @PathVariable("board_id") Long boardId,

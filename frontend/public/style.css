@@ -999,7 +999,20 @@ body {
 
 
 /*게시글 작성-입양페이지*/
-.new-adopt-pg {}
+.new-adopt-pg {
+  width: 100%;
+  overflow: hidden; 
+}
+.new-adopt-pg .form-wrapper {
+  overflow: scroll;
+  padding: 40px 0 10px;
+  height: calc(100vh - 65px);
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 
 .new-adopt-pg .category-box {
   width:300px;
@@ -1296,8 +1309,19 @@ body {
   display: inline;
   font-size: 18px;
 }
+/* 입양 상세 페이지 - 입양보내기 */
+.adopt-detail-protector-pg {
+	width: 100%;
+	min-height: 100vh;
+	position: relative;
+	padding: 7vh 7vw 0;
+	background-color: #ff9898;
+  font-family: 'Noto Sans KR', sans-serif;
+  max-width: 100vw;
+  box-sizing: border-box;
+}
 
-/* 입양 상세 페이지 */
+/* 입양 상세 페이지 - 입양하기 */
 .adopt-detail-applicant-pg {
 	width: 100%;
 	min-height: 100vh;
@@ -1409,4 +1433,130 @@ body {
   width: 20px;
   height: 20px;
   text-align: center;
+}
+
+/* 입양신청서 보기 페이지 */
+.application-pg {
+  width: 100%;
+	min-height: 100vh;
+	position: relative;
+	padding: 0 7vw; 
+  font-family: 'Noto Sans KR', sans-serif;
+  max-width: 100vw;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.application-pg .application-wrapper {
+  background-color: white;
+  box-shadow: -2px 3px 4px rgba(0,0,0,0.2),2px 2px 4px rgba(0,0,0,0.2);
+  height: 40vh;
+  padding: 30px 40px;
+  width: 100%;
+}
+
+.application-pg .title-wrapper {
+  display: flex;
+  align-items: baseline;
+  color: black;
+  font-size: 24px;
+  justify-content: center;
+  margin-bottom: 10px;
+  font-weight: 700;
+  justify-content: space-evenly;
+  padding: 10px 20px;
+}
+.application-pg .btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+}
+.application-pg .btn-wrapper .btn {
+  margin: 10px 0;
+  background-color: #ff9898;
+  color: white;
+  border-radius: 5px;
+  height: 50px;
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.profile-info-pg {
+  width: 100%;
+	min-height: 100vh;
+	position: relative;
+	padding: 40px 7vw; 
+  font-family: 'Noto Sans KR', sans-serif;
+  max-width: 100vw;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #ff9898;
+}
+.profile-info-pg .title-wrapper {
+  display: flex;
+  color: white;
+  font-size: 30px;
+  padding: 0 30px 30px;
+}
+.profile-info-pg .profile-info-form {
+  background-color: white;
+  padding: 20px 30px;
+  border-radius: 5px;
+}
+.profile-info-pg .user-info-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.profile-info-pg .user-info-wrapper .user-info {
+  display: flex;
+  margin: 10px 0;
+  align-items: baseline;
+}
+.profile-info-pg .user-info-wrapper .user-info .user-input-label {
+  width: 20vw;
+}
+.profile-info-pg .label {
+  font-weight: 600;
+
+}
+.profile-info-pg .user-info-wrapper .user-info .user-info-input {
+  width: max-content;
+  border-radius: 5px;
+  border: none;
+  background-color: #DBDBDB;
+  height: 20px;
+}
+.profile-info-pg .btn-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+.profile-info-pg .btn-wrapper .save-btn {
+  background-color: #ff9898;
+  width: 120px;
+  height: 35px;
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  font-size: 16px;
+  padding: 5px;
+  font-weight: 700;
+}
+.profile-info-pg .user-info2 {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0 10px;
+}
+.profile-info-pg .user-info2 .user-info-address-box {
+  background-color: #d6d6d6;
+  padding: 20px 20px;
+  margin: 10px 0;
+  border-radius: 5px;
 }

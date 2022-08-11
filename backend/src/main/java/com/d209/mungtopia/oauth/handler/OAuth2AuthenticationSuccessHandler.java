@@ -12,6 +12,7 @@ import com.d209.mungtopia.oauth.token.AuthToken;
 import com.d209.mungtopia.oauth.token.AuthTokenProvider;
 import com.d209.mungtopia.utils.CookieUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -39,9 +40,13 @@ import static com.d209.mungtopia.oauth.repository.OAuth2AuthorizationRequestBase
 // OAuth2AuthenticationSuccessHandler의 onAuthenticationSuccess() 메소드를 호출
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Autowired
     private final AuthTokenProvider tokenProvider;
+    @Autowired
     private final AppProperties appProperties;
+    @Autowired
     private final UserRefreshTokenRepository userRefreshTokenRepository;
+    @Autowired
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
     @Override

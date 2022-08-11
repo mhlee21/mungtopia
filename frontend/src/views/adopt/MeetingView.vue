@@ -180,11 +180,16 @@ export default {
 				axios({
 					url: api.meeting.getOpenViduToken(userSeq),
 					method: 'post',
-					headers: store.getters['auth/authHeader'],
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: store.getters['auth/authHeader'],
+					},
 					data: JSON.stringify({ applicationId: route.params.applicationId }),
 				})
-					.then(response => response.data)
-					.then(data => resolve(data.token))
+					.then(response => {
+						resolve(response.data.body.data.token);
+					})
+
 					.catch(err => {
 						reject(err.response);
 					});

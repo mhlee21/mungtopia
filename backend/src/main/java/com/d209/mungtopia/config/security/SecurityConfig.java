@@ -29,6 +29,7 @@ import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
@@ -36,7 +37,7 @@ import java.util.Arrays;
 // 기본적으로 서로 다른 구성요소를 연결하여 응용 프로그램 전체의 보안 정책 결정
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CorsProperties corsProperties;
+//    private final CorsProperties corsProperties;
     private final AppProperties appProperties;
     private final AuthTokenProvider tokenProvider;
     private final CustomUserDetailsService userDetailsService;
@@ -183,19 +184,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     * CorsFilter는 CORS를 해결할 수 있다.
     * CorsConfigurationSource를 제공해 CorsFilter를 Spring Security에 통합가능
     * */
-    @Bean
-    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
-
-        // Cors 요청이 어떻게 허용 origin, 헤더, 메소드 등처리 되어야하는 방법을 지정
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedHeaders(Arrays.asList(corsProperties.getAllowedHeaders().split(",")));
-        corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
-        corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
-        corsConfig.setAllowCredentials(true);
-        corsConfig.setMaxAge(corsConfig.getMaxAge());
-
-        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
-        return corsConfigSource;
-    }
+//    @Bean
+//    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+//        UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
+//
+//        // Cors 요청이 어떻게 허용 origin, 헤더, 메소드 등처리 되어야하는 방법을 지정
+//        CorsConfiguration corsConfig = new CorsConfiguration();
+//        corsConfig.setAllowedHeaders(Arrays.asList(corsProperties.getAllowedHeaders().split(",")));
+//        corsConfig.setAllowedMethods(Arrays.asList(corsProperties.getAllowedMethods().split(",")));
+////        corsConfig.setAllowedOrigins(Arrays.asList(corsProperties.getAllowedOrigins().split(",")));
+//        corsConfig.setAllowedOrigins(List.of("*"));
+//        corsConfig.setAllowCredentials(true);
+//        corsConfig.setMaxAge(corsConfig.getMaxAge());
+//
+//        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
+//        return corsConfigSource;
+//    }
 }

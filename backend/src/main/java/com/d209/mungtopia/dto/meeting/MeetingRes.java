@@ -1,12 +1,12 @@
-package com.d209.mungtopia.dto;
+package com.d209.mungtopia.dto.meeting;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-public class MeetingDto {
-    private long applicationId;
+public class MeetingRes {
+    private String token;
 }

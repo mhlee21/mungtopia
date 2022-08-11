@@ -65,7 +65,7 @@ import { useStore } from 'vuex';
 import MeetingWait from '@/components/adopt/meeting/MeetingWait';
 import OvVideo from '@/components/adopt/meeting/OvVideo';
 import api from '@/api/api';
-axios.defaults.headers.post['Content-Type'] = 'application/json';
+// axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 export default {
 	setup() {
@@ -159,8 +159,9 @@ export default {
 			publisher.value = undefined;
 			subscriber.value = undefined;
 			OV.value = undefined;
+			console.log(162, 'userSeq넣기');
 			axios
-				.delete(api.meeting.sessionDelete(route.params.applicationId))
+				.delete(api.meeting.sessionDelete(1))
 				.catch(error => console.log(error.response));
 			window.removeEventListener('beforeunload', leaveSession);
 		};
@@ -177,7 +178,7 @@ export default {
 					url: api.meeting.getOpenViduToken(userSeq),
 					method: 'post',
 					headers: store.getters['auth/authHeader'],
-					data: route.params.applicationId,
+					data: { applicationId: route.params.applicationId },
 				})
 					.then(response => response.data)
 					.then(data => resolve(data.token))

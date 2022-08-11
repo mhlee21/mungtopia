@@ -70,11 +70,11 @@ export default {
                 sendAt: Date.now(),
                 isRequest: false,
                 };
-                this.stompClient.send("/api/v1/receive", JSON.stringify(msg), {});
+                this.stompClient.send("/receive", JSON.stringify(msg), {});
             }
         },
         connect() {
-            const serverURL = "http://localhost:8081"
+            const serverURL = "http://localhost:8081/api/v1/chat"
             let socket = new SockJS(serverURL);
             this.stompClient = Stomp.over(socket);
             console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
@@ -83,7 +83,7 @@ export default {
                 frame => {
                 this.connected = true;
                 console.log('소켓 연결 성공', frame);
-                this.stompClient.subscribe("/api/v1/send", res => {
+                this.stompClient.subscribe("/send", res => {
                     console.log('구독으로 받은 메시지 입니다.', res.body);
                     this.recvList.push(JSON.parse(res.body))
                 });

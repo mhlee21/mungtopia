@@ -103,9 +103,9 @@ cors:
   # 다음 구성에서 모든 origin을 활성화
   # 하지만 프로덕션 애플리케이션에서는 더 엄격하게 만들어야합니다.
 #  allowed-origins: 'https://i7d209.p.ssafy.io'
-  allowed-origins: '*'
+  allowed-origins: 'http://localhost:3000'
   allowed-methods: GET,POST,PUT,DELETE,OPTIONS
-  allowed-headers: '*'
+  allowed-headers: 'http://localhost:3000'
   max-age: 3600
 
 # jwt secret key 설정

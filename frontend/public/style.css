@@ -1513,6 +1513,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
 }
+.profile-pg .info-wrapper .info-component .change-btn-wrapper {
+  color: #626262;
+  margin: 10px;
+}
 .profile-pg .info-wrapper .info-component .username {
   padding-top: 30px;
   font-size: 18px;

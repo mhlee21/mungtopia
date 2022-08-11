@@ -71,6 +71,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         System.out.println("BEFORE :::: =========== redirectUri = " + redirectUri);
 
         if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
+            System.out.println("redirectUri = " + redirectUri);
+            System.out.println("redirectUri.isPresent() = " + redirectUri.isPresent());
+            System.out.println("redirectUri = " + redirectUri.get());
             throw new IllegalArgumentException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
         }
         System.out.println("AFTER :::: =========== redirectUri = " + redirectUri);

@@ -25,8 +25,11 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
     private final ApplicationRepository applicationRepository;
     private final AdoptionProcessRepository adoptionProcessRepository;
 //    private final AdoptionStepDateRepository adoptionStepDateRepository;
-    private final ImageStorageRepository imageStorageRepository;
-
+//    private final ImageStorageRepository imageStorageRepository;
+    private final InfImageStorageRepository infImageStorageRepository;
+    private final InfBoardRepository infBoardRepository;
+    private final InfUserRepository infUserRepository;
+    private final InfDogInfoRepository infDogInfoRepository;
     /**
      * 입양하기 메인
      * @param userId
@@ -34,12 +37,11 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
      */
     @Override
     public List<ApplicationListInfoRes> mainApplicationInfo(Long userId) {
-        Optional<User> user = Optional.ofNullable(userRepository.findOne(userId));
+        Optional<User> user = infUserRepository.findById(userId);
 
         if (user.isEmpty()){ // 예외처리
             return null;
         }
-
         List<Application> userApplicationList = user.get().getApplicationList();
 
         if (userApplicationList.isEmpty()){ // 이때까지 한 신청이 없다면 null을 리턴
@@ -54,12 +56,13 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
             response.setApplicationStatus(application.getApplicationStatus());
 
             Long boardId = application.getBoardId();
-            Board board = boardRepository.findOne(boardId);
-
-            response.setDogName(board.getDogInfo().getName());
-
-            List<ImageStorage> img = imageStorageRepository.findMainOne(boardId);
-            response.setDogImg(img.get(0).getOriginFilename());
+            Optional<Board> board = infBoardRepository.findById(boardId);
+            if (board.isEmpty())
+                return null;
+            Optional<DogInfo> dogInfo = infDogInfoRepository.findById(board.get().getDogInfo().getDogInfoId());
+            response.setDogName(dogInfo.get().getName());
+            ImageStorage img = infImageStorageRepository.findByBoardAndOrders(board.get(), 1);
+            response.setDogImg(img.getOriginFilename());
             responseList.add(response);
         }
 

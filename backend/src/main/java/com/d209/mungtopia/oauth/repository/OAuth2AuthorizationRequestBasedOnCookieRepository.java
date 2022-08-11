@@ -18,6 +18,7 @@ public class OAuth2AuthorizationRequestBasedOnCookieRepository implements Author
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
+        System.out.println("==============REDIRECT_URI_PARAM_COOKIE_NAME = " + REDIRECT_URI_PARAM_COOKIE_NAME);
         return CookieUtil.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)
                 .map(cookie -> CookieUtil.deserialize(cookie, OAuth2AuthorizationRequest.class))
                 .orElse(null);

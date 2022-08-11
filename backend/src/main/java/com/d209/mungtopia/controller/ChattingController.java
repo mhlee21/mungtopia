@@ -1,7 +1,6 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.dto.ChatLogDto;
-import com.d209.mungtopia.entity.ChatLog;
 import com.d209.mungtopia.service.ChattingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;

@@ -5,7 +5,6 @@ import com.d209.mungtopia.dto.user.UserBoaordRes;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.InfImageStorageRepository;
 import com.d209.mungtopia.repository.InfUserRepository;
-import com.d209.mungtopia.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

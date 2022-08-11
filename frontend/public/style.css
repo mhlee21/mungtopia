@@ -1495,6 +1495,7 @@ body {
   align-items: center;
   padding: 10vw;
   box-sizing: border-box;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 .profile-pg .info-wrapper {
   display: flex;
@@ -1512,10 +1513,26 @@ body {
   flex-direction: column;
   justify-content: space-between;
 }
+.profile-pg .info-wrapper .info-component .username {
+  padding-top: 30px;
+  font-size: 18px;
+}
+.profile-pg .info-wrapper .info-component .info-btn {
+  background-color: #F2F2F2;
+  border-radius: 15px;
+  border: none;
+  height: 30px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+}
 .profile-pg .image-wrapper {
   border-radius: 50%;
-  width: 20vw;
-  height: 20vw;
+  width: 30vw;
+  height: 30vw;
+  overflow: hidden;
+}
+.profile-pg .image-wrapper .profile-img {
+  height: 30vw;
 }
 .profile-pg .board-wrapper {
   margin: 20px 0;
@@ -1534,6 +1551,7 @@ body {
   font-size: 20px;
   padding: 5px;
   width: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 

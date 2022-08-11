@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/manage/applicants")
+@RequestMapping("/api/v1/manage/applicant")
 @Api(value = "입양하기 - 입양인 API", tags = "Manage Applicant Controller - 입양하기(입양인) API")
 @RequiredArgsConstructor
 public class ManageApplicantController {

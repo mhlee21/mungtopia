@@ -2,7 +2,7 @@ package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
 import com.d209.mungtopia.dto.protector.StepRes;
-import com.d209.mungtopia.service.ManageProtectorService;
+import com.d209.mungtopia.dto.meeting.service.ManageProtectorService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;

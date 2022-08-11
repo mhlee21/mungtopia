@@ -1,4 +1,4 @@
-package com.d209.mungtopia.service;
+package com.d209.mungtopia.dto.meeting.service;
 
 import com.d209.mungtopia.dto.game.GameReq;
 import com.d209.mungtopia.dto.game.MatchingGameReq;

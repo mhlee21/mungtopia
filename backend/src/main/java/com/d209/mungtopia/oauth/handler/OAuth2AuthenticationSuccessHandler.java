@@ -62,11 +62,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
+        System.out.println("BEFORE :::: =========== redirectUri = " + redirectUri);
 
         if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
             throw new IllegalArgumentException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
         }
-
+        System.out.println("AFTER :::: =========== redirectUri = " + redirectUri);
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
@@ -92,7 +93,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 appProperties.getAuth().getTokenSecret(),
                 new Date(now.getTime() + refreshTokenExpiry)
         );
-
+        System.out.println("=============== refresh 토큰 저장 ========= refreshTokenExpiry = " + refreshTokenExpiry);
         // DB 저장
         UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
         if (userRefreshToken != null) {
@@ -101,7 +102,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             userRefreshToken = new UserRefreshToken(userInfo.getId(), refreshToken.getToken());
             userRefreshTokenRepository.saveAndFlush(userRefreshToken);
         }
-
+        System.out.println("=============== DB 저장 ========= userRefreshToken = " + userRefreshToken);
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
 
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);

@@ -12,28 +12,46 @@ export default [
 		component: GameMainView,
 	},
 	{
-		path: '/game/main',
-		name: 'KnowledgeGame',
+		path: '/game/:gameType',
+		name: 'GameIntro',
 		component: KnowledgeGameView,
 	},
 	{
-		path: '/game/main/play',
-		name: 'KnowledgePlay',
+		path: '/game/:gameType/play',
+		name: 'GamePlay',
 		component: KnowledgePlayView,
 	},
 	{
-		path: '/game/main/finish',
-		name: 'KnowledgeFinish',
+		path: '/game/:gameType/finish',
+		name: 'GameFinish',
 		component: KnowledgeFinishView,
 	},
 	{
+<<<<<<< HEAD
+		path: '/game/1/play',
+		name: 'MbtiPlay',
+		component: MbtiPlayView,
+	},
+	{
+		path: '/game/1/:mbtiResult',
+=======
 		path: '/game/2/finish/:mbtiResult',
+>>>>>>> develop
 		name: 'MbtiFinish',
 		component: MbtiFinishView,
 	},
 
 	{
+<<<<<<< HEAD
+		path: '/game/2/play',
+		name: 'MatchPlay',
+		component: MatchPlayView,
+	},
+	{
+		path: '/game/2/:matchResult',
+=======
 		path: '/game/3/:matchResult',
+>>>>>>> develop
 		name: 'MatchFinish',
 		component: MatchFinishView,
 	},

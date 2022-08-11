@@ -63,13 +63,14 @@ export default {
 		const questionNumber = computed(() => store.getters['game/questionNumber']);
 		const correctAnswer = computed(() => store.getters['game/correctAnswer']);
 		const gameType = computed(() => store.getters['game/gameType']);
-		const matchAnswer = computed(() => store.getters['game/matchAnswer']);
+		const matchNum = computed(() => store.getters['game/matchNum']);
 		const answerQuestion = useranswer => {
 			if (questionNumber.value < 10) {
 				if (useranswer == props.gameQuestion[questionNumber.value]['answer']) {
 					store.dispatch('game/plusAnswerPoint');
 				}
 				store.dispatch('game/plusQuestionNumber');
+				store.dispatch('game/updateProgressbar');
 				if (questionNumber.value == 10) {
 					if (correctAnswer.value >= 7) {
 						const payload = {
@@ -105,6 +106,7 @@ export default {
 				});
 			} else {
 				store.dispatch('game/plusQuestionNumber');
+				store.dispatch('game/updateProgressbar');
 			}
 		};
 
@@ -115,11 +117,10 @@ export default {
 				userAnswer,
 			});
 			if (questionNumber.value == 17) {
-				store.dispatch('game/matchResult');
 				const payload = {
+					// userSeq: store.getters['auth/user']['userSeq'],
 					userSeq: 1,
-					// store.getters['auth/user']['userSeq'],
-					matchAnswer: matchAnswer,
+					matchAnswer: matchNum,
 					gameTag: gameType,
 				};
 				console.log(JSON.stringify(payload));
@@ -130,6 +131,7 @@ export default {
 				});
 			} else {
 				store.dispatch('game/plusQuestionNumber');
+				store.dispatch('game/updateProgressbar');
 			}
 		};
 		return {

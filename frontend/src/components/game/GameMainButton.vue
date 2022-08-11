@@ -11,14 +11,22 @@
 import { useStore } from 'vuex';
 import router from '@/router';
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 export default {
 	setup() {
 		const store = useStore();
-		const gameType = computed(() => store.getters['game/gameType']);
+		const route = useRoute();
+		const gameType = computed(
+			() => store.getters['game/gameType'],
+			route.params.gameType,
+		);
 		const gameStart = gameType => {
 			store.dispatch('game/solveGame', gameType);
-			router.push({ path: '/game/main/play' });
+			router.push({
+				name: 'GamePlay',
+				params: { gameType: gameType },
+			});
 		};
 		const gameBack = () => {
 			router.push({ path: '/game' });

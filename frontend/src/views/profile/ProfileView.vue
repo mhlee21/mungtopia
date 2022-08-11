@@ -10,7 +10,9 @@
 					/>
 				</div>
 				<div>
-					<a @click="changeProfile"><small>사진 변경</small></a>
+					<a @click="changeProfile" class="change-btn"
+						><small>사진 변경</small></a
+					>
 				</div>
 			</div>
 			<div class="info-component">

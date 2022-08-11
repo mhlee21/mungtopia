@@ -119,7 +119,7 @@ export default {
 				console.warn(exception);
 			});
 
-			getToken(mySessionId.value).then(token => {
+			getToken().then(token => {
 				session.value
 					.connect(token, { clientData: myUserName.value })
 					.then(() => {
@@ -152,16 +152,18 @@ export default {
 		};
 
 		const leaveSession = () => {
-			// --- Leave the session by calling 'disconnect' method over the Session object ---
 			if (session.value) session.value.disconnect();
 
 			session.value = undefined;
 			publisher.value = undefined;
 			subscriber.value = undefined;
 			OV.value = undefined;
-			axios
-				.delete(api.meeting.sessionDelete(route.params.applicationId))
-				.catch(error => console.log(error.response));
+			console.log(162, 'userSeq넣기');
+			axios({
+				url: api.meeting.sessionDelete(1),
+				method: 'delete',
+				headers: store.getters['auth/authHeader'],
+			}).catch(error => console.log(error.response));
 			window.removeEventListener('beforeunload', leaveSession);
 		};
 
@@ -171,11 +173,15 @@ export default {
 
 		const createToken = () => {
 			return new Promise((resolve, reject) => {
+				const userSeq = 1;
+				console.log(
+					JSON.stringify({ applicationId: route.params.applicationId }),
+				);
 				axios({
-					url: api.meeting.getOpenViduToken(route.params.applicationId),
+					url: api.meeting.getOpenViduToken(userSeq),
 					method: 'post',
 					headers: store.getters['auth/authHeader'],
-					data: { userSeq: 1 },
+					data: JSON.stringify({ applicationId: route.params.applicationId }),
 				})
 					.then(response => response.data)
 					.then(data => resolve(data.token))

@@ -20,22 +20,22 @@ public class DogNature {
     private long dogNatureId;
 
     @Column(name = "nature1")
-    private String nature1;
+    private int nature1;
 
     @Column(name = "nature2")
-    private String nature2;
+    private int nature2;
 
     @Column(name = "nature3")
-    private String nature3;
+    private int nature3;
 
     @Column(name = "nature4")
-    private String nature4;
+    private int nature4;
 
     @Column(name = "nature5")
-    private String nature5;
+    private int nature5;
 
     @Column(name = "nature6")
-    private String nature6;
+    private int nature6;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dog_info_id", referencedColumnName = "dog_info_id", nullable = false)

@@ -5,16 +5,24 @@
 			스피너 구현될 예정입니다.
 		</div>
 		<div v-else class="meeting-component">
-			<!-- 비디오를 켜지 않았을 때 -->
-			<div v-if="!isVideoOn">
+			<!-- 내화면 -->
+			<div v-if="isVideoOn && publisher">
+				<div class="publisher-wrapper">
+					<ov-video :stream-manager="publisher" />
+				</div>
+			</div>
+			<div v-if="!subscriber">
 				<MeetingWait></MeetingWait>
 			</div>
+			<!-- <div v-else>
+				<div class="publisher-wrapper black-view"></div>
+			</div> -->
+			<!-- 상대화면 -->
+			<!-- 비디오를 켜지 않았을 때 -->
 			<!-- 비디오를 켰을 때 -->
-			<div v-else>
-				<MeetingCall
-					:publisher="publisher"
-					:subscriber="subscriber"
-				></MeetingCall>
+
+			<div v-else class="subscriber-wrapper">
+				<ov-video :stream-manager="subscriber" />
 			</div>
 
 			<!-- 하단 버튼 -->
@@ -51,16 +59,19 @@
 <script>
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
-import MeetingWait from '@/components/adopt/meeting/MeetingWait';
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import MeetingCall from '@/components/adopt/meeting/MeetingCall';
-
+import { useRouter, useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import MeetingWait from '@/components/adopt/meeting/MeetingWait';
+import OvVideo from '@/components/adopt/meeting/OvVideo';
+import api from '@/api/api';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 export default {
 	setup() {
 		const router = useRouter();
+		const route = useRoute();
+		const store = useStore();
 
 		let OV = ref(undefined);
 		let session = ref(undefined);
@@ -97,7 +108,7 @@ export default {
 
 			session.value.on('streamCreated', ({ stream }) => {
 				subscriber.value = session.value.subscribe(stream);
-				console.log('heewon');
+				console.log(subscriber);
 			});
 
 			session.value.on('streamDestroyed', () => {
@@ -112,22 +123,21 @@ export default {
 				session.value
 					.connect(token, { clientData: myUserName.value })
 					.then(() => {
-						// --- Get your own camera stream with the desired properties ---
-
 						publisher.value = OV.value.initPublisher(undefined, {
-							audioSource: undefined, // The source of audio. If undefined default microphone
-							videoSource: undefined, // The source of video. If undefined default webcam
-							publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-							publishVideo: true, // Whether you want to start publishing with your video enabled or not
-							resolution: '640x480', // The resolution of your video
-							frameRate: 30, // The frame rate of your video
-							insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
-							mirror: false, // Whether to mirror your local video or not
+							audioSource: undefined,
+							videoSource: undefined,
+							publishAudio: true,
+							publishVideo: true,
+							resolution: '1080x1920',
+							frameRate: 30,
+							insertMode: 'APPEND',
+							mirror: false,
 						});
 
 						// --- Publish your stream ---
 
 						session.value.publish(publisher.value);
+						console.log(publisher.value);
 					})
 					.catch(error => {
 						console.log(
@@ -149,71 +159,29 @@ export default {
 			publisher.value = undefined;
 			subscriber.value = undefined;
 			OV.value = undefined;
-
+			axios
+				.delete(api.meeting.sessionDelete(route.params.applicationId))
+				.catch(error => console.log(error.response));
 			window.removeEventListener('beforeunload', leaveSession);
 		};
 
-		const getToken = mySessionId => {
-			return createSession(mySessionId).then(sessionId =>
-				createToken(sessionId),
-			);
+		const getToken = () => {
+			return createToken();
 		};
 
-		// See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
-		const createSession = sessionId => {
+		const createToken = () => {
 			return new Promise((resolve, reject) => {
-				axios
-					.post(
-						`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
-						JSON.stringify({
-							customSessionId: sessionId,
-						}),
-						{
-							auth: {
-								username: 'OPENVIDUAPP',
-								password: OPENVIDU_SERVER_SECRET,
-							},
-						},
-					)
-					.then(response => response.data)
-					.then(data => resolve(data.id))
-					.catch(error => {
-						if (error.response.status === 409) {
-							resolve(sessionId.value);
-						} else {
-							console.warn(
-								`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`,
-							);
-							if (
-								window.confirm(
-									`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`,
-								)
-							) {
-								location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
-							}
-							reject(error.response);
-						}
-					});
-			});
-		};
-
-		// See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
-		const createToken = sessionId => {
-			return new Promise((resolve, reject) => {
-				axios
-					.post(
-						`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-						{},
-						{
-							auth: {
-								username: 'OPENVIDUAPP',
-								password: OPENVIDU_SERVER_SECRET,
-							},
-						},
-					)
+				axios({
+					url: api.meeting.getOpenViduToken(route.params.applicationId),
+					method: 'post',
+					headers: store.getters['auth/authHeader'],
+					data: { userSeq: 1 },
+				})
 					.then(response => response.data)
 					.then(data => resolve(data.token))
-					.catch(error => reject(error.response));
+					.catch(err => {
+						reject(err.response);
+					});
 			});
 		};
 
@@ -237,7 +205,7 @@ export default {
 	},
 	components: {
 		MeetingWait,
-		MeetingCall,
+		OvVideo,
 	},
 };
 </script>

@@ -112,8 +112,10 @@ export default {
 			HOST + ADOPT + SCHEDULE + `${adoptionProcessId}`,
 	},
 	meeting: {
-		// 오픈비두 토큰 받기
-		getOpenViduToken: userSeq => HOST + MEETING + `${userSeq}`,
+		// 오픈비두 들어오기
+		getOpenViduToken: applicationId => HOST + MEETING + `${applicationId}`,
+		// 오픈비두 나가기
+		sessionDelete: applicationId => HOST + MEETING + `${applicationId}`,
 	},
 	user: {
 		// 유저 정보

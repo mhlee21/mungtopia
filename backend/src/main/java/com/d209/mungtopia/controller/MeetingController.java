@@ -1,5 +1,6 @@
 package com.d209.mungtopia.controller;
 
+import com.d209.mungtopia.dto.MeetingDto;
 import com.d209.mungtopia.entity.Application;
 import com.d209.mungtopia.entity.Board;
 import com.d209.mungtopia.repository.InfApplicationRepository;
@@ -43,8 +44,10 @@ public class MeetingController {
     }
 
     @PostMapping("/{user_seq}")
-    public ResponseEntity<JSONObject> token(@PathVariable("user_seq") long userSeq, HttpSession httpSession, @RequestBody Long applicationId) {
+    public ResponseEntity<JSONObject> token(@PathVariable("user_seq") long userSeq, HttpSession httpSession, @RequestBody MeetingDto meetingDto) {
         // 유저 정보 session에 저장
+        System.out.println("applicationId = " + meetingDto);
+        long applicationId = meetingDto.getApplicationId();
         httpSession.setAttribute("loggedUser", userSeq);
         String serverData = "{\"serverData\": \"" + httpSession.getAttribute("loggedUser") + "\"}";
         // connection 설정

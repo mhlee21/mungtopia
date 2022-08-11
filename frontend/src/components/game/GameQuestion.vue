@@ -123,6 +123,7 @@ export default {
 					matchAnswer: matchNum,
 					gameTag: gameType,
 				};
+				console.log(JSON.stringify(payload));
 				store.dispatch('game/sendResult', payload);
 				router.push({
 					name: 'MatchFinish',

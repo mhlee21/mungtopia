@@ -5,10 +5,13 @@ import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.type.LongType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 public class BoardServiceImpl implements BoardService {
-
+    static String[] boardTag = {"입양", "후기", "잡담"};
     private final UserRepository userRepository;
     private final InfBoardRepository boardRepository;
     private final InfLikeRepository likeRepository;
@@ -26,6 +29,9 @@ public class BoardServiceImpl implements BoardService {
     private final InfReplyRepository replyRepository;
     private final InfDogInfoRepository dogInfoRepository;
     private final InfDogNatureRepository dogNatureRepository;
+    private final InfImageStorageRepository imageStorageRepository;
+    private final InfApplicationRepository applicationRepository;
+    private final InfAnswerRepository answerRepository;
 
     public Timestamp getNow(){
         return new Timestamp(System.currentTimeMillis());
@@ -39,37 +45,43 @@ public class BoardServiceImpl implements BoardService {
          * 후기 : 2
          * 자유 : 3
          */
-//        System.out.printf("%d %d\n", tagNo, pageNo);
-        List<Board> boardList = boardRepository.findAll();
-//        List<DogInfo> dogInfoList = dogInfoRepository.findDogInfoAll();
+        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue()-1]);
+        return boardList;
+    }
 
-
-        return null;
+    @Override
+    public List<Board> search(Long tagNo, int pageNo) {
+        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue()-1]);
+        return boardList;
     }
 
     @Override
     public Board saveBoard(Long tagNo, BoardDto boardDto) {
         User user = userRepository.findById(boardDto.getUserSeq()).get();
+
+        Board board = Board.builder()
+                .boardTag(boardTag[tagNo.intValue()-1])
+                .contents(boardDto.getContents())
+                .createtime(getNow())
+                .user(user)
+                .build();
+        boardRepository.save(board);
+
         List<ImageStorage> imageStorageList = new ArrayList<>();
         for (ImageStorageDto imageStorageDto: boardDto.getImageStorageDtoList()) {
             ImageStorage imageStorage = ImageStorage.builder()
                     .orders(imageStorageDto.getOrders())
                     .filename(imageStorageDto.getFilename())
+                    .board(board)
                     .build();
+            imageStorageRepository.save(imageStorage);
             imageStorageList.add(imageStorage);
         }
+        board.setImageStorageList(imageStorageList);
+
         if (tagNo == 1) { // 입양
-            DogNature dogNature = DogNature.builder()
-                    .nature1(boardDto.getNature1())
-                    .nature2(boardDto.getNature2())
-                    .nature3(boardDto.getNature3())
-                    .nature4(boardDto.getNature4())
-                    .nature5(boardDto.getNature5())
-                    .nature6(boardDto.getNature6())
-                    .build();
-            dogNatureRepository.save(dogNature);
-            System.out.println(dogNature.toString());
             DogInfo dogInfo = DogInfo.builder()
+                    .board(board)
                     .name(boardDto.getName())
                     .areaSido(boardDto.getAreaSido())
                     .areaGugun(boardDto.getAreaGugun())
@@ -80,36 +92,76 @@ public class BoardServiceImpl implements BoardService {
                     .vaccination(boardDto.getVaccination())
                     .neutering(boardDto.getNeutering())
                     .adoptionStatus(boardDto.getAdoptionStatus())
-                    .dogNature(dogNature)
                     .build();
             dogInfoRepository.save(dogInfo);
-            System.out.println(dogInfo.toString());
-            Board board = Board.builder()
-                    .boardTag("입양")
-                    .contents(boardDto.getContents())
-                    .createtime(getNow())
-                    .user(user)
+            board.setDogInfo(dogInfo);
+
+            DogNature dogNature = DogNature.builder()
                     .dogInfo(dogInfo)
-                    .imageStorageList(imageStorageList)
+                    .nature1(boardDto.getNature1())
+                    .nature2(boardDto.getNature2())
+                    .nature3(boardDto.getNature3())
+                    .nature4(boardDto.getNature4())
+                    .nature5(boardDto.getNature5())
+                    .nature6(boardDto.getNature6())
                     .build();
-            boardRepository.save(board);
-            return board;
-        } else { // 후기, 자유
-            Board board = Board.builder()
-                    .boardTag("후기")
-                    .contents(boardDto.getContents())
-                    .createtime(getNow())
-                    .user(user)
-                    .imageStorageList(imageStorageList)
-                    .build();
-            boardRepository.save(board);
-            return board;
+            dogNatureRepository.save(dogNature);
+            dogInfo.setDogNature(dogNature);
         }
+        return board;
     }
 
     @Override
     public Board updateBoard(Board board, BoardDto boardDto) {
-        return null;
+        //Contents 수정
+        board.setContents(boardDto.getContents());
+
+        //image 수정
+        List<ImageStorage> imageStorageList = board.getImageStorageList();
+        if (! imageStorageList.isEmpty()) {
+            //기존 이미지 모두 지우기
+            for (ImageStorage imageStorage : imageStorageList) {
+                imageStorageRepository.delete(imageStorage);
+            }
+        }
+
+        //이미지 새로 저장하기
+        List<ImageStorage> newImageStorageList = new ArrayList<>();
+        for (ImageStorageDto imageStorageDto: boardDto.getImageStorageDtoList()) {
+            ImageStorage imageStorage = ImageStorage.builder()
+                    .orders(imageStorageDto.getOrders())
+                    .filename(imageStorageDto.getFilename())
+                    .board(board)
+                    .build();
+            newImageStorageList.add(imageStorage);
+        }
+        board.setImageStorageList(newImageStorageList);
+
+        //DogInfo 수정
+        DogInfo dogInfo = board.getDogInfo();
+        dogInfo.setName(boardDto.getName());
+        dogInfo.setAreaSido(boardDto.getAreaSido());
+        dogInfo.setAreaGugun(boardDto.getAreaGugun());
+        dogInfo.setGender(boardDto.getGender());
+        dogInfo.setAge(boardDto.getAge());
+        dogInfo.setWeight(boardDto.getWeight());
+        dogInfo.setBreed(boardDto.getBreed());
+        dogInfo.setVaccination(boardDto.getVaccination());
+        dogInfo.setNeutering(boardDto.getNeutering());
+        dogInfo.setAdoptionStatus(boardDto.getAdoptionStatus());
+        dogInfoRepository.save(dogInfo);
+
+        //DogNature 수정
+        DogNature dogNature = dogInfo.getDogNature();
+        dogNature.setNature1(boardDto.getNature1());
+        dogNature.setNature2(boardDto.getNature2());
+        dogNature.setNature3(boardDto.getNature3());
+        dogNature.setNature4(boardDto.getNature4());
+        dogNature.setNature5(boardDto.getNature5());
+        dogNature.setNature6(boardDto.getNature6());
+        dogNatureRepository.save(dogNature);
+
+        return board;
     }
 
     @Override
@@ -122,6 +174,34 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     public Board findBoardDetail(Long boardId) {
         return boardRepository.findById(boardId).get();
+    }
+
+    @Override
+    public Application saveApplication(Board board, AppDto appDto) {
+        User user = userRepository.findById(appDto.getUserSeq()).get();
+        Application application = Application.builder()
+                .boardId(board.getBoardId())
+                .send(true)
+                .name(user.getUsername())
+                .userInfo(user.getUserInfo())
+                .user(user)
+                .createtime(LocalDateTime.now())
+                .applicationStatus(0)
+                .build();
+
+        List<Answer> answerList = new ArrayList<>();
+        for (AnswerDto answerDto: appDto.getApplicantAnswerList()) {
+            Answer answer = new Answer(answerDto.getIdx().intValue(),
+                                        answerDto.getAnswer(),
+                                        application);
+            answerRepository.save(answer);
+            answerList.add(answer);
+        }
+
+        application.setAnswerList(answerList);
+        applicationRepository.save(application);
+
+        return application;
     }
 
     @Override

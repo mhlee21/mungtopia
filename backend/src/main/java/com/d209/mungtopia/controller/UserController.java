@@ -1,6 +1,6 @@
 package com.d209.mungtopia.controller;
 import com.d209.mungtopia.entity.UserInfo;
-import com.d209.mungtopia.dto.meeting.service.UserService;
+import com.d209.mungtopia.service.UserService;
 import com.d209.mungtopia.common.ApiResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

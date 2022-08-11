@@ -1,4 +1,4 @@
-package com.d209.mungtopia.dto.meeting.service;
+package com.d209.mungtopia.service;
 
 import com.d209.mungtopia.dto.*;
 import com.d209.mungtopia.entity.*;
@@ -43,13 +43,14 @@ public class BoardServiceImpl implements BoardService {
          * 후기 : 2
          * 자유 : 3
          */
-        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue()-1]);
-        return boardList;
+//        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue()-1]);
+//        return boardList;
+        return null;
     }
 
     @Override
-    public List<Board> search(Long tagNo, int pageNo) {
-        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue()-1]);
+    public List<Board> search(Long tagNo, int pageNo, String keyword) {
+        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue()-1], keyword);
         return boardList;
     }
 

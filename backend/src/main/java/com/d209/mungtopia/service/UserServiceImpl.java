@@ -1,4 +1,4 @@
-package com.d209.mungtopia.dto.meeting.service;
+package com.d209.mungtopia.service;
 
 import com.d209.mungtopia.dto.user.Info;
 import com.d209.mungtopia.dto.user.UserBoaordRes;

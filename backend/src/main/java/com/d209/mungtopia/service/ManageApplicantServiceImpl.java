@@ -1,4 +1,4 @@
-package com.d209.mungtopia.dto.meeting.service;
+package com.d209.mungtopia.service;
 
 import com.d209.mungtopia.dto.applicant.ApplicationListInfoRes;
 import com.d209.mungtopia.dto.applicant.DetailProcessRes;

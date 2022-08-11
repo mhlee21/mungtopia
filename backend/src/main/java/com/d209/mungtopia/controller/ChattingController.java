@@ -1,24 +1,24 @@
 package com.d209.mungtopia.controller;
 
+import com.d209.mungtopia.dto.ChatLogDto;
 import com.d209.mungtopia.entity.ChatLog;
 import com.d209.mungtopia.service.ChattingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping("/api/v1/chat/")
+@RequestMapping("/api/v1/chat")
 @RequiredArgsConstructor
 public class ChattingController {
     private final ChattingService chattingService;
 
     @MessageMapping("/receive")
     @SendTo("/send")
-    public ChatLog chattingHandler(ChatLog chatLog){
-        return chattingService.chattingHandler(chatLog);
+    public ChatLogDto chattingHandler(ChatLogDto chatLogDto){
+        return chattingService.chattingHandler(chatLogDto);
     }
+
 }

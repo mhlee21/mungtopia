@@ -43,8 +43,9 @@ public class BoardController {
     @GetMapping("/search/{tag_no}")
     @ApiOperation(value = "search - 검색", notes = "검색")
     public ApiResponse search(@PathVariable("tag_no") Long tagNo,
-                              @RequestParam int pageNo) {
-        return ApiResponse.success("data", boardService.search(tagNo, pageNo));
+                              @RequestParam int pageNo,
+                              @RequestBody String keyword) {
+        return ApiResponse.success("data", boardService.search(tagNo, pageNo, keyword));
     }
 
     @PostMapping("{tag_no}")

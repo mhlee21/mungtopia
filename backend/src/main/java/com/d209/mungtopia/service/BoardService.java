@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface BoardService {
     List<Board> findBoardAll(Long tagNo, int pageNo);
 
-    List<Board> search(Long tagNo, int pageNo);
+    List<Board> search(Long tagNo, int pageNo, String keyword);
     Board saveBoard(Long tagNo, BoardDto boardDto);
     Board updateBoard(Board board, BoardDto boardDto);
     Boolean deleteBoard(Board board);

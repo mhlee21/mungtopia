@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="meeting-wait">
 		<!-- 이름 -->
 		<div class="name"><h3>황희원</h3></div>
 		<!-- 프로필 사진 -->
@@ -11,6 +11,10 @@
 					class="profile-image"
 				/>
 			</div>
+		</div>
+		<!-- 공지 문구 -->
+		<div class="notice">
+			<h3>상대방이 아직 입장하지 않았습니다. <br />잠시만 기다려주세요.</h3>
 		</div>
 	</div>
 </template>

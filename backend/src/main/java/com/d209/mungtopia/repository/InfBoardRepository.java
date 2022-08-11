@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface InfBoardRepository extends JpaRepository<Board, Long> {
-    @Query("select b from Board b where b.boardTag = :boardTag order by b.createtime desc")
-    List<Board> findAllByBoardTag (@Param("boardTag") String boardTag);
+    @Query("select b from Board b where b.boardTag = :boardTag and b.contents like CONCAT('%',:keyword,'%') order by b.createtime desc")
+    List<Board> findAllByBoardTag (@Param("boardTag") String boardTag, @Param("boardTag") String keyword);
 }

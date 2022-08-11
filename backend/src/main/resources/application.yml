@@ -131,11 +131,13 @@ openvidu:
     secret: mung209pro
 
 #logging
-#logging:
-#  file:
-#    name: /mungtopia-web.log
-#  level:
-#    root: INFO
-#    com.d209.mungtopia.oauth: DEBUG
-#    web: debug
-
+logging:
+  file:
+    name: mungtopia-web.log
+  level: # 각 package 별로 로깅 레벨을 지정할 수 있다.
+    root: debug
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace

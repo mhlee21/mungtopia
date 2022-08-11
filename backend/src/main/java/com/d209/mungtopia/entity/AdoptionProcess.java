@@ -27,8 +27,8 @@ public class AdoptionProcess {
     @JoinColumn(name = "application_id", referencedColumnName = "application_id", nullable = false)
     private Application application;
 
-    @OneToOne(mappedBy = "adoptionProcess", fetch = FetchType.LAZY)
-    private MeetingRoom meetingRoom;
+//    @OneToOne(mappedBy = "adoptionProcess", fetch = FetchType.LAZY)
+//    private MeetingRoom meetingRoom;
 
     @OneToOne(mappedBy = "adoptionProcess", fetch = FetchType.LAZY)
     private ChatRoom chatRoom;

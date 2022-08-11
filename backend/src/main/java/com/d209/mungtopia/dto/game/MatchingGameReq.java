@@ -12,5 +12,5 @@ import java.util.List;
 @NoArgsConstructor
 public class MatchingGameReq {
     private long userSeq;
-    private List<Integer> result = new ArrayList<>();
+    private List<Integer> matchAnswer = new ArrayList<>();
 }

@@ -19,7 +19,8 @@ export default [
 		component: BoardCreateView,
 	},
 	{
-		path: '/board/:boardId/application/create',
+		// path: '/board/:boardId/application/create',
+		path: '/board/application/create',
 		name: 'applicationCreate',
 		component: ApplicationCreateView,
 	},

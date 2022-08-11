@@ -1,6 +1,7 @@
 import axios from 'axios';
 import api from '@/api/api';
 import router from '@/router';
+import AdoptQ from '@/assets/AdoptQ.json';
 
 export default {
 	namespaced: true,
@@ -17,6 +18,8 @@ export default {
 			isAdopting: null,
 			category: 0,
 			applicationPageNum: 1,
+			adoptQuestionList: [],
+			questionCount: 0,
 		};
 	},
 	getters: {
@@ -32,6 +35,8 @@ export default {
 		isAdopting: state => state.isAdopting,
 		category: state => state.category,
 		applicationPageNum: state => state.applicationPageNum,
+		adoptQuestionList: state => state.adoptQuestionList,
+		questionCount: state => state.questionCount,
 	},
 	mutations: {
 		SET_BOARD_LIST: (state, boardList) => (state.boardList = boardList),
@@ -49,6 +54,15 @@ export default {
 		UPDATE_IS_LIKE: state => (state.board.isLike = !state.board.isLike),
 		UPDATE_HAVE_INTEREST: state =>
 			(state.board.haveInterest = !state.board.haveInterest),
+		SET_ADOPT_QUESTION_LIST: (state, adoptQuestionList) => {
+			state.adoptQuestionList = adoptQuestionList;
+		},
+		PLUS_QUESTION_COUNT: state => {
+			state.questionCount += 1;
+		},
+		MINUS_QUESTION_COUNT: state => {
+			state.questionCount -= 1;
+		},
 	},
 	actions: {
 		// 전체글 불러오기
@@ -271,7 +285,7 @@ export default {
 				],
 			};
 			commit('SET_BOARD', board);
-			commit('SET_IS_ADOPTING', true);
+			commit('SET_IS_ADOPTING', false);
 		},
 
 		// 입양 신청 여부 확인
@@ -289,7 +303,7 @@ export default {
 			// 	.catch(err => {
 			// 		console.error(err.response);
 			// 	});
-			const adoptStatus = true;
+			const adoptStatus = false;
 			commit('SET_ADOPT_STATUS', adoptStatus);
 		},
 
@@ -601,6 +615,22 @@ export default {
 		// 신청서 페이지 설정
 		setApplicationPageNum: ({ commit }, pageNum) => {
 			commit('SET_APPLICATION_PAGE_NUM', pageNum);
+		},
+
+		setAdoptQ: ({ commit }) => {
+			const res = AdoptQ;
+			const data = res.adoptQuestion.map(d => ({
+				idx: d.idx,
+				question: d.question,
+			}));
+			commit('SET_ADOPT_QUESTION_LIST', data);
+		},
+
+		plusQuestionNumber: ({ commit }) => {
+			commit('PLUS_QUESTION_COUNT');
+		},
+		minusQuestionNumber: ({ commit }) => {
+			commit('MINUS_QUESTION_COUNT');
 		},
 	},
 };

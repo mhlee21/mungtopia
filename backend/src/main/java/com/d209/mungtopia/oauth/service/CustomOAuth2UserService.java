@@ -29,6 +29,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     // OAuth2 공급자로부터 액세스 토큰을 얻은 후에 호출
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        System.out.println("================ user =  in~~~~~~~~");
         OAuth2User user = super.loadUser(userRequest);
 
         try {

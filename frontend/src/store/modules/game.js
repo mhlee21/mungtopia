@@ -141,6 +141,7 @@ export default {
 			if (gameType === 0) {
 				const data = res.knowledge.map(d => ({
 					question: d.question,
+					img: d.img,
 					answer: d.answer,
 				}));
 				commit('SET_GAME_QUESTION', data);

@@ -9,6 +9,7 @@ import com.d209.mungtopia.oauth.exception.OAuthProviderMissMatchException;
 import com.d209.mungtopia.oauth.info.OAuth2UserInfo;
 import com.d209.mungtopia.oauth.info.OAuth2UserInfoFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 // DefaultOAuth2UserService를 상속 받고 laodUser() 메소드를 구현
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
+    @Autowired
     private final UserRepository userRepository;
 
     @Override

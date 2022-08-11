@@ -27,31 +27,23 @@ export default [
 		component: KnowledgeFinishView,
 	},
 	{
-<<<<<<< HEAD
 		path: '/game/1/play',
 		name: 'MbtiPlay',
 		component: MbtiPlayView,
 	},
 	{
 		path: '/game/1/:mbtiResult',
-=======
-		path: '/game/2/finish/:mbtiResult',
->>>>>>> develop
 		name: 'MbtiFinish',
 		component: MbtiFinishView,
 	},
 
 	{
-<<<<<<< HEAD
 		path: '/game/2/play',
 		name: 'MatchPlay',
 		component: MatchPlayView,
 	},
 	{
 		path: '/game/2/:matchResult',
-=======
-		path: '/game/3/:matchResult',
->>>>>>> develop
 		name: 'MatchFinish',
 		component: MatchFinishView,
 	},

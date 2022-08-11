@@ -23,9 +23,9 @@
 									max-width="400"
 								>
 									<v-card-text>
-										<div>uid : {{ item.user.id }}</div>
-										<div>{{ item.message }}</div>
-										<div>{{ item.sendAt }}</div>
+										<div>uid : {{ item.userSeq }}</div>
+										<div>{{ item.content }}</div>
+										<div>{{ item.createtime }}</div>
 									</v-card-text>
 								</v-card>
 							</div>
@@ -62,35 +62,34 @@ export default {
         send() {
             console.log("Send message:" + this.message);
             if (this.stompClient && this.stompClient.connected) {
+                const date = new Date(Date.now());
                 const msg = {
-                user: {
-                    id: this.uid
-                },
-                message: this.message,
-                sendAt: Date.now(),
-                isRequest: false,
+                    userSeq: this.uid,
+                    content: this.message,
+                    createtime: date,
+                    isRequest: false,
+                    chatRoomId: 2,
                 };
                 this.stompClient.send("/receive", JSON.stringify(msg), {});
             }
         },
         connect() {
-            const serverURL = "/api/v1/chat"
+            const serverURL = "http://localhost:8081/api/v1/chat"
             let socket = new SockJS(serverURL);
             this.stompClient = Stomp.over(socket);
             console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
             this.stompClient.connect(
-                {},
-                frame => {
-                this.connected = true;
-                console.log('소켓 연결 성공', frame);
-                this.stompClient.subscribe("/send", res => {
-                    console.log('구독으로 받은 메시지 입니다.', res.body);
-                    this.recvList.push(JSON.parse(res.body))
-                });
+                {}, frame => {
+                    this.connected = true;
+                    console.log('소켓 연결 성공', frame);
+                    this.stompClient.subscribe("/send", res => {
+                        console.log('구독으로 받은 메시지 입니다.', res.body);
+                        this.recvList.push(JSON.parse(res.body))
+                    });
                 },
                 error => {
-                console.log('소켓 연결 실패', error);
-                this.connected = false;
+                    console.log('소켓 연결 실패', error);
+                    this.connected = false;
                 }
             );
         }

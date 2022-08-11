@@ -1,21 +1,15 @@
 package com.d209.mungtopia.controller;
 
-import com.d209.mungtopia.dto.MeetingDto;
-import com.d209.mungtopia.entity.Application;
-import com.d209.mungtopia.entity.Board;
+import com.d209.mungtopia.common.ApiResponse;
+import com.d209.mungtopia.dto.meeting.MeetingReq;
+import com.d209.mungtopia.dto.meeting.MeetingRes;
 import com.d209.mungtopia.repository.InfApplicationRepository;
 import com.d209.mungtopia.repository.InfBoardRepository;
 import io.openvidu.java.client.*;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,7 +38,7 @@ public class MeetingController {
     }
 
     @PostMapping("/{user_seq}")
-    public ResponseEntity<JSONObject> token(@PathVariable("user_seq") long userSeq, HttpSession httpSession, @RequestBody MeetingDto meetingDto) {
+    public ApiResponse token(@PathVariable("user_seq") long userSeq, HttpSession httpSession, @RequestBody MeetingReq meetingDto) {
         // 유저 정보 session에 저장
         System.out.println("applicationId = " + meetingDto);
         long applicationId = meetingDto.getApplicationId();
@@ -58,7 +52,7 @@ public class MeetingController {
                 .build();
 
         // output 설정
-        JSONObject responseJson = new JSONObject();
+        MeetingRes meetingRes = new MeetingRes();
 
         //만약에 application_id로 sessionName을 조회했을 때 있으면 token update
         if (this.mapSessions.containsKey(applicationId)) { // 세션 존재
@@ -67,11 +61,11 @@ public class MeetingController {
 
                 // token userSeq를 key값으로 저장
                 this.mapSessionNamesTokens.get(applicationId).put(userSeq, token);
+                meetingRes.setToken(token);
 
-                responseJson.put("token", token);
-                return new ResponseEntity<>(responseJson, HttpStatus.OK);
+                return ApiResponse.success("data", meetingRes);
             } catch (OpenViduJavaClientException e1) {
-                return getErrorResponse(e1);
+                return ApiResponse.fail();
             } catch (OpenViduHttpException e2) {
                 if (404 == e2.getStatus()) {
                     this.mapSessions.remove(applicationId);
@@ -89,21 +83,21 @@ public class MeetingController {
             this.mapSessionNamesTokens.get(applicationId).put(userSeq, token);
 
             // 토큰 전송
-            responseJson.put("token", token);
+            meetingRes.setToken(token);
 
-            return new ResponseEntity<>(responseJson, HttpStatus.OK);
+            return ApiResponse.success("data", meetingRes);
         } catch (Exception e) {
-            return getErrorResponse(e);
+            return ApiResponse.fail();
         }
     }
 
     @DeleteMapping("/{application_id}")
-    public ResponseEntity<JSONObject> removeUser(@PathVariable("application_id") long applicationId, HttpSession httpSession) throws Exception {
+    public ApiResponse removeUser(@PathVariable("application_id") long applicationId, HttpSession httpSession) throws Exception {
         try {
             // 세션이 있는지 확인
             checkUserLogged(httpSession);
         } catch (Exception e) {
-            return getErrorResponse(e);
+            return ApiResponse.fail();
         }
 
         long userSeq = (long) httpSession.getAttribute("loggedUser");
@@ -117,17 +111,17 @@ public class MeetingController {
                     // Last user left: session must be removed
                     this.mapSessions.remove(applicationId); // 세션 지우기
                 }
-                return new ResponseEntity<>(HttpStatus.OK);
+                return ApiResponse.success();
             } else {
                 // The TOKEN wasn't valid
                 System.out.println("Problems in the app server: the TOKEN wasn't valid");
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return ApiResponse.fail();
             }
 
         } else {
             // The SESSION does not exist
             System.out.println("Problems in the app server: the SESSION does not exist");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ApiResponse.fail();
         }
     }
 
@@ -135,13 +129,5 @@ public class MeetingController {
         if (httpSession == null || httpSession.getAttribute("loggedUser") == null) {
             throw new Exception("User not logged");
         }
-    }
-
-    private ResponseEntity<org.json.simple.JSONObject> getErrorResponse(Exception e) {
-        org.json.simple.JSONObject json = new org.json.simple.JSONObject();
-        json.put("cause", e.getCause());
-        json.put("error", e.getMessage());
-        json.put("exception", e.getClass());
-        return new ResponseEntity<>(json, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

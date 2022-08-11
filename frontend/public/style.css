@@ -1701,6 +1701,12 @@ body {
 .meeting-pg .meeting-component {
   width: 100vw;
 }
+.meeting-pg .meeting-component .spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 .meeting-pg .meeting-component .meeting-wait {
   height: 100vh;
   padding-top: 35vh;
@@ -1755,17 +1761,16 @@ body {
   margin: 10px auto 40px;
   overflow: hidden;
 }
-
 .meeting-pg .profile-image {
   height: 100%;
   right: 20px;
   position: relative;
 }
-
 .meeting-pg .subscriber-wrapper {
   display: flex;
   justify-content: center;
   object-fit: none;
+  height: 100vh;
 }
 .meeting-pg .publisher-wrapper {
   display: flex;

@@ -70,6 +70,7 @@ export default {
 					store.dispatch('game/plusAnswerPoint');
 				}
 				store.dispatch('game/plusQuestionNumber');
+				store.dispatch('game/updateProgressbar');
 				if (questionNumber.value == 10) {
 					if (correctAnswer.value >= 7) {
 						const payload = {
@@ -105,6 +106,7 @@ export default {
 				});
 			} else {
 				store.dispatch('game/plusQuestionNumber');
+				store.dispatch('game/updateProgressbar');
 			}
 		};
 
@@ -118,8 +120,8 @@ export default {
 				const payload = {
 					// userSeq: store.getters['auth/user']['userSeq'],
 					userSeq: 1,
-					matchAnswer: matchNum.value,
-					gameTag: gameType.value,
+					matchAnswer: matchNum,
+					gameTag: gameType,
 				};
 				store.dispatch('game/sendResult', payload);
 				router.push({
@@ -128,6 +130,7 @@ export default {
 				});
 			} else {
 				store.dispatch('game/plusQuestionNumber');
+				store.dispatch('game/updateProgressbar');
 			}
 		};
 		return {

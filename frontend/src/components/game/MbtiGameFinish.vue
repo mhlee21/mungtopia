@@ -122,4 +122,8 @@ export default {
 	font-size: 20px;
 	font-weight: bolder;
 }
+
+img {
+	border-radius: 2rem;
+}
 </style>

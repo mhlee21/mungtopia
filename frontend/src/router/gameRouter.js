@@ -29,23 +29,23 @@ export default [
 		component: KnowledgeFinishView,
 	},
 	{
-		path: '/game/2/play',
+		path: '/game/1/play',
 		name: 'MbtiPlay',
 		component: MbtiPlayView,
 	},
 	{
-		path: '/game/2/finish/:mbtiResult',
+		path: '/game/1/:mbtiResult',
 		name: 'MbtiFinish',
 		component: MbtiFinishView,
 	},
 
 	{
-		path: '/game/3/play',
+		path: '/game/2/play',
 		name: 'MatchPlay',
 		component: MatchPlayView,
 	},
 	{
-		path: '/game/3/:matchResult',
+		path: '/game/2/:matchResult',
 		name: 'MatchFinish',
 		component: MatchFinishView,
 	},

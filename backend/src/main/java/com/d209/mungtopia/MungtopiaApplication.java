@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @EnableConfigurationProperties({
 		AppProperties.class
 })
-@CrossOrigin("http://localhost:3000")
+//@CrossOrigin("http://localhost:3000")
 public class MungtopiaApplication {
 
 	public static void main(String[] args) {

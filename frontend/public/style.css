@@ -1560,3 +1560,97 @@ body {
   margin: 10px 0;
   border-radius: 5px;
 }
+
+/* 화상면담 페이지 */
+.meeting-pg {
+  background: linear-gradient(to bottom, #ff9898, rgba(143, 187, 253, 0.58));
+	height: 100vh;
+  width: 100vw;
+  font-family: 'Noto Sans KR', sans-serif;
+  overflow: hidden;
+}
+.meeting-pg .meeting-component {
+  width: 100vw;
+}
+.meeting-pg .meeting-component .meeting-wait {
+  height: 100vh;
+  padding-top: 35vh;
+}
+.meeting-pg .button-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  position: fixed;
+  bottom: 5vh;
+  left: 0;
+  right: 0;
+}
+.meeting-pg .button-wrapper .control-btn {
+  background-color: white;
+  border: none;
+  font-size: 30px;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  box-shadow: -2px 3px 4px rgba(0,0,0,0.2),2px 2px 4px rgba(0,0,0,0.2);
+  padding: 0;
+}
+.meeting-pg .button-wrapper .end-btn {
+  background-color: #FF4F4F;
+  color: white;
+}
+.meeting-pg .name {
+  text-align: center; 
+  color: white;
+  font-size: 26px;
+  font-weight: 500;
+  text-shadow: -2px 3px 4px rgba(0,0,0,0.2);
+}
+.meeting-pg .notice {
+  margin: 20px 0;
+  color: white;
+  display: flex;
+  justify-content: center ;
+  text-shadow: -2px 3px 4px rgba(0,0,0,0.2);
+  text-align: center;
+  line-height: 130%;
+}
+.meeting-pg .profile-wrapper {
+  margin: 3vw 0 ;
+}
+.meeting-pg .profile-image-wrapper {
+  border-radius: 50%;
+  border: solid 10px rgba(255, 255, 255, 0.12);
+  box-shadow: -2px 3px 4px rgba(0,0,0,0.2),2px 2px 4px rgba(0,0,0,0.2);
+  width: 40vw;
+  height: 40vw;
+  margin: 10px auto 40px;
+  overflow: hidden;
+}
+
+.meeting-pg .profile-image {
+  height: 100%;
+  right: 20px;
+  position: relative;
+}
+
+.meeting-pg .subscriber-wrapper {
+  display: flex;
+  justify-content: center;
+  object-fit: none;
+}
+.meeting-pg .publisher-wrapper {
+  display: flex;
+  justify-content: center;
+  height: 30vh;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 30vw;
+  z-index: 100;
+  object-fit: none;
+  overflow: hidden;
+}
+
+.meeting-pg .black-view {
+  background-color: #000;
+}

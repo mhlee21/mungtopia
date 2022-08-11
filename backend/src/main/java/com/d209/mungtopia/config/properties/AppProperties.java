@@ -1,5 +1,6 @@
 package com.d209.mungtopia.config.properties;
 
+import io.jsonwebtoken.lang.Collections;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,12 +29,13 @@ public class AppProperties {
 
     public static final class OAuth2 {
         private List<String> authorizedRedirectUris = new ArrayList<>();
-
+        
         public List<String> getAuthorizedRedirectUris() {
             return authorizedRedirectUris;
         }
 
         public OAuth2 authorizedRedirectUris(List<String> authorizedRedirectUris) {
+            System.out.println("authorizedRedirectUris = " + authorizedRedirectUris);
             this.authorizedRedirectUris = authorizedRedirectUris;
             return this;
         }

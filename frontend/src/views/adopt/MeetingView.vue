@@ -1,8 +1,17 @@
 <template>
 	<div class="meeting-pg">
 		<div v-if="!session" class="meeting-component">
-			<!-- 스피너 구현 -->
-			스피너 구현될 예정입니다.
+			<div class="spinner-wrapper">
+				<!-- 스피너 구현 -->
+				<div class="sk-chase">
+					<div class="sk-chase-dot"></div>
+					<div class="sk-chase-dot"></div>
+					<div class="sk-chase-dot"></div>
+					<div class="sk-chase-dot"></div>
+					<div class="sk-chase-dot"></div>
+					<div class="sk-chase-dot"></div>
+				</div>
+			</div>
 		</div>
 		<div v-else class="meeting-component">
 			<!-- 내화면 -->
@@ -11,16 +20,10 @@
 					<ov-video :stream-manager="publisher" />
 				</div>
 			</div>
+			<!-- 상대 화면 -->
 			<div v-if="!subscriber">
 				<MeetingWait></MeetingWait>
 			</div>
-			<!-- <div v-else>
-				<div class="publisher-wrapper black-view"></div>
-			</div> -->
-			<!-- 상대화면 -->
-			<!-- 비디오를 켜지 않았을 때 -->
-			<!-- 비디오를 켰을 때 -->
-
 			<div v-else class="subscriber-wrapper">
 				<ov-video :stream-manager="subscriber" />
 			</div>
@@ -220,3 +223,90 @@ export default {
 	},
 };
 </script>
+<style scoped>
+.sk-chase {
+	width: 40px;
+	height: 40px;
+	position: relative;
+	animation: sk-chase 2.5s infinite linear both;
+}
+
+.sk-chase-dot {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	animation: sk-chase-dot 2s infinite ease-in-out both;
+}
+
+.sk-chase-dot:before {
+	content: '';
+	display: block;
+	width: 25%;
+	height: 25%;
+	background-color: #fff;
+	border-radius: 100%;
+	animation: sk-chase-dot-before 2s infinite ease-in-out both;
+}
+
+.sk-chase-dot:nth-child(1) {
+	animation-delay: -1.1s;
+}
+.sk-chase-dot:nth-child(2) {
+	animation-delay: -1s;
+}
+.sk-chase-dot:nth-child(3) {
+	animation-delay: -0.9s;
+}
+.sk-chase-dot:nth-child(4) {
+	animation-delay: -0.8s;
+}
+.sk-chase-dot:nth-child(5) {
+	animation-delay: -0.7s;
+}
+.sk-chase-dot:nth-child(6) {
+	animation-delay: -0.6s;
+}
+.sk-chase-dot:nth-child(1):before {
+	animation-delay: -1.1s;
+}
+.sk-chase-dot:nth-child(2):before {
+	animation-delay: -1s;
+}
+.sk-chase-dot:nth-child(3):before {
+	animation-delay: -0.9s;
+}
+.sk-chase-dot:nth-child(4):before {
+	animation-delay: -0.8s;
+}
+.sk-chase-dot:nth-child(5):before {
+	animation-delay: -0.7s;
+}
+.sk-chase-dot:nth-child(6):before {
+	animation-delay: -0.6s;
+}
+
+@keyframes sk-chase {
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes sk-chase-dot {
+	80%,
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes sk-chase-dot-before {
+	50% {
+		transform: scale(0.4);
+	}
+	100%,
+	0% {
+		transform: scale(1);
+	}
+}
+</style>

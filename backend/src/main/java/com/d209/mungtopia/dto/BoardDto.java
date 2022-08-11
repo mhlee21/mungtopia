@@ -31,10 +31,10 @@ public class BoardDto {
     private Boolean adoptionStatus;
 
     //DogNature
-    private String nature1;
-    private String nature2;
-    private String nature3;
-    private String nature4;
-    private String nature5;
-    private String nature6;
+    private int nature1;
+    private int nature2;
+    private int nature3;
+    private int nature4;
+    private int nature5;
+    private int nature6;
 }

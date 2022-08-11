@@ -1513,9 +1513,10 @@ body {
   flex-direction: column;
   justify-content: space-between;
 }
-.profile-pg .info-wrapper .info-component .change-btn-wrapper {
+.profile-pg .info-wrapper .info-component .change-btn {
   color: #626262;
   margin: 10px;
+  padding-left: 4vw;
 }
 .profile-pg .info-wrapper .info-component .username {
   padding-top: 30px;
@@ -1542,9 +1543,45 @@ body {
   margin: 20px 0;
   width: 100%;
 }
-.profile-pg .btn-wrapper {
+.profile-pg .board-wrapper .board-btn-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  padding: 0 15px;
+}
+.profile-pg .board-wrapper .board-btn {
+  border-radius: 10px 10px 0 0;
+  width: 22vw;
+  height: 30px;
+  border: none;
+  background-color: #FFD8D8;
+  color: white;
+  padding: 3px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.profile-pg .board-wrapper .board-btn-active {
+  background-color: white;
+  color: #FF9898;
+}
+
+.profile-pg .board-wrapper .board-content-wrapper {
+  border-radius: 20px;
+  padding: 20px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  flex-flow: wrap;
+}
+.profile-pg .board-wrapper .board-content-wrapper .board-content {
+  width: 22vw;
+  border: 1px black solid;
+  height: 22vw;
+  box-sizing: border-box;
+  margin: 1px;
+
+}
+.profile-pg .btn-wrapper {
   width: 100%;
 }
 .profile-pg .btn-wrapper .logout-btn {
@@ -1580,6 +1617,10 @@ body {
   color: white;
   font-size: 30px;
   padding: 0 30px 30px;
+  font-weight: 600;
+}
+.profile-info-pg .title-wrapper .profile-icon {
+  margin-right: 20px;
 }
 .profile-info-pg .profile-info-form {
   background-color: white;
@@ -1599,6 +1640,12 @@ body {
 .profile-info-pg .user-info-wrapper .user-info .user-input-label {
   width: 20vw;
 }
+.profile-info-pg .user-info-wrapper .user-info .user-gender {
+  padding: 0 15px;
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
 .profile-info-pg .label {
   font-weight: 600;
 }
@@ -1606,7 +1653,7 @@ body {
   width: max-content;
   border-radius: 5px;
   border: none;
-  background-color: #DBDBDB;
+  background-color: #F2F2F2;
   height: 20px;
 }
 .profile-info-pg .btn-wrapper {
@@ -1631,10 +1678,16 @@ body {
   margin: 10px 0 10px;
 }
 .profile-info-pg .user-info2 .user-info-address-box {
-  background-color: #d6d6d6;
+  background-color: #F2F2F2;
   padding: 20px 20px;
   margin: 10px 0;
   border-radius: 5px;
+}
+.profile-info-pg .user-info2 .input-round {
+  margin-top: 10px;
+  border-radius: 5px;
+  background-color: white;
+  border: none;
 }
 
 /* 화상면담 페이지 */

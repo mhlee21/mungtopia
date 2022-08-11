@@ -77,7 +77,7 @@ spring:
           clientSecret: IaJUKapzeCPgQFTaMYciJSVM0vcR6LAM
           clientAuthenticationMethod: post
           authorizationGrantType: authorization_code
-          redirectUri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+          redirectUri: "{baseUrl}/api/v1/{action}/oauth2/code/{registrationId}"
           scope:
             - profile_nickname
             - profile_image

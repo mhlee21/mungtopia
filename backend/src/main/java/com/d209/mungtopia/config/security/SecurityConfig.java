@@ -103,9 +103,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 서버가 리소스 소유자의 user-agent를 통해 가져온 인가 응답을 클라이언트에게 전송할 때 사용
                 // 디폴트 인가 응답 baseuri는 "**/login/oauth2/code/***" 이다
                     .redirectionEndpoint()
-                    .baseUri("/login/oauth2/code/**")
+                .baseUri("/**/login/oauth2/code/**")
                 .and()
-                // 로그인 성공 후 사용자 정보를 가져온다,
                     .userInfoEndpoint()
                 // 사용자 정보를 처리할 때 사용
                     .userService(oAuth2UserService)

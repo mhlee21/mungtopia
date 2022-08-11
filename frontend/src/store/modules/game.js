@@ -233,28 +233,13 @@ export default {
 			}
 		},
 
-<<<<<<< HEAD
-		// matchResult: ({ commit, getters }) => {
-		// 	const matchNum = getters.matchNum;
-		// 	// const matchNum = getters.matchCount;
-		// 	for (var i = 0; i < 6; i++) {
-		// 		const data = {
-		// 			index: i,
-		// 			value: matchNum[i],
-		// 		};
-		// 		commit('PLUS_MATCH_ANSWER', data);
-		// 	}
-		// 	console.log(matchNum);
-		// },
-=======
 		matchResult: ({ commit }) => {
 			// const matchNum = getters.matchCount;
 			for (var i = 0; i < 6; i++) {
 				commit('PLUS_MATCH_ANSWER', i);
 			}
 		},
->>>>>>> develop
-
+		
 		sendResult: ({ rootGetters }, payload) => {
 			axios({
 				url: api.game.saveGame(),

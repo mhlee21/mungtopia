@@ -65,7 +65,8 @@
 	</div>
 	<div style="text-align: center">
 		<div class="game-btn" style="margin: 0% 5% 0% 0%">
-			<div class="start-btn">SHARE</div>
+			<div class="start-btn" @click="onClickShareStory">SHARE</div>
+			<!-- <div class="modal" v-html="msg">No message</div> -->
 		</div>
 		<div class="game-btn" style="margin: 0% 0% 0% 5%">
 			<div class="start-btn">GAME MENU</div>
@@ -76,24 +77,45 @@
 <script>
 import { useStore } from 'vuex';
 import { computed } from 'vue';
+
+// import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 export default {
 	setup() {
+		// window.Kakao.Share.createCustomButton({
+		// 	container: '#kakaotalk-sharing-btn',
+		// 	templateId: 81245,
+		// 	templateArgs: {
+		// 		title: '제목 영역입니다.',
+		// 		description: '설명 영역입니다.',
+		// 	},
+		// });
 		const route = useRoute();
 		const store = useStore();
 		const mbtiResult = computed(() => route.params.mbtiResult);
-		console.log(mbtiResult);
-		store.dispatch('game/MbtiDogResult', mbtiResult.value);
-		const mbtiDog = computed(() => store.getters['game/mbtiDog']);
-		console.log(mbtiDog);
-		const share = () => {
-			navigator.share({
-				text: '지금 바로 당신의 MBTI와 이에 맞는 강아지를 알아보세요!',
-				url: '',
+		const onClickShareStory = () => {
+			window.Kakao.Link.sendCustom({
+				templateId: 81245,
+				templateArgs: {
+					title: '',
+					description: '설명 영역입니다.',
+				},
+				// ContentObject: {
+				// 	LinkObject: {
+				// 		webURL: `https://i7d209.p.ssafy.io/game/1/${mbtiResult.value}`,
+				// 		mobileWebURL: `https://i7d209.p.ssafy.io/game/1/${mbtiResult.value}`,
+				// 	},
+				// },
 			});
 		};
-		return { mbtiResult, mbtiDog, share };
+		// console.log(mbtiResult);
+		store.dispatch('game/MbtiDogResult', mbtiResult.value);
+		const mbtiDog = computed(() => store.getters['game/mbtiDog']);
+		// window.Kakao.Share.createCustomButton({
+		// 	templateId: 81245,
+		// });
+		return { mbtiResult, mbtiDog, onClickShareStory };
 	},
 };
 </script>
@@ -131,5 +153,31 @@ export default {
 
 img {
 	border-radius: 2rem;
+}
+
+.modal {
+	display: none;
+	position: fixed;
+	top: 85%;
+	left: 50%;
+	transform: translate(-50%, 0%);
+	z-index: 3;
+	padding: 0px 10px;
+	border-radius: 10px;
+	background-color: #000;
+	color: #fff;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+	animation: fadeIn 1s;
+}
+
+@keyframes fadeIn {
+	from {
+		top: 100%;
+		opacity: 0;
+	}
+	to {
+		top: 85%;
+		opacity: 1;
+	}
 }
 </style>

@@ -3,15 +3,19 @@
 		<div class="info-wrapper">
 			<div class="info-component">
 				<div class="image-wrapper">
-					<img src="" alt="" class="profile-img" />
+					<img
+						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4724WArwLuLX-JSFv4mC5PUm_hOuVh0ZiwQ&usqp=CAU"
+						alt=""
+						class="profile-img"
+					/>
 				</div>
-				<a @click="changeProfile">사진 변경</a>
+				<div>
+					<a @click="changeProfile"><small>사진 변경</small></a>
+				</div>
 			</div>
 			<div class="info-component">
 				<div class="username">황희원</div>
-				<div class="btn-wrapper">
-					<button class="info-btn">회원정보</button>
-				</div>
+				<button class="info-btn">회원정보</button>
 			</div>
 		</div>
 		<div class="board-wrapper"></div>

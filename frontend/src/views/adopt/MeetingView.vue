@@ -119,7 +119,7 @@ export default {
 				console.warn(exception);
 			});
 
-			getToken(mySessionId.value).then(token => {
+			getToken().then(token => {
 				session.value
 					.connect(token, { clientData: myUserName.value })
 					.then(() => {
@@ -171,11 +171,13 @@ export default {
 
 		const createToken = () => {
 			return new Promise((resolve, reject) => {
+				const userSeq = 1;
+				console.log(userSeq);
 				axios({
-					url: api.meeting.getOpenViduToken(route.params.applicationId),
+					url: api.meeting.getOpenViduToken(userSeq),
 					method: 'post',
 					headers: store.getters['auth/authHeader'],
-					data: { userSeq: 1 },
+					data: route.params.applicationId,
 				})
 					.then(response => response.data)
 					.then(data => resolve(data.token))

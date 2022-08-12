@@ -63,10 +63,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         logger.debug("BEFORE!!!! :::: =========== determineTargetUrl = " + redirectUri);
         String targetUrl = determineTargetUrl(request, response, authentication);
 
-        if (response.isCommitted()) {
-            logger.debug("??? ============Response has already been committed. Unable to redirect to " + targetUrl);
-            return;
-        }
+//        if (response.isCommitted()) {
+//            logger.debug("??? ============Response has already been committed. Unable to redirect to " + targetUrl);
+//            return;
+//        }
 
         clearAuthenticationAttributes(request, response);
         getRedirectStrategy().sendRedirect(request, response, "https://i7d209.p.ssafy.io/oauth/redirect");

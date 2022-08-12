@@ -2,6 +2,7 @@ package com.d209.mungtopia.service;
 
 import com.d209.mungtopia.dto.game.GameReq;
 import com.d209.mungtopia.dto.game.MatchingGameReq;
+import com.d209.mungtopia.dto.game.MatchingGameRes;
 import com.d209.mungtopia.entity.DogNature;
 import com.d209.mungtopia.entity.GameResult;
 import com.d209.mungtopia.entity.User;
@@ -75,7 +76,6 @@ public class GameServiceImpl implements GameService{
         // 결과 리턴하기
         List<DogNature>  dogNatureList = infDogNatureRepository.findAll();
         Map<Long, Integer> result = new HashMap<>();
-        int[] point = new int[dogNatureList.size()];
         for (int i = 0; i < dogNatureList.size(); i++) {
             DogNature dogNature = dogNatureList.get(i);
             long dogNatureId = dogNature.getDogNatureId();
@@ -87,11 +87,19 @@ public class GameServiceImpl implements GameService{
             sum += Math.abs(userNature.get(4) - dogNature.getNature5() * 3);
             sum += Math.abs(userNature.get(5) - dogNature.getNature6() * 3);
 
-            point[i] = sum;
+            result.put(dogNatureId, sum); // 결과 저장
         }
-        Arrays.sort(point);
-        int randomDog = (int) (Math.random() * 3);
+        // 정렬
+        List<Map.Entry<Long, Integer>> resultList = new LinkedList<>(result.entrySet());
+        resultList.sort(Map.Entry.comparingByValue());
 
+        int randomDog = (int) (Math.random() * 3); // 1 - 3 중 랜덤으로 리턴
+        Long resultKey = resultList.get(randomDog).getKey();
+
+        MatchingGameRes response = new MatchingGameRes();
+        response.setBoardId(resultKey);
+//        response.setDogImg();
+//        response.setDogName();
         return false;
     }
 }

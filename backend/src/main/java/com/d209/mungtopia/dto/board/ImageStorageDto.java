@@ -1,4 +1,4 @@
-package com.d209.mungtopia.dto;
+package com.d209.mungtopia.dto.board;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnswerDto {
-    private Long idx;
-    private String answer;
+public class ImageStorageDto {
+    private int orders;
+    private String filename;
 }

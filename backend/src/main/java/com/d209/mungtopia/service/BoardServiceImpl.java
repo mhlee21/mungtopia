@@ -1,6 +1,8 @@
 package com.d209.mungtopia.service;
 
-import com.d209.mungtopia.dto.*;
+import com.d209.mungtopia.dto.applicant.AnswerDto;
+import com.d209.mungtopia.dto.applicant.AppDto;
+import com.d209.mungtopia.dto.board.*;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;

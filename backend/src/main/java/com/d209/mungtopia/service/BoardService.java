@@ -1,13 +1,12 @@
 package com.d209.mungtopia.service;
 
-import com.d209.mungtopia.dto.AppDto;
-import com.d209.mungtopia.dto.BoardDto;
-import com.d209.mungtopia.dto.CommentDto;
-import com.d209.mungtopia.dto.ReplyDto;
+import com.d209.mungtopia.dto.applicant.AppDto;
+import com.d209.mungtopia.dto.board.BoardDto;
+import com.d209.mungtopia.dto.board.CommentDto;
+import com.d209.mungtopia.dto.board.ReplyDto;
 import com.d209.mungtopia.entity.*;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BoardService {
     List<Board> findBoardAll(Long tagNo, int pageNo);

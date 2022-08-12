@@ -1,15 +1,15 @@
 const BACKEND_PORT = 8081;
-// const BACKEND_URL = `https://i7d209.p.ssafy.io:${BACKEND_PORT}/api/v1`;
-const BACKEND_URL = `https://localhost:${BACKEND_PORT}/api/v1`;
+const BACKEND_URL = `https://i7d209.p.ssafy.io:${BACKEND_PORT}/api/v1`;
+// const BACKEND_URL = `https://localhost:${BACKEND_PORT}/api/v1`;
 
 // const FRONTEND_PORT = 3000;
 // const REDIRECT_URI = `http://localhost:${FRONTEND_PORT}/oauth/redirect`;
 // const REDIRECT_URI = `http://i7d209.p.ssafy.io:${FRONTEND_PORT}/oauth/redirect`;
-const REDIRECT_URI = `https://i7d209.p.ssafy.io/oauth/redirect`;
+// const REDIRECT_URI = `https://i7d209.p.ssafy.io/oauth/redirect`;
 
 export default {
 	getSocialLoginUrl(socialType) {
-		return `${BACKEND_URL}/oauth2/authorization/${socialType}?redirect_uri=${REDIRECT_URI}`;
+		return `${BACKEND_URL}/oauth2/authorization/${socialType}?redirect_uri=https://i7d209.p.ssafy.io/oauth/redirect`;
 	},
 	getSocialImage(socialType) {
 		switch (socialType) {

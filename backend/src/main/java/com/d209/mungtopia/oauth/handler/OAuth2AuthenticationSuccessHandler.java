@@ -120,7 +120,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 //        String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
         String targetUrl = "https://i7d209.p.ssafy.io/oauth/redirect";
-
+        // ===== client에서 포트 3000번이 붙어서 와서 targetUrl을 직접 지정해줬다!!!! ====
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", accessToken.getToken())
                 .build().toUriString();

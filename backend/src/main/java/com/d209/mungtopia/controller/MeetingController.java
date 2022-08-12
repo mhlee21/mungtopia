@@ -6,6 +6,7 @@ import com.d209.mungtopia.dto.meeting.MeetingRes;
 import com.d209.mungtopia.repository.InfApplicationRepository;
 import com.d209.mungtopia.repository.InfBoardRepository;
 import io.openvidu.java.client.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

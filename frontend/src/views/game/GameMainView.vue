@@ -8,7 +8,7 @@
 			<!-- 게임 리스트 -->
 			<div class="game-list">
 				<div class="game-btn" @click="gameEnter(0)">
-					<img src="@/assets/images/knowledge.png" alt="" />
+					<img src="@/assets/images/knowledge.jpg" alt="" />
 					<div class="game-title">강아지식 테스트</div>
 				</div>
 				<div class="game-btn" @click="gameEnter(1)">
@@ -16,7 +16,7 @@
 					<div class="game-title">댕BTI</div>
 				</div>
 				<div class="game-btn" @click="gameEnter(2)">
-					<img src="@/assets/images/matching.png" alt="" />
+					<img src="@/assets/images/matching.jpg" alt="" />
 					<div class="game-title">나와 잘맞는 반려견은?</div>
 				</div>
 			</div>

@@ -1,6 +1,19 @@
 <template>
 	<div class="chat-component">
-		<div class="chat-messages">
+		<div class="chat-message-list">
+			<div v-for="(chat, index) in chatLog" :key="index">
+				<div>
+					<small v-if="!isYou(chat.userSeq)" class="chat-time">{{
+						difTime(chat.createtime)
+					}}</small>
+					<div class="chat-message" :class="{ 'chat-message-me': isYou }">
+						{{ chat.content }}
+					</div>
+					<small v-if="isYou(chat.userSeq)" class="chat-time">{{
+						difTime(chat.createtime)
+					}}</small>
+				</div>
+			</div>
 			<div v-for="(chat, index) in chatList" :key="index">
 				<div v-if="isYou(chat.userSeq)">
 					<div>
@@ -13,60 +26,121 @@
 				</div>
 				<div>
 					<small v-if="!isYou(chat.userSeq)" class="chat-time">{{
-						difTime(new Date(chat.time))
+						difTime(chat.createtime)
 					}}</small>
-					<ChatMessage
-						:message="chat.message"
-						:isMe="!isYou(chat.userSeq)"
-					></ChatMessage>
+					<div class="chat-message" :class="{ 'chat-message-me': isYou }">
+						{{ chat.content }}
+					</div>
 					<small v-if="isYou(chat.userSeq)" class="chat-time">{{
-						difTime(new Date(chat.time))
+						difTime(chat.createtime)
 					}}</small>
 				</div>
 			</div>
 		</div>
 		<div>
-			<ChatForm></ChatForm>
+			<form @submit.prevent="sendMessage()">
+				<input type="text" v-model="message" />
+				<button>보내기</button>
+			</form>
 		</div>
 	</div>
 </template>
 
 <script>
 import { useStore } from 'vuex';
-import { computed } from 'vue';
-import ChatMessage from '@/components/adopt/chat/ChatMessage';
-import ChatForm from '@/components/adopt/chat/ChatForm';
+import { computed, reactive, ref } from 'vue';
+import Stomp from 'webstomp-client';
+import SockJS from 'sockjs-client';
+
 export default {
-	components: { ChatMessage, ChatForm },
 	setup() {
 		const store = useStore();
-
 		const you = computed(() => store.getters['adopt/you']);
-		const chatList = computed(() => store.getters['adopt/chatList']);
+
+		//이전 기록 불러오기
+		store.dispatch('adopt/fetchChatMain');
+		const chatLog = computed(() => store.getters['adopt/chatList']);
+		console.log('이전 기록 불러오기...', chatLog.value);
+
+		const chatList = reactive([]);
 		const isYou = userSeq => userSeq === you.value.userSeq;
 
 		// 시간 처리
 		const difTime = timeValue => {
-			const today = new Date();
-			const betweenTime = Math.floor(
-				(today.getTime() - timeValue.getTime()) / 1000 / 60,
-			);
-			if (betweenTime < 1) return '방금전';
-			if (betweenTime < 60) {
-				return `${betweenTime}분전`;
-			}
-			const betweenTimeHour = Math.floor(betweenTime / 60);
-			if (betweenTimeHour < 24) {
-				return `${betweenTimeHour}시간전`;
-			}
-			const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-			if (betweenTimeDay < 365) {
-				return `${betweenTimeDay}일전`;
-			}
-			return `${Math.floor(betweenTimeDay / 365)}년전`;
+			console.log(timeValue);
+			return timeValue;
+			// const today = new Date();
+			// const betweenTime = Math.floor(
+			// 	(today.getTime() - timeValue.getTime()) / 1000 / 60,
+			// );
+			// if (betweenTime < 1) return '방금전';
+			// if (betweenTime < 60) {
+			// 	return `${betweenTime}분전`;
+			// }
+			// const betweenTimeHour = Math.floor(betweenTime / 60);
+			// if (betweenTimeHour < 24) {
+			// 	return `${betweenTimeHour}시간전`;
+			// }
+			// const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+			// if (betweenTimeDay < 365) {
+			// 	return `${betweenTimeDay}일전`;
+			// }
+			// return `${Math.floor(betweenTimeDay / 365)}년전`;
 		};
 
-		return { you, chatList, isYou, difTime };
+		//웹소켓 연결
+		const stompClient = reactive({});
+		const connect = () => {
+			const serverURL = 'http://localhost:8081/api/v1/chat';
+			let socket = new SockJS(serverURL);
+			stompClient.value = Stomp.over(socket);
+			console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`);
+			stompClient.value.connect(
+				{},
+				frame => {
+					stompClient.value.connected = true;
+					console.log('소켓 연결 성공', frame);
+					stompClient.value.subscribe('/send', res => {
+						console.log('구독으로 받은 메시지 입니다.', res.body);
+						chatList.push(JSON.parse(res.body));
+						console.log('chatList', chatList);
+					});
+				},
+				error => {
+					console.log('소켓 연결 실패', error);
+					stompClient.value.connected = false;
+				},
+			);
+		};
+		connect();
+
+		const message = ref('');
+		// const userSeq = computed(() => store.getters['auth/user']['userSeq']);
+		const userSeq = ref();
+		userSeq.value = 1;
+		const sendMessage = () => {
+			console.log('userSeq.value:', userSeq.value);
+			if (userSeq.value !== '' && message.value !== '') {
+				send();
+				message.value = '';
+			}
+		};
+		const send = () => {
+			console.log('Send message:' + message.value);
+			if (stompClient.value && stompClient.value.connected) {
+				const date = new Date(Date.now());
+				const msg = {
+					// userSeq: userSeq.value,
+					userSeq: 1,
+					content: message.value,
+					createtime: date,
+					isRequest: false,
+					chatRoomId: 4, //chatRoomId?
+				};
+				stompClient.value.send('/receive', JSON.stringify(msg), {});
+			}
+		};
+		return { you, chatList, isYou, difTime, message, sendMessage, chatLog };
 	},
 };
 </script>
@@ -80,12 +154,26 @@ export default {
 	height: 90%;
 	width: 90%;
 }
-.chat-messages {
+.chat-message-list {
 	overflow: auto;
 	height: 88%;
 }
 .chat-time {
 	font-size: 10px;
 	color: gray;
+}
+.chat-message {
+	margin-top: 2vh;
+	background-color: #ffd8d8;
+	border-radius: 0px 20px 20px 20px;
+	padding: 0 1rem 3%;
+	display: inline-block;
+	font-size: 14px;
+	max-width: 75%;
+	padding: 10px;
+}
+.chat-message-me {
+	background-color: #efefef;
+	border-radius: 20px 20px 0px 20px;
 }
 </style>

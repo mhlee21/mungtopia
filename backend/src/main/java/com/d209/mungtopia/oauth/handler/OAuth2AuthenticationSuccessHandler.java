@@ -12,6 +12,7 @@ import com.d209.mungtopia.oauth.token.AuthToken;
 import com.d209.mungtopia.oauth.token.AuthTokenProvider;
 import com.d209.mungtopia.utils.CookieUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -39,15 +40,25 @@ import static com.d209.mungtopia.oauth.repository.OAuth2AuthorizationRequestBase
 // OAuth2AuthenticationSuccessHandler의 onAuthenticationSuccess() 메소드를 호출
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Autowired
     private final AuthTokenProvider tokenProvider;
+    @Autowired
     private final AppProperties appProperties;
+    @Autowired
     private final UserRefreshTokenRepository userRefreshTokenRepository;
+    @Autowired
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
     @Override
     // 몇가지 유효성 검사를 수행하고, JWT 인증 토큰을 만들고, 쿼리 문자열에 추가된 JWT 토큰을 사용하여
     // 클라이언트가 지정한 redirect_uri로 사용자를 리디렉션
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        System.out.println("request = " + request);
+        System.out.println("response = " + response);
+        System.out.println("authentication = " + authentication);
+        Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+                .map(Cookie::getValue);
+        System.out.println("BEFORE!!!! :::: =========== determineTargetUrl = " + redirectUri);
         String targetUrl = determineTargetUrl(request, response, authentication);
 
         if (response.isCommitted()) {
@@ -62,11 +73,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
+        System.out.println("BEFORE :::: =========== redirectUri = " + redirectUri);
 
         if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
+            System.out.println("redirectUri = " + redirectUri);
+            System.out.println("redirectUri.isPresent() = " + redirectUri.isPresent());
+            System.out.println("redirectUri = " + redirectUri.get());
             throw new IllegalArgumentException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
         }
-
+        System.out.println("AFTER :::: =========== redirectUri = " + redirectUri);
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
@@ -92,7 +107,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 appProperties.getAuth().getTokenSecret(),
                 new Date(now.getTime() + refreshTokenExpiry)
         );
-
+        System.out.println("=============== refresh 토큰 저장 ========= refreshTokenExpiry = " + refreshTokenExpiry);
         // DB 저장
         UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
         if (userRefreshToken != null) {
@@ -101,7 +116,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             userRefreshToken = new UserRefreshToken(userInfo.getId(), refreshToken.getToken());
             userRefreshTokenRepository.saveAndFlush(userRefreshToken);
         }
-
+        System.out.println("=============== DB 저장 ========= userRefreshToken = " + userRefreshToken);
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
 
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
@@ -131,13 +146,15 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
     private boolean isAuthorizedRedirectUri(String uri) {
+        System.out.println("uri = " + uri);
         URI clientRedirectUri = URI.create(uri);
-
+        System.out.println(clientRedirectUri);
         return appProperties.getOauth2().getAuthorizedRedirectUris()
                 .stream()
                 .anyMatch(authorizedRedirectUri -> {
                     // Only validate host and port. Let the clients use different paths if they want to
                     URI authorizedURI = URI.create(authorizedRedirectUri);
+                    System.out.println("authorizedURI = " + authorizedURI);
                     if(authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
                             && authorizedURI.getPort() == clientRedirectUri.getPort()) {
                         return true;

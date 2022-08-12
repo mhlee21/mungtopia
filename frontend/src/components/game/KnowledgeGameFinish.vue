@@ -30,7 +30,7 @@
 				<div>10문제 중 {{ correctAnswer }}문제를 맞추었어요ㅠ</div>
 			</div>
 			<div class="game-btn">
-				<div class="start-btn">REPLAY</div>
+				<div class="start-btn" @click="onClickShareStory">Share</div>
 			</div>
 			<div class="game-btn">
 				<div class="start-btn">GAME MENU</div>
@@ -47,7 +47,12 @@ export default {
 	setup() {
 		const store = useStore();
 		const correctAnswer = computed(() => store.getters['game/correctAnswer']);
-		return { correctAnswer };
+		const onClickShareStory = () => {
+			window.Kakao.Link.sendCustom({
+				templateId: 81263,
+			});
+		};
+		return { correctAnswer, onClickShareStory };
 	},
 };
 </script>

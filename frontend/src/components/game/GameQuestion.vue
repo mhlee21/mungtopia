@@ -23,7 +23,41 @@
 		</div>
 	</div>
 	<div v-else>
-		<div class="MATCH-game-btn">
+		<div
+			class="bulgy-radios"
+			role="radiogroup"
+			aria-labelledby="bulgy-radios-label"
+		>
+			<h2 id="bulgy-radios-label">Select an option</h2>
+			<label>
+				<input type="radio" name="options" checked />
+				<span class="radio"></span>
+				<span class="label">First option</span>
+			</label>
+			<label>
+				<input type="radio" name="options" />
+				<span class="radio"></span>
+				<span class="label">Second option</span>
+			</label>
+			<label>
+				<input type="radio" name="options" />
+				<span class="radio"></span>
+				<span class="label">Third option</span>
+			</label>
+			<label>
+				<input type="radio" name="options" />
+				<span class="radio"></span>
+				<span class="label">Fourth option</span>
+			</label>
+			<label>
+				<input type="radio" name="options" />
+				<span class="radio"></span>
+				<span class="label">Last option</span>
+			</label>
+		</div>
+	</div>
+
+	<!-- <div class="MATCH-game-btn">
 			<div class="MATCH-start-btn" @click="plusMatchAnswer(5)">
 				{{ gameQuestion[questionNumber]['answer'][0] }}
 			</div>
@@ -48,7 +82,7 @@
 				{{ gameQuestion[questionNumber]['answer'][4] }}
 			</div>
 		</div>
-	</div>
+	</div> -->
 </template>
 
 <script>
@@ -80,7 +114,7 @@ export default {
 						};
 						store.dispatch('game/sendResult', payload);
 					}
-					router.push({ path: '/game/main/finish' });
+					router.push({ path: '/game/0/finish' });
 				}
 			}
 			// else {
@@ -198,5 +232,96 @@ export default {
 .MATCH-start-btn {
 	width: 100%;
 	color: #fffbf0;
+}
+
+.bulgy-radios {
+	label {
+		align-content: center;
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		position: relative;
+		height: 1em;
+		padding-left: 4rem;
+		margin-bottom: 1.75rem;
+		cursor: pointer;
+		font-size: 2.5rem;
+		user-select: none;
+		color: #555;
+		letter-spacing: 1px;
+		&:hover input:not(:checked) ~ .radio {
+			opacity: 0.8;
+		}
+	}
+	.label {
+		display: flex;
+		align-items: center;
+		padding-right: 3rem;
+		span {
+			line-height: 1em;
+		}
+	}
+	matching-input {
+		position: absolute;
+		cursor: pointer;
+		height: 0;
+		width: 0;
+		left: -2000px;
+
+		&:checked {
+			~ .radio {
+				background-color: #0ac07d;
+				transition: background 0.3s;
+				&::after {
+					opacity: 1;
+				}
+			}
+			~ .label {
+				color: #0bae72;
+				span {
+					animation: bulge 0.5s forwards;
+				}
+
+				//adjust this if label is going to be more than 20 chars
+				@for $i from 1 to 20 {
+					span:nth-child(#{$i}) {
+						animation-delay: $i * 0.025s;
+					}
+				}
+			}
+		}
+	}
+}
+.radio {
+	position: absolute;
+	top: 0.2rem;
+	left: 0;
+	height: 2.5rem;
+	width: 2.5rem;
+	background: #c9ded6;
+	border-radius: 50%;
+	&::after {
+		content: '';
+		position: absolute;
+		opacity: 0;
+		top: 0.5rem;
+		left: 0.5rem;
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 50%;
+		background: #fff;
+	}
+}
+@keyframes bulge {
+	50% {
+		transform: rotate(4deg);
+		font-size: 1.5em;
+		font-weight: bold;
+	}
+	100% {
+		transform: rotate(0);
+		font-size: 1em;
+		font-weight: bold;
+	}
 }
 </style>

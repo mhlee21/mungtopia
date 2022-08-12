@@ -16,11 +16,12 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import GameMainButton from '@/components/game/GameMainButton.vue';
 import GameTitle from '@/components/game/GameTitle.vue';
 import GameDescription from '@/components/game/GameDescription.vue';
-import { useStore } from 'vuex';
-import { computed } from 'vue';
 
 export default {
 	components: {
@@ -29,11 +30,13 @@ export default {
 		GameDescription,
 	},
 	setup() {
+		const route = useRoute();
 		const store = useStore();
+		store.dispatch('game/enterGame', route.params.gameType);
+		let gameType = computed(() => store.getters['game/gameType']);
 		let gameTitle = computed(() => store.getters['game/gameTitle']);
 		let gameDescription = computed(() => store.getters['game/gameDescription']);
-		let gameType = computed(() => store.getters['game/gameType']);
-		return { gameTitle, gameDescription, gameType };
+		return { gameType, gameTitle, gameDescription };
 	},
 };
 </script>

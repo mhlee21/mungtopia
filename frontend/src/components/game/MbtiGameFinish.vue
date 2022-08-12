@@ -98,18 +98,10 @@ export default {
 			window.Kakao.Link.sendCustom({
 				templateId: 81245,
 				templateArgs: {
-					title: '',
-					description: '설명 영역입니다.',
+					key: mbtiResult.value,
 				},
-				// ContentObject: {
-				// 	LinkObject: {
-				// 		webURL: `https://i7d209.p.ssafy.io/game/1/${mbtiResult.value}`,
-				// 		mobileWebURL: `https://i7d209.p.ssafy.io/game/1/${mbtiResult.value}`,
-				// 	},
-				// },
 			});
 		};
-		// console.log(mbtiResult);
 		store.dispatch('game/MbtiDogResult', mbtiResult.value);
 		const mbtiDog = computed(() => store.getters['game/mbtiDog']);
 		// window.Kakao.Share.createCustomButton({

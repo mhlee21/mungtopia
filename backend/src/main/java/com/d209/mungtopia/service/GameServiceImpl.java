@@ -3,14 +3,8 @@ package com.d209.mungtopia.service;
 import com.d209.mungtopia.dto.game.GameReq;
 import com.d209.mungtopia.dto.game.MatchingGameReq;
 import com.d209.mungtopia.dto.game.MatchingGameRes;
-import com.d209.mungtopia.entity.DogNature;
-import com.d209.mungtopia.entity.GameResult;
-import com.d209.mungtopia.entity.User;
-import com.d209.mungtopia.entity.UserDogNature;
-import com.d209.mungtopia.repository.InfDogNatureRepository;
-import com.d209.mungtopia.repository.InfGameResultRepository;
-import com.d209.mungtopia.repository.InfUserDogNatureRepository;
-import com.d209.mungtopia.repository.InfUserRepository;
+import com.d209.mungtopia.entity.*;
+import com.d209.mungtopia.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +17,8 @@ public class GameServiceImpl implements GameService{
     private final InfGameResultRepository infGameResultRepository;
     private final InfUserDogNatureRepository infUserDogNatureRepository;
     private final InfDogNatureRepository infDogNatureRepository;
+    private final InfBoardRepository infBoardRepository;
+    private final InfImageStorageRepository infImageStorageRepository;
 
     @Override
     public List<GameReq> getGameResult(long userSeq) {
@@ -57,11 +53,11 @@ public class GameServiceImpl implements GameService{
     }
 
     @Override
-    public boolean postMatchingResult(MatchingGameReq gameReq) {
+    public MatchingGameRes postMatchingResult(MatchingGameReq gameReq) {
         List<Integer> userNature = gameReq.getMatchAnswer(); // value 결과 저장
         Optional<User> user = Optional.ofNullable(infUserRepository.getReferenceById(gameReq.getUserSeq()));
         if (user.isEmpty()) // null 처리
-            return false;
+            return null;
         // 결과 저장로직
         Optional<UserDogNature> userDogNature = infUserDogNatureRepository.findByUser(user.get());
         if (userDogNature.isEmpty()){ // 없으면 새로 저장
@@ -78,7 +74,7 @@ public class GameServiceImpl implements GameService{
         Map<Long, Integer> result = new HashMap<>();
         for (int i = 0; i < dogNatureList.size(); i++) {
             DogNature dogNature = dogNatureList.get(i);
-            long dogNatureId = dogNature.getDogNatureId();
+            long boardId = dogNature.getDogInfo().getBoard().getBoardId();
             int sum = 0;
             sum += Math.abs(userNature.get(0) - dogNature.getNature1() * 3);
             sum += Math.abs(userNature.get(1) - dogNature.getNature2() * 3);
@@ -87,19 +83,23 @@ public class GameServiceImpl implements GameService{
             sum += Math.abs(userNature.get(4) - dogNature.getNature5() * 3);
             sum += Math.abs(userNature.get(5) - dogNature.getNature6() * 3);
 
-            result.put(dogNatureId, sum); // 결과 저장
+            result.put(boardId, sum); // 결과 저장
         }
         // 정렬
         List<Map.Entry<Long, Integer>> resultList = new LinkedList<>(result.entrySet());
         resultList.sort(Map.Entry.comparingByValue());
-
+        System.out.println("resultList = " + resultList);
         int randomDog = (int) (Math.random() * 3); // 1 - 3 중 랜덤으로 리턴
         Long resultKey = resultList.get(randomDog).getKey();
 
         MatchingGameRes response = new MatchingGameRes();
+        Optional<Board> targetBoard = infBoardRepository.findById(resultKey);
+        if (targetBoard.isEmpty())
+            return null;
+
         response.setBoardId(resultKey);
-//        response.setDogImg();
-//        response.setDogName();
-        return false;
+        response.setDogImg(infImageStorageRepository.findByBoardAndOrders(targetBoard.get(), 1).getOriginFilename());
+        response.setDogName(targetBoard.get().getDogInfo().getName());
+        return response;
     }
 }

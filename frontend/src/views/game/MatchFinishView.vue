@@ -34,7 +34,7 @@
 		</div>
 		<div style="text-align: center">
 			<div class="game-btn" style="margin: 0% 5% 0% 0%">
-				<div class="start-btn">SHARE</div>
+				<div class="start-btn" @click="onClickShareStory">SHARE</div>
 			</div>
 			<div class="game-btn" style="margin: 0% 0% 0% 5%">
 				<div class="start-btn">GAME MENU</div>
@@ -46,7 +46,12 @@
 <script>
 export default {
 	setup() {
-		return {};
+		const onClickShareStory = () => {
+			window.Kakao.Link.sendCustom({
+				templateId: 81265,
+			});
+		};
+		return { onClickShareStory };
 	},
 };
 </script>

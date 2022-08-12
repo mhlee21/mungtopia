@@ -69,7 +69,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 //        }
 
         clearAuthenticationAttributes(request, response);
-        getRedirectStrategy().sendRedirect(request, response, "https://i7d209.p.ssafy.io/oauth/redirect");
+        getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {

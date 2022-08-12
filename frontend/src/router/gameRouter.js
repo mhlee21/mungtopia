@@ -24,7 +24,7 @@ export default [
 		component: KnowledgePlayView,
 	},
 	{
-		path: '/game/:gameType/finish',
+		path: '/game/0/finish',
 		name: 'GameFinish',
 		component: KnowledgeFinishView,
 	},

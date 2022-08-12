@@ -12,6 +12,8 @@ import com.d209.mungtopia.oauth.token.AuthToken;
 import com.d209.mungtopia.oauth.token.AuthTokenProvider;
 import com.d209.mungtopia.utils.CookieUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -37,26 +39,37 @@ import static com.d209.mungtopia.oauth.repository.OAuth2AuthorizationRequestBase
 @RequiredArgsConstructor
 // 인증이 성공하면 Spring Security는 SecurityConfig에 구성된
 // OAuth2AuthenticationSuccessHandler의 onAuthenticationSuccess() 메소드를 호출
+@Slf4j
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
+    @Autowired
     private final AuthTokenProvider tokenProvider;
+    @Autowired
     private final AppProperties appProperties;
+    @Autowired
     private final UserRefreshTokenRepository userRefreshTokenRepository;
+    @Autowired
     private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationRequestRepository;
 
     @Override
     // 몇가지 유효성 검사를 수행하고, JWT 인증 토큰을 만들고, 쿼리 문자열에 추가된 JWT 토큰을 사용하여
     // 클라이언트가 지정한 redirect_uri로 사용자를 리디렉션
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
+        logger.debug("request = " + request);
+        logger.debug("response = " + response);
+        logger.debug("authentication = " + authentication);
+        Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
+                .map(Cookie::getValue);
+        logger.debug("BEFORE!!!! :::: =========== determineTargetUrl = " + redirectUri);
         String targetUrl = determineTargetUrl(request, response, authentication);
 
-        if (response.isCommitted()) {
-            logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
-            return;
-        }
+//        if (response.isCommitted()) {
+//            logger.debug("??? ============Response has already been committed. Unable to redirect to " + targetUrl);
+//            return;
+//        }
 
         clearAuthenticationAttributes(request, response);
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        getRedirectStrategy().sendRedirect(request, response, "https://i7d209.p.ssafy.io/oauth/redirect");
     }
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
@@ -64,13 +77,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .map(Cookie::getValue);
 
         if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
-            throw new IllegalArgumentException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
+            throw new IllegalArgumentException("?????? ========== Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
         }
-
-        String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
 
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
         ProviderType providerType = ProviderType.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
+
         // Odic - OpenIDConnect - 내부적으로 인증로직이 돌고, 토큰을 바로 반환해주고 이토큰으로 로그인을 처리하고 싶을 때 사용
         OidcUser user = ((OidcUser) authentication.getPrincipal());
         OAuth2UserInfo userInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(providerType, user.getAttributes());
@@ -85,7 +97,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 new Date(now.getTime() + appProperties.getAuth().getTokenExpiry())
         );
 
-        // refresh 토큰 설정
         long refreshTokenExpiry = appProperties.getAuth().getRefreshTokenExpiry();
 
         AuthToken refreshToken = tokenProvider.createAuthToken(
@@ -106,6 +117,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
         CookieUtil.addCookie(response, REFRESH_TOKEN, refreshToken.getToken(), cookieMaxAge);
+
+//        String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
+        String targetUrl = "https://i7d209.p.ssafy.io/oauth/redirect";
 
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", accessToken.getToken())
@@ -131,17 +145,23 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
     private boolean isAuthorizedRedirectUri(String uri) {
+        logger.debug("========== uri = " + uri);
         URI clientRedirectUri = URI.create(uri);
-
+        logger.debug(String.valueOf(clientRedirectUri));
         return appProperties.getOauth2().getAuthorizedRedirectUris()
                 .stream()
                 .anyMatch(authorizedRedirectUri -> {
                     // Only validate host and port. Let the clients use different paths if they want to
                     URI authorizedURI = URI.create(authorizedRedirectUri);
-                    if(authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
-                            && authorizedURI.getPort() == clientRedirectUri.getPort()) {
+                    logger.debug("==========authorizedURI = " + authorizedURI);
+//                    if(authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())
+//                            && authorizedURI.getPort() == clientRedirectUri.getPort()) {
+//                        return true;
+//                    }
+                    if(authorizedURI.getHost().equalsIgnoreCase(clientRedirectUri.getHost())) {
                         return true;
                     }
+
                     return false;
                 });
     }

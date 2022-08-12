@@ -9,6 +9,7 @@ import com.d209.mungtopia.repository.InfChatRoomRepository;
 import com.d209.mungtopia.repository.InfUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -43,10 +44,10 @@ public class ChattingService {
         return chatLogDto;
     }
 
-    public Page<ChatLog> chatLog(int pageNo, Long chatRoomId, Pageable pageable) {
+    public Page<ChatLog> chatLog(int page, Long chatRoomId) {
+        PageRequest pageRequest = PageRequest.of(page, 15);
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).get();
-//        List<ChatLog> chatLogs = chatLogRepository.chatLogList(chatRoom, pageable);
-
-        return null;
+        Page<ChatLog> chatLogs = chatLogRepository.findByChatRoomOrderByCreatetime(chatRoom, pageRequest);
+        return chatLogs;
     }
 }

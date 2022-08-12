@@ -14,6 +14,6 @@ import java.util.List;
 @Repository
 public interface InfChatLogRepository extends JpaRepository<ChatLog, Long> {
 
-    @Query ("select c from ChatLog c where c.chatRoom = :chatRoom order by c.createtime")
-    Page<ChatLog> chatLogList(@Param("chatRoom") ChatRoom chatRoom, Pageable pageable);
+    @Query ("select c from ChatLog c where c.chatRoom = :chatRoom order by c.createtime desc")
+    Page<ChatLog> findByChatRoomOrderByCreatetime(@Param("chatRoom") ChatRoom chatRoom, Pageable pageable);
 }

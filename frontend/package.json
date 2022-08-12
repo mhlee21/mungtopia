@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --port 3000",
+    "serve": "vue-cli-service serve --port 80",
     "build": "vue-cli-service build --port 80",
     "lint": "vue-cli-service lint"
   },

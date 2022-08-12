@@ -5,10 +5,12 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
 export default {
-	props: ['gameTitle'],
 	setup() {
-		return {};
+		const store = useStore();
+		const gameTitle = store.getters['game/gameTitle'];
+		return { gameTitle };
 	},
 };
 </script>

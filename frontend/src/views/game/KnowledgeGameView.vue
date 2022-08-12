@@ -1,8 +1,14 @@
 <template>
 	<div class="frame">
 		<GameTitle :gameTitle="gameTitle"></GameTitle>
-		<div style="text-align: center">
-			<img src="" alt="" />
+		<div style="text-align: center" v-if="gameType == 0">
+			<img src="@/assets/images/knowledge.jpg" alt="" />
+		</div>
+		<div style="text-align: center" v-else-if="gameType == 1">
+			<img src="@/assets/images/mbti.jpg" alt="" />
+		</div>
+		<div style="text-align: center" v-else>
+			<img src="@/assets/images/matching.jpg" alt="" />
 		</div>
 		<GameDescription :gameDescription="gameDescription"></GameDescription>
 		<GameMainButton></GameMainButton>
@@ -10,11 +16,12 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import GameMainButton from '@/components/game/GameMainButton.vue';
 import GameTitle from '@/components/game/GameTitle.vue';
 import GameDescription from '@/components/game/GameDescription.vue';
-import { useStore } from 'vuex';
-import { computed } from 'vue';
 
 export default {
 	components: {
@@ -23,10 +30,13 @@ export default {
 		GameDescription,
 	},
 	setup() {
+		const route = useRoute();
 		const store = useStore();
+		store.dispatch('game/enterGame', route.params.gameType);
+		let gameType = computed(() => store.getters['game/gameType']);
 		let gameTitle = computed(() => store.getters['game/gameTitle']);
 		let gameDescription = computed(() => store.getters['game/gameDescription']);
-		return { gameTitle, gameDescription };
+		return { gameType, gameTitle, gameDescription };
 	},
 };
 </script>

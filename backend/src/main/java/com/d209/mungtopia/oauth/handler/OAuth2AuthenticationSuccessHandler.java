@@ -12,6 +12,7 @@ import com.d209.mungtopia.oauth.token.AuthToken;
 import com.d209.mungtopia.oauth.token.AuthTokenProvider;
 import com.d209.mungtopia.utils.CookieUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,6 +39,7 @@ import static com.d209.mungtopia.oauth.repository.OAuth2AuthorizationRequestBase
 @RequiredArgsConstructor
 // 인증이 성공하면 Spring Security는 SecurityConfig에 구성된
 // OAuth2AuthenticationSuccessHandler의 onAuthenticationSuccess() 메소드를 호출
+@Slf4j
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Autowired
@@ -53,12 +55,12 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     // 몇가지 유효성 검사를 수행하고, JWT 인증 토큰을 만들고, 쿼리 문자열에 추가된 JWT 토큰을 사용하여
     // 클라이언트가 지정한 redirect_uri로 사용자를 리디렉션
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        System.out.println("request = " + request);
-        System.out.println("response = " + response);
-        System.out.println("authentication = " + authentication);
+        log.debug("request = " + request);
+        log.debug("response = " + response);
+        log.debug("authentication = " + authentication);
         Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
-        System.out.println("BEFORE!!!! :::: =========== determineTargetUrl = " + redirectUri);
+        log.debug("BEFORE!!!! :::: =========== determineTargetUrl = " + redirectUri);
         String targetUrl = determineTargetUrl(request, response, authentication);
 
         if (response.isCommitted()) {
@@ -73,17 +75,17 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
-        System.out.println("BEFORE :::: =========== redirectUri = " + redirectUri);
+        log.debug("BEFORE :::: =========== redirectUri = " + redirectUri);
 
         if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
-            System.out.println("redirectUri = " + redirectUri);
-            System.out.println("redirectUri.isPresent() = " + redirectUri.isPresent());
-            System.out.println("redirectUri = " + redirectUri.get());
+            log.debug("redirectUri = " + redirectUri);
+            log.debug("redirectUri.isPresent() = " + redirectUri.isPresent());
+            log.debug("redirectUri = " + redirectUri.get());
             throw new IllegalArgumentException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
         }
-        System.out.println("AFTER :::: =========== redirectUri = " + redirectUri);
+        log.debug("AFTER :::: =========== redirectUri = " + redirectUri);
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-
+        log.debug("AFTER :::: =========== targetUrl = " + targetUrl);
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
         ProviderType providerType = ProviderType.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());
         // Odic - OpenIDConnect - 내부적으로 인증로직이 돌고, 토큰을 바로 반환해주고 이토큰으로 로그인을 처리하고 싶을 때 사용
@@ -107,7 +109,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 appProperties.getAuth().getTokenSecret(),
                 new Date(now.getTime() + refreshTokenExpiry)
         );
-        System.out.println("=============== refresh 토큰 저장 ========= refreshTokenExpiry = " + refreshTokenExpiry);
+        log.debug("=============== refresh 토큰 저장 ========= refreshTokenExpiry = " + refreshTokenExpiry);
         // DB 저장
         UserRefreshToken userRefreshToken = userRefreshTokenRepository.findByUserId(userInfo.getId());
         if (userRefreshToken != null) {
@@ -116,7 +118,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             userRefreshToken = new UserRefreshToken(userInfo.getId(), refreshToken.getToken());
             userRefreshTokenRepository.saveAndFlush(userRefreshToken);
         }
-        System.out.println("=============== DB 저장 ========= userRefreshToken = " + userRefreshToken);
+        log.debug("=============== DB 저장 ========= userRefreshToken = " + userRefreshToken);
         int cookieMaxAge = (int) refreshTokenExpiry / 60;
 
         CookieUtil.deleteCookie(request, response, REFRESH_TOKEN);
@@ -146,9 +148,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     }
 
     private boolean isAuthorizedRedirectUri(String uri) {
-        System.out.println("uri = " + uri);
+        log.debug("========== uri = " + uri);
         URI clientRedirectUri = URI.create(uri);
-        System.out.println(clientRedirectUri);
+        log.debug(String.valueOf(clientRedirectUri));
         return appProperties.getOauth2().getAuthorizedRedirectUris()
                 .stream()
                 .anyMatch(authorizedRedirectUri -> {

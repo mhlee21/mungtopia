@@ -1,5 +1,5 @@
 <template>
-	<div class="frame">
+	<div class="frame" style="overflow: scroll">
 		<div class="status">
 			<GamePlayStatus></GamePlayStatus>
 		</div>
@@ -14,6 +14,7 @@
 				width="150"
 				height="150"
 				alt=""
+				v-if="questionNumber < 10"
 			/>
 		</div>
 		<div style="text-align: center" v-else-if="gameType == 1">

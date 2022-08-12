@@ -66,6 +66,7 @@ export default {
 		// 게임 기록 저장
 		saveGame: () => HOST + GAME,
 		receiveGame: () => HOST + GAME,
+		clearGame: userSeq => HOST + GAME + `${userSeq}`,
 	},
 	adopt: {
 		// 입양하기 메인

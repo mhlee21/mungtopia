@@ -54,7 +54,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Override
     // 몇가지 유효성 검사를 수행하고, JWT 인증 토큰을 만들고, 쿼리 문자열에 추가된 JWT 토큰을 사용하여
     // 클라이언트가 지정한 redirect_uri로 사용자를 리디렉션
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         logger.debug("request = " + request);
         logger.debug("response = " + response);
         logger.debug("authentication = " + authentication);
@@ -64,21 +64,21 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String targetUrl = determineTargetUrl(request, response, authentication);
 
         if (response.isCommitted()) {
-            logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
+            logger.debug("??? ============Response has already been committed. Unable to redirect to " + targetUrl);
             return;
         }
 
         clearAuthenticationAttributes(request, response);
-        getRedirectStrategy().sendRedirect(request, response, targetUrl);
+        getRedirectStrategy().sendRedirect(request, response, "https://i7d209.p.ssafy.io/oauth/redirect");
     }
 
     protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         Optional<String> redirectUri = CookieUtil.getCookie(request, REDIRECT_URI_PARAM_COOKIE_NAME)
                 .map(Cookie::getValue);
 
-//        if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
-//            throw new IllegalArgumentException("Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
-//        }
+        if(redirectUri.isPresent() && !isAuthorizedRedirectUri(redirectUri.get())) {
+            throw new IllegalArgumentException("?????? ========== Sorry! We've got an Unauthorized Redirect URI and can't proceed with the authentication");
+        }
 
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
         ProviderType providerType = ProviderType.valueOf(authToken.getAuthorizedClientRegistrationId().toUpperCase());

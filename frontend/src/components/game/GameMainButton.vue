@@ -10,17 +10,11 @@
 <script>
 import { useStore } from 'vuex';
 import router from '@/router';
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
 
 export default {
 	setup() {
 		const store = useStore();
-		const route = useRoute();
-		const gameType = computed(
-			() => store.getters['game/gameType'],
-			route.params.gameType,
-		);
+		const gameType = store.getters['game/gameType'];
 		const gameStart = gameType => {
 			store.dispatch('game/solveGame', gameType);
 			router.push({
@@ -31,7 +25,7 @@ export default {
 		const gameBack = () => {
 			router.push({ path: '/game' });
 		};
-		return { gameStart, gameBack, gameType };
+		return { gameType, gameStart, gameBack };
 	},
 };
 </script>

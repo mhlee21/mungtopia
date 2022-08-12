@@ -114,13 +114,13 @@ export default {
 	actions: {
 		enterGame: ({ commit }, gameType) => {
 			commit('SET_GAME_TYPE', gameType);
-			if (gameType === 0) {
+			if (gameType == 0) {
 				commit('SET_GAME_TITLE', '강아지식테스트');
 				commit(
 					'SET_GAME_DESCRIPTION',
-					'10문제 중 7문제 이상 맞춰\n 당신의 반려견에게\n 뼈다귀를 선물하세요!',
+					'10문제 중 7문제 이상 맞춰\n 당신의 반려견 지식을\n 뽐내보세요!',
 				);
-			} else if (gameType === 1) {
+			} else if (gameType == 1) {
 				commit('SET_GAME_TITLE', '댕BTI');
 				commit(
 					'SET_GAME_DESCRIPTION',
@@ -135,16 +135,16 @@ export default {
 			}
 		},
 
-		solveGame: ({ commit, getters }) => {
-			const gameType = getters.gameType;
+		solveGame: ({ commit }, gameType) => {
 			const res = Qdata;
-			if (gameType === 0) {
+			if (gameType == 0) {
 				const data = res.knowledge.map(d => ({
 					question: d.question,
+					img: d.img,
 					answer: d.answer,
 				}));
 				commit('SET_GAME_QUESTION', data);
-			} else if (gameType === 1) {
+			} else if (gameType == 1) {
 				const data = res.MBTI.map(d => ({
 					question_type: d.question_type,
 					question: d.question,

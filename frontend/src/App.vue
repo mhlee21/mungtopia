@@ -4,7 +4,5 @@
 	</div>
 </template>
 
-<script>
-export default {};
-</script>
+<script setup lang="ts"></script>
 <style scoped></style>

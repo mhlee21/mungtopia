@@ -151,10 +151,7 @@ export default {
 					};
 					store.dispatch('game/sendResult', payload);
 				}
-				router.push({
-					name: 'MatchFinish',
-					params: { mbtiResult: store.getters['game/MatchFinish'] },
-				});
+				router.push({ path: '/game/2/finish' });
 			} else {
 				store.dispatch('game/plusQuestionNumber');
 				store.dispatch('game/updateProgressbar');

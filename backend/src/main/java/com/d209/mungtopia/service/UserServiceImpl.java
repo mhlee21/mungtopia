@@ -5,6 +5,7 @@ import com.d209.mungtopia.dto.user.UserBoaordRes;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.InfImageStorageRepository;
 import com.d209.mungtopia.repository.InfUserRepository;
+import com.d209.mungtopia.repository.user.UserRefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
     private final InfUserRepository infUserRepository;
     private final InfImageStorageRepository infImageStorageRepository;
+    private final UserRefreshTokenRepository userRefreshTokenRepository;
 
     @Override
     public UserInfo getUser(long userSeq) {
@@ -60,26 +62,36 @@ public class UserServiceImpl implements UserService{
         UserBoaordRes response = new UserBoaordRes();
         for (Board board: boardList) {
             Info info = new Info();
-            info.setId(board.getBoardId());
-            info.setImgUrl(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
+            info.setUserId(board.getBoardId());
+            info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
             response.getBoardList().add(info);
         }
 
         for (Likes like: likesList) {
             Board board = like.getBoard();
             Info info = new Info();
-            info.setId(board.getBoardId());
-            info.setImgUrl(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
+            info.setUserId(board.getBoardId());
+            info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
             response.getLikeList().add(info);
         }
 
         for (Star star: starList) {
             Board board = star.getBoard();
             Info info = new Info();
-            info.setId(board.getBoardId());
-            info.setImgUrl(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
+            info.setUserId(board.getBoardId());
+            info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
             response.getStarList().add(info);
         }
         return response;
+    }
+
+    @Override
+    public Info getUserSeq(String userId) {
+        User user = infUserRepository.findByUserId(userId);
+        Info info = new Info();
+        info.setUserId(user.getUserSeq());
+        info.setProfile(user.getProfileImageUrl());
+        info.setUsername(user.getNickname()); // nickname으로 저장
+        return info;
     }
 }

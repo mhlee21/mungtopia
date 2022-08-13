@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.*;
+import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -420,6 +421,15 @@ public class BoardServiceImpl implements BoardService {
 //        byte[] targetArray = buffer.toByteArray();
 //        imageStream.close();
 //        UrlResource urlResource = new UrlResource();
+
+        System.out.println("System.getProperty(\"java.home\") = " + System.getProperty("java.home"));
+        System.out.println("System.getProperty(\"java.class.path\") = " + System.getProperty("java.class.path"));
+        System.out.println("System.getProperty(\"user.home\") = " + System.getProperty("user.home"));
+        System.out.println("System.getProperty(\"user.dir\") = " + System.getProperty("user.dir"));
+        System.out.println("root = " + root + "/img/"+ saveName); // 절대경로 사용
+        System.out.println("Path.get() = " + Path.of(root).toAbsolutePath().toString());
+        
+
         return new UrlResource("file:" + root + "/img" +"/" + saveName);
     }
 

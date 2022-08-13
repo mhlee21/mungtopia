@@ -7,7 +7,9 @@ import com.d209.mungtopia.repository.user.UserRepository;
 import com.d209.mungtopia.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.tomcat.util.file.ConfigurationSource.Resource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -343,15 +345,16 @@ public class BoardServiceImpl implements BoardService {
         List<ImageStorage> imageStorageDtoList = new ArrayList<>();
 
         // 경로 설정 - src/webapp/img
-        String realPath = servletContext.getRealPath("/img");
+//        String realPath = servletContext.getRealPath("/img");
         String root = System.getProperty("user.dir").toString();
         String path = "jenkins/jenkins_home/workspace/mungtopia/backend/src/main/webapp/img";
+        String savePath = root + path;
         System.out.println("============== ubuntu = " + root + path);
-        System.out.println("============== realPath 파일 경로 = " + realPath);
+//        System.out.println("============== realPath 파일 경로 = " + realPath);
         int order = 1;
         // 파일 저장
 
-        File dir = new File(root + path);
+        File dir = new File(savePath);
         if (!dir.exists()){
             dir.mkdir();
         }
@@ -366,7 +369,7 @@ public class BoardServiceImpl implements BoardService {
             String today = new SimpleDateFormat("yyMMdd").format(new Date());
             final String saveName = getRandomString() + today + "." + extension;
             // 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성
-            File target = new File(realPath, saveName);
+            File target = new File(savePath, saveName);
             try {
                 file.transferTo(target); // 파일 저장
             } catch (IOException e) {
@@ -393,24 +396,27 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public byte[] getImgFile(long boardId) throws IOException {
-        String realPath = servletContext.getRealPath("/img"); // path
-        System.out.println("============== realPath = " + realPath);
+    public UrlResource getImgFile(long boardId) throws IOException {
+        String root = System.getProperty("user.dir").toString();
+        String path = "jenkins/jenkins_home/workspace/mungtopia/backend/src/main/webapp/img";
+        String savePath = root + path;
+
         Optional<Board> board = boardRepository.findById(boardId);
         ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), 1);
         String saveName = img.getSaveName();
 
-        InputStream imageStream = new FileInputStream(realPath +"\\" + saveName);
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        int read;
-        byte[] imageByteArray = new byte[imageStream.available()];
-        while ((read = imageStream.read(imageByteArray, 0, imageByteArray.length)) != 1){
-            buffer.write(imageByteArray, 0, read);
-        }
-        buffer.flush();
-        byte[] targetArray = buffer.toByteArray();
-        imageStream.close();
-        return targetArray;
+//        InputStream imageStream = new FileInputStream(savePath +"/" + saveName);
+//        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+//        int read;
+//        byte[] imageByteArray = new byte[imageStream.available()];
+//        while ((read = imageStream.read(imageByteArray, 0, imageByteArray.length)) != 1){
+//            buffer.write(imageByteArray, 0, read);
+//        }
+//        buffer.flush();
+//        byte[] targetArray = buffer.toByteArray();
+//        imageStream.close();
+//        UrlResource urlResource = new UrlResource();
+        return new UrlResource("file:" + savePath +"/" + saveName);
     }
 
     private final String getRandomString() {

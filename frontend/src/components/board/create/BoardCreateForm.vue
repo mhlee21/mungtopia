@@ -207,6 +207,7 @@ export default {
 		const dogNature = ref([]);
 		const files = ref([]);
 		const contents = ref(null);
+		const formData = new FormData();
 
 		// 하단 버튼 구현
 		const clickPreviousButton = () => {
@@ -222,14 +223,13 @@ export default {
 			);
 		};
 		const clickSubmitButton = () => {
-			const formData = new FormData();
 			let data = {};
 			if (category.value === 0) {
 				data = {
 					userSeq: store.getters['auth/user']?.userSeq,
 					boardTag: category.value,
 					contents: contents.value,
-					createtime: new Date(),
+					createtime: JSON.stringify(new Date()),
 					dogInfo: {
 						name: name.value,
 						gender: gender.value,
@@ -247,12 +247,22 @@ export default {
 					userSeq: store.getters['auth/user']?.userSeq,
 					boardTag: category.value,
 					contents: contents.value,
-					createtime: new Date(),
+					createtime: JSON.stringify(new Date()),
 				};
-
-				formData.append('data', data);
-				formData.append('files', files);
 			}
+			formData.append(
+				'data',
+				new Blob([JSON.stringify(data)], { type: 'application/json' }),
+			);
+			for (let i = 0; i < files.value.length; i++) {
+				formData.append('files', files.value[i]);
+			}
+			// for (let key of formData.entries()) {
+			// 	console.log(key);
+			// 	if (key === 'files') {
+			// 		console.log('dd');
+			// 	}
+			// }
 			// 페이지 초기화
 			store.dispatch('board/setApplicationPageNum', 1);
 			store.dispatch('board/createBoard', formData);

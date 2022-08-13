@@ -151,12 +151,13 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
             // 날짜 저장
             newStep.changeDate(LocalDateTime.now());
             // 5인 경우에 application status를 변경해줘야함!
-            adoptionProcess.getApplication().changeApplicationStatus(6);
+
         }
 
         infAdoptionStepDateRepository.save(newStep);
         adoptionProcess.setStep(stepUpdateInfo.getStep() + 1); // 기존에서 step을 증가 시킴
         adoptionProcess.setStepStatus(false);
+        adoptionProcess.getApplication().changeApplicationStatus(stepUpdateInfo.getStep() + 1);
 
         return applicationProcessList(adoptionProcessId);
     }

@@ -44,7 +44,6 @@ export default {
 			});
 		};
 		const cancelAdoption = () => {
-			console.log('userSeq 없음');
 			const answer = confirm('입양을 취소하겠습니까?');
 			if (answer === true) {
 				store.dispatch('applicantCancel');

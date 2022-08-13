@@ -80,7 +80,7 @@ export default {
 				.then(res => {
 					console.log(res);
 					commit('SET_PAGE_NO', pageNo + 1);
-					commit('SET_BOARD_LIST', res.data.body.data.boardList);
+					commit('SET_BOARD_LIST', res.body.data.boardList);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -150,7 +150,7 @@ export default {
 			})
 				.then(res => {
 					console.log(res);
-					commit('SET_BOARD_LIST', res.data.body.data.boardList);
+					commit('SET_BOARD_LIST', res.body.data.boardList);
 					commit('SET_PAGE_NO', pageNo + 1);
 				})
 				.catch(err => {
@@ -205,8 +205,8 @@ export default {
 			// 	headers: rootGetters['auth/authHeader'],
 			// })
 			// 	.then(res => {
-			// 		console.log(res.data.body.data);
-			// 		commit('SET_BOARD', res.data.body.data)
+			// 		console.log(res.body.data);
+			// 		commit('SET_BOARD', res.body.data)
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -217,8 +217,8 @@ export default {
 			// 	headers: rootGetters['auth/authHeader'],
 			// })
 			// 	.then(res => {
-			// 		console.log(res.data.body.data);
-			// 		commit('SET_IS_ADOPTING', res.data.body.data.status);
+			// 		console.log(res.body.data);
+			// 		commit('SET_IS_ADOPTING', res.body.data.status);
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -297,7 +297,7 @@ export default {
 			// 	headers: rootGetters['auth/authHeader'],
 			// })
 			// 	.then(res => {
-			// console.log(res.data.body.data);
+			// console.log(res.body.data);
 			// commit('SET_ADOPT_STATUS', adoptStatus);
 			// 	})
 			// 	.catch(err => {
@@ -310,25 +310,26 @@ export default {
 		// 글 쓰기
 		createBoard: ({ commit, rootGetters }, payload) => {
 			console.log('createBoard', commit, rootGetters, payload);
-			axios({
-				url: api.board.boardCreate(),
-				method: 'post',
-				headers: {
-					...rootGetters['auth/authHeader'],
-					'Content-Type': 'multipart/form-data',
-				},
-				data: payload,
-			})
-				.then(res => {
-					console.log(res.data.body.data.boardId);
-					router.push({
-						name: 'boardDetail',
-						params: { boardId: res.data.body.data.boardId },
-					});
-				})
-				.catch(err => {
-					console.error(err.response);
-				});
+			router.push({
+				name: 'boardDetail',
+				params: { boardId: 1 },
+			});
+			// axios({
+			// 	url: api.board.boardCreate(),
+			// 	method: 'post',
+			// 	headers: {rootGetters['auth/authHeader'], "Content-Type": "multipart/form-data"},
+			// 	data: payload,
+			// })
+			// 	.then(res => {
+			// 		console.log(res.body.data.boardId);
+			// 		this.$router.push({
+			// 			name: 'boardDetail',
+			// 			params: { boardId: res.body.data.boardId },
+			// 		});
+			// 	})
+			// 	.catch(err => {
+			// 		console.error(err.response);
+			// 	});
 		},
 
 		// 글 수정
@@ -341,7 +342,7 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.data.body.data);
+					console.log(res.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -357,7 +358,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
+					console.log(res.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -394,7 +395,7 @@ export default {
 			})
 				.then(res => {
 					dispatch('fetchDetailBoard', boardId);
-					console.log(res.data.body.data);
+					console.log(res.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -416,7 +417,7 @@ export default {
 			})
 				.then(res => {
 					dispatch('fetchDetailBoard', boardId);
-					console.log(res.data.body.data);
+					console.log(res.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -437,7 +438,7 @@ export default {
 			})
 				.then(res => {
 					dispatch('fetchDetailBoard', boardId);
-					console.log(res.data.body.data);
+					console.log(res.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -458,7 +459,7 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.data.body.data);
+					console.log(res.body.data);
 					dispatch('fetchDetailBoard', boardId);
 				})
 				.catch(err => {
@@ -480,7 +481,7 @@ export default {
 			})
 				.then(res => {
 					dispatch('fetchDetailBoard', boardId);
-					console.log(res.data.body.data);
+					console.log(res.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -499,7 +500,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
+					console.log(res.body.data);
 					dispatch('fetchDetailBoard', boardId);
 				})
 				.catch(err => {
@@ -520,7 +521,7 @@ export default {
 			// 	data: payload,
 			// })
 			// 	.then(res => {
-			// 		console.log(res.data.body.data);
+			// 		console.log(res.body.data);
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -541,7 +542,7 @@ export default {
 			// 	data: payload,
 			// })
 			// 	.then(res => {
-			// 		console.log(res.data.body.data);
+			// 		console.log(res.body.data);
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -562,7 +563,7 @@ export default {
 			// 	data: payload,
 			// })
 			// 	.then(res => {
-			// 		console.log(res.data.body.data);
+			// 		console.log(res.body.data);
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -582,7 +583,7 @@ export default {
 			// 	data: payload,
 			// })
 			// 	.then(res => {
-			// 		console.log(res.data.body.data);
+			// 		console.log(res.body.data);
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -599,7 +600,7 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.data.body.data);
+					console.log(res.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);

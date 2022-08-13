@@ -57,6 +57,7 @@
 import { useStore } from 'vuex';
 import router from '@/router';
 import NavBar from '@/components/NavBar.vue';
+import { computed } from 'vue';
 
 export default {
 	components: {
@@ -64,11 +65,12 @@ export default {
 	},
 	setup() {
 		const store = useStore();
-		const user = store.getters['auth/user'];
-		if (user != null) {
+		const user = computed(() => store.getters['auth/user']);
+		if (user.value != null) {
 			store.dispatch('game/receiveClear');
 		}
-		const isClear = store.getters['game/isClear'];
+		const isClear = computed(() => store.getters['game/isClear']);
+		console.log(isClear);
 		const gameEnter = gameType => {
 			store.dispatch('game/enterGame', gameType);
 			router.push({

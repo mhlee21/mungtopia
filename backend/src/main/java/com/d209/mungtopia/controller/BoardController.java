@@ -1,10 +1,7 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
-import com.d209.mungtopia.dto.AppDto;
-import com.d209.mungtopia.dto.BoardDto;
-import com.d209.mungtopia.dto.CommentDto;
-import com.d209.mungtopia.dto.ReplyDto;
+import com.d209.mungtopia.dto.*;
 import com.d209.mungtopia.entity.Board;
 import com.d209.mungtopia.entity.Comment;
 import com.d209.mungtopia.entity.Reply;
@@ -16,6 +13,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/board")
@@ -220,6 +222,18 @@ public class BoardController {
         Reply reply = replyRepository.findById(replyId).get();
         // 기존 userSeq 와 userNickname 비교하여 유효성 검사 필요
         return ApiResponse.success("data", boardService.deleteReply(board, reply, replyDto));
+    }
+
+    @PostMapping("/img")
+    public ApiResponse saveImgFile(@RequestParam("files") List<MultipartFile> multipartFiles) throws Exception {
+        boardService.saveImgFile(multipartFiles, 1);
+        return ApiResponse.success();
+    }
+
+    @GetMapping("/img")
+    public ApiResponse getImgFile() throws IOException {
+        System.out.println("\"in!!!!!!!!!\" = " + "in!!!!!!!!!");
+        return ApiResponse.success("data", boardService.getImgFile(1));
     }
 
 }

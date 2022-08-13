@@ -344,6 +344,8 @@ public class BoardServiceImpl implements BoardService {
 
         // 경로 설정 - src/webapp/img
         String realPath = servletContext.getRealPath("/img");
+        String ubuntu = System.getProperty("user.dir").toString();
+        System.out.println("============== ubuntu = " + ubuntu);
         System.out.println("============== realPath 파일 경로 = " + realPath);
         int order = 1;
         // 파일 저장

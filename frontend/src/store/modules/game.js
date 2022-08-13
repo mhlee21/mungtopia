@@ -253,6 +253,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 				data: payload,
 			}).catch(err => {
+				console.log(11);
 				console.error(err.response);
 			});
 			// .then(res => {
@@ -312,12 +313,14 @@ export default {
 		},
 
 		receiveClear: ({ commit, rootGetters }) => {
+			console.log(rootGetters['auth/user'].userSeq);
 			axios({
 				url: api.game.clearGame(rootGetters['auth/user'].userSeq),
 				method: 'get',
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
+					console.log(res.data.body);
 					// commit('SET_MATCH_DATA', res.body.data);
 					commit('CLEAR_GAME', {
 						gameTag: res.data.body.data.gameTag,
@@ -325,6 +328,7 @@ export default {
 					});
 				})
 				.catch(err => {
+					console.log(111);
 					console.error(err.response);
 				});
 		},

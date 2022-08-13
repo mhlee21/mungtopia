@@ -430,7 +430,7 @@ public class BoardServiceImpl implements BoardService {
         System.out.println("Path.get() = " + Path.of(root).toAbsolutePath().toString());
         
 
-        return new UrlResource("file:" + root + "/img" +"/" + saveName);
+        return new UrlResource("file:" + root + "img/" + saveName);
     }
 
     private final String getRandomString() {

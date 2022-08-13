@@ -18,7 +18,7 @@ export default {
 		// 로그인
 		login: () => HOST + AUTH + 'login',
 		// 유저 정보 받기
-		getUser: () => HOST + 'users',
+		getUser: () => HOST + 'users/',
 	},
 	board: {
 		// 전체 글 불러오기

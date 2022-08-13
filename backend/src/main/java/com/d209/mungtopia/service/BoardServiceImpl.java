@@ -344,6 +344,7 @@ public class BoardServiceImpl implements BoardService {
 
         // 경로 설정 - src/webapp/img
         String realPath = servletContext.getRealPath("/img");
+        System.out.println("============== realPath 파일 경로 = " + realPath);
         int order = 1;
         // 파일 저장
         for (MultipartFile file : multipartFiles) {
@@ -384,6 +385,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public byte[] getImgFile(long boardId) throws IOException {
         String realPath = servletContext.getRealPath("/img"); // path
+        System.out.println("============== realPath = " + realPath);
         Optional<Board> board = boardRepository.findById(boardId);
         ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), 1);
         String saveName = img.getSaveName();

@@ -2,10 +2,13 @@ package com.d209.mungtopia.controller;
 import com.d209.mungtopia.entity.UserInfo;
 import com.d209.mungtopia.service.UserService;
 import com.d209.mungtopia.common.ApiResponse;
+import com.d209.mungtopia.utils.HeaderUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -15,6 +18,13 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("")
+    @ApiOperation(value = "getUser - 로그인 후 정보 보내주기", notes = "userSeq 가져오기")
+    public ApiResponse getUserSeq(HttpServletRequest request){
+        String accessToken = HeaderUtil.getAccessToken(request);
+        return ApiResponse.success("data", userService.getUserSeq(accessToken));
+    }
 
     @GetMapping("/{user_seq}")
     @ApiOperation(value = "getUser - 개인정보 가져오기", notes = "개인정보 가져오기")

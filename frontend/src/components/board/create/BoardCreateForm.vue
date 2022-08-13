@@ -205,7 +205,7 @@ export default {
 		const areaSido = ref(null);
 		const neutering = ref(null);
 		const dogNature = ref([]);
-		const dogImg = ref([]);
+		const files = ref([]);
 		const contents = ref(null);
 
 		// 하단 버튼 구현
@@ -222,12 +222,12 @@ export default {
 			);
 		};
 		const clickSubmitButton = () => {
-			let payload = {};
+			const formData = new FormData();
+			let data = {};
 			if (category.value === 0) {
-				payload = {
+				data = {
 					userSeq: store.getters['auth/user']?.userSeq,
 					boardTag: category.value,
-					dogImg: dogImg.value,
 					contents: contents.value,
 					createtime: new Date(),
 					dogInfo: {
@@ -243,17 +243,19 @@ export default {
 					},
 				};
 			} else {
-				payload = {
+				data = {
 					userSeq: store.getters['auth/user']?.userSeq,
 					boardTag: category.value,
-					dogImg: dogImg.value,
 					contents: contents.value,
 					createtime: new Date(),
 				};
+
+				formData.append('data', data);
+				formData.append('files', files);
 			}
 			// 페이지 초기화
 			store.dispatch('board/setApplicationPageNum', 1);
-			store.dispatch('board/createBoard', payload);
+			store.dispatch('board/createBoard', formData);
 		};
 		// 마지막 페이지 여부 확인
 		const isLastPage = computed(() => {
@@ -285,7 +287,7 @@ export default {
 
 		// 이미지 저장
 		const imageSave = images => {
-			dogImg.value = images;
+			files.value = images;
 		};
 
 		// 카테고리 전환시 pageNum reset
@@ -310,7 +312,6 @@ export default {
 			areaSido,
 			neutering,
 			dogNature,
-			dogImg,
 			contents,
 			imageSave,
 		};

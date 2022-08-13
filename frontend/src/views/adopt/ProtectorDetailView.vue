@@ -25,7 +25,7 @@ export default {
 		const goBack = () => {
 			router.push({
 				name: 'adopt',
-				params: { userSeq: userSeq },
+				params: { userSeq: userSeq.value },
 			});
 		};
 		return { goBack };
@@ -33,11 +33,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.protector-detail-view {
-	padding: 10% 7%;
-	overflow: auto;
-	height: 80%;
-	background-color: #ff9898;
-}
-</style>
+<style scoped></style>

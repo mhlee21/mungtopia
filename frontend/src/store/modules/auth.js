@@ -17,6 +17,7 @@ export default {
 	},
 	getters: {
 		user: state => state.user,
+		userSeq: state => state.user.userSeq,
 		token: state => state.token,
 		authHeader: state =>
 			state.token ? { Authorization: `Token ${state.token}` } : '',
@@ -45,7 +46,8 @@ export default {
 				headers: { Authorization: `Bearer ${getters.token}` },
 			})
 				.then(res => {
-					commit('SET_USER', res.body.data.user);
+					console.log(res);
+					commit('SET_USER', res.data.body.user);
 				})
 				.catch(err => {
 					console.error(err.response);

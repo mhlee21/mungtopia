@@ -47,8 +47,12 @@ public class GameServiceImpl implements GameService{
         User user = infUserRepository.getReferenceById(userSeq);
         if (user == null)
             return false;
-        GameResult gameResult = new GameResult(gameReq.getGameTag(), user);
-        infGameResultRepository.save(gameResult);
+
+        Optional<GameResult> gameResult = infGameResultRepository.findByUserAndGameTag(user, gameReq.getGameTag());
+        if (gameResult.isEmpty()){ // 기존에 게임내역이 없을 경우에만 저장
+            GameResult result = new GameResult(gameReq.getGameTag(), user);
+            infGameResultRepository.save(result);
+        }
         return true;
     }
 
@@ -91,6 +95,9 @@ public class GameServiceImpl implements GameService{
         System.out.println("resultList = " + resultList);
         int randomDog = (int) (Math.random() * 3); // 1 - 3 중 랜덤으로 리턴
         Long resultKey = resultList.get(randomDog).getKey();
+        Integer resultSum = resultList.get(randomDog).getValue();
+        int percent = 100 - (( resultSum / (90 - 18)) * 100);
+
 
         MatchingGameRes response = new MatchingGameRes();
         Optional<Board> targetBoard = infBoardRepository.findById(resultKey);
@@ -98,8 +105,9 @@ public class GameServiceImpl implements GameService{
             return null;
 
         response.setBoardId(resultKey);
-        response.setDogImg(infImageStorageRepository.findByBoardAndOrders(targetBoard.get(), 1).getOriginFilename());
+        response.setDogImg(infImageStorageRepository.findByBoardAndOrders(targetBoard.get(), 1).getSaveName());
         response.setDogName(targetBoard.get().getDogInfo().getName());
+        response.setPercent(percent);
         return response;
     }
 }

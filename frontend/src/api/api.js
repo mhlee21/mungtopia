@@ -16,8 +16,9 @@ const MEETING = 'meeting/';
 export default {
 	auth: {
 		// 로그인
-		login: () => HOST + AUTH + 'login/',
-		getUser: () => HOST + 'users/',
+		login: () => HOST + AUTH + 'login',
+		// 유저 정보 받기
+		getUser: () => HOST + 'users',
 	},
 	board: {
 		// 전체 글 불러오기
@@ -59,7 +60,7 @@ export default {
 		starCreate: boardId => HOST + BOARD + `star/` + `${boardId}`,
 		// 별표삭제
 		starDelete: boardId => HOST + BOARD + `star/` + `${boardId}`,
-		// 입양신청서 작서
+		// 입양신청서 작성
 		applicationCreate: boardId => HOST + BOARD + `${boardId}/` + APPLICANT,
 	},
 	game: {
@@ -73,24 +74,27 @@ export default {
 		applicantMain: userSeq => HOST + ADOPT + APPLICANT + `${userSeq}`,
 		// 입양하기 상세
 		applicantDetail: applicationId =>
-			HOST + ADOPT + APPLICANT + `${applicationId}`,
+			HOST + ADOPT + APPLICANT + 'detail/' + `${applicationId}`,
 		// 입양하기 상세 - 입양절차
 		applicantDetailProcess: applicationId =>
-			HOST + ADOPT + APPLICANT + `process/` + `${applicationId}`,
-		// 입양취소
+			HOST + ADOPT + APPLICANT + 'process/' + `${applicationId}`,
+		// 입양 취소
 		applicantCancel: adoptionProcessId =>
 			HOST + ADOPT + APPLICANT + `${adoptionProcessId}`,
 		// 입양보내기 메인
 		protectorMain: userSeq => HOST + ADOPT + PROTECTOR + `${userSeq}`,
 		// 입양보내기 상세
 		protectorDetail: boardId =>
-			HOST + ADOPT + PROTECTOR + `detail/` + `${boardId}`,
+			HOST + ADOPT + PROTECTOR + 'detail/' + `${boardId}`,
 		// 입양 보내기 상세 - 입양 절차
 		protectorDetailProcess: adoptionProcessId =>
 			HOST + ADOPT + PROTECTOR + `detail/` + `user/` + `${adoptionProcessId}`,
 		// 입양 반려
 		protectorCancel: adoptionProcessId =>
 			HOST + ADOPT + PROTECTOR + `${adoptionProcessId}`,
+		// 입양 반려
+		deleteAdoption: adoptionProcessId =>
+			HOST + ADOPT + 'adoption/' + `${adoptionProcessId}`,
 		// 입양 상태 변경
 		processUpdate: adoptionProcessId =>
 			HOST + ADOPT + PROTECTOR + `${adoptionProcessId}`,

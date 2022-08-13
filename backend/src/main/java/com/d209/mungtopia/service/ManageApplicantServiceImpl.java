@@ -62,7 +62,7 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
             Optional<DogInfo> dogInfo = infDogInfoRepository.findById(board.get().getDogInfo().getDogInfoId());
             response.setDogName(dogInfo.get().getName());
             ImageStorage img = infImageStorageRepository.findByBoardAndOrders(board.get(), 1);
-            response.setDogImg(img.getOriginFilename());
+            response.setDogImg(img.getSaveName());
             responseList.add(response);
         }
 

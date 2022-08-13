@@ -226,7 +226,7 @@ export default {
 			);
 			if (answer) {
 				const newStep = {
-					step: step + 1,
+					step: step,
 					stepStatus: true,
 				};
 				store.dispatch('adopt/updateAdoptProcess', newStep);

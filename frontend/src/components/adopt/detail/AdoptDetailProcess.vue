@@ -2,74 +2,115 @@
 	<div class="applicant-detail-process">
 		<!-- 입양 신청 절차가 진행되고 있을 떄 -->
 		<div v-if="applicationStatus < 6">
-			<div
-				v-for="(step, index) in adoptProcess"
-				:key="step.id"
-				class="applicant-detail-process-step"
-				:class="{ 'active-step': applicationStatus === step.step }"
-			>
-				<!-- 단계 -->
+			<div v-for="(title, index) in adoptProcessTitle" :key="index">
 				<div
-					class="applicant-detail-process-step-num"
-					:class="{ 'step-num-todo': !step.stepStatus }"
+					class="applicant-detail-process-step"
+					:class="{
+						'active-step': applicationStatus === adoptProcess[index]?.step,
+					}"
 				>
-					<h5 style="margin: auto">
-						{{ step.step }}
-					</h5>
-				</div>
-				<!-- 절차 -->
-				<div
-					class="step-title-wrapper"
-					:class="{ 'step-title-todo': !step.stepStatus }"
-				>
-					<div class="step-title">
-						{{ adoptProcessTitle[index] }}
+					<!-- 단계 -->
+					<div
+						class="applicant-detail-process-step-num"
+						:class="{ 'step-num-todo': index + 1 > applicationStatus }"
+					>
+						<h5 style="margin: auto">
+							{{ index + 1 }}
+						</h5>
 					</div>
-					<small v-if="step.date" class="step-date">{{
-						format(new Date(step.date))
-					}}</small>
+					<!-- 절차 -->
+					<div
+						class="step-title-wrapper"
+						:class="{ 'step-title-todo': index + 1 > applicationStatus }"
+					>
+						<div class="step-title">
+							{{ adoptProcessTitle[index] }}
+						</div>
+						<small v-if="adoptProcess[index]?.date" class="step-date">{{
+							format(new Date(adoptProcess[index]?.date))
+						}}</small>
+					</div>
+					<!-- 아이콘 -->
+					<div
+						class="step-icon"
+						:class="{ 'step-icon-todo': !adoptProcess[index]?.stepStatus }"
+					>
+						<button
+							:disabled="buttonDisabled(index)"
+							@click="clickAdoptProcessIcon(adoptProcess[index]?.step)"
+							class="process-btn"
+						>
+							<i :class="adoptProcessIcon[index]"></i>
+						</button>
+					</div>
 				</div>
-				<!-- 아이콘 -->
-				<div class="step-icon" :class="{ 'step-icon-todo': !step.stepStatus }">
-					<i
-						:class="adoptProcessIcon[index]"
-						@click="clickAdoptProcessIcon(step.step)"
-						:disabled="!step.stepStatus"
-					></i>
+				<div>
 					<!-- 현재까지의 마지막 절차일때, 다음 단계로 넘어가는 버튼 구현 -->
 					<button
 						v-if="
-							step.step === applicationStatus &&
+							adoptProcess[index]?.step === applicationStatus &&
 							$route.name === 'protectorDetail'
 						"
-						@click="adoptNextStep(step.step)"
+						@click="adoptNextStep(adoptProcess[index]?.step)"
+						class="next-btn"
 					>
+						<i class="fa-solid fa-chevron-down"></i>
 						다음 단계
+						<i class="fa-solid fa-chevron-down"></i>
 					</button>
 				</div>
 			</div>
 		</div>
-		<div v-else-if="applicationStatus === 6" style="padding: 15% 5%">
+		<!-- 입양이 완료되었을 때 -->
+		<div v-else-if="applicationStatus === 6" style="padding: 15% 10%">
 			<div style="padding: 5% 0">
 				<div style="text-align: center">
-					<h3>입양이 완료되었습니다.</h3>
+					<h3 class="notice">입양이 완료되었습니다.</h3>
 				</div>
 			</div>
 		</div>
-		<!-- 입양 신청이 반려되었을 때 -->
-		<div v-else style="padding: 15% 5%">
-			<div style="padding: 5% 0">
+		<!-- 입양 신청을 취소했을 때 -->
+		<div
+			v-else-if="applicationStatus === 7 && !isApplicant"
+			class="cancel"
+			style="padding: 20% 10%"
+		>
+			<div>
 				<div style="text-align: center">
-					<h3>입양이 반려되었습니다.</h3>
+					<h3 class="notice">입양이 취소되었습니다</h3>
 				</div>
-				<hr />
 				<div>
 					이 페이지를 나가면 신청 내역이 삭제됩니다. <strong>확인</strong>을
 					눌러주세요.
 				</div>
 			</div>
-			<div style="padding: 20% 0 0; text-align: center">
-				<button>확인</button>
+			<div
+				class="cancel-ok-wrapper"
+				style="padding: 20% 0 0; text-align: center"
+			>
+				<button class="cancel-ok-btn" @click="deleteAdoption">확인</button>
+			</div>
+		</div>
+		<!-- 입양 신청을 반려했을 때 -->
+		<div
+			v-else-if="applicationStatus === 8 && isApplicant"
+			class="cancel"
+			style="padding: 20% 10%"
+		>
+			<div>
+				<div style="text-align: center">
+					<h3 class="notice">입양이 반려되었습니다</h3>
+				</div>
+				<div>
+					이 페이지를 나가면 신청 내역이 삭제됩니다. <strong>확인</strong>을
+					눌러주세요.
+				</div>
+			</div>
+			<div
+				class="cancel-ok-wrapper"
+				style="padding: 20% 0 0; text-align: center"
+			>
+				<button class="cancel-ok-btn" @click="deleteAdoption">확인</button>
 			</div>
 		</div>
 	</div>
@@ -85,10 +126,11 @@ export default {
 		const router = useRouter();
 		const route = useRoute();
 		const adoptProcess = computed(() => store.getters['adopt/adoptProcess']);
+		const isApplicant = computed(() => route.name === 'applicantDetail');
 		const applicationStatus = computed(
 			() => store.getters['adopt/applicationStatus'],
 		);
-		const meetingRoomId = computed(() => store.getters['adopt/meetingRoomId']);
+		const userSeq = computed(() => store.getters['auth/user'].userSeq);
 		const adoptProcessTitle = [
 			'입양신청',
 			'화상 면담',
@@ -103,10 +145,36 @@ export default {
 			'fa-solid fa-location-dot',
 			'fa-solid fa-circle-check',
 		];
+		const findEvenNumber = element => {
+			if (
+				element.adoptionProcessId === store.getters['adopt/adoptionProcessId']
+			)
+				return true;
+		};
+		const deleteAdoption = () => {
+			if (isApplicant.value) {
+				store.dispatch('adopt/deleteAdoption', { isApplicant: true });
+				router.push({ name: 'adopt', params: { userSeq: userSeq.value } });
+			} else {
+				const index =
+					store.getters['adopt/protectorDetail']['applicationList'].findIndex(
+						findEvenNumber,
+					);
+				store.dispatch('adopt/deleteAdoption', { isApplicant: false, index });
+			}
+		};
 		const activeApplicant = computed(
 			() => store.getters['adopt/activeApplicant'],
 		);
-
+		const buttonDisabled = index => {
+			if (index + 1 > applicationStatus.value) {
+				return true;
+			}
+			if (index + 1 == 2) {
+				return new Date(adoptProcess.value[index].date) > new Date();
+			}
+			return false;
+		};
 		const clickAdoptProcessIcon = step => {
 			if (step === 1) {
 				// 입양자일 경우
@@ -133,10 +201,10 @@ export default {
 				console.log(step);
 			} else if (step === 2) {
 				// 나중에 일정 예약시간 이전에는 disabled 처리할 것
-				router.push({
-					name: 'meeting',
-					params: { meetingRoomId: meetingRoomId.value },
-				});
+				// router.push({
+				// 	name: 'meeting',
+				// 	params: { meetingRoomId: meetingRoomId.value },
+				// });
 				console.log(step);
 			} else if (step === 3) {
 				// router.push({ name: 'user', params: { username: 'eduardo' }});
@@ -150,15 +218,13 @@ export default {
 			}
 		};
 
+		// 다음 단계
 		const adoptNextStep = step => {
 			const newStep = {
 				step: step + 1,
 				stepStatus: true,
 			};
-			store.dispatch('adopt/updateAdoptProcess', {
-				step: newStep,
-				adoptionProcessId: store.getters['adopt/adoptionProcessId'],
-			});
+			store.dispatch('adopt/updateAdoptProcess', newStep);
 		};
 
 		// 날짜 변환
@@ -184,6 +250,9 @@ export default {
 			adoptProcessIcon,
 			clickAdoptProcessIcon,
 			adoptNextStep,
+			buttonDisabled,
+			deleteAdoption,
+			isApplicant,
 		};
 	},
 };

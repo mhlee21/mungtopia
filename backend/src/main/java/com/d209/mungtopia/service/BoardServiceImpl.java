@@ -347,6 +347,10 @@ public class BoardServiceImpl implements BoardService {
         // 경로 설정 - src/webapp/img
 //        String realPath = servletContext.getRealPath("/img");
         String root = System.getProperty("user.dir").toString();
+        System.out.println("System.getProperty(\"java.home\") = " + System.getProperty("java.home"));
+        System.out.println("System.getProperty(\"java.class.path\") = " + System.getProperty("java.class.path"));
+        System.out.println("System.getProperty(\"user.home\") = " + System.getProperty("user.home"));
+        System.out.println("System.getProperty(\"user.dir\") = " + System.getProperty("user.dir"));
         String path = "jenkins/jenkins_home/workspace/mungtopia/backend/src/main/webapp/img";
         String savePath = root + path;
         System.out.println("============== ubuntu = " + root + path);
@@ -354,7 +358,7 @@ public class BoardServiceImpl implements BoardService {
         int order = 1;
         // 파일 저장
 
-        File dir = new File(savePath);
+        File dir = new File(root + "/img");
         if (!dir.exists()){
             dir.mkdir();
         }
@@ -369,7 +373,7 @@ public class BoardServiceImpl implements BoardService {
             String today = new SimpleDateFormat("yyMMdd").format(new Date());
             final String saveName = getRandomString() + today + "." + extension;
             // 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성
-            File target = new File(savePath, saveName);
+            File target = new File(root + "/img", saveName);
             try {
                 file.transferTo(target); // 파일 저장
             } catch (IOException e) {
@@ -416,7 +420,7 @@ public class BoardServiceImpl implements BoardService {
 //        byte[] targetArray = buffer.toByteArray();
 //        imageStream.close();
 //        UrlResource urlResource = new UrlResource();
-        return new UrlResource("file:" + savePath +"/" + saveName);
+        return new UrlResource("file:" + root + "/img" +"/" + saveName);
     }
 
     private final String getRandomString() {

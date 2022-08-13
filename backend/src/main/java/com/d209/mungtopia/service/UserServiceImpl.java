@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService{
         UserBoaordRes response = new UserBoaordRes();
         for (Board board: boardList) {
             Info info = new Info();
-            info.setUserId(board.getBoardId());
+            info.setUserSeq(board.getBoardId());
             info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
             response.getBoardList().add(info);
         }
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService{
         for (Likes like: likesList) {
             Board board = like.getBoard();
             Info info = new Info();
-            info.setUserId(board.getBoardId());
+            info.setUserSeq(board.getBoardId());
             info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
             response.getLikeList().add(info);
         }
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService{
         for (Star star: starList) {
             Board board = star.getBoard();
             Info info = new Info();
-            info.setUserId(board.getBoardId());
+            info.setUserSeq(board.getBoardId());
             info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
             response.getStarList().add(info);
         }
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService{
     public Info getUserSeq(String userId) {
         User user = infUserRepository.findByUserId(userId);
         Info info = new Info();
-        info.setUserId(user.getUserSeq());
+        info.setUserSeq(user.getUserSeq());
         info.setProfile(user.getProfileImageUrl());
         info.setUsername(user.getNickname()); // nickname으로 저장
         return info;

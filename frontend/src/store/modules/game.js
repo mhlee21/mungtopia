@@ -177,7 +177,7 @@ export default {
 		plusMbtiAnswer: ({ commit, getters }, { question_type, userAnswer }) => {
 			const mbtiUserAnswer = getters.mbtiUserAnswer;
 			const mbtiCount = getters.mbtiCount;
-			if (mbtiCount <= 2) {
+			if (mbtiCount < 2) {
 				commit('PLUS_MBTI_USER_ANSWER', userAnswer);
 				commit('MBTI_COUNT');
 			} else {
@@ -229,14 +229,12 @@ export default {
 		},
 
 		plusMatchAnswer: ({ commit, getters }, { question_type, userAnswer }) => {
-			const matchNum = getters.matchNum;
 			const matchCount = getters.matchCount;
 			if (matchCount < 2) {
 				commit('PLUS_MATCH_USER_POINT', userAnswer);
 			} else {
 				commit('ZERO_MATCH_USER_POINT', { question_type, userAnswer });
 			}
-			console.log(matchNum);
 		},
 
 		matchResult: ({ commit }) => {
@@ -261,33 +259,24 @@ export default {
 			// })
 		},
 
-		sendMatchResult: ({ rootGetters }, payload) => {
+		sendMatchResult: ({ commit, rootGetters }, payload) => {
 			axios({
-				url: api.game.saveGame(),
+				url: api.game.receiveGame(),
 				method: 'post',
 				headers: rootGetters['auth/authHeader'],
 				data: payload,
-			}).catch(err => {
-				console.error(err.response);
-			});
-			// .then(res => {
-			// 	console.log(res.body.data);
-
-			// })
-		},
-
-		receiveMatchResult: ({ commit, rootGetters }) => {
-			axios({
-				url: api.game.receiveGame(),
-				method: 'get',
-				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					commit('SET_MATCH_DATA', res.body.data);
+					console.log(res.data.body.data);
+					commit('SET_MATCH_DATA', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
 				});
+			// .then(res => {
+			// 	console.log(res.body.data);
+
+			// })
 		},
 
 		updateProgressbar: ({ commit, getters }) => {
@@ -319,10 +308,24 @@ export default {
 			})
 				.then(res => {
 					// commit('SET_MATCH_DATA', res.body.data);
-					commit('CLEAR_GAME', {
-						gameTag: res.data.body.data.gameTag,
-						result: res.data.body.data.result,
-					});
+					if (res.data.body.data[0]) {
+						commit('CLEAR_GAME', {
+							gameTag: res.data.body.data[0].gameTag,
+							result: res.data.body.data[0].result,
+						});
+					}
+					if (res.data.body.data[1]) {
+						commit('CLEAR_GAME', {
+							gameTag: res.data.body.data[1].gameTag,
+							result: res.data.body.data[1].result,
+						});
+					}
+					if (res.data.body.data[2]) {
+						commit('CLEAR_GAME', {
+							gameTag: res.data.body.data[2].gameTag,
+							result: res.data.body.data[2].result,
+						});
+					}
 				})
 				.catch(err => {
 					console.error(err.response);

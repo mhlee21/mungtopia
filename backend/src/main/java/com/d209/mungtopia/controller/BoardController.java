@@ -12,6 +12,7 @@ import com.d209.mungtopia.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.UrlResource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -224,16 +225,18 @@ public class BoardController {
         return ApiResponse.success("data", boardService.deleteReply(board, reply, replyDto));
     }
 
-    @PostMapping("/img")
-    public ApiResponse saveImgFile(@RequestParam("files") List<MultipartFile> multipartFiles) throws Exception {
-        boardService.saveImgFile(multipartFiles, 1);
+    @PostMapping("/img/{boardId}")
+    public ApiResponse saveImgFile(@RequestParam("files") List<MultipartFile> multipartFiles, @PathVariable long boardId) throws Exception {
+        boardService.saveImgFile(multipartFiles, boardId);
         return ApiResponse.success();
     }
 
-    @GetMapping("/img")
-    public ApiResponse getImgFile() throws IOException {
+    @GetMapping("/img/{boardId}")
+    public ApiResponse getImgFile( @PathVariable long boardId) throws IOException {
         System.out.println("\"in!!!!!!!!!\" = " + "in!!!!!!!!!");
-        return ApiResponse.success("data", boardService.getImgFile(1));
+        UrlResource urlResource = boardService.getImgFile(boardId);
+        System.out.println("urlResource = " + urlResource);
+        return ApiResponse.success("data", urlResource);
     }
 
 }

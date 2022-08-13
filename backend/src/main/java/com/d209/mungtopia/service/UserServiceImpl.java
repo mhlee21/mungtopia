@@ -86,9 +86,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Info getUserSeq(String token) {
-        UserRefreshToken refreshToken = userRefreshTokenRepository.findByRefreshToken(token);
-        String userId = refreshToken.getUserId();
+    public Info getUserSeq(String userId) {
         User user = infUserRepository.findByUserId(userId);
         Info info = new Info();
         info.setUserId(user.getUserSeq());

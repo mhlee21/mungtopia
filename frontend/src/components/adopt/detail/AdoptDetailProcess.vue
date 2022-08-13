@@ -55,7 +55,8 @@
 						class="next-btn"
 					>
 						<i class="fa-solid fa-chevron-down"></i>
-						다음 단계
+						<span v-if="adoptProcess[index]?.step < 5"> 다음 단계 </span>
+						<span v-else>입양 허가</span>
 						<i class="fa-solid fa-chevron-down"></i>
 					</button>
 				</div>
@@ -180,7 +181,7 @@ export default {
 				// 입양자일 경우
 				if (route.name == 'applicantDetail') {
 					router.push({
-						name: 'application',
+						name: 'applicationDetail',
 						params: {
 							applicationId: route.params.applicationId,
 						},
@@ -189,7 +190,7 @@ export default {
 				// 보호자일 경우
 				else {
 					router.push({
-						name: 'application',
+						name: 'applicationDetail',
 						params: {
 							applicationId:
 								store.getters['adopt/protectorDetail']['applicationList'][
@@ -220,11 +221,16 @@ export default {
 
 		// 다음 단계
 		const adoptNextStep = step => {
-			const newStep = {
-				step: step + 1,
-				stepStatus: true,
-			};
-			store.dispatch('adopt/updateAdoptProcess', newStep);
+			const answer = confirm(
+				'다음 단계로 넘어가시겠습니까? 한 번 넘어가면 다시 넘어올 수 없으니 신중한 선택 부탁드립니다.',
+			);
+			if (answer) {
+				const newStep = {
+					step: step,
+					stepStatus: true,
+				};
+				store.dispatch('adopt/updateAdoptProcess', newStep);
+			}
 		};
 
 		// 날짜 변환

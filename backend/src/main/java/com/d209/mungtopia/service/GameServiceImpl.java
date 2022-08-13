@@ -91,6 +91,9 @@ public class GameServiceImpl implements GameService{
         System.out.println("resultList = " + resultList);
         int randomDog = (int) (Math.random() * 3); // 1 - 3 중 랜덤으로 리턴
         Long resultKey = resultList.get(randomDog).getKey();
+        Integer resultSum = resultList.get(randomDog).getValue();
+        int percent = 100 - (( resultSum / (90 - 18)) * 100);
+
 
         MatchingGameRes response = new MatchingGameRes();
         Optional<Board> targetBoard = infBoardRepository.findById(resultKey);
@@ -100,6 +103,7 @@ public class GameServiceImpl implements GameService{
         response.setBoardId(resultKey);
         response.setDogImg(infImageStorageRepository.findByBoardAndOrders(targetBoard.get(), 1).getSaveName());
         response.setDogName(targetBoard.get().getDogInfo().getName());
+        response.setPercent(percent);
         return response;
     }
 }

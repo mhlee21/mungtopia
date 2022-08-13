@@ -31,6 +31,7 @@
 <script>
 import { useStore } from 'vuex';
 import router from '@/router';
+import { computed } from 'vue';
 export default {
 	setup() {
 		const onClickShareStory = () => {
@@ -39,7 +40,7 @@ export default {
 			});
 		};
 		const store = useStore();
-		const matchData = store.getters['game/matchData'];
+		const matchData = computed(() => store.getters['game/matchData']);
 		const enterDetailBoard = boardId => {
 			router.push({ path: '/board/detail/' + boardId });
 		};

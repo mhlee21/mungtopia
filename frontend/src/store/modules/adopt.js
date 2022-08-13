@@ -16,9 +16,9 @@ export default {
 			you: {},
 			chatList: [],
 			date: '',
-			meetingRoomId: null,
 			chatRoomId: null,
 			applicationAnswer: null,
+			application: null,
 		};
 	},
 	getters: {
@@ -36,6 +36,7 @@ export default {
 		date: state => state.date,
 		chatRoomId: state => state.chatRoomId,
 		applicationAnswer: state => state.applicationAnswer,
+		application: state => state.application,
 	},
 	mutations: {
 		SET_ADOPT_TYPE: (state, adoptType) => (state.adoptType = adoptType),
@@ -56,6 +57,7 @@ export default {
 			(state.adoptionProcessId = adoptionProcessId),
 		SET_APPLICATION_STATUS: (state, applicationStatus) =>
 			(state.applicationStatus = applicationStatus),
+		SET_APPLICATION: (state, application) => (state.application = application),
 		SET_CHAT_LIST: (state, chatList) => (state.chatList = chatList),
 		SET_YOU: (state, you) => (state.you = you),
 		SET_DATE: (state, date) => (state.date = date),
@@ -107,7 +109,6 @@ export default {
 					});
 			}
 		},
-
 		// 입양하기 상세
 		fetchApplicantDetail: ({ commit, rootGetters }, applicationId) => {
 			axios({
@@ -145,7 +146,6 @@ export default {
 					console.error(err.response);
 				});
 		},
-
 		// 입양보내기 상세
 		fetchProtectorDetail: ({ commit, rootGetters }, boardId) => {
 			axios({
@@ -154,6 +154,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
+					console.log(res.data.body.data);
 					commit('SET_PROTECTOR_DETAIL', res.data.body.data);
 				})
 				.catch(err => {
@@ -173,6 +174,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
+					console.log(res.data.body.data);
 					commit('SET_ADOPT_PROCESS', res.data.body.data);
 				})
 				.catch(err => {
@@ -199,15 +201,21 @@ export default {
 				});
 		},
 		// 입양 취소
-		applicantCancel: ({ rootGetters, getters }) => {
-			console.log(rootGetters, getters);
+		applicantCancel: ({ dispatch, rootGetters, getters }) => {
 			axios({
 				url: api.adopt.applicantCancel(getters.adoptionProcessId),
 				method: 'delete',
 				headers: rootGetters['auth/authHeader'],
-			}).catch(err => {
-				console.error(err.response);
-			});
+			})
+				.then(() => {
+					dispatch('fetchMainList', {
+						userSeq: rootGetters['auth/user'].userSeq,
+						adoptType: 'applicant',
+					});
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 		// 입양 내역 삭제
 		deleteAdoption: (
@@ -233,7 +241,7 @@ export default {
 			axios({
 				url: api.adopt.processUpdate(getters['adoptionProcessId']),
 				method: 'put',
-				data: { step },
+				data: step,
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
@@ -244,8 +252,7 @@ export default {
 					console.error(err.response);
 				});
 		},
-
-		// 스케줄 일정 저장
+		// 일정 저장
 		saveDate: (
 			{ commit, rootGetters },
 			{ adoptionProcessId, applicationStatus },
@@ -269,7 +276,6 @@ export default {
 			commit('SET_APPLICATION_STATUS', 4);
 			commit('SET_DATE', '08/17/2022, 14:56');
 		},
-
 		// chatList 받기
 		fetchChatMain: ({ commit, rootGetters }, chatRoomId) => {
 			// axios({
@@ -363,7 +369,6 @@ export default {
 			console.log(rootGetters, chat, getters);
 			commit('UPDATE_NEW_CHAT', chat);
 		},
-
 		// 일정 예약 및 수정
 		saveSchedule: ({ commit, rootGetters, getters }, date) => {
 			const payload = { step: getters.applicationStatus, date };
@@ -405,7 +410,6 @@ export default {
 			// });
 			commit('SET_DATE', '');
 		},
-
 		// 비디오 토큰 받기
 		getToken: ({ commit }, sessionName) => {
 			axios({
@@ -428,90 +432,20 @@ export default {
 					console.error(err.response);
 				});
 		},
-
 		// 입양신청서 정보 받기
 		fetchApplication: ({ commit, rootGetters }, applicationId) => {
 			console.log(commit, rootGetters, applicationId);
-			// axios({
-			// 	url: api.adopt.application(applicationId),
-			// 	method: 'get',
-			// 	headers: rootGetters['auth/authHeader'],
-			// })
-			// 	.then(res => {
-			// 		console.log(res.data.body.data);
-			// 		commit('auth/SET_USER_INFO', res.data.body.data.userInfo, {
-			// 			root: true,
-			// 		});
-			// 		commit('SET_APPLICATION_ANSWER', res.data.body.data.answer);
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
-			const data = {
-				userInfo: {
-					name: '이연정',
-					phoneNumber: null,
-					birth: '20000103',
-					gender: 'W',
-					job: '무직',
-					zonecode: '12345',
-					roadAddress: '대구광역시 ',
-					detailAddress: '101동',
-					etc: '눈누난나',
-				},
-				createtime: '2022-08-03 11:57:04',
-				applicationStatus: 7,
-				answer: [
-					{
-						order: 1,
-						answer: 'ddd',
-					},
-					{
-						order: 2,
-						answer: 'qq',
-					},
-					{
-						order: 3,
-						answer: 'ww',
-					},
-					{
-						order: 4,
-						answer: 'ee',
-					},
-					{
-						order: 5,
-						answer: 'rr',
-					},
-					{
-						order: 6,
-						answer: 'tty',
-					},
-					{
-						order: 7,
-						answer: 'ddf',
-					},
-					{
-						order: 8,
-						answer: 'sdf',
-					},
-					{
-						order: 9,
-						answer: 'dfdf',
-					},
-					{
-						order: 10,
-						answer: 'sdf',
-					},
-					{
-						order: 11,
-						answer: 'wwe',
-					},
-				],
-			};
-			commit('auth/SET_USER_INFO', data.userInfo, {
-				root: true,
-			});
-			commit('SET_APPLICATION_ANSWER', data.answer);
+			axios({
+				url: api.adopt.application(applicationId),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					commit('SET_APPLICATION', res.data.body.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 	},
 };

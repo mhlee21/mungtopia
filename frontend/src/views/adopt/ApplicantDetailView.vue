@@ -26,11 +26,10 @@ export default {
 			'adopt/fetchApplicantAdoptProcess',
 			route.params.applicationId,
 		);
-		console.log('30줄', userSeq);
 		const goBack = () => {
 			router.push({
 				name: 'adopt',
-				params: { userSeq: 6 },
+				params: { userSeq: userSeq.value },
 			});
 		};
 		return { goBack };

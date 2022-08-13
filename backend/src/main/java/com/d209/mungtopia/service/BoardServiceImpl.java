@@ -344,14 +344,15 @@ public class BoardServiceImpl implements BoardService {
 
         // 경로 설정 - src/webapp/img
         String realPath = servletContext.getRealPath("/img");
-        String ubuntu = System.getProperty("user.dir").toString();
-        System.out.println("============== ubuntu = " + ubuntu);
+        String root = System.getProperty("user.dir").toString();
+        String path = "jenkins/jenkins_home/workspace/mungtopia/backend/src/main/webapp/img";
+        System.out.println("============== ubuntu = " + root + path);
         System.out.println("============== realPath 파일 경로 = " + realPath);
         int order = 1;
         // 파일 저장
 
-        File dir = new File(realPath);
-        if (dir.exists() == false){
+        File dir = new File(root + path);
+        if (!dir.exists()){
             dir.mkdir();
         }
 

@@ -36,4 +36,8 @@ public class GameResult {
         this.result = true;
         this.user = user;
     }
+
+    public void changeResult(boolean result){
+        this.result = result;
+    }
 }

@@ -12,6 +12,7 @@ import com.d209.mungtopia.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.UrlResource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -233,7 +234,9 @@ public class BoardController {
     @GetMapping("/img/{boardId}")
     public ApiResponse getImgFile( @PathVariable long boardId) throws IOException {
         System.out.println("\"in!!!!!!!!!\" = " + "in!!!!!!!!!");
-        return ApiResponse.success("data", boardService.getImgFile(boardId));
+        UrlResource urlResource = boardService.getImgFile(boardId);
+        System.out.println("urlResource = " + urlResource);
+        return ApiResponse.success("data", urlResource);
     }
 
 }

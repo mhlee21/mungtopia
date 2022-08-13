@@ -6,8 +6,7 @@ export default {
 	state() {
 		return {
 			user: null,
-			// user:
-			// {
+			// user: {
 			// 	userSeq: 6,
 			// 	username: '황희원',
 			// 	profile: 'https://www.snsboom.co.kr/common/img/default_profile.png',

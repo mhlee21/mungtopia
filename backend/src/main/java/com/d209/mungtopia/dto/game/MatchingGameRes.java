@@ -11,5 +11,5 @@ public class MatchingGameRes {
     private Long boardId;
     private String dogName;
     private String dogImg;
-//    private String
+    private int percent;
 }

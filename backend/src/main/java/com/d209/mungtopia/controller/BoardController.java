@@ -224,16 +224,16 @@ public class BoardController {
         return ApiResponse.success("data", boardService.deleteReply(board, reply, replyDto));
     }
 
-    @PostMapping("/img")
-    public ApiResponse saveImgFile(@RequestParam("files") List<MultipartFile> multipartFiles) throws Exception {
-        boardService.saveImgFile(multipartFiles, 1);
+    @PostMapping("/img/{boardId}")
+    public ApiResponse saveImgFile(@RequestParam("files") List<MultipartFile> multipartFiles, @PathVariable long boardId) throws Exception {
+        boardService.saveImgFile(multipartFiles, boardId);
         return ApiResponse.success();
     }
 
-    @GetMapping("/img")
-    public ApiResponse getImgFile() throws IOException {
+    @GetMapping("/img/{boardId}")
+    public ApiResponse getImgFile( @PathVariable long boardId) throws IOException {
         System.out.println("\"in!!!!!!!!!\" = " + "in!!!!!!!!!");
-        return ApiResponse.success("data", boardService.getImgFile(1));
+        return ApiResponse.success("data", boardService.getImgFile(boardId));
     }
 
 }

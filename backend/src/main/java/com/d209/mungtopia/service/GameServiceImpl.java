@@ -98,7 +98,7 @@ public class GameServiceImpl implements GameService{
             return null;
 
         response.setBoardId(resultKey);
-        response.setDogImg(infImageStorageRepository.findByBoardAndOrders(targetBoard.get(), 1).getOriginFilename());
+        response.setDogImg(infImageStorageRepository.findByBoardAndOrders(targetBoard.get(), 1).getSaveName());
         response.setDogName(targetBoard.get().getDogInfo().getName());
         return response;
     }

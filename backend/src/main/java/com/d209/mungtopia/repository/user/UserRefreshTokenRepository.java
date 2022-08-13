@@ -10,4 +10,5 @@ public interface UserRefreshTokenRepository extends JpaRepository<UserRefreshTok
     // 변수명을 카멜케이스로 맞춰야함 - findBy 적용이 안됨
     UserRefreshToken findByUserId(String userId);
     UserRefreshToken findByUserIdAndRefreshToken(String userId, String refreshToken);
+    UserRefreshToken findByRefreshToken(String refreshToken);
 }

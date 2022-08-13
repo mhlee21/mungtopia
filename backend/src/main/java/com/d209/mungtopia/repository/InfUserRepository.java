@@ -6,4 +6,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface InfUserRepository extends JpaRepository<User, Long> {
+    User findByUserId(String userId);
 }

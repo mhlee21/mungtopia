@@ -205,8 +205,9 @@ export default {
 		const areaSido = ref(null);
 		const neutering = ref(null);
 		const dogNature = ref([]);
-		const dogImg = ref([]);
+		const files = ref([]);
 		const contents = ref(null);
+		const formData = new FormData();
 
 		// 하단 버튼 구현
 		const clickPreviousButton = () => {
@@ -222,14 +223,13 @@ export default {
 			);
 		};
 		const clickSubmitButton = () => {
-			let payload = {};
+			let data = {};
 			if (category.value === 0) {
-				payload = {
+				data = {
 					userSeq: store.getters['auth/user']?.userSeq,
 					boardTag: category.value,
-					dogImg: dogImg.value,
 					contents: contents.value,
-					createtime: new Date(),
+					createtime: JSON.stringify(new Date()),
 					dogInfo: {
 						name: name.value,
 						gender: gender.value,
@@ -243,17 +243,29 @@ export default {
 					},
 				};
 			} else {
-				payload = {
+				data = {
 					userSeq: store.getters['auth/user']?.userSeq,
 					boardTag: category.value,
-					dogImg: dogImg.value,
 					contents: contents.value,
-					createtime: new Date(),
+					createtime: JSON.stringify(new Date()),
 				};
 			}
+			formData.append(
+				'data',
+				new Blob([JSON.stringify(data)], { type: 'application/json' }),
+			);
+			for (let i = 0; i < files.value.length; i++) {
+				formData.append('files', files.value[i]);
+			}
+			// for (let key of formData.entries()) {
+			// 	console.log(key);
+			// 	if (key === 'files') {
+			// 		console.log('dd');
+			// 	}
+			// }
 			// 페이지 초기화
 			store.dispatch('board/setApplicationPageNum', 1);
-			store.dispatch('board/createBoard', payload);
+			store.dispatch('board/createBoard', formData);
 		};
 		// 마지막 페이지 여부 확인
 		const isLastPage = computed(() => {
@@ -285,7 +297,7 @@ export default {
 
 		// 이미지 저장
 		const imageSave = images => {
-			dogImg.value = images;
+			files.value = images;
 		};
 
 		// 카테고리 전환시 pageNum reset
@@ -310,7 +322,6 @@ export default {
 			areaSido,
 			neutering,
 			dogNature,
-			dogImg,
 			contents,
 			imageSave,
 		};

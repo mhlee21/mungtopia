@@ -47,8 +47,12 @@ public class GameServiceImpl implements GameService{
         User user = infUserRepository.getReferenceById(userSeq);
         if (user == null)
             return false;
-        GameResult gameResult = new GameResult(gameReq.getGameTag(), user);
-        infGameResultRepository.save(gameResult);
+
+        Optional<GameResult> gameResult = infGameResultRepository.findByUserAndGameTag(user, gameReq.getGameTag());
+        if (gameResult.isEmpty()){ // 기존에 게임내역이 없을 경우에만 저장
+            GameResult result = new GameResult(gameReq.getGameTag(), user);
+            infGameResultRepository.save(result);
+        }
         return true;
     }
 

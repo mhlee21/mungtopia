@@ -91,7 +91,6 @@ export default {
 		const matchNum = computed(() => store.getters['game/matchNum']);
 		const answerQuestion = useranswer => {
 			if (questionNumber.value < 10) {
-				console.log(questionNumber.value);
 				if (useranswer == props.gameQuestion[questionNumber.value]['answer']) {
 					store.dispatch('game/plusAnswerPoint');
 				}
@@ -100,10 +99,9 @@ export default {
 				if (questionNumber.value > 9) {
 					if (correctAnswer.value >= 7) {
 						const payload = {
-							// userSeq: store.getters['auth/user']['userSeq'],
-							userSeq: 1,
+							userSeq: store.getters['auth/user']['userSeq'],
 							result: 1,
-							gameType: gameType,
+							gameType: gameType.value,
 						};
 						store.dispatch('game/sendResult', payload);
 					}
@@ -377,28 +375,14 @@ button {
 	color: #d4dfe6;
 }
 
-.w-btn:hover {
-	letter-spacing: 2px;
+.w-btn:active {
 	transform: scale(1.2);
-	cursor: pointer;
-	animation-fill-mode: backwards;
 }
 
-.w-btn-outline:hover {
-	letter-spacing: 2px;
+.w-btn-outline:active {
 	transform: scale(1.2);
-	cursor: pointer;
 	animation-fill-mode: backwards;
 }
-
-// .w-btn:active {
-// 	transform: scale(1.5);
-// }
-
-// .w-btn-outline:active {
-// 	transform: scale(1.5);
-// 	animation-fill-mode: backwards;
-// }
 
 .w-btn-gra1 {
 	background: linear-gradient(-45deg, #33ccff 0%, #ff99cc 100%);

@@ -6,10 +6,13 @@
 
 <script>
 import { useStore } from 'vuex';
+import { computed } from 'vue';
 export default {
 	setup() {
 		const store = useStore();
-		const gameDescription = store.getters['game/gameDescription'];
+		const gameDescription = computed(
+			() => store.getters['game/gameDescription'],
+		);
 		return { gameDescription };
 	},
 };

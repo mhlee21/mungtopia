@@ -121,8 +121,9 @@ export default {
 				const payload = {
 					userSeq: store.getters['auth/user']['userSeq'],
 					result: 1,
-					gameTag: gameType,
+					gameTag: gameType.value,
 				};
+				console.log(payload);
 				store.dispatch('game/sendResult', payload);
 				router.push({
 					name: 'MbtiFinish',
@@ -144,12 +145,15 @@ export default {
 				if (store.getters['auth/user']['userSeq']) {
 					const payload = {
 						userSeq: store.getters['auth/user']['userSeq'],
-						matchAnswer: matchNum,
-						gameTag: gameType,
+						// userSeq: 6,
+						matchAnswer: matchNum.value,
+						gameTag: gameType.value,
 					};
-					store.dispatch('game/sendResult', payload);
+					store.dispatch('game/sendMatchResult', payload);
 				}
-				router.push({ path: '/game/2/finish' });
+				router.push({
+					name: 'MatchFinish',
+				});
 			} else {
 				store.dispatch('game/plusQuestionNumber');
 				store.dispatch('game/updateProgressbar');

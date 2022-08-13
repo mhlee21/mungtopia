@@ -626,10 +626,10 @@ export default {
 			commit('SET_ADOPT_QUESTION_LIST', data);
 		},
 
-		plusQuestionNumber: ({ commit }) => {
+		plusQuestionCount: ({ commit }) => {
 			commit('PLUS_QUESTION_COUNT');
 		},
-		minusQuestionNumber: ({ commit }) => {
+		minusQuestionCount: ({ commit }) => {
 			commit('MINUS_QUESTION_COUNT');
 		},
 	},

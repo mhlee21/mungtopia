@@ -59,7 +59,6 @@ export default {
 		let questionNumber = computed(() => store.getters['game/questionNumber']);
 		let gameType = computed(() => store.getters['game/gameType']);
 		let gameQuestion = computed(() => store.getters['game/gameQuestion']);
-		console.log(gameQuestion);
 		return { gameQuestion, questionNumber, gameType };
 	},
 };

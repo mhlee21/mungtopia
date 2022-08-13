@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Info {
-    private long userId;
+    private long userSeq;
     private String profile;
     private String username;
 }

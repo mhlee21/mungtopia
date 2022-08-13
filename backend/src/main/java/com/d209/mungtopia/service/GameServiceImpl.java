@@ -47,8 +47,12 @@ public class GameServiceImpl implements GameService{
         User user = infUserRepository.getReferenceById(userSeq);
         if (user == null)
             return false;
-        GameResult gameResult = new GameResult(gameReq.getGameTag(), user);
-        infGameResultRepository.save(gameResult);
+
+        Optional<GameResult> gameResult = infGameResultRepository.findByUserAndGameTag(user, gameReq.getGameTag());
+        if (gameResult.isEmpty()){ // 기존에 게임내역이 없을 경우에만 저장
+            GameResult result = new GameResult(gameReq.getGameTag(), user);
+            infGameResultRepository.save(result);
+        }
         return true;
     }
 
@@ -88,11 +92,15 @@ public class GameServiceImpl implements GameService{
         // 정렬
         List<Map.Entry<Long, Integer>> resultList = new LinkedList<>(result.entrySet());
         resultList.sort(Map.Entry.comparingByValue());
+        for (int i = 0; i < resultList.size(); i++) {
+            System.out.println("resultList Key = " + resultList.get(i).getKey());
+            System.out.println("resultList Value = " + resultList.get(i).getValue());
+        }
         System.out.println("resultList = " + resultList);
         int randomDog = (int) (Math.random() * 3); // 1 - 3 중 랜덤으로 리턴
         Long resultKey = resultList.get(randomDog).getKey();
         Integer resultSum = resultList.get(randomDog).getValue();
-        int percent = 100 - (( resultSum / (90 - 18)) * 100);
+        int percent = (int) (100 - (( 1.0 * resultSum / (90 - 18)) * 100));
 
 
         MatchingGameRes response = new MatchingGameRes();

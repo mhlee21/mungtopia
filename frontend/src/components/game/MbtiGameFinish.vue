@@ -68,7 +68,7 @@
 			<div class="start-btn" @click="onClickShareStory">SHARE</div>
 			<!-- <div class="modal" v-html="msg">No message</div> -->
 		</div>
-		<div class="game-btn" style="margin: 0% 0% 0% 5%">
+		<div class="game-btn" style="margin: 0% 0% 0% 5%" @click="gameMenu">
 			<div class="start-btn">GAME MENU</div>
 		</div>
 	</div>
@@ -80,6 +80,7 @@ import { computed } from 'vue';
 
 // import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import router from '@/router';
 
 export default {
 	setup() {
@@ -107,7 +108,10 @@ export default {
 		// window.Kakao.Share.createCustomButton({
 		// 	templateId: 81245,
 		// });
-		return { mbtiResult, mbtiDog, onClickShareStory };
+		const gameMenu = () => {
+			router.push({ path: '/game' });
+		};
+		return { mbtiResult, mbtiDog, onClickShareStory, gameMenu };
 	},
 };
 </script>

@@ -347,6 +347,12 @@ public class BoardServiceImpl implements BoardService {
         System.out.println("============== realPath 파일 경로 = " + realPath);
         int order = 1;
         // 파일 저장
+
+        File dir = new File(realPath);
+        if (dir.exists() == false){
+            dir.mkdir();
+        }
+
         for (MultipartFile file : multipartFiles) {
             if (file.isEmpty())
                 return false;
@@ -356,6 +362,7 @@ public class BoardServiceImpl implements BoardService {
             // 서버 저장 파일 명
             String today = new SimpleDateFormat("yyMMdd").format(new Date());
             final String saveName = getRandomString() + today + "." + extension;
+            // 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성
             File target = new File(realPath, saveName);
             try {
                 file.transferTo(target); // 파일 저장

@@ -6,14 +6,18 @@
 		<div class="content">
 			<div>현재 당신을 원하는 반려견이 있습니다.</div>
 		</div>
-		<div style="text-align: center">
-			<img
-				class="matching-img"
-				:src="require('@/assets/images/' + 'knowledge' + '.jpg')"
-				alt=""
-			/>
+		<div
+			style="text-align: center"
+			@click="enterDetailBoard(matchData['boardId'])"
+		>
+			<img class="matching-img" :src="matchData['dogImg']" alt="" />
 		</div>
-		<div style="text-align: center">{{ matchData['dogName'] }}</div>
+		<div
+			style="text-align: center"
+			@click="enterDetailBoard(matchData['boardId'])"
+		>
+			{{ matchData['dogName'] }}
+		</div>
 		<div style="text-align: center">
 			매칭 퍼센트 :{{ matchData['percent'] }}%
 		</div>
@@ -21,7 +25,7 @@
 			<div class="game-btn" style="margin: 0% 5% 0% 0%">
 				<div class="start-btn" @click="onClickShareStory">SHARE</div>
 			</div>
-			<div class="game-btn" style="margin: 0% 0% 0% 5%">
+			<div class="game-btn" style="margin: 0% 0% 0% 5%" @click="gameMenu">
 				<div class="start-btn">GAME MENU</div>
 			</div>
 		</div>
@@ -44,7 +48,10 @@ export default {
 		const enterDetailBoard = boardId => {
 			router.push({ path: '/board/detail/' + boardId });
 		};
-		return { onClickShareStory, matchData, enterDetailBoard };
+		const gameMenu = () => {
+			router.push({ path: '/game' });
+		};
+		return { onClickShareStory, matchData, enterDetailBoard, gameMenu };
 	},
 };
 </script>

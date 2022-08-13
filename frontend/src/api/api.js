@@ -66,7 +66,7 @@ export default {
 	game: {
 		// 게임 기록 저장
 		saveGame: () => HOST + GAME,
-		receiveGame: () => HOST + GAME,
+		receiveGame: () => HOST + GAME + 'matching/',
 		clearGame: userSeq => HOST + GAME + `${userSeq}`,
 	},
 	adopt: {

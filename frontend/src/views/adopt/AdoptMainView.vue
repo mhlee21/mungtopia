@@ -33,14 +33,18 @@ export default {
 	setup() {
 		const store = useStore();
 		const route = useRoute();
+		store.dispatch('adopt/fetchMainList', {
+			userSeq: route.params.userSeq,
+			adoptType: 'applicant',
+		});
 		const clickApplicantTab = () => {
-			store.dispatch('adopt/changeAdoptType', {
+			store.dispatch('adopt/fetchMainList', {
 				adoptType: 'applicant',
 				userSeq: route.params.userSeq,
 			});
 		};
 		const clickProtectorTab = () => {
-			store.dispatch('adopt/changeAdoptType', {
+			store.dispatch('adopt/fetchMainList', {
 				adoptType: 'protector',
 				userSeq: route.params.userSeq,
 			});

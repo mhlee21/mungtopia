@@ -13,6 +13,4 @@ public class ProcessDetailRes {
     private Long boardId;
     private Long chatRoomId;
     private int applicationStatus;
-    private Long meetingRoomId;
-    private Boolean meetingActive;
 }

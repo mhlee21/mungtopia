@@ -1,11 +1,7 @@
 <template>
 	<div class="applicant-detail-component">
 		<div>
-			<img
-				src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH1VJcmjOMZRlaKFeYYQZCK5CAMO9l7LM19A&usqp=CAU"
-				alt=""
-				class="dog-img"
-			/>
+			<img :src="dogImg" alt="" class="dog-img" />
 			<div class="dog-name">{{ dogName }}</div>
 		</div>
 		<div class="btn-wrapper">
@@ -24,33 +20,41 @@ export default {
 	setup() {
 		const store = useStore();
 		const router = useRouter();
-		const dogName = computed(
-			() => store.getters['adopt/applicantDetail'].dogName,
+		const applicantDetail = computed(
+			() => store.getters['adopt/applicantDetail'],
 		);
+		const dogName = computed(() => applicantDetail.value?.dogName);
+		const dogImg = computed(() => applicantDetail.value?.dogImg);
+		const boardId = computed(() => applicantDetail.value?.boardId);
+		const chatRoomId = computed(() => applicantDetail.value?.chatRoomId);
+		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
 
 		const goDetail = () => {
 			router.push({
 				name: 'boardDetail',
-				params: { boardId: store.getters['adopt/applicantDetail']['boardId'] },
+				params: { boardId: boardId.value },
 			});
 		};
 		const goChatRoom = () => {
 			router.push({
 				name: 'chat',
 				params: {
-					chatRoomId: store.getters['adopt/applicantDetail']['chatRoomId'],
+					chatRoomId: chatRoomId.value,
 				},
 			});
 		};
 		const cancelAdoption = () => {
-			// 입양을 취소하겠습니까? 물어보고 처리 입양자가 취소 axios 요청
 			console.log('userSeq 없음');
-			router.push({
-				name: 'adopt',
-				params: { userSeq: store.getters['auth/user']?.userSeq },
-			});
+			const answer = confirm('입양을 취소하겠습니까?');
+			if (answer === true) {
+				store.dispatch('applicantCancel');
+				router.push({
+					name: 'adopt',
+					params: { userSeq: userSeq.value },
+				});
+			}
 		};
-		return { dogName, goDetail, goChatRoom, cancelAdoption };
+		return { dogName, dogImg, goDetail, goChatRoom, cancelAdoption };
 	},
 };
 </script>

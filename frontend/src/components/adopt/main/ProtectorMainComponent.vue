@@ -1,7 +1,7 @@
 <template>
 	<div
-		style="display: flex; align-items: center"
 		@click="clickBoard(board.boardId)"
+		style="display: flex; align-items: center"
 	>
 		<img :src="board.dogImg" alt="dog image" class="board-dog-img" />
 		<div class="board-dog-info">

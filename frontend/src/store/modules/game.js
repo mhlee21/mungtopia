@@ -23,6 +23,7 @@ export default {
 			matchAnswer: {},
 			matchData: [],
 			statusWidth: 0,
+			isClear: [false, false, false],
 		};
 	},
 	getters: {
@@ -42,6 +43,7 @@ export default {
 		matchAnswer: state => state.matchAnswer,
 		matchData: state => state.matchData,
 		statusWidth: state => state.statusWidth,
+		isClear: state => state.isClear,
 	},
 	mutations: {
 		SET_GAME_TYPE: (state, gameType) => {
@@ -109,6 +111,9 @@ export default {
 		},
 		PLUS_STATUS_WIDTH: (state, statusWidth) => {
 			state.statusWidth = statusWidth;
+		},
+		CLEAR_GAME: (state, { gameTag, result }) => {
+			state.isClear[gameTag] = result;
 		},
 	},
 	actions: {
@@ -224,13 +229,14 @@ export default {
 		},
 
 		plusMatchAnswer: ({ commit, getters }, { question_type, userAnswer }) => {
-			// const matchUserPoint = getters.matchUserPoint;
+			const matchNum = getters.matchNum;
 			const matchCount = getters.matchCount;
 			if (matchCount < 2) {
 				commit('PLUS_MATCH_USER_POINT', userAnswer);
 			} else {
 				commit('ZERO_MATCH_USER_POINT', { question_type, userAnswer });
 			}
+			console.log(matchNum);
 		},
 
 		matchResult: ({ commit }) => {
@@ -303,6 +309,24 @@ export default {
 				if (width > 100) width = 100;
 				commit('PLUS_STATUS_WIDTH', width);
 			}
+		},
+
+		receiveClear: ({ commit, rootGetters }) => {
+			axios({
+				url: api.game.clearGame(rootGetters['auth/user'].userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					// commit('SET_MATCH_DATA', res.body.data);
+					commit('CLEAR_GAME', {
+						gameTag: res.data.body.data.gameTag,
+						result: res.data.body.data.result,
+					});
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 	},
 };

@@ -23,38 +23,29 @@
 		</div>
 	</div>
 	<div v-else>
-		<div
-			class="bulgy-radios"
-			role="radiogroup"
-			aria-labelledby="bulgy-radios-label"
+		<button
+			class="w-btn w-btn-indigo"
+			type="button"
+			@click="plusMatchAnswer(5)"
 		>
-			<h2 id="bulgy-radios-label">Select an option</h2>
-			<label>
-				<input type="radio" name="options" checked />
-				<span class="radio"></span>
-				<span class="label">First option</span>
-			</label>
-			<label>
-				<input type="radio" name="options" />
-				<span class="radio"></span>
-				<span class="label">Second option</span>
-			</label>
-			<label>
-				<input type="radio" name="options" />
-				<span class="radio"></span>
-				<span class="label">Third option</span>
-			</label>
-			<label>
-				<input type="radio" name="options" />
-				<span class="radio"></span>
-				<span class="label">Fourth option</span>
-			</label>
-			<label>
-				<input type="radio" name="options" />
-				<span class="radio"></span>
-				<span class="label">Last option</span>
-			</label>
-		</div>
+			매우 그렇다
+		</button>
+		<button class="w-btn w-btn-green" type="button" @click="plusMatchAnswer(4)">
+			그렇다
+		</button>
+		<button
+			class="w-btn w-btn-green2"
+			type="button"
+			@click="plusMatchAnswer(3)"
+		>
+			보통이다
+		</button>
+		<button class="w-btn w-btn-brown" type="button" @click="plusMatchAnswer(2)">
+			아니다
+		</button>
+		<button class="w-btn w-btn-blue" type="button" @click="plusMatchAnswer(1)">
+			매우 아니다
+		</button>
 	</div>
 
 	<!-- <div class="MATCH-game-btn">
@@ -100,15 +91,17 @@ export default {
 		const matchNum = computed(() => store.getters['game/matchNum']);
 		const answerQuestion = useranswer => {
 			if (questionNumber.value < 10) {
+				console.log(questionNumber.value);
 				if (useranswer == props.gameQuestion[questionNumber.value]['answer']) {
 					store.dispatch('game/plusAnswerPoint');
 				}
 				store.dispatch('game/plusQuestionNumber');
 				store.dispatch('game/updateProgressbar');
-				if (questionNumber.value == 10) {
+				if (questionNumber.value > 9) {
 					if (correctAnswer.value >= 7) {
 						const payload = {
-							userSeq: store.getters['auth/user']['userSeq'],
+							// userSeq: store.getters['auth/user']['userSeq'],
+							userSeq: 1,
 							result: 1,
 							gameType: gameType,
 						};
@@ -116,10 +109,9 @@ export default {
 					}
 					router.push({ path: '/game/0/finish' });
 				}
+			} else {
+				router.push({ path: '/game/0/fisish' });
 			}
-			// else {
-			// 	router.push({ path: '/game/main/fisish' });
-			// }
 		};
 		const plusMbtiAnswer = userAnswer => {
 			store.dispatch('game/plusMbtiAnswer', {
@@ -151,18 +143,15 @@ export default {
 				userAnswer,
 			});
 			if (questionNumber.value == 17) {
-				const payload = {
-					// userSeq: store.getters['auth/user']['userSeq'],
-					userSeq: 1,
-					matchAnswer: matchNum,
-					gameTag: gameType,
-				};
-				console.log(JSON.stringify(payload));
-				store.dispatch('game/sendResult', payload);
-				router.push({
-					name: 'MatchFinish',
-					params: { mbtiResult: store.getters['game/MatchFinish'] },
-				});
+				if (store.getters['auth/user']['userSeq']) {
+					const payload = {
+						userSeq: store.getters['auth/user']['userSeq'],
+						matchAnswer: matchNum,
+						gameTag: gameType,
+					};
+					store.dispatch('game/sendResult', payload);
+				}
+				router.push({ path: '/game/2/finish' });
 			} else {
 				store.dispatch('game/plusQuestionNumber');
 				store.dispatch('game/updateProgressbar');
@@ -234,94 +223,284 @@ export default {
 	color: #fffbf0;
 }
 
-.bulgy-radios {
-	label {
-		align-content: center;
-		display: flex;
-		flex-direction: column;
-		flex-wrap: wrap;
-		position: relative;
-		height: 1em;
-		padding-left: 4rem;
-		margin-bottom: 1.75rem;
-		cursor: pointer;
-		font-size: 2.5rem;
-		user-select: none;
-		color: #555;
-		letter-spacing: 1px;
-		&:hover input:not(:checked) ~ .radio {
-			opacity: 0.8;
-		}
-	}
-	.label {
-		display: flex;
-		align-items: center;
-		padding-right: 3rem;
-		span {
-			line-height: 1em;
-		}
-	}
-	matching-input {
-		position: absolute;
-		cursor: pointer;
-		height: 0;
-		width: 0;
-		left: -2000px;
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
 
-		&:checked {
-			~ .radio {
-				background-color: #0ac07d;
-				transition: background 0.3s;
-				&::after {
-					opacity: 1;
-				}
-			}
-			~ .label {
-				color: #0bae72;
-				span {
-					animation: bulge 0.5s forwards;
-				}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	display: grid;
+	align-content: center;
+	justify-content: space-around;
+}
 
-				//adjust this if label is going to be more than 20 chars
-				@for $i from 1 to 20 {
-					span:nth-child(#{$i}) {
-						animation-delay: $i * 0.025s;
-					}
-				}
-			}
-		}
-	}
+body {
+	text-align: center;
+	padding: 100px;
+	background: whitesmoke;
+	display: table-cell;
 }
-.radio {
-	position: absolute;
-	top: 0.2rem;
-	left: 0;
-	height: 2.5rem;
-	width: 2.5rem;
-	background: #c9ded6;
-	border-radius: 50%;
-	&::after {
-		content: '';
-		position: absolute;
-		opacity: 0;
-		top: 0.5rem;
-		left: 0.5rem;
-		width: 1.5rem;
-		height: 1.5rem;
-		border-radius: 50%;
-		background: #fff;
-	}
+
+button {
+	margin: 5px;
 }
-@keyframes bulge {
+
+.w-btn {
+	position: relative;
+	border: none;
+	display: inline-block;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+
+.w-btn-outline {
+	position: relative;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	text-align: center;
+	padding: 100px;
+	background: whitesmoke;
+	display: table-cell;
+}
+
+button {
+	margin: 10px;
+}
+
+.w-btn {
+	position: relative;
+	border: none;
+	display: inline-block;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+
+.w-btn-outline {
+	position: relative;
+	padding: 15px 30px;
+	border-radius: 15px;
+	font-family: 'paybooc-Light', sans-serif;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	text-decoration: none;
+	font-weight: 600;
+	transition: 0.25s;
+}
+
+.w-btn-indigo {
+	background-color: aliceblue;
+	color: #1e6b7b;
+}
+
+.w-btn-indigo-outline {
+	border: 3px solid aliceblue;
+	color: #1e6b7b;
+}
+
+.w-btn-indigo-outline:hover {
+	color: #1e6b7b;
+	background: aliceblue;
+}
+
+.w-btn-green {
+	background-color: #77af9c;
+	color: #d7fff1;
+}
+
+.w-btn-green2 {
+	background-color: #519d9e;
+	color: #9dc8c8;
+}
+
+.w-btn-green-outline {
+	border: 3px solid #77af9c;
+	color: darkgray;
+}
+
+.w-btn-green2-outline {
+	border: 3px solid #519d9e;
+	color: darkgray;
+}
+
+.w-btn-green-outline:hover {
+	background-color: #77af9c;
+	color: #d7fff1;
+}
+
+.w-btn-green2-outline:hover {
+	background-color: #519d9e;
+	color: #9dc8c8;
+}
+
+.w-btn-brown {
+	background-color: #ce6d39;
+	color: #ffeee4;
+}
+
+.w-btn-brown-outline {
+	border: 3px solid #ce6d39;
+	color: #b8b8b8;
+}
+
+.w-btn-brown-outline:hover {
+	background-color: #ce6d39;
+	color: #ffeee4;
+}
+
+.w-btn-blue {
+	background-color: #6aafe6;
+	color: #d4dfe6;
+}
+
+.w-btn:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+	animation-fill-mode: backwards;
+}
+
+.w-btn-outline:hover {
+	letter-spacing: 2px;
+	transform: scale(1.2);
+	cursor: pointer;
+	animation-fill-mode: backwards;
+}
+
+// .w-btn:active {
+// 	transform: scale(1.5);
+// }
+
+// .w-btn-outline:active {
+// 	transform: scale(1.5);
+// 	animation-fill-mode: backwards;
+// }
+
+.w-btn-gra1 {
+	background: linear-gradient(-45deg, #33ccff 0%, #ff99cc 100%);
+	color: white;
+}
+
+.w-btn-gra2 {
+	background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	color: white;
+}
+
+.w-btn-gra3 {
+	background: linear-gradient(
+		45deg,
+		#ff0000,
+		#ff7300,
+		#fffb00,
+		#48ff00,
+		#00ffd5,
+		#002bff,
+		#7a00ff,
+		#ff00c8,
+		#ff0000
+	);
+	color: white;
+}
+
+.w-btn-gra-anim {
+	background-size: 400% 400%;
+	animation: gradient1 5s ease infinite;
+}
+
+@keyframes gradient1 {
+	0% {
+		background-position: 0% 50%;
+	}
 	50% {
-		transform: rotate(4deg);
-		font-size: 1.5em;
-		font-weight: bold;
+		background-position: 100% 50%;
 	}
 	100% {
-		transform: rotate(0);
-		font-size: 1em;
-		font-weight: bold;
+		background-position: 0% 50%;
 	}
+}
+
+@keyframes gradient2 {
+	0% {
+		background-position: 100% 50%;
+	}
+	50% {
+		background-position: 0% 50%;
+	}
+	100% {
+		background-position: 100% 50%;
+	}
+}
+
+@keyframes ring {
+	0% {
+		width: 30px;
+		height: 30px;
+		opacity: 1;
+	}
+	100% {
+		width: 300px;
+		height: 300px;
+		opacity: 0;
+	}
+}
+
+.w-btn-neon2 {
+	position: relative;
+	border: none;
+	min-width: 200px;
+	min-height: 50px;
+	background: linear-gradient(
+		90deg,
+		rgba(129, 230, 217, 1) 0%,
+		rgba(79, 209, 197, 1) 100%
+	);
+	border-radius: 1000px;
+	color: darkslategray;
+	cursor: pointer;
+	box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
+	font-weight: 700;
+	transition: 0.3s;
+}
+
+.w-btn-neon2:hover {
+	transform: scale(1.2);
+}
+
+.w-btn-neon2:hover::after {
+	content: '';
+	width: 30px;
+	height: 30px;
+	border-radius: 100%;
+	border: 6px solid #00ffcb;
+	position: absolute;
+	z-index: -1;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	animation: ring 1.5s infinite;
 }
 </style>

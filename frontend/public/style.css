@@ -91,7 +91,6 @@ body {
 .back-button {
   color: white;
   font-size: 20px;
-  /* text-align: center;   */
 }
 
 /* 상단 네비게이션 */
@@ -1992,4 +1991,107 @@ body {
 
 .meeting-pg .black-view {
   background-color: #000;
+}
+
+/* 입양신청서 보기 */
+.application-detail-pg {
+  padding: 7vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: 'Noto Sans KR', sans-serif;
+  height: calc(100vh -14vw);
+  overflow: scroll;
+}
+.application-detail-pg .top-wrapper {
+  display: flex;
+  width: 100%;
+}
+.application-detail-pg .application-title-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 3vh;
+  font-size: 30px;
+  font-weight: 600;
+}
+.application-detail-pg .application-title-wrapper .title-icon {
+  margin-right: 10px;
+}
+.application-detail-pg .application-title-wrapper .title {}
+.application-detail-pg .application-content-wrapper {
+  background-color: white;
+  border-radius: 2rem;
+  width: 75vw;  
+  padding: 7vw 3vw;
+}
+.application-detail-pg .content-title {
+  font-size: 24px;
+  margin: 10px; 
+  display: flex;
+  align-items:stretch
+}
+.application-detail-pg .content-title .title-line {
+  width: 8px;
+  height: 24px;
+  background-color: #373737;
+  display: inline-block;
+  margin-right: 10px;
+}
+.application-detail-pg .content-date {
+  color: #848181;
+  margin-bottom: 20px;
+  margin-left: 10px; 
+  text-align: right;
+}
+.application-detail-pg .content-box {
+  margin: 0 10px 5vh; 
+}
+.application-detail-pg .content-box .question {
+  margin: 3vh 0 1 vh;
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+.application-detail-pg .content-box .answer {
+  color: #373737;
+  margin-left: 20px;
+}
+.application-detail-pg .user-info-wrapper {
+  margin: 5vw;
+}
+.application-detail-pg .user-info-wrapper .user-info {
+  display: flex;
+  margin: 20px 0;
+}
+.application-detail-pg .user-info-wrapper .user-info .user-input-label {
+  width: 35%;
+}
+.application-detail-pg .user-info-wrapper .label {
+  font-size: 18px;
+  color: #626262;
+}
+.application-detail-pg .user-info-wrapper .user-info .user-info-content {
+  font-size: 18px;
+  text-align: right;
+  width: 65%;
+}
+.application-detail-pg .user-info-wrapper .user-info2 {
+  padding: 0 15px;
+  border: #A3A3A3 1px solid;
+  border-radius: 2px;
+  margin: 20px 0;
+}
+.application-detail-pg .btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
+.application-detail-pg .btn-wrapper .btn {
+  border-radius: 2rem;
+  width: 30vw;
+  height: 5vh;
+  background-color: #373737;
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
 }

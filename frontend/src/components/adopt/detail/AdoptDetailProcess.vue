@@ -181,7 +181,7 @@ export default {
 				// 입양자일 경우
 				if (route.name == 'applicantDetail') {
 					router.push({
-						name: 'application',
+						name: 'applicationDetail',
 						params: {
 							applicationId: route.params.applicationId,
 						},
@@ -190,7 +190,7 @@ export default {
 				// 보호자일 경우
 				else {
 					router.push({
-						name: 'application',
+						name: 'applicationDetail',
 						params: {
 							applicationId:
 								store.getters['adopt/protectorDetail']['applicationList'][

@@ -16,9 +16,8 @@ const MEETING = 'meeting/';
 export default {
 	auth: {
 		// 로그인
-		login: () => HOST + AUTH + 'login',
-		// 유저 정보 받기
-		getUser: () => HOST + 'users',
+		login: () => HOST + AUTH + 'login/',
+		getUser: () => HOST + 'users/',
 	},
 	board: {
 		// 전체 글 불러오기

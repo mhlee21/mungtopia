@@ -46,7 +46,7 @@ export default {
 		const cancelAdoption = () => {
 			const answer = confirm('입양을 취소하겠습니까?');
 			if (answer === true) {
-				store.dispatch('applicantCancel');
+				store.dispatch('adopt/applicantCancel');
 				router.push({
 					name: 'adopt',
 					params: { userSeq: userSeq.value },

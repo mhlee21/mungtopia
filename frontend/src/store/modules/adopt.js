@@ -200,15 +200,21 @@ export default {
 				});
 		},
 		// 입양 취소
-		applicantCancel: ({ rootGetters, getters }) => {
-			console.log(rootGetters, getters);
+		applicantCancel: ({ dispatch, rootGetters, getters }) => {
 			axios({
 				url: api.adopt.applicantCancel(getters.adoptionProcessId),
 				method: 'delete',
 				headers: rootGetters['auth/authHeader'],
-			}).catch(err => {
-				console.error(err.response);
-			});
+			})
+				.then(() => {
+					dispatch('fetchMainList', {
+						userSeq: rootGetters['auth/user'].userSeq,
+						adoptType: 'applicant',
+					});
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 		// 입양 내역 삭제
 		deleteAdoption: (
@@ -231,13 +237,15 @@ export default {
 		},
 		// 입양 상태 변경
 		updateAdoptProcess: ({ commit, rootGetters, getters }, step) => {
+			console.log(step, getters['adoptionProcessId']);
 			axios({
 				url: api.adopt.processUpdate(getters['adoptionProcessId']),
 				method: 'put',
-				data: { step },
+				data: step,
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
+					console.log(res.data.body.data);
 					commit('UPDATE_APPLICATION_STATUS');
 					commit('SET_ADOPT_PROCESS', res.data.body.data);
 				})

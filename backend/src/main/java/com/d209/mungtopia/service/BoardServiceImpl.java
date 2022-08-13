@@ -375,12 +375,14 @@ public class BoardServiceImpl implements BoardService {
             final String saveName = getRandomString() + today + "." + extension;
             // 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성
             File target = new File(root + "/img", saveName);
+            String uploadPath = target.getPath();
+            System.out.println("uploadPath = " + uploadPath);
             try {
                 file.transferTo(target); // 파일 저장
             } catch (IOException e) {
                 throw new IOException(e);
             }
-            ImageStorage imageStorage = new ImageStorage(order, file.getOriginalFilename(), saveName);
+            ImageStorage imageStorage = new ImageStorage(order, file.getOriginalFilename(), uploadPath);
             imageStorageDtoList.add(imageStorage);
 
             order++;
@@ -403,8 +405,6 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public UrlResource getImgFile(long boardId) throws IOException {
         String root = System.getProperty("user.dir").toString();
-        String path = "jenkins/jenkins_home/workspace/mungtopia/backend/src/main/webapp/img";
-        String savePath = root + path;
 
         Optional<Board> board = boardRepository.findById(boardId);
         ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), 1);
@@ -422,15 +422,8 @@ public class BoardServiceImpl implements BoardService {
 //        imageStream.close();
 //        UrlResource urlResource = new UrlResource();
 
-        System.out.println("System.getProperty(\"java.home\") = " + System.getProperty("java.home"));
-        System.out.println("System.getProperty(\"java.class.path\") = " + System.getProperty("java.class.path"));
-        System.out.println("System.getProperty(\"user.home\") = " + System.getProperty("user.home"));
-        System.out.println("System.getProperty(\"user.dir\") = " + System.getProperty("user.dir"));
-        System.out.println("root = " + root + "/img/"+ saveName); // 절대경로 사용
-        System.out.println("Path.get() = " + Path.of(root).toAbsolutePath().toString());
-        
-
-        return new UrlResource("file:" + root + "img/" + saveName);
+        System.out.println("saveName = " + saveName);
+        return new UrlResource("file:"  + saveName);
     }
 
     private final String getRandomString() {

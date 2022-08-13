@@ -1308,6 +1308,25 @@ body {
   display: inline;
   font-size: 18px;
 }
+.adopt-main-pg .adopt-state-component .main-component {
+  display: flex; 
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+.adopt-main-pg .adopt-state-component .main-component .dog-img {
+  width: 40vw;
+	height: 40vw;
+	border-radius: 1rem;
+	box-shadow: 1px 4px 3px rgba(0, 0, 0, 0.2);
+}
+.adopt-main-pg .adopt-state-component .main-component .dog-info {
+  background-color: white;
+	width: 30vw;
+	height: 15vh;
+	border-radius: 0 1rem 1rem 0;
+	box-shadow: 1px 4px 3px rgba(0, 0, 0, 0.2);
+}
 
 /* 입양 상세 페이지 - 입양보내기 */
 .adopt-detail-protector-pg {
@@ -1319,6 +1338,7 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
   max-width: 100vw;
   box-sizing: border-box;
+  overflow: auto;
 }
 .adopt-detail-protector-pg .protector-detail-component {
 	display: flex;
@@ -1392,10 +1412,10 @@ body {
   margin: 0 5px;
 }
 .adopt-detail-protector-pg .applicant-detail-process {
-	margin-top: 2vh;
+	margin: 2vh 0;
 	background-color: white;
 	border-radius: 2rem;
-	padding: 3% 0;
+	padding: 0 0 3%;
   overflow: hidden;
 }
 

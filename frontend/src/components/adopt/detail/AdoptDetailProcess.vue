@@ -55,8 +55,8 @@
 						class="next-btn"
 					>
 						<i class="fa-solid fa-chevron-down"></i>
-						<div v-if="adoptProcess[index]?.step < 5">다음 단계</div>
-						<div v-else>입양 허가</div>
+						<span v-if="adoptProcess[index]?.step < 5"> 다음 단계 </span>
+						<span v-else>입양 허가</span>
 						<i class="fa-solid fa-chevron-down"></i>
 					</button>
 				</div>

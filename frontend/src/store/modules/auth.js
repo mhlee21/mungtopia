@@ -5,7 +5,11 @@ export default {
 	namespaced: true,
 	state() {
 		return {
-			user: null,
+			user: {
+				userSeq: 6,
+				username: '황희원',
+				profile: 'https://www.snsboom.co.kr/common/img/default_profile.png',
+			},
 			token: localStorage.getItem('token') || '',
 			userInfo: null,
 		};
@@ -41,7 +45,7 @@ export default {
 				headers: { Authorization: `Bearer ${getters.token}` },
 			})
 				.then(res => {
-					console.log(res);
+					console.log(res.data.body.user);
 					commit('SET_USER', res.data.body.user);
 				})
 				.catch(err => {

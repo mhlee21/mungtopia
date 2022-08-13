@@ -16,7 +16,6 @@ export default {
 			you: {},
 			chatList: [],
 			date: '',
-			meetingRoomId: null,
 			chatRoomId: null,
 			applicationAnswer: null,
 		};
@@ -154,6 +153,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
+					console.log(res.data.body.data);
 					commit('SET_PROTECTOR_DETAIL', res.data.body.data);
 				})
 				.catch(err => {
@@ -173,6 +173,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
+					console.log(res.data.body.data);
 					commit('SET_ADOPT_PROCESS', res.data.body.data);
 				})
 				.catch(err => {

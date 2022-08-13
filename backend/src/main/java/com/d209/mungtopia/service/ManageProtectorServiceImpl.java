@@ -6,11 +6,13 @@ import com.d209.mungtopia.dto.protector.ProtectorBoardListRes;
 import com.d209.mungtopia.dto.protector.StepRes;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.AdoptionProcessRepository;
+import com.d209.mungtopia.repository.InfAdoptionStepDateRepository;
 import com.d209.mungtopia.repository.ManageProtectorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -23,6 +25,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
 
     private final ManageProtectorRepository manageProtectorRepository;
     private final AdoptionProcessRepository adoptionProcessRepository;
+    private final InfAdoptionStepDateRepository infAdoptionStepDateRepository;
 
     /**
      * 입양 보내기 메인
@@ -118,36 +121,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
      */
     @Override
     public List<ApplicantProcessRes> applicantDetailProcess(Long adoptionProcessId) {
-        AdoptionProcess adoptionProcess = manageProtectorRepository.findByAdoptionProcessId(adoptionProcessId);
-
-        List<ApplicantProcessRes> applicantProcessList = new ArrayList<>();
-        int curStep = adoptionProcess.getStep();
-        List<AdoptionStepDate> adoptionStepDateList = adoptionProcess.getAdoptionStepDateList();
-        adoptionStepDateList.sort(new Comparator<AdoptionStepDate>() {
-            @Override
-            public int compare(AdoptionStepDate o1, AdoptionStepDate o2) {
-                return Integer.compare(o1.getStep(), o2.getStep());
-            }
-        });
-
-        for (AdoptionStepDate adoptionStepDate : adoptionStepDateList) {
-            ApplicantProcessRes process = new ApplicantProcessRes();
-            process.setStep(adoptionStepDate.getStep());
-
-//            Date date = new Date(adoptionStepDate.getDate() * 1000);
-
-            process.setDate(adoptionStepDate.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-
-            if (adoptionStepDate.getStep() < curStep) {
-                process.setStepStatus(true);
-            } else  {
-                process.setStepStatus(adoptionProcess.getStepStatus());
-            }
-
-            applicantProcessList.add(process);
-        }
-
-        return applicantProcessList;
+       return applicationProcessList(adoptionProcessId);
     }
 
     /**
@@ -172,20 +146,47 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
     @Transactional
     public List<ApplicantProcessRes> updateProcessStatus(Long adoptionProcessId, StepRes stepUpdateInfo){
         AdoptionProcess adoptionProcess = adoptionProcessRepository.find(adoptionProcessId);
-        if (stepUpdateInfo.getStep() == 5){ // true 스텝이
-            List<AdoptionStepDate> adoptionStepDateList = adoptionProcess.getAdoptionStepDateList();
+        AdoptionStepDate newStep = new AdoptionStepDate(stepUpdateInfo.getStep() + 1, adoptionProcess);
+        if (stepUpdateInfo.getStep() == 5){
             // 날짜 저장
-            for (AdoptionStepDate adoptionStepDate : adoptionStepDateList) {
-                if(adoptionStepDate.getStep() == 5){
-                    adoptionStepDate.changeDate(LocalDateTime.now());
-                }
-            }
+            newStep.changeDate(LocalDateTime.now());
             // 5인 경우에 application status를 변경해줘야함!
             adoptionProcess.getApplication().changeApplicationStatus(6);
         }
 
+        infAdoptionStepDateRepository.save(newStep);
         adoptionProcess.setStep(stepUpdateInfo.getStep() + 1); // 기존에서 step을 증가 시킴
         adoptionProcess.setStepStatus(false);
-        return applicantDetailProcess(adoptionProcessId);
+
+        return applicationProcessList(adoptionProcessId);
+    }
+
+    // 정보 리턴 - 공통 메서드
+    private List<ApplicantProcessRes> applicationProcessList(Long adoptionProcessId){
+        AdoptionProcess adoptionProcess = manageProtectorRepository.findByAdoptionProcessId(adoptionProcessId);
+        List<AdoptionStepDate> adoptionStepDates = infAdoptionStepDateRepository.findByAdoptionProcessOrderByStep(adoptionProcess);
+
+        List<ApplicantProcessRes> response = new ArrayList<>();
+        int curStep = adoptionProcess.getStep();
+
+        for (AdoptionStepDate adoptionStepDate : adoptionStepDates) {
+            ApplicantProcessRes process = new ApplicantProcessRes();
+
+            process.setStep(adoptionStepDate.getStep());
+            Optional<LocalDateTime> datetime = Optional.ofNullable(adoptionStepDate.getDate());
+            if (datetime.isEmpty())
+                process.setDate(null);
+            else
+                process.setDate(datetime.get().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+            if (adoptionStepDate.getStep() < curStep) {
+                process.setStepStatus(true);
+            } else  {
+                process.setStepStatus(adoptionProcess.getStepStatus());
+            }
+            response.add(process);
+        }
+
+        return response;
     }
 }

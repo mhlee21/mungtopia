@@ -3,6 +3,7 @@ package com.d209.mungtopia.service;
 import com.d209.mungtopia.dto.*;
 import com.d209.mungtopia.entity.*;
 import org.apache.tomcat.util.file.ConfigurationSource.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileNotFoundException;
@@ -31,5 +32,5 @@ public interface BoardService {
     List<Comment> deleteReply(Board board, Reply reply, ReplyDto replyDto);
 
     Boolean saveImgFile(List<MultipartFile> multipartFiles, long boardId) throws Exception;
-    byte[] getImgFile(long boardId) throws IOException;
+    UrlResource getImgFile(long boardId) throws IOException;
 }

@@ -46,7 +46,7 @@ export default {
 				headers: { Authorization: `Bearer ${getters.token}` },
 			})
 				.then(res => {
-					console.log(res);
+					console.log(res.data.body.user);
 					commit('SET_USER', res.data.body.user);
 				})
 				.catch(err => {

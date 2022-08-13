@@ -22,11 +22,10 @@ export default {
 		const router = useRouter();
 		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
 		store.dispatch('adopt/fetchProtectorDetail', route.params.boardId);
-		console.log('30줄', userSeq);
 		const goBack = () => {
 			router.push({
 				name: 'adopt',
-				params: { userSeq: 6 },
+				params: { userSeq: userSeq.value },
 			});
 		};
 		return { goBack };
@@ -34,11 +33,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.protector-detail-view {
-	padding: 10% 7%;
-	overflow: auto;
-	height: 80%;
-	background-color: #ff9898;
-}
-</style>
+<style scoped></style>

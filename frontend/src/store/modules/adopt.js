@@ -109,7 +109,6 @@ export default {
 					});
 			}
 		},
-
 		// 입양하기 상세
 		fetchApplicantDetail: ({ commit, rootGetters }, applicationId) => {
 			axios({
@@ -147,7 +146,6 @@ export default {
 					console.error(err.response);
 				});
 		},
-
 		// 입양보내기 상세
 		fetchProtectorDetail: ({ commit, rootGetters }, boardId) => {
 			axios({
@@ -240,7 +238,6 @@ export default {
 		},
 		// 입양 상태 변경
 		updateAdoptProcess: ({ commit, rootGetters, getters }, step) => {
-			console.log(step, getters['adoptionProcessId']);
 			axios({
 				url: api.adopt.processUpdate(getters['adoptionProcessId']),
 				method: 'put',
@@ -248,7 +245,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('UPDATE_APPLICATION_STATUS');
 					commit('SET_ADOPT_PROCESS', res.data.body.data);
 				})
@@ -256,8 +252,7 @@ export default {
 					console.error(err.response);
 				});
 		},
-
-		// 스케줄 일정 저장
+		// 일정 저장
 		saveDate: (
 			{ commit, rootGetters },
 			{ adoptionProcessId, applicationStatus },
@@ -281,7 +276,6 @@ export default {
 			commit('SET_APPLICATION_STATUS', 4);
 			commit('SET_DATE', '08/17/2022, 14:56');
 		},
-
 		// chatList 받기
 		fetchChatMain: ({ commit, rootGetters }, chatRoomId) => {
 			// axios({
@@ -375,7 +369,6 @@ export default {
 			console.log(rootGetters, chat, getters);
 			commit('UPDATE_NEW_CHAT', chat);
 		},
-
 		// 일정 예약 및 수정
 		saveSchedule: ({ commit, rootGetters, getters }, date) => {
 			const payload = { step: getters.applicationStatus, date };
@@ -417,7 +410,6 @@ export default {
 			// });
 			commit('SET_DATE', '');
 		},
-
 		// 비디오 토큰 받기
 		getToken: ({ commit }, sessionName) => {
 			axios({
@@ -440,7 +432,6 @@ export default {
 					console.error(err.response);
 				});
 		},
-
 		// 입양신청서 정보 받기
 		fetchApplication: ({ commit, rootGetters }, applicationId) => {
 			console.log(commit, rootGetters, applicationId);
@@ -450,77 +441,11 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_APPLICATION', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
 				});
-			// const data = {
-			// 	userInfo: {
-			// 		name: '이연정',
-			// 		phoneNumber: null,
-			// 		birth: '20000103',
-			// 		gender: 'W',
-			// 		job: '무직',
-			// 		zonecode: '12345',
-			// 		roadAddress: '대구광역시 ',
-			// 		detailAddress: '101동',
-			// 		etc: '눈누난나',
-			// 	},
-			// 	createtime: '2022-08-03 11:57:04',
-			// 	applicationStatus: 7,
-			// 	answer: [
-			// 		{
-			// 			order: 1,
-			// 			answer: 'ddd',
-			// 		},
-			// 		{
-			// 			order: 2,
-			// 			answer: 'qq',
-			// 		},
-			// 		{
-			// 			order: 3,
-			// 			answer: 'ww',
-			// 		},
-			// 		{
-			// 			order: 4,
-			// 			answer: 'ee',
-			// 		},
-			// 		{
-			// 			order: 5,
-			// 			answer: 'rr',
-			// 		},
-			// 		{
-			// 			order: 6,
-			// 			answer: 'tty',
-			// 		},
-			// 		{
-			// 			order: 7,
-			// 			answer: 'ddf',
-			// 		},
-			// 		{
-			// 			order: 8,
-			// 			answer: 'sdf',
-			// 		},
-			// 		{
-			// 			order: 9,
-			// 			answer: 'dfdf',
-			// 		},
-			// 		{
-			// 			order: 10,
-			// 			answer: 'sdf',
-			// 		},
-			// 		{
-			// 			order: 11,
-			// 			answer: 'wwe',
-			// 		},
-			// 	],
-			// };
-			// commit('auth/SET_USER_INFO', data.userInfo, {
-			// 	root: true,
-			// });
-			// commit('SET_APPLICATION_ANSWER', data.answer);
 		},
 	},
 };

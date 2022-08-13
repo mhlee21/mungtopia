@@ -92,11 +92,15 @@ public class GameServiceImpl implements GameService{
         // 정렬
         List<Map.Entry<Long, Integer>> resultList = new LinkedList<>(result.entrySet());
         resultList.sort(Map.Entry.comparingByValue());
+        for (int i = 0; i < resultList.size(); i++) {
+            System.out.println("resultList Key = " + resultList.get(i).getKey());
+            System.out.println("resultList Value = " + resultList.get(i).getValue());
+        }
         System.out.println("resultList = " + resultList);
         int randomDog = (int) (Math.random() * 3); // 1 - 3 중 랜덤으로 리턴
         Long resultKey = resultList.get(randomDog).getKey();
         Integer resultSum = resultList.get(randomDog).getValue();
-        int percent = 100 - (( resultSum / (90 - 18)) * 100);
+        int percent = (int) (100 - (( 1.0 * resultSum / (90 - 18)) * 100));
 
 
         MatchingGameRes response = new MatchingGameRes();

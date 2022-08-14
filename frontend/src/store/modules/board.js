@@ -51,9 +51,21 @@ export default {
 		SET_CATEGORY: (state, category) => (state.category = category),
 		SET_APPLICATION_PAGE_NUM: (state, applicationPageNum) =>
 			(state.applicationPageNum = applicationPageNum),
-		UPDATE_IS_LIKE: state => (state.board.isLike = !state.board.isLike),
-		UPDATE_HAVE_INTEREST: state =>
-			(state.board.haveInterest = !state.board.haveInterest),
+		UPDATE_IS_LIKE: (state, index) => {
+			if (index === -1) {
+				state.board.isLike = !state.board.isLike;
+			} else {
+				state.boardList[index].isLike = !state.boardList[index].isLike;
+			}
+		},
+		UPDATE_HAVE_INTEREST: (state, index) => {
+			if (index === -1) {
+				state.board.haveInterest = !state.board.haveInterest;
+			} else {
+				state.boardList[index].haveInterest =
+					!state.boardList[index].haveInterest;
+			}
+		},
 		SET_ADOPT_QUESTION_LIST: (state, adoptQuestionList) => {
 			state.adoptQuestionList = adoptQuestionList;
 		},
@@ -507,12 +519,13 @@ export default {
 				});
 		},
 		// 좋아요 하기
-		createLike: ({ commit, rootGetters }, { boardId }) => {
+		createLike: ({ commit, rootGetters }, { boardId, index }) => {
 			const payload = {
-				userSeq: rootGetters['user/userSeq'],
+				userSeq: rootGetters['auth/user'].userSeq,
 			};
 			console.log('createLike', commit, rootGetters, boardId, payload);
-			commit('UPDATE_IS_LIKE');
+			commit('UPDATE_IS_LIKE', index);
+
 			// axios({
 			// 	url: api.board.likeCreate(boardId),
 			// 	method: 'post',
@@ -528,12 +541,12 @@ export default {
 		},
 
 		// 좋아요 삭제
-		deleteLike: ({ commit, rootGetters }, { boardId }) => {
+		deleteLike: ({ commit, rootGetters }, { boardId, index }) => {
 			const payload = {
-				userSeq: rootGetters['user/userSeq'],
+				userSeq: rootGetters['auth/user'].userSeq,
 			};
 			console.log('deleteLike', commit, rootGetters, boardId, payload);
-			commit('UPDATE_IS_LIKE');
+			commit('UPDATE_IS_LIKE', index);
 			// axios({
 			// 	url: api.board.likeDelete(boardId),
 			// 	method: 'delete',
@@ -549,12 +562,12 @@ export default {
 		},
 
 		// 별표 하기
-		createStar: ({ commit, rootGetters }, { boardId }) => {
+		createStar: ({ commit, rootGetters }, { boardId, index }) => {
 			const payload = {
-				userSeq: rootGetters['user/userSeq'],
+				userSeq: rootGetters['auth/user'].userSeq,
 			};
 			console.log('createStar', commit, rootGetters, boardId, payload);
-			commit('UPDATE_HAVE_INTEREST');
+			commit('UPDATE_HAVE_INTEREST', index);
 			// axios({
 			// 	url: api.board.starCreate(boardId),
 			// 	method: 'post',
@@ -569,12 +582,12 @@ export default {
 			// 	});
 		},
 		// 별표 삭제
-		deleteStar: ({ commit, rootGetters }, { boardId }) => {
+		deleteStar: ({ commit, rootGetters }, { boardId, index }) => {
 			const payload = {
-				userSeq: rootGetters['user/userSeq'],
+				userSeq: rootGetters['auth/user'].userSeq,
 			};
 			console.log('deleteStar', commit, rootGetters, boardId, payload);
-			commit('UPDATE_HAVE_INTEREST');
+			commit('UPDATE_HAVE_INTEREST', index);
 			// axios({
 			// 	url: api.board.starDelete(boardId),
 			// 	method: 'delete',

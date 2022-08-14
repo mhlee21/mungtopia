@@ -1,14 +1,20 @@
 package com.d209.mungtopia.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "adoption_step_date", schema = "mungtopia")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "adoption_step_date", schema = "mungtopia")
 public class AdoptionStepDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +27,8 @@ public class AdoptionStepDate {
     @Column(name = "date", nullable = true)
     private LocalDateTime date;
 
-    @ManyToOne()
-    @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id")
     @JsonManagedReference
     private AdoptionProcess adoptionProcess;
 

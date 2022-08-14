@@ -278,77 +278,80 @@ export default {
 		},
 		// chatList 받기
 		fetchChatMain: ({ commit, rootGetters }, chatRoomId) => {
-			// axios({
-			// 	url: api.adopt.chats(chatRoomId),
-			// 	method: 'get',
-			// 	data: { pageNo: 1, range: 15 },
-			// 	headers: rootGetters['auth/authHeader'],
-			// })
-			// 	.then(res => {
-			// 		console.log(res.data.body.data);
+			axios({
+				// url: api.adopt.chats(),
+				url: 'http://localhost:8081/api/v1/chat/log',
+				method: 'get',
+				params: { page: 1, chat_room_id: 4 },
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log('chatList', res.data.body.data.content);
 
-			// 		const you = {
-			// 			userSeq: res.data.body.data.userSeq,
-			// 			nickname: res.data.body.data.nickname,
-			// 			profile: res.data.body.data.profile,
-			// 		};
-			// 		commit('SET_CHAT_LIST', res.data.body.data.chatList);
-			// 		commit('SET_YOU', you);
-			//	commit('SET_CHAT_ROOM_ID', chatRoomId)
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
-			console.log(rootGetters, chatRoomId);
-			const data = {
-				pageNo: 1,
-				range: 15,
-				userSeq: 1, //상대방 id
-				nickname: '황희원', //상대방 닉네임
-				profile: '', //상대방 프로필
-				chatList: [
-					{
+					const you = {
+						// userSeq: res.body.data.userSeq,
+						// nickname: res.body.data.nickname,
+						// profile: res.body.data.profile,
 						userSeq: 1,
-						time: '2022.08.05 13:00:00',
-						message:
-							'안녕하세요! 몽이 입양신청서 작성하신거 보고 연락드렸어요!!',
-					},
-					{
-						userSeq: 2,
-						time: '2022.08.05 13:00:00',
-						message: '안녕하세요:)',
-					},
-					{
-						userSeq: 2,
-						time: '2022.08.05 13:00:00',
-						message:
-							'면담일정은 어떻게 되나요? 제가 내일은 발표가 있어서 어렵습니다.:)',
-					},
-					{
-						userSeq: 1,
-						time: '2022.08.05 13:00:00',
-						message: '화요일 오후 2시 어떠신가요? 그때가 좋을 것 같습니다^^',
-					},
-					{
-						userSeq: 2,
-						time: '2022.08.05 13:00:00',
-						message: '네 그때 좋습니다^^',
-					},
-					{
-						userSeq: 1,
-						time: '2022.08.05 13:00:00',
-						message: '네 그럼 일정 예약해두겠습니다!',
-					},
-				],
-			};
-			const you = {
-				userSeq: data.userSeq,
-				nickname: data.nickname,
-				profile: data.profile,
-			};
-			commit('SET_CHAT_LIST', data.chatList);
-			commit('SET_YOU', you);
-			commit('SET_CHAT_ROOM_ID', chatRoomId);
+						nickname: '이면',
+						profile: '',
+					};
+					commit('SET_CHAT_LIST', res.data.body.data.content);
+					commit('SET_YOU', you);
+					commit('SET_CHAT_ROOM_ID', chatRoomId);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+			// const data = {
+			// 	pageNo: 1,
+			// 	range: 15,
+			// 	userSeq: 1, //상대방 id
+			// 	nickname: '황희원', //상대방 닉네임
+			// 	profile: '', //상대방 프로필
+			// 	chatList: [
+			// 		{
+			// 			userSeq: 1,
+			// 			time: '2022.08.05 13:00:00',
+			// 			message:
+			// 				'안녕하세요! 몽이 입양신청서 작성하신거 보고 연락드렸어요!!',
+			// 		},
+			// 		{
+			// 			userSeq: 2,
+			// 			time: '2022.08.05 13:00:00',
+			// 			message: '안녕하세요:)',
+			// 		},
+			// 		{
+			// 			userSeq: 2,
+			// 			time: '2022.08.05 13:00:00',
+			// 			message:
+			// 				'면담일정은 어떻게 되나요? 제가 내일은 발표가 있어서 어렵습니다.:)',
+			// 		},
+			// 		{
+			// 			userSeq: 1,
+			// 			time: '2022.08.05 13:00:00',
+			// 			message: '화요일 오후 2시 어떠신가요? 그때가 좋을 것 같습니다^^',
+			// 		},
+			// 		{
+			// 			userSeq: 2,
+			// 			time: '2022.08.05 13:00:00',
+			// 			message: '네 그때 좋습니다^^',
+			// 		},
+			// 		{
+			// 			userSeq: 1,
+			// 			time: '2022.08.05 13:00:00',
+			// 			message: '네 그럼 일정 예약해두겠습니다!',
+			// 		},
+			// 	],
+			// };
+			// const you = {
+			// 	userSeq: data.userSeq,
+			// 	nickname: data.nickname,
+			// 	profile: data.profile,
+			// };
+			// commit('SET_CHAT_LIST', data.chatList);
+			// commit('SET_YOU', you);
+			// commit('SET_CHAT_ROOM_ID', chatRoomId);
 		},
 		// 메세지 보내기
 		sendChat: ({ commit, rootGetters, getters }, chat) => {

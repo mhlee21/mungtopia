@@ -22,7 +22,8 @@ export default {
 	},
 	board: {
 		// 전체 글 불러오기
-		boardMain: tagNum => HOST + BOARD + `${tagNum}`,
+		boardMain: ({ tagNo, userSeq }) =>
+			HOST + BOARD + `${tagNo}/` + `${userSeq}`,
 		// 상세 글 불러오기
 		boardDetail: boardId => HOST + BOARD + `${boardId}`,
 		// 입양 상태 확인

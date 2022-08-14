@@ -6,9 +6,17 @@
 					<img :src="user.profile" alt="profile image" class="profile-img" />
 				</div>
 				<div>
-					<a @click.prevent="changeProfile" class="change-btn"
-						><small>사진 변경</small></a
-					>
+					<!-- <a @click.prevent="changeProfile" -->
+					<label for="profile" class="change-btn">
+						<small>사진 변경</small>
+					</label>
+					<input
+						type="file"
+						name="profile"
+						id="profile"
+						class="change-input"
+						@change="changeProfile"
+					/>
 				</div>
 			</div>
 			<div class="info-component">

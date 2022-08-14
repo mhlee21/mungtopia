@@ -1,10 +1,9 @@
 <template>
 	<div class="protector-detail-component">
-		<img
-			class="protector-detail-component-dog-image"
-			:src="protectorDetail.dogImg"
-		/>
-		<div style="width: 70%; padding: 5%">{{ protectorDetail.dogName }}</div>
+		<img class="dog-img" :src="protectorDetail.dogImg" />
+		<div class="dog-name" style="width: 70%; padding: 5%">
+			{{ protectorDetail.dogName }}
+		</div>
 	</div>
 </template>
 
@@ -22,17 +21,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.protector-detail-component {
-	display: flex;
-	justify-content: center;
-	background-color: white;
-	border-radius: 1rem;
-	padding: 2% 5%;
-}
-.protector-detail-component-dog-image {
-	width: 30%;
-	height: 70px;
-	border-radius: 1rem;
-}
-</style>
+<style scoped></style>

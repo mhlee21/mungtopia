@@ -2,7 +2,7 @@
 	<div class="adopt-detail-pg">
 		<div class="dog-banner-container">
 			<div class="motion-btn-box">
-				<!-- 뒤로가기 눌렀을 때 메인 입양 페이지로 이동하게 설정했습니다. -->
+				<!-- 뒤로가기 -->
 				<a class="back-btn" @click="goBoardMain()">
 					<img src="@/assets/img/back-icon--white.svg" alt="" />
 				</a>
@@ -62,10 +62,16 @@ export default {
 		const clickLike = () => {
 			if (isLike.value) {
 				// 좋아요 삭제
-				store.dispatch('board/deleteLike', { boardId: boardId.value });
+				store.dispatch('board/deleteLike', {
+					boardId: boardId.value,
+					index: -1,
+				});
 			} else {
 				// 좋아요 생성
-				store.dispatch('board/createLike', { boardId: boardId.value });
+				store.dispatch('board/createLike', {
+					boardId: boardId.value,
+					index: -1,
+				});
 			}
 		};
 
@@ -76,10 +82,16 @@ export default {
 		const clickStar = () => {
 			if (haveInterest.value) {
 				// 관심 삭제
-				store.dispatch('board/deleteStar', { boardId: boardId.value });
+				store.dispatch('board/deleteStar', {
+					boardId: boardId.value,
+					index: -1,
+				});
 			} else {
 				// 관심 생성
-				store.dispatch('board/createStar', { boardId: boardId.value });
+				store.dispatch('board/createStar', {
+					boardId: boardId.value,
+					index: -1,
+				});
 			}
 		};
 		return { goBoardMain, isLike, haveInterest, clickStar, clickLike };

@@ -1,13 +1,14 @@
 package com.d209.mungtopia.service;
 
-import com.d209.mungtopia.dto.AppDto;
-import com.d209.mungtopia.dto.BoardDto;
-import com.d209.mungtopia.dto.CommentDto;
-import com.d209.mungtopia.dto.ReplyDto;
+import com.d209.mungtopia.dto.*;
 import com.d209.mungtopia.entity.*;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public interface BoardService {
     List<Board> findBoardAll(Long tagNo, int pageNo);
@@ -29,4 +30,7 @@ public interface BoardService {
     List<Comment> saveReply(Board board, Comment comment, ReplyDto replyDto);
     List<Comment> updateReply(Board board, Reply reply, ReplyDto replyDto);
     List<Comment> deleteReply(Board board, Reply reply, ReplyDto replyDto);
+
+    Boolean saveImgFile(List<MultipartFile> multipartFiles, long boardId) throws Exception;
+    Resource getImgFile(long boardId, int order) throws IOException;
 }

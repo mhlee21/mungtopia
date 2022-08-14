@@ -2,6 +2,7 @@ package com.d209.mungtopia.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "adoption_step_date", schema = "mungtopia")
 @Getter
+@NoArgsConstructor
 public class AdoptionStepDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +30,10 @@ public class AdoptionStepDate {
 
     public void changeDate(LocalDateTime date){
         this.date = date;
+    }
+
+    public AdoptionStepDate(int step, AdoptionProcess adoptionProcess){
+        this.step = step;
+        this.adoptionProcess = adoptionProcess;
     }
 }

@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -51,7 +50,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
             for (int j = 0; j < board.getImageStorageList().size(); j++) {
                 Integer orders = board.getImageStorageList().get(j).getOrders();
                 if (orders.equals(1)){
-                    protectorBoard.setDogImg(board.getImageStorageList().get(j).getFilename());
+                    protectorBoard.setDogImg(board.getImageStorageList().get(j).getOriginFileName());
                 }
             }
 
@@ -79,7 +78,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
         for (int i = 0; i < board.getImageStorageList().size(); i++) {
             ImageStorage imageStorage = board.getImageStorageList().get(i);
             if (imageStorage.getOrders() == 1){
-                applicantList.setDogImg(imageStorage.getFilename());
+                applicantList.setDogImg(imageStorage.getOriginFileName());
             }
         }
 

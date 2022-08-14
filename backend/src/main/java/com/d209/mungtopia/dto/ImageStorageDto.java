@@ -11,7 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ImageStorageDto {
     private int orders;
-    private String fileName;
-    private String saveName;
-    private long boardId;
+    private String serverPath;
 }

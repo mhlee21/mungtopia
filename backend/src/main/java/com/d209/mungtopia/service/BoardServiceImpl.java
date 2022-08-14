@@ -1,19 +1,21 @@
 package com.d209.mungtopia.service;
 
 import com.d209.mungtopia.dto.*;
+import com.d209.mungtopia.dto.board.DogInfoDto;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;
-import com.d209.mungtopia.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
@@ -21,6 +23,7 @@ import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -29,7 +32,12 @@ import java.util.*;
 public class BoardServiceImpl implements BoardService {
 
     private final static String[] boardTag = {"입양", "후기", "잡담"};
-
+    private final static Map<String, Integer> boardTagMap = Map.of(
+            "입양", 1,
+            "후기", 2,
+            "잡담", 3
+    );
+    private final static String path = "https://i7d209.p.ssafy.io:8080/api/v1/image/";
     private final UserRepository userRepository;
     private final InfUserRepository infUserRepository;
     private final InfBoardRepository boardRepository;
@@ -49,40 +57,152 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Board> findBoardAll(Long tagNo, int pageNo, long userSeq) {
+    public List<BoardListDto.Response> findBoardAll(int tagNo, int pageNo, long userSeq) {
         /*
          * 전체 : 0
          * 입양 : 1 (추천하는 강아지 글 3개 먼저 보여주고 나머지는 최신순으로 보여줌
          * 후기 : 2
          * 자유 : 3
          */
+        List<BoardListDto.Response> response = new ArrayList<>();
         if (tagNo == 0){ // 전체
             // 전체 boardList 최신순으로 가져오기
-            List<Board> boardList = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "createtime"));
-            List<BoardListDto> response = new ArrayList<>();
+            Pageable pageRequest = PageRequest.of(pageNo, 15, Sort.by("createtime").descending());
+            Page<Board> boardList = boardRepository.findAll(pageRequest);
             for (Board board: boardList) {
-
+                BoardListDto.Response result = sameInfoLogic(board, userSeq);
+                if (board.getBoardTag().equals("입양")){
+                    DogInfo dogInfo = board.getDogInfo();
+                    result.setDogName(dogInfo.getName());
+                    result.setDogInfo(setDogInfoDto(dogInfo));
+                }
+                response.add(result);
             }
         }else if (tagNo == 1){ // 입양
+            Pageable pageRequest = PageRequest.of(pageNo, 15, Sort.by("createtime").descending());
+            // 매칭 로직
+            Page<Board> boardList = null;
+            if(userSeq != 0){ // 입양 해줌
+                User user = userRepository.getReferenceById(userSeq);
+                Optional<UserDogNature> userNature = infUserDogNatureRepository.findByUser(user);
+                System.out.println("userNature.isPresent() = " + userNature.isPresent());
+                if (userNature.isPresent()){ // userNature가 존재하면
+                    List<Long> matching = new ArrayList<>();
+                    List<DogNature>  dogNatureList = dogNatureRepository.findAll();
+                    Map<Long, Integer> result = new HashMap<>();
+                    for (int i = 0; i < dogNatureList.size(); i++) {
+                        DogNature dogNature = dogNatureList.get(i);
+                        long boardId = dogNature.getDogInfo().getBoard().getBoardId();
+                        int sum = 0;
+                        sum += Math.abs(userNature.get().getNature1() - dogNature.getNature1() * 3);
+                        sum += Math.abs(userNature.get().getNature2() - dogNature.getNature2() * 3);
+                        sum += Math.abs(userNature.get().getNature3() - dogNature.getNature3() * 3);
+                        sum += Math.abs(userNature.get().getNature4() - dogNature.getNature4() * 3);
+                        sum += Math.abs(userNature.get().getNature5() - dogNature.getNature5() * 3);
+                        sum += Math.abs(userNature.get().getNature6() - dogNature.getNature6() * 3);
 
-        }else if (tagNo == 2){ // 후기
+                        result.put(boardId, sum); // 결과 저장
+                    }
+                    // 정렬
+                    List<Map.Entry<Long, Integer>> resultList = new LinkedList<>(result.entrySet());
+                    resultList.sort(Map.Entry.comparingByValue());
+                    for (int i = 0; i < resultList.size(); i++) {
+                        if (i == 3)
+                            break;
+                       matching.add(resultList.get(i).getKey());
+                    }
+                    System.out.println("matching = " + matching);
 
-        }else if(tagNo == 3){ // 자유
+                    for (Long boardId: matching) {
+                        Board board = boardRepository.getById(boardId);
+                        BoardListDto.Response matchingResult = sameInfoLogic(board, userSeq);
 
+                        DogInfo dogInfo = board.getDogInfo();
+                        matchingResult.setDogName(dogInfo.getName());
+                        matchingResult.setDogInfo(setDogInfoDto(dogInfo));
+                        matchingResult.setRecommend(true);
+                        response.add(matchingResult);
+                    }
+                    if (pageNo == 0)
+                        pageRequest = PageRequest.of(pageNo, 15 - matching.size(), Sort.by("createtime").descending());
+                    boardList = boardRepository.findByBoardIdNotInAndBoardTagOrderByCreatetimeDesc(matching, "입양", pageRequest);
+                }else{
+                    boardList = boardRepository.findByBoardTagOrderByCreatetimeDesc(boardTag[tagNo - 1], pageRequest); // 그냥 가져오기
+                }
+            }else{ // 입양 상관 없이 그냥 뽑음
+                boardList = boardRepository.findByBoardTagOrderByCreatetimeDesc(boardTag[tagNo - 1], pageRequest);
+            }
+
+            for (Board board: boardList) {
+                BoardListDto.Response result = sameInfoLogic(board, userSeq);
+                DogInfo dogInfo = board.getDogInfo();
+                result.setDogName(dogInfo.getName());
+                result.setDogInfo(setDogInfoDto(dogInfo));
+                result.setRecommend(false);
+                response.add(result);
+            }
+            return response;
+        }else if (tagNo == 2 || tagNo == 3){ // 후기
+            Pageable pageRequest = PageRequest.of(pageNo, 15, Sort.by("createtime").descending());
+            Page<Board> boardList = boardRepository.findByBoardTagOrderByCreatetimeDesc(boardTag[tagNo - 1], pageRequest);
+
+            for (Board board: boardList) {
+                response.add(sameInfoLogic(board, userSeq));
+            }
         }
-        List<Board> boardList = boardRepository.findByBoardTagOrderByCreatetimeDesc(boardTag[tagNo.intValue()-1]);
+        return response;
+    }
+    private DogInfoDto setDogInfoDto(DogInfo dogInfo){
+        DogInfoDto dto = new DogInfoDto(
+            dogInfo.getDogInfoId(),
+                dogInfo.getName(),
+                dogInfo.getAreaSido(),
+                dogInfo.getAreaGugun(),
+                dogInfo.getGender(),
+                dogInfo.getAge(),
+                dogInfo.getWeight(),
+                dogInfo.getBreed(),
+                dogInfo.getVaccination(),
+                dogInfo.getAdoptionStatus()
+        );
+        return dto;
+    }
+    private BoardListDto.Response sameInfoLogic(Board board, Long userSeq){
+        User author = board.getUser();
+        BoardListDto.Response result = new BoardListDto.Response();
+        result.setBoardId(board.getBoardId());
+        result.setBoardTag(boardTagMap.get(board.getBoardTag().trim()));
 
-        Optional<User> user = infUserRepository.findById(userSeq);
-        if (user.isEmpty()) // 없으면
-            return Collections.emptyList();
+        result.setContents(board.getContents());
+        result.setCreatetime(board.getCreatetime().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
-        Optional<UserDogNature> userDogNature = infUserDogNatureRepository.findByUser(user.get());
-        if (userDogNature.isEmpty()){ // 없는 경우에 그냥 반환
+        if (userSeq != 0){
+            User user = infUserRepository.getReferenceById(userSeq);
+            Optional<Likes> likes = likeRepository.findLikesByUserAndBoard(user, board);
+            Optional<Star> stars = starRepository.findStarByUserAndBoard(user, board);
 
+            result.setLike(likes.isPresent());
+            result.setStar(stars.isPresent());
+        }else{
+            result.setLike(false);
+            result.setStar(false);
         }
+        Long likeCount = likeRepository.countByBoard(board);
+        Long starCount = starRepository.countByBoard(board);
+        Long commentCount = commentRepository.countByBoard(board);
 
+        result.setLikeCount(likeCount);
+        result.setStarCount(starCount);
+        result.setCommentCount(commentCount);
 
-        return null;
+        result.setUsername(author.getNickname()); // 닉네임 저장 - 게시판
+        result.setProfile(author.getProfileImageUrl());
+
+        List<ImageStorage> imageStorageList = imageStorageRepository.findByBoardOrderByOrders(board);
+        for (ImageStorage img: imageStorageList) {
+            result.getImageStorageList().add(img.getServerPath());
+        }
+        return result;
     }
 
     @Override
@@ -107,7 +227,7 @@ public class BoardServiceImpl implements BoardService {
         for (ImageStorageDto imageStorageDto : boardDto.getImageStorageDtoList()) {
             ImageStorage imageStorage = ImageStorage.builder()
                     .orders(imageStorageDto.getOrders())
-                    .filename(imageStorageDto.getFileName())
+                    .originFileName(imageStorageDto.getServerPath())
                     .board(board)
                     .build();
             imageStorageRepository.save(imageStorage);
@@ -166,7 +286,7 @@ public class BoardServiceImpl implements BoardService {
         for (ImageStorageDto imageStorageDto : boardDto.getImageStorageDtoList()) {
             ImageStorage imageStorage = ImageStorage.builder()
                     .orders(imageStorageDto.getOrders())
-                    .filename(imageStorageDto.getFileName())
+                    .originFileName(imageStorageDto.getServerPath())
                     .board(board)
                     .build();
             newImageStorageList.add(imageStorage);
@@ -439,7 +559,7 @@ public class BoardServiceImpl implements BoardService {
 
         Optional<Board> board = boardRepository.findById(boardId);
         ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), order);
-        String saveName = img.getSaveName();
+        String saveName = img.getServerPath();
 
         try{
             Resource urlResource = new FileUrlResource( saveName);

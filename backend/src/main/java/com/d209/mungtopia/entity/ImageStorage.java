@@ -23,11 +23,14 @@ public class ImageStorage {
     @Column(name = "orders")
     private int orders;
 
-    @Column(name = "filename")
-    private String filename;
-
     @Column(name = "origin_filename")
-    private String saveName;
+    private String originFileName;
+
+    @Column(name = "server_path")
+    private String serverPath;
+
+    @Column(name = "save_filename")
+    private String saveFileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
 //    @JsonManagedReference // 순환 참조 방지
@@ -37,8 +40,8 @@ public class ImageStorage {
 
     public ImageStorage(int orders, String filename, String saveName){
         this.orders = orders;
-        this.filename = filename;
-        this.saveName = saveName;
+        this.originFileName = filename;
+        this.serverPath = saveName;
     }
 
     public void changeBoard(Board board){

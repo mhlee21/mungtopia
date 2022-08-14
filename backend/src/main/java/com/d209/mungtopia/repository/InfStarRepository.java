@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface InfStarRepository extends JpaRepository<Star, Long> {
     Optional<Star> findStarByUserAndBoard(User user, Board board);
+    Long countByBoard(Board board);
 }

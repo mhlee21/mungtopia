@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/board")
@@ -28,9 +29,9 @@ public class BoardController {
     private final UserRepository userRepository;
     private final BoardService boardService;
 
-    @GetMapping("{tag_no}")
+    @GetMapping("/{tag_no}")
     @ApiOperation(value = "mainInfo - 전체 글 불러오기", notes = "태그 별 게시글 리스트를 제공")
-    public ApiResponse getBoardList(@PathVariable("tag_no") Long tagNo,
+    public ApiResponse getBoardList(@PathVariable("tag_no") int tagNo,
                                     @RequestParam int pageNo, @RequestParam long userSeq) {
         return ApiResponse.success("data", boardService.findBoardAll(tagNo, pageNo, userSeq));
     }
@@ -97,8 +98,9 @@ public class BoardController {
             @RequestBody Long userId
         ) {
         User user = userRepository.getReferenceById(userId);
-        Board board = boardRepository.getReferenceById(boardId);
-        return ApiResponse.success("data", boardService.likes(user, board));
+        Optional<Board> board = boardRepository.findById(boardId);
+
+        return ApiResponse.success("data", boardService.likes(user, board.get()));
     }
 
     @DeleteMapping("like/{board_id}")
@@ -108,8 +110,8 @@ public class BoardController {
             @RequestBody Long userId
     ) {
         User user = userRepository.getReferenceById(userId);
-        Board board = boardRepository.getReferenceById(boardId);
-        return ApiResponse.success("data", boardService.unlikes(user, board));
+        Optional<Board> board = boardRepository.findById(boardId);
+        return ApiResponse.success("data", boardService.unlikes(user, board.get()));
     }
 
     @PostMapping("star/{board_id}")
@@ -119,8 +121,8 @@ public class BoardController {
             @RequestBody Long userId
     ) {
         User user = userRepository.getReferenceById(userId);
-        Board board = boardRepository.getReferenceById(boardId);
-        return ApiResponse.success("data", boardService.star(user, board));
+        Optional<Board> board = boardRepository.findById(boardId);
+        return ApiResponse.success("data", boardService.star(user, board.get()));
     }
 
     @DeleteMapping("star/{board_id}")
@@ -130,15 +132,15 @@ public class BoardController {
             @RequestBody Long userId
     ) {
         User user = userRepository.getReferenceById(userId);
-        Board board = boardRepository.getReferenceById(boardId);
-        return ApiResponse.success("data", boardService.unstar(user, board));
+        Optional<Board> board = boardRepository.findById(boardId);
+        return ApiResponse.success("data", boardService.unstar(user, board.get()));
     }
 
     @GetMapping("{board_id}/comments")
     @ApiOperation(value = "getCommentList - 댓글 목록 가져오기", notes = "댓글 목록 가져오기")
     public ApiResponse getCommentList (@PathVariable("board_id") Long boardId) {
-        Board board = boardRepository.getReferenceById(boardId);
-        return ApiResponse.success("data", boardService.CommentAll(board));
+        Optional<Board> board = boardRepository.findById(boardId);
+        return ApiResponse.success("data", boardService.CommentAll(board.get()));
     }
 
     @PostMapping("{board_id}/comments")

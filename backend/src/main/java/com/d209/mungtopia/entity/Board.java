@@ -40,6 +40,7 @@ public class Board {
     private User user;
 
     @OneToOne(mappedBy = "board", fetch = FetchType.LAZY)
+    @JsonIgnore
     private DogInfo dogInfo;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)

@@ -239,13 +239,16 @@ public class BoardController {
         return ApiResponse.success("data", boardService.saveImgFile(multipartFiles, boardId));
     }
 
-    @GetMapping("/img/{fileName}")
+    @GetMapping("/img/{boardId}/{order}")
     @ResponseBody
-    public ResponseEntity<?> getImgFile(@PathVariable String fileName, HttpServletRequest request) throws IOException {
-        Resource resource = boardService.getImgFile(fileName);
+    public ResponseEntity<?> getImgFile(@PathVariable long boardId, @PathVariable int order, HttpServletRequest request) throws IOException {
+        Resource resource = boardService.getImgFile(boardId, order);
         // Try to determine file's content type
-        String contentType = null;
+        System.out.println("resource = " + resource.getURL());
+        System.out.println("resource.getURI() = " + resource.getURI());
+        System.out.println("resource.getFilename() = " + resource.getFilename());
 
+        String contentType = null;
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
         } catch (IOException ex) {

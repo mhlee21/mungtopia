@@ -349,14 +349,16 @@ public class BoardServiceImpl implements BoardService {
         List<ImageStorage> imageStorageDtoList = new ArrayList<>();
 
         // 서버에서 / 로 출력
-        String root = System.getProperty("user.dir").toString();
+        String root = System.getProperty("user.dir").toString() + "var/images";
+        System.out.println("root = " + root);
 
-        int order = 1;
         // 파일 저장
-        Path path = Paths.get("img");
+        Path path = Paths.get("var", "images");
         System.out.println("path = " + path);
-        // root/img
-        File dir = new File(root + "img");
+        int order = 1;
+
+
+        File dir = new File(root);
         if (!dir.exists()){
             // 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든 디렉터리 생성
             dir.mkdir();
@@ -375,7 +377,7 @@ public class BoardServiceImpl implements BoardService {
             final String saveName = getRandomString() + today + "." + extension;
 
             // 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성
-            File target = new File(root + "img", saveName);
+            File target = new File(root , saveName);
             String uploadPath = target.getPath();
             System.out.println("uploadPath = " + uploadPath);
 
@@ -408,23 +410,27 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<byte[]> getImgFile(long boardId) throws IOException {
-        String root = System.getProperty("user.dir").toString();
+//        String root = System.getProperty("user.dir").toString() + "var/images";
 
         Optional<Board> board = boardRepository.findById(boardId);
         ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), 1);
         String saveName = img.getSaveName();
 
-        Path path = Paths.get("img");
-        System.out.println("path img = " + path);
+        String root = System.getProperty("user.dir").toString() + "var/images";
+        System.out.println("root = " + root);
 
-        String realPath = servletContext.getRealPath("/img");
+        // 파일 저장
+        Path path = Paths.get("var", "images");
+        System.out.println("path = " + path);
+
+        String realPath = servletContext.getRealPath("/var/images");
         System.out.println("realPath = " + realPath);
 
         System.out.println("saveName = " + saveName);
         System.out.println("saveName.split(\".\")[1] = " + saveName.split(".")[1]);
 
         List<byte[]> response = new ArrayList<>();
-        InputStream inputStream = new FileInputStream(root + "img" + saveName);
+        InputStream inputStream = new FileInputStream(root + saveName);
         byte[] imageByteArray = IOUtils.toByteArray(inputStream);
         response.add(imageByteArray);
         inputStream.close();

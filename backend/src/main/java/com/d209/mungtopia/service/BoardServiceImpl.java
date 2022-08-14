@@ -422,7 +422,7 @@ public class BoardServiceImpl implements BoardService {
 //        response.add(imageByteArray);
 //        inputStream.close();
 
-        UrlResource urlResource = new UrlResource(saveName);
+        UrlResource urlResource = new UrlResource("file:" + saveName);
         if (urlResource.exists() || urlResource.isReadable()){
             System.out.println("============= urlResource in!!! ============= ");
             return urlResource;

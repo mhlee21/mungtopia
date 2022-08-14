@@ -1783,16 +1783,13 @@ body {
   padding: 20px;
   background-color: white;
   display: flex;
-  justify-content: space-between;
   flex-flow: wrap;
 }
 .profile-pg .board-wrapper .board-content-wrapper .board-content {
   width: 22vw;
-  border: 1px black solid;
   height: 22vw;
   box-sizing: border-box;
   margin: 1px;
-
 }
 .profile-pg .btn-wrapper {
   width: 100%;

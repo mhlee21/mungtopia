@@ -413,7 +413,7 @@ public class BoardServiceImpl implements BoardService {
 //        String root = System.getProperty("user.dir").toString() + "var/images";
 
         Optional<Board> board = boardRepository.findById(boardId);
-        ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), 1);
+        ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), order);
         String saveName = img.getSaveName();
 
 //        List<byte[]> response = new ArrayList<>();

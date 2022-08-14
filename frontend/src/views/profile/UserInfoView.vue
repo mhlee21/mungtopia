@@ -6,7 +6,7 @@
 		</div>
 		<div class="profile-info-form">
 			<div class="user-info-wrapper">
-				<form action="" @submit.prevent="submitProfile">
+				<form action="" @submit.prevent="submitProfile()">
 					<!-- 이름 -->
 					<div class="user-info">
 						<div class="user-input-label label">이름</div>
@@ -127,52 +127,23 @@ export default {
 		const store = useStore();
 		store.dispatch('profile/fetchUserInfo');
 
-		const userInfo = computed(store.getters['profile/userInfo']);
-		const newUserInfo = reactive({
-			name: '',
-			gender: '',
-			birth: '',
-			phoneNumber: '',
-			job: '',
-			zonecode: '',
-			roadAddress: '',
-			detailAddress: '',
-		});
-		const name = ref('');
-		const gender = ref(userInfo?.value.gender);
-		const birth = ref(userInfo?.value.birth);
-		const phoneNumber = ref(userInfo?.value.phoneNumber);
-		const job = ref(userInfo?.value.job);
-		const zonecode = ref(userInfo?.value.zonecode);
-		const roadAddress = ref(userInfo?.value.roadAddress);
-		const detailAddress = ref(userInfo?.value.detailAddress);
+		const userInfo = computed(() => store.getters['profile/userInfo']);
+		const newUserInfo = reactive({});
+
+		// watch(userInfo, (newValue, old) => {
+		// 	newUserInfo.value = userInfo.value;
+		// 	// console.log(newUserInfo.value, 'd');
+		// });
+
 		const after = ref(false);
 		const submitProfile = () => {
-			const payload = {
-				name: name.value,
-				gender: gender.value,
-				birth: birth.value,
-				phoneNumber: phoneNumber.value,
-				job: job.value,
-				zonecode: zonecode.value,
-				roadAddress: roadAddress.value,
-				detailAddress: detailAddress.value,
-			};
-			store.dispatch('profile/updateUserInfo', payload);
+			store.dispatch('profile/updateUserInfo', newUserInfo);
 		};
 		return {
 			after,
 			newUserInfo,
-			userInfo,
-			name,
-			gender,
-			birth,
-			phoneNumber,
-			job,
-			zonecode,
-			roadAddress,
-			detailAddress,
 			submitProfile,
+			userInfo,
 		};
 	},
 };

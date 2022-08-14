@@ -108,7 +108,7 @@ export default {
 					router.push({ path: '/game/0/finish' });
 				}
 			} else {
-				router.push({ path: '/game/0/fisish' });
+				router.push({ path: '/game/0/finish' });
 			}
 		};
 		const plusMbtiAnswer = userAnswer => {

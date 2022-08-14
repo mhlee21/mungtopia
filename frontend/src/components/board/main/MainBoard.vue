@@ -3,8 +3,7 @@
 		<ul class="feed-wrap">
 			<li
 				class="feed-item"
-				@click="boardDetail(board.boardId)"
-				v-for="board in boardList"
+				v-for="(board, index) in boardList"
 				:key="board.boardId"
 			>
 				<MainBoardHeader
@@ -16,7 +15,12 @@
 						:image-list="board.imageList"
 						:board-tag="board.boardTag"
 					></MainBoardImage>
-					<MainBoardBody :board="board"></MainBoardBody>
+					<MainBoardBody
+						:board="board"
+						@click.stop="boardDetail(board.boardId)"
+						@click-star="clickStar(board.boardId, index, board.isLike)"
+						@click-heart="clickHeart(board.boardId, index, board.haveInterest)"
+					></MainBoardBody>
 				</div>
 			</li>
 		</ul>
@@ -39,7 +43,23 @@ export default {
 		const boardDetail = boardId => {
 			router.push({ name: 'boardDetail', params: { boardId } });
 		};
-		return { boardList, boardDetail };
+		const clickHeart = (boardId, index, isLike) => {
+			console.log(isLike);
+			if (isLike) {
+				store.dispatch('board/deleteLike', { boardId, index });
+			} else {
+				store.dispatch('board/createLike', { boardId, index });
+			}
+		};
+		const clickStar = (boardId, index, haveInterest) => {
+			console.log(haveInterest);
+			if (haveInterest) {
+				store.dispatch('board/deleteStar', { boardId, index });
+			} else {
+				store.dispatch('board/createStar', { boardId, index });
+			}
+		};
+		return { boardList, boardDetail, clickHeart, clickStar };
 	},
 };
 </script>

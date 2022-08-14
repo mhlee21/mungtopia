@@ -4,10 +4,18 @@
 			<p class="dog-name">{{ board.dogName }}</p>
 			<ul class="icon-box">
 				<!-- active 클래스 추가 유무로 색상 전환 가능 -->
-				<li class="star icon" :class="{ active: board.haveInterest }">
+				<li
+					class="star icon"
+					:class="{ active: haveInterest }"
+					@click.stop="$emit('clickStar')"
+				>
 					<i class="fa-solid fa-star"></i>
 				</li>
-				<li class="heart icon" :class="{ active: board.isLike }">
+				<li
+					class="heart icon"
+					:class="{ active: isLike }"
+					@click.stop="$emit('clickHeart')"
+				>
 					<i class="fa-solid fa-heart"></i>
 				</li>
 			</ul>
@@ -63,12 +71,16 @@
 </template>
 
 <script>
+import { computed } from 'vue';
 export default {
 	props: {
 		board: Object,
 	},
-	setup() {
-		return {};
+	emits: ['clickHeart', 'clickStar'],
+	setup(props) {
+		const isLike = computed(() => props.board.isLike);
+		const haveInterest = computed(() => props.board.haveInterest);
+		return { isLike, haveInterest };
 	},
 };
 </script>

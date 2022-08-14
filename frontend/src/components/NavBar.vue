@@ -47,12 +47,14 @@
 <script>
 import { useRouter, useRoute } from 'vue-router';
 import { useStore } from 'vuex';
-
+import { computed } from 'vue';
 export default {
 	setup() {
 		const router = useRouter();
 		const route = useRoute();
 		const store = useStore();
+
+		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
 		const clickNavBar = name => {
 			switch (name) {
 				case 'boardMain':
@@ -64,10 +66,8 @@ export default {
 				case 'profile':
 					router.push({
 						name,
-						params: { userSeq: 1 },
-						// params: { userSeq: store.getters['auth/user']?.userSeq },
+						params: { userSeq: userSeq.value },
 					});
-					console.log(store.getters['auth/user']?.userSeq);
 					break;
 				default:
 					break;

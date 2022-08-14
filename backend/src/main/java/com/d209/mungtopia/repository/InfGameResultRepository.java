@@ -6,9 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface InfGameResultRepository extends JpaRepository<GameResult, Long> {
-    GameResult findByUserAndGameTag(User user, int gameTag);
+    Optional<GameResult> findByUserAndGameTag(User user, int gameTag);
     List<GameResult> findByUserOrderByGameTagAsc(User user);
 }

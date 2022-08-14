@@ -4,21 +4,32 @@ import com.d209.mungtopia.dto.*;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;
+import com.d209.mungtopia.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class BoardServiceImpl implements BoardService {
-    static String[] boardTag = {"입양", "후기", "잡담"};
+
+    private final static String[] boardTag = {"입양", "후기", "잡담"};
     private final UserRepository userRepository;
     private final InfBoardRepository boardRepository;
     private final InfLikeRepository likeRepository;
@@ -30,8 +41,10 @@ public class BoardServiceImpl implements BoardService {
     private final InfImageStorageRepository imageStorageRepository;
     private final InfApplicationRepository applicationRepository;
     private final InfAnswerRepository answerRepository;
+    private final FileUtil fileUtil;
+    private final ServletContext servletContext;
 
-    public Timestamp getNow(){
+    public Timestamp getNow() {
         return new Timestamp(System.currentTimeMillis());
     }
 
@@ -50,7 +63,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public List<Board> search(Long tagNo, int pageNo, String keyword) {
-        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue()-1], keyword);
+        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue() - 1], keyword);
         return boardList;
     }
 
@@ -59,7 +72,7 @@ public class BoardServiceImpl implements BoardService {
         User user = userRepository.findById(boardDto.getUserSeq()).get();
 
         Board board = Board.builder()
-                .boardTag(boardTag[tagNo.intValue()-1])
+                .boardTag(boardTag[tagNo.intValue() - 1])
                 .contents(boardDto.getContents())
                 .createtime(getNow())
                 .user(user)
@@ -67,10 +80,10 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.save(board);
 
         List<ImageStorage> imageStorageList = new ArrayList<>();
-        for (ImageStorageDto imageStorageDto: boardDto.getImageStorageDtoList()) {
+        for (ImageStorageDto imageStorageDto : boardDto.getImageStorageDtoList()) {
             ImageStorage imageStorage = ImageStorage.builder()
                     .orders(imageStorageDto.getOrders())
-                    .filename(imageStorageDto.getFilename())
+                    .filename(imageStorageDto.getFileName())
                     .board(board)
                     .build();
             imageStorageRepository.save(imageStorage);
@@ -117,7 +130,7 @@ public class BoardServiceImpl implements BoardService {
 
         //image 수정
         List<ImageStorage> imageStorageList = board.getImageStorageList();
-        if (! imageStorageList.isEmpty()) {
+        if (!imageStorageList.isEmpty()) {
             //기존 이미지 모두 지우기
             for (ImageStorage imageStorage : imageStorageList) {
                 imageStorageRepository.delete(imageStorage);
@@ -126,10 +139,10 @@ public class BoardServiceImpl implements BoardService {
 
         //이미지 새로 저장하기
         List<ImageStorage> newImageStorageList = new ArrayList<>();
-        for (ImageStorageDto imageStorageDto: boardDto.getImageStorageDtoList()) {
+        for (ImageStorageDto imageStorageDto : boardDto.getImageStorageDtoList()) {
             ImageStorage imageStorage = ImageStorage.builder()
                     .orders(imageStorageDto.getOrders())
-                    .filename(imageStorageDto.getFilename())
+                    .filename(imageStorageDto.getFileName())
                     .board(board)
                     .build();
             newImageStorageList.add(imageStorage);
@@ -189,10 +202,10 @@ public class BoardServiceImpl implements BoardService {
                 .build();
 
         List<Answer> answerList = new ArrayList<>();
-        for (AnswerDto answerDto: appDto.getApplicantAnswerList()) {
+        for (AnswerDto answerDto : appDto.getApplicantAnswerList()) {
             Answer answer = new Answer(answerDto.getIdx().intValue(),
-                                        answerDto.getAnswer(),
-                                        application);
+                    answerDto.getAnswer(),
+                    application);
             answerRepository.save(answer);
             answerList.add(answer);
         }
@@ -208,7 +221,7 @@ public class BoardServiceImpl implements BoardService {
         LikesDto likesDto = new LikesDto(user, board);
 
         //이미 좋아요 한 board 인 경우 409 에러
-        if (likeRepository.findLikesByUserAndBoard(user,board).isPresent()) {
+        if (likeRepository.findLikesByUserAndBoard(user, board).isPresent()) {
             return false;
         }
 
@@ -238,7 +251,7 @@ public class BoardServiceImpl implements BoardService {
         StarDto starDto = new StarDto(user, board);
 
         //이미 좋아요 한 board 인 경우 409 에러
-        if (starRepository.findStarByUserAndBoard(user,board).isPresent()) {
+        if (starRepository.findStarByUserAndBoard(user, board).isPresent()) {
             return false;
         }
 
@@ -324,5 +337,100 @@ public class BoardServiceImpl implements BoardService {
     public List<Comment> deleteReply(Board board, Reply reply, ReplyDto replyDto) {
         replyRepository.delete(reply);
         return commentRepository.findByBoard(board);
+    }
+
+    @Override
+    @Transactional
+    public Boolean saveImgFile(List<MultipartFile> multipartFiles, long boardId) throws Exception {
+        // 비어있으면 false
+        if (multipartFiles.isEmpty())
+            return false;
+
+        // 파일 정보를 담을 수 있는 리스트
+        List<ImageStorage> imageStorageDtoList = new ArrayList<>();
+
+        // 서버에서 / 로 출력
+        String root = System.getProperty("user.dir").toString() + "var/images";
+        System.out.println("root = " + root);
+
+        // 파일 저장
+        Path path = Paths.get("var", "images");
+        System.out.println("path = " + path);
+        int order = 1;
+
+
+        File dir = new File(root);
+        if (!dir.exists()){
+            // 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든 디렉터리 생성
+            dir.mkdir();
+        }
+
+        // 파일 개수 만큼 forEach
+        for (MultipartFile file : multipartFiles) {
+            if (file.isEmpty()) // 파일이 비어있으면 false;
+                return false;
+
+            // 파일 확장자
+            final String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+
+            // 서버 저장 파일 명
+            String today = new SimpleDateFormat("yyMMdd").format(new Date());
+            final String saveName = getRandomString() + today + "." + extension;
+
+            // 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성
+            File target = new File(root , saveName);
+            String uploadPath = target.getPath();
+            System.out.println("uploadPath = " + uploadPath);
+
+
+            try {
+                file.transferTo(target); // 파일 저장
+            } catch (IOException e) {
+                throw new IOException(e);
+            }
+
+            // JPA 저장 - 수정 로직 필요?
+            ImageStorage imageStorage = new ImageStorage(order, file.getOriginalFilename(), uploadPath);
+            imageStorageDtoList.add(imageStorage);
+
+            order++;
+        }
+
+//         파일 정보 DB 저장
+        Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty())
+            return false;
+
+        for (ImageStorage img : imageStorageDtoList) {
+            img.changeBoard(board.get());
+            imageStorageRepository.save(img);
+        }
+
+        return true;
+    }
+
+    @Override
+    public Resource getImgFile(long boardId, int order) throws IOException {
+//        String root = System.getProperty("user.dir").toString() + "var/images";
+
+        Optional<Board> board = boardRepository.findById(boardId);
+        ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), order);
+        String saveName = img.getSaveName();
+
+        try{
+            Resource urlResource = new FileUrlResource( saveName);
+            if (urlResource.exists() || urlResource.isReadable()){
+                System.out.println("============= urlResource in!!! ============= ");
+                return urlResource;
+            }
+            else
+                throw new FileNotFoundException("could not find file!!");
+        }catch (MalformedURLException e){
+            throw  new FileNotFoundException("Could not download file");
+        }
+    }
+
+    private final String getRandomString() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 }

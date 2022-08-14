@@ -15,6 +15,4 @@ public class DetailApplicationDto {
     private Long chatRoomId;
     private Integer applicationStatus;
     private Long adoptionProcessId;
-    private Long meetingRoomId;
-    private Boolean active;
 }

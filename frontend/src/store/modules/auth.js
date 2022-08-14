@@ -37,10 +37,11 @@ export default {
 			axios({
 				url: api.auth.getUser(),
 				method: 'get',
-				headers: { Authorization: `Bearer ${getters.token}` },
+				headers: getters['auth/authHeader'],
 			})
 				.then(res => {
-					commit('SET_USER', res.body.data.user);
+					console.log(res.data.body.user);
+					commit('SET_USER', res.data.body.user);
 				})
 				.catch(err => {
 					console.error(err.response);

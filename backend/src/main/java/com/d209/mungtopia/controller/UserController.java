@@ -5,16 +5,27 @@ import com.d209.mungtopia.common.ApiResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+@Slf4j
 // 사용자 정보를 가지고 오는 클래스
 @Api(value = "회원", tags = "User Controller - 회원 API")
 public class UserController {
 
     private final UserService userService;
+
+    @GetMapping("")
+    @ApiOperation(value = "getUser - 로그인 후 정보 보내주기", notes = "userSeq 가져오기")
+    public ApiResponse getUserSeq() {
+        System.out.println("\"ddddd\" = " + "ddddd");
+        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ApiResponse.success("user", userService.getUserSeq(principal.getUsername()));
+    }
 
     @GetMapping("/{user_seq}")
     @ApiOperation(value = "getUser - 개인정보 가져오기", notes = "개인정보 가져오기")
@@ -33,12 +44,4 @@ public class UserController {
         return ApiResponse.success("data", userService.getUserBoard(userSeq));
     }
 
-//    public ApiResponse getUser() {
-//        org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//
-//        // user 이름을 리턴해준다.
-//        User user = userService.getUser(principal.getUsername());
-//
-//        return ApiResponse.success("user", user);
-//    }
 }

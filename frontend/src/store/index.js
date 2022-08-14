@@ -3,6 +3,7 @@ import adopt from '@/store/modules/adopt';
 import game from '@/store/modules/game';
 import auth from '@/store/modules/auth';
 import board from '@/store/modules/board';
+import profile from '@/store/modules/profile';
 import createPersistedState from 'vuex-persistedstate';
 
 export default createStore({
@@ -12,5 +13,5 @@ export default createStore({
 			storage: window.sessionStorage,
 		}),
 	],
-	modules: { game, adopt, auth, board },
+	modules: { game, adopt, auth, board, profile },
 });

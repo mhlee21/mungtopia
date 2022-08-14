@@ -29,5 +29,6 @@ services:
     # [인증서 파일 저장 경로]:/root 
     volumes:
       - /etc/letsencrypt/live/i7d209.p.ssafy.io/:/root
+      - /var/images:/var/images
     environment:
       - TZ=Asia/Seoul

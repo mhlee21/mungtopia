@@ -54,8 +54,7 @@ export default {
 		const route = useRoute();
 		const store = useStore();
 
-		const userSeq = computed(() => store.getters['auth/userSeq']);
-		console.log(store.getters);
+		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
 		const clickNavBar = name => {
 			switch (name) {
 				case 'boardMain':
@@ -69,7 +68,6 @@ export default {
 						name,
 						params: { userSeq: userSeq.value },
 					});
-					// console.log(store.getters['auth/user']?.userSeq);
 					break;
 				default:
 					break;

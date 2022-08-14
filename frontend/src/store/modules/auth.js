@@ -17,7 +17,6 @@ export default {
 	},
 	getters: {
 		user: state => state.user,
-		userSeq: state => state.user.userSeq,
 		token: state => state.token,
 		authHeader: state =>
 			state.token ? { Authorization: `Token ${state.token}` } : '',
@@ -43,7 +42,7 @@ export default {
 			axios({
 				url: api.auth.getUser(),
 				method: 'get',
-				headers: { Authorization: `Bearer ${getters.token}` },
+				headers: getters['auth/authHeader'],
 			})
 				.then(res => {
 					console.log(res.data.body.user);

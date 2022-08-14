@@ -1,29 +1,57 @@
 <template>
-	<div>
-		<h2 class="content">
-			Q{{ questionCount + 1 }}.<br />{{
-				adoptQuestionList[questionCount]['question']
-			}}
-		</h2>
+	<div class="question-status">
+		<div class="status-bar-wrapper">
+			<div class="status-bar">
+				<div class="status-bar-inner" :style="{ width: barWidth + '%' }"></div>
+			</div>
+		</div>
+		<div class="status-bar-counter-wrapper">{{ questionCount + 1 }}/15</div>
 	</div>
-	<div>
-		<div>
-			<input
-				v-model="inputText"
-				input="updateInput"
-				type="text"
-				placeholder="답변을 입력하세요."
-				style="width: 250px; height: 200px; font-size: 30px; margin: 20px"
-			/>
+	<div class="question-wrapper">
+		<!-- 문제 상단 -->
+		<div class="question-header">
+			<!-- 문제 번호 -->
+			<div class="question-num-wrapper">
+				<div class="question-num">
+					<span v-if="questionCount < 9">0</span>{{ questionCount + 1 }}
+				</div>
+			</div>
+			<!-- 질문 -->
+			<div class="question">
+				{{ adoptQuestionList[questionCount]['question'] }}
+			</div>
 		</div>
-		<div class="game-btn" v-if="questionCount > 0" @click="minusQuestion">
-			<div class="start-btn">BEFORE</div>
-		</div>
-		<div class="game-btn" v-if="questionCount < 14" @click="plusQuestion">
-			<div class="start-btn">NEXT</div>
-		</div>
-		<div class="game-btn" v-else @click="submitApplicationAnswer">
-			<div class="start-btn">제출</div>
+
+		<!-- 문제 답변 -->
+		<textarea
+			v-model="inputText"
+			name=""
+			id=""
+			cols="30"
+			rows="10"
+			placeholder="답변을 입력하세요"
+			class="question-answer"
+		></textarea>
+
+		<!-- 문제 버튼 -->
+		<div class="question-btn-wrapper">
+			<button
+				class="question-btn"
+				v-if="questionCount > 0"
+				@click="minusQuestion"
+			>
+				이전
+			</button>
+			<button
+				class="question-btn"
+				v-if="questionCount < 14"
+				@click="plusQuestion"
+			>
+				다음
+			</button>
+			<button class="question-btn" v-else @click="submitApplicationAnswer">
+				제출
+			</button>
 		</div>
 	</div>
 </template>
@@ -35,7 +63,7 @@ import { useRoute } from 'vue-router';
 import router from '@/router';
 export default {
 	setup() {
-		const route = useRoute(0);
+		const route = useRoute();
 		const store = useStore();
 		const boardId = computed(() => route.params.boardId);
 		store.dispatch('board/setAdoptQ');
@@ -49,24 +77,19 @@ export default {
 			};
 			store.dispatch('board/createApplication', {
 				payload: payload,
-				boardId: boardId,
+				boardId: boardId.value,
 			});
 			router.push({
 				name: 'boardDetail',
-				params: { boardId: boardId },
+				params: { boardId: boardId.value },
 			});
 		};
-		// const updateText = event => {
-		// 	let updatedText = event.target.value;
-		// 	inputText = updatedText;
-		// };
 		const adoptQuestionList = computed(
 			() => store.getters['board/adoptQuestionList'],
 		);
 		const plusQuestion = () => {
 			answerList[questionCount.value] = inputText.value;
 			store.dispatch('board/plusQuestionCount');
-			console.log(answerList);
 			inputText.value = answerList[questionCount.value];
 		};
 
@@ -74,9 +97,11 @@ export default {
 			store.dispatch('board/minusQuestionCount');
 			inputText.value = answerList[questionCount.value];
 		};
+		const barWidth = computed(() => ((questionCount.value + 1) / 15) * 100);
 		return {
 			adoptQuestionList,
 			questionCount,
+			barWidth,
 			plusQuestion,
 			minusQuestion,
 			inputText,
@@ -87,42 +112,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.content {
-	text-align: center;
-	margin: 10px;
-	padding: 10px;
-	font-size: 20px;
-}
-
-.title {
-	text-align: center;
-	margin: 20px;
-	padding: 10px;
-	font-size: 30px;
-	color: #ffffff;
-}
-.content {
-	text-align: center;
-	margin: 10px;
-	padding: 10px;
-}
-
-.game-btn {
-	width: 90px;
-	height: 50px;
-	background-color: #0d6aba;
-	display: flex;
-	align-items: center;
-	text-align: center;
-	padding: 10px;
-	margin: 5px auto;
-	border-radius: 1rem;
-}
-.start-btn {
-	width: 100%;
-	color: #fffbf0;
-	font-size: 20px;
-	font-weight: bolder;
-}
-</style>
+<style lang="scss" scoped></style>

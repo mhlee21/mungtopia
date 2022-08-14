@@ -19,10 +19,10 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("")
+    @GetMapping
     @ApiOperation(value = "getUser - 로그인 후 정보 보내주기", notes = "userSeq 가져오기")
     public ApiResponse getUserSeq() {
-        System.out.println("\"ddddd\" = " + "ddddd");
+        System.out.println("\"ddddd\" = " + "login in!!!!");
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ApiResponse.success("user", userService.getUserSeq(principal.getUsername()));
     }

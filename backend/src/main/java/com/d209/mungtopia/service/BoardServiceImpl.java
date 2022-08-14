@@ -430,7 +430,7 @@ public class BoardServiceImpl implements BoardService {
         System.out.println("saveName.split(\".\")[1] = " + saveName.split(".")[1]);
 
         List<byte[]> response = new ArrayList<>();
-        InputStream inputStream = new FileInputStream(root + saveName);
+        InputStream inputStream = new FileInputStream( saveName);
         byte[] imageByteArray = IOUtils.toByteArray(inputStream);
         response.add(imageByteArray);
         inputStream.close();

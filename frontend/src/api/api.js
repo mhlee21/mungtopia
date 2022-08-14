@@ -6,7 +6,7 @@ const AUTH = 'auth/';
 const BOARD = 'board/';
 const GAME = 'game/';
 const ADOPT = 'manage/';
-const USER = 'user/';
+const USER = 'users/';
 const CHAT = 'chat/';
 const SCHEDULE = 'schedule/';
 const APPLICANT = 'applicant/';
@@ -125,9 +125,13 @@ export default {
 		sessionDelete: applicationId => HOST + MEETING + `${applicationId}`,
 	},
 	user: {
-		// 유저 정보
-		profile: userSeq => HOST + USER + `${userSeq}`,
+		// 유저 게시판 정보
+		profileBoardList: userSeq => HOST + USER + BOARD + `${userSeq}`,
+		// 유저 프로필 이미지 수정
+		profileImageUpdate: userSeq => HOST + USER + `${userSeq}`,
+		// 유저 상세 정보
+		profileDetail: userSeq => HOST + USER + `${userSeq}`,
 		// 유저 정보 수정
-		profileUpdate: userSeq => HOST + USER + `${userSeq}`,
+		profileDetailUpdate: userSeq => HOST + USER + `${userSeq}`,
 	},
 };

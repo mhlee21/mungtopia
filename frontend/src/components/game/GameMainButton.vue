@@ -17,6 +17,7 @@ export default {
 		const gameType = store.getters['game/gameType'];
 		const gameStart = gameType => {
 			store.dispatch('game/solveGame', gameType);
+			store.dispatch('game/initUserImpo', gameType);
 			router.push({
 				name: 'GamePlay',
 				params: { gameType: gameType },

@@ -6,7 +6,7 @@
 		</div>
 		<div class="profile-info-form">
 			<div class="user-info-wrapper">
-				<form action="" @submit.prevent="submitProfile()">
+				<div v-if="newUserInfo">
 					<!-- 이름 -->
 					<div class="user-info">
 						<div class="user-input-label label">이름</div>
@@ -84,7 +84,13 @@
 										class="input-round"
 										v-model="newUserInfo.zonecode"
 									/>
-									<button v-if="!after">주소검색</button>
+									<button
+										v-if="!after"
+										class="search-address-btn"
+										@click.prevent="searchAddress"
+									>
+										주소검색
+									</button>
 								</div>
 							</div>
 							<div class="user-info2">
@@ -104,16 +110,17 @@
 									id="detailAddress"
 									:disabled="after"
 									class="input-round"
-									v-model="newUserInfo.detailAddress"
+									v-model="newUserInfo['detailAddress']"
 								/>
 							</div>
 						</div>
 					</div>
 					<!-- 저장하기 버튼 -->
 					<div class="btn-wrapper">
-						<button class="save-btn">저장하기</button>
+						<button class="save-btn" @click="cancel()">취소</button>
+						<button class="save-btn" @click="submitProfile()">저장</button>
 					</div>
-				</form>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -121,29 +128,34 @@
 
 <script>
 import { ref, computed, reactive } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 export default {
 	setup() {
 		const store = useStore();
+		const router = useRouter();
 		store.dispatch('profile/fetchUserInfo');
 
 		const userInfo = computed(() => store.getters['profile/userInfo']);
-		const newUserInfo = reactive({});
-
-		// watch(userInfo, (newValue, old) => {
-		// 	newUserInfo.value = userInfo.value;
-		// 	// console.log(newUserInfo.value, 'd');
-		// });
+		const newUserInfo = reactive(userInfo);
+		const userSeq = computed(() => store.getters['auth/user'].userSeq);
 
 		const after = ref(false);
 		const submitProfile = () => {
-			store.dispatch('profile/updateUserInfo', newUserInfo);
+			store.dispatch('profile/updateUserInfo', newUserInfo.value);
+			router.push({ name: 'profile', params: userSeq.value });
 		};
+		const cancel = () => {
+			router.push({ name: 'profile', params: userSeq.value });
+		};
+		const searchAddress = () => {};
 		return {
 			after,
 			newUserInfo,
 			submitProfile,
 			userInfo,
+			searchAddress,
+			cancel,
 		};
 	},
 };

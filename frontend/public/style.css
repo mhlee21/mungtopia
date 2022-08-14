@@ -1884,6 +1884,7 @@ body {
   font-size: 16px;
   padding: 5px;
   font-weight: 700;
+  margin: 7px;
 }
 .profile-info-pg .user-info2 {
   display: flex;
@@ -1901,6 +1902,15 @@ body {
   border-radius: 5px;
   background-color: white;
   border: none;
+}
+.profile-info-pg .user-info2 .search-address-btn {
+  background-color: #333;
+  color: white;
+  border-radius: 3px;
+  border: none;
+  height: 18px;
+  margin-left: 5px;
+  box-sizing: border-box;
 }
 
 /* 화상면담 페이지 */

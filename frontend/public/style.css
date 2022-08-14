@@ -92,6 +92,15 @@ body {
   color: white;
   font-size: 20px;
 }
+.swiper-pagination-bullet {
+  background-color: white !important;
+  opacity: 50% !important;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: white !important;
+  opacity: 90% !important;
+}
 
 /* 상단 네비게이션 */
 .top-menu {

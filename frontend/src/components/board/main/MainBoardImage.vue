@@ -1,21 +1,33 @@
 <template>
 	<div class="img-box">
 		<img :src="tagImagePath" alt="" class="board-notice-icon" />
-		<!-- 스와이퍼 -->
-		<div class="swiper feed-banner-swiper">
-			<div class="swiper-wrapper">
-				<div class="swiper-slide" v-for="image in imageList" :key="image.order">
-					<img :src="image.url" />
-				</div>
-			</div>
-			<div class="swiper-pagination"></div>
-		</div>
+		<swiper
+			:modules="modules"
+			:slides-per-view="1"
+			@swiper="onSwiper"
+			@slideChange="onSlideChange"
+			:pagination="{ clickable: true }"
+			loop
+		>
+			<swiper-slide v-for="image in imageList" :key="image.order"
+				><img :src="image.url" class="image"
+			/></swiper-slide>
+		</swiper>
 	</div>
 </template>
 
 <script>
 import { computed } from 'vue';
+import { Pagination, A11y } from 'swiper';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
 export default {
+	components: {
+		Swiper,
+		SwiperSlide,
+	},
 	props: { imageList: Array, boardTag: Number },
 	setup(props) {
 		const tagImagePath = computed(() => {
@@ -27,9 +39,15 @@ export default {
 				return require('@/assets/img/board-notice-icon.svg');
 			}
 		});
-		return { tagImagePath };
+
+		return { tagImagePath, modules: [Pagination, A11y] };
 	},
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.image {
+	height: 40vh;
+	width: 100%;
+}
+</style>

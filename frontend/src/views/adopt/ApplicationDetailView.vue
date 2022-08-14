@@ -95,7 +95,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import { ref, computed } from 'vue';
-import { adoptQuestion } from '@/assets/AdoptQ.json';
+import adoptQuestion from '@/assets/AdoptQ.json';
 
 export default {
 	setup() {

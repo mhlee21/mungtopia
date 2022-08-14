@@ -45,6 +45,7 @@ public class ChattingService {
     }
 
     public Page<ChatLog> chatLog(int page, Long chatRoomId) {
+        System.out.println("chatLog service");
         PageRequest pageRequest = PageRequest.of(page, 15);
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).get();
         Page<ChatLog> chatLogs = chatLogRepository.findByChatRoomOrderByCreatetime(chatRoom, pageRequest);

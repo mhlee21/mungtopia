@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface BoardService {
-    List<Board> findBoardAll(Long tagNo, int pageNo);
+    List<Board> findBoardAll(Long tagNo, int pageNo, long userSeq);
 
     List<Board> search(Long tagNo, int pageNo, String keyword);
     Board saveBoard(Long tagNo, BoardDto boardDto);

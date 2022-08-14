@@ -211,10 +211,8 @@ public class BoardServiceImpl implements BoardService {
 
         //입양 신청서 질문
         List<Answer> answerList = new ArrayList<>();
-        for (AnswerDto answerDto : appDto.getApplicantAnswerList()) {
-            Answer answer = new Answer(answerDto.getIdx().intValue(),
-                    answerDto.getAnswer(),
-                    application);
+        for (String ansStr : appDto.getApplicantAnswerList()) {
+            Answer answer = new Answer(ansStr, application);
             answerRepository.save(answer);
             answerList.add(answer);
         }

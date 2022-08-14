@@ -45,9 +45,9 @@ export default {
 		const submitApplicationAnswer = () => {
 			const payload = {
 				userSeq: store.getters['auth/user']['userSeq'],
-				answer: answerList,
+				applicantAnswerList: answerList,
 			};
-			store.dispatch('Createapplication', {
+			store.dispatch('board/createApplication', {
 				payload: payload,
 				boardId: boardId,
 			});

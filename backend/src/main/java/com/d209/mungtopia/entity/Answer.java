@@ -16,7 +16,7 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "answer_id")
-    private long answerId;
+    private Long answerId;
 
     @Column(name = "idx")
     private int idx;
@@ -29,8 +29,7 @@ public class Answer {
     @JsonIgnore
     private Application application;
 
-    public Answer(int idx, String answer, Application application) {
-        this.idx = idx;
+    public Answer(String answer, Application application) {
         this.answer = answer;
         this.application = application;
     }

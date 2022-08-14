@@ -1,15 +1,21 @@
 package com.d209.mungtopia.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "adoption_process", schema = "mungtopia")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "adoption_process", schema = "mungtopia")
 public class AdoptionProcess {
 
     @Id

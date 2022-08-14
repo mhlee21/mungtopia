@@ -5,7 +5,12 @@ export default {
 	namespaced: true,
 	state() {
 		return {
-			user: null,
+			// user: null,
+			user: {
+				userSeq: 6,
+				username: '황희원',
+				profile: 'https://www.snsboom.co.kr/common/img/default_profile.png',
+			},
 			token: localStorage.getItem('token') || '',
 			userInfo: null,
 		};
@@ -17,10 +22,13 @@ export default {
 			state.token ? { Authorization: `Bearer ${state.token}` } : '',
 	},
 	mutations: {
-		SET_TOKEN(state, token) {
+		SET_TOKEN: (state, token) => {
 			state.token = token;
 		},
-		SET_USER(state, user) {
+		DELETE_TOKEN: state => {
+			state.token = '';
+		},
+		SET_USER: (state, user) => {
 			state.user = user;
 		},
 	},
@@ -42,6 +50,10 @@ export default {
 				.catch(err => {
 					console.error(err.response);
 				});
+		},
+		logout({ commit }) {
+			commit('DELETE_TOKEN');
+			localStorage.setItem('token', '');
 		},
 	},
 };

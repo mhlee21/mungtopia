@@ -423,11 +423,8 @@ public class BoardServiceImpl implements BoardService {
         Path path = Paths.get("var", "images");
         System.out.println("path = " + path);
 
-        String realPath = servletContext.getRealPath("/var/images");
-        System.out.println("realPath = " + realPath);
-
         System.out.println("saveName = " + saveName);
-        System.out.println("saveName.split(\".\")[1] = " + saveName.split(".")[1]);
+//        System.out.println("saveName.split(\".\")[1] = " + saveName.split(".")[1]);
 
         List<byte[]> response = new ArrayList<>();
         InputStream inputStream = new FileInputStream( saveName);

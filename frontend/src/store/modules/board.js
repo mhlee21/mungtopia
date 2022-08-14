@@ -647,5 +647,20 @@ export default {
 		minusQuestionCount: ({ commit }) => {
 			commit('MINUS_QUESTION_COUNT');
 		},
+
+		Createapplication: ({ rootGetters }, { payload, boardId }) => {
+			axios({
+				url: api.board.applicationCreate(boardId),
+				method: 'post',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			}).catch(err => {
+				console.error(err.response);
+			});
+			// .then(res => {
+			// 	console.log(res.body.data);
+
+			// })
+		},
 	},
 };

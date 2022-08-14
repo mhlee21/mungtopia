@@ -1,7 +1,10 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
-import com.d209.mungtopia.dto.*;
+import com.d209.mungtopia.dto.applicant.AppDto;
+import com.d209.mungtopia.dto.board.BoardDto;
+import com.d209.mungtopia.dto.board.CommentDto;
+import com.d209.mungtopia.dto.board.ReplyDto;
 import com.d209.mungtopia.entity.Board;
 import com.d209.mungtopia.entity.Comment;
 import com.d209.mungtopia.entity.Reply;

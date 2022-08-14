@@ -1,7 +1,5 @@
 package com.d209.mungtopia.utils;
 
-import com.d209.mungtopia.common.ApiResponse;
-import com.d209.mungtopia.dto.ImageStorageDto;
 import com.d209.mungtopia.entity.ImageStorage;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.ClassPathResource;

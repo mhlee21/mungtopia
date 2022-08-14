@@ -1,6 +1,8 @@
 package com.d209.mungtopia.service;
 
-import com.d209.mungtopia.dto.*;
+import com.d209.mungtopia.dto.applicant.AnswerDto;
+import com.d209.mungtopia.dto.applicant.AppDto;
+import com.d209.mungtopia.dto.board.*;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;
@@ -43,6 +45,11 @@ public class BoardServiceImpl implements BoardService {
     private final InfApplicationRepository applicationRepository;
     private final InfAnswerRepository answerRepository;
     private final InfUserDogNatureRepository infUserDogNatureRepository;
+    private final InfChatRoomRepository chatRoomRepository;
+    private final InfAdoptionProcessRepository adoptionProcessRepository;
+    private final FileUtil fileUtil;
+    private final ServletContext servletContext;
+
 
     public Timestamp getNow() {
         return new Timestamp(System.currentTimeMillis());
@@ -214,7 +221,10 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Application saveApplication(Board board, AppDto appDto) {
+        //유저
         User user = userRepository.findById(appDto.getUserSeq()).get();
+
+        //application
         Application application = Application.builder()
                 .boardId(board.getBoardId())
                 .send(true)
@@ -225,17 +235,44 @@ public class BoardServiceImpl implements BoardService {
                 .applicationStatus(0)
                 .build();
 
+        //입양 신청서 질문
         List<Answer> answerList = new ArrayList<>();
-        for (AnswerDto answerDto : appDto.getApplicantAnswerList()) {
-            Answer answer = new Answer(answerDto.getIdx().intValue(),
-                    answerDto.getAnswer(),
-                    application);
+        for (String ansStr : appDto.getApplicantAnswerList()) {
+            Answer answer = new Answer(ansStr, application);
             answerRepository.save(answer);
             answerList.add(answer);
         }
-
         application.setAnswerList(answerList);
         applicationRepository.save(application);
+
+        //==================입양 절차 관련 테이블 생성=============================
+        //chatroom
+        ChatRoom chatRoom = ChatRoom.builder()
+                .protectorId(board.getUser().getUserSeq())
+                .protectorNickname(board.getUser().getNickname())
+                .applicantId(user.getUserSeq())
+                .applicantNickname(user.getNickname())
+                .createtime(getNow())
+//                .adoptionProcess()
+                .build();
+
+        //adoption_step_date
+        List<AdoptionStepDate> adoptionStepDateList = new ArrayList<>();
+
+        //adoption process
+        AdoptionProcess adoptionProcess = AdoptionProcess.builder()
+                .step(1)
+                .stepStatus(Boolean.FALSE)
+                .application(application)
+                .chatRoom(chatRoom)
+                .adoptionStepDateList(adoptionStepDateList)
+                .build();
+
+        chatRoom.setAdoptionProcess(adoptionProcess);
+        chatRoomRepository.save(chatRoom);
+
+        adoptionProcessRepository.save(adoptionProcess);
+    //==========================================================================
 
         return application;
     }

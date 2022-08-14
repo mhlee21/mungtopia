@@ -59,7 +59,7 @@ export default {
 		starCreate: boardId => HOST + BOARD + `star/` + `${boardId}`,
 		// 별표삭제
 		starDelete: boardId => HOST + BOARD + `star/` + `${boardId}`,
-		// 입양신청서 작서
+		// 입양신청서 작성
 		applicationCreate: boardId => HOST + BOARD + `${boardId}/` + APPLICANT,
 	},
 	game: {

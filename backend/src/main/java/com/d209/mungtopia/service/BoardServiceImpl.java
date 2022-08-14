@@ -409,29 +409,26 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<byte[]> getImgFile(long boardId) throws IOException {
+    public Resource getImgFile(long boardId, int order) throws IOException {
 //        String root = System.getProperty("user.dir").toString() + "var/images";
 
         Optional<Board> board = boardRepository.findById(boardId);
         ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), 1);
         String saveName = img.getSaveName();
 
-        String root = System.getProperty("user.dir").toString() + "var/images";
-        System.out.println("root = " + root);
+//        List<byte[]> response = new ArrayList<>();
+//        InputStream inputStream = new FileInputStream( saveName);
+//        byte[] imageByteArray = IOUtils.toByteArray(inputStream);
+//        response.add(imageByteArray);
+//        inputStream.close();
 
-        // 파일 저장
-        Path path = Paths.get("var", "images");
-        System.out.println("path = " + path);
-
-        System.out.println("saveName = " + saveName);
-//        System.out.println("saveName.split(\".\")[1] = " + saveName.split(".")[1]);
-
-        List<byte[]> response = new ArrayList<>();
-        InputStream inputStream = new FileInputStream( saveName);
-        byte[] imageByteArray = IOUtils.toByteArray(inputStream);
-        response.add(imageByteArray);
-        inputStream.close();
-       return response;
+        UrlResource urlResource = new UrlResource(saveName);
+        if (urlResource.exists() || urlResource.isReadable()){
+            System.out.println("============= urlResource in!!! ============= ");
+            return urlResource;
+        }
+        else
+            throw new FileNotFoundException("could not find file!!");
     }
 
     private final String getRandomString() {

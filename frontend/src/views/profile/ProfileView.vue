@@ -3,11 +3,7 @@
 		<div class="info-wrapper">
 			<div class="info-component">
 				<div class="image-wrapper">
-					<img
-						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4724WArwLuLX-JSFv4mC5PUm_hOuVh0ZiwQ&usqp=CAU"
-						alt=""
-						class="profile-img"
-					/>
+					<img :src="user.profile" alt="profile image" class="profile-img" />
 				</div>
 				<div>
 					<a @click.prevent="changeProfile" class="change-btn"
@@ -16,7 +12,7 @@
 				</div>
 			</div>
 			<div class="info-component">
-				<div class="username">황희원</div>
+				<div class="username">{{ user.username }}</div>
 				<button class="info-btn" @click="goToUserInfo()">회원정보</button>
 			</div>
 		</div>
@@ -24,33 +20,34 @@
 			<div class="board-btn-wrapper">
 				<button
 					class="board-btn"
-					:class="{ 'board-btn-active': boardType === 'write' }"
-					@click="changeBoardType('write')"
+					:class="{ 'board-btn-active': boardType === 'board' }"
+					@click="changeBoardType('board')"
 				>
-					작성한 글
+					<i class="fa-solid fa-pen"></i>
 				</button>
 				<button
 					class="board-btn"
 					:class="{ 'board-btn-active': boardType === 'like' }"
 					@click="changeBoardType('like')"
 				>
-					좋아요한 글
+					<i class="fa-solid fa-heart"></i>
 				</button>
 				<button
 					class="board-btn"
-					:class="{ 'board-btn-active': boardType === 'save' }"
-					@click="changeBoardType('save')"
+					:class="{ 'board-btn-active': boardType === 'star' }"
+					@click="changeBoardType('star')"
 				>
-					저장한 글
+					<i class="fa-solid fa-star"></i>
 				</button>
 			</div>
 			<div class="board-content-wrapper">
 				<div
 					class="board-content"
-					v-for="(i, index) in [1, 2, 3, 4]"
-					:key="index"
+					v-for="board in curBoardList"
+					:key="board.id"
+					@click="clickBoard(board.id)"
 				>
-					<img src="" alt="" />
+					<img src="board.imgUrl" alt="board" />
 				</div>
 			</div>
 		</div>
@@ -63,28 +60,56 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import { ref } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 export default {
 	components: { NavBar },
 	setup() {
 		const router = useRouter();
-		const boardType = ref('write');
-		const store = useStore;
+		const store = useStore();
+		const user = computed(() => store.getters['auth/user']);
+
+		store.dispatch('profile/fetchBoardList');
+
+		const boardType = computed(() => store.getters['profile/boardType']);
+
+		const curBoardList = computed(() => {
+			if (boardType?.value === 'board') {
+				return store.getters['profile/boardList'];
+			} else if (boardType?.value === 'star') {
+				return store.getters['profile/starList'];
+			} else {
+				return store.getters['profile/likeList'];
+			}
+		});
 		const changeBoardType = type => {
-			boardType.value = type;
+			store.dispatch('profile/setBoardType', type);
 		};
 		const goToUserInfo = () => {
-			console.log('userSeq 수정');
 			router.push({
 				name: 'userInfo',
-				params: { userSeq: 1 || store.getters['auth/user']?.userSeq },
+				params: { userSeq: store.getters['auth/user']?.userSeq },
+			});
+		};
+		const clickBoard = boardId => {
+			router.push({
+				name: 'boardDetail',
+				params: { boardId: boardId },
 			});
 		};
 		const changeProfile = () => {};
 		const logout = () => {};
-		return { changeBoardType, changeProfile, boardType, logout, goToUserInfo };
+		return {
+			user,
+			changeBoardType,
+			changeProfile,
+			boardType,
+			logout,
+			goToUserInfo,
+			curBoardList,
+			clickBoard,
+		};
 	},
 };
 </script>

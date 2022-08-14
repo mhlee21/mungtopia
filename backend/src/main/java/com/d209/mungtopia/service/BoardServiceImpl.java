@@ -6,10 +6,9 @@ import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;
 import com.d209.mungtopia.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.*;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,7 +29,9 @@ import java.util.*;
 public class BoardServiceImpl implements BoardService {
 
     private final static String[] boardTag = {"입양", "후기", "잡담"};
+
     private final UserRepository userRepository;
+    private final InfUserRepository infUserRepository;
     private final InfBoardRepository boardRepository;
     private final InfLikeRepository likeRepository;
     private final InfStarRepository starRepository;
@@ -41,23 +42,46 @@ public class BoardServiceImpl implements BoardService {
     private final InfImageStorageRepository imageStorageRepository;
     private final InfApplicationRepository applicationRepository;
     private final InfAnswerRepository answerRepository;
-    private final FileUtil fileUtil;
-    private final ServletContext servletContext;
+    private final InfUserDogNatureRepository infUserDogNatureRepository;
 
     public Timestamp getNow() {
         return new Timestamp(System.currentTimeMillis());
     }
 
     @Override
-    public List<Board> findBoardAll(Long tagNo, int pageNo) {
+    public List<Board> findBoardAll(Long tagNo, int pageNo, long userSeq) {
         /*
          * 전체 : 0
          * 입양 : 1 (추천하는 강아지 글 3개 먼저 보여주고 나머지는 최신순으로 보여줌
          * 후기 : 2
          * 자유 : 3
          */
-//        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue()-1]);
-//        return boardList;
+        if (tagNo == 0){ // 전체
+            // 전체 boardList 최신순으로 가져오기
+            List<Board> boardList = boardRepository.findAll(Sort.by(Sort.Direction.DESC, "createtime"));
+            List<BoardListDto> response = new ArrayList<>();
+            for (Board board: boardList) {
+
+            }
+        }else if (tagNo == 1){ // 입양
+
+        }else if (tagNo == 2){ // 후기
+
+        }else if(tagNo == 3){ // 자유
+
+        }
+        List<Board> boardList = boardRepository.findByBoardTagOrderByCreatetimeDesc(boardTag[tagNo.intValue()-1]);
+
+        Optional<User> user = infUserRepository.findById(userSeq);
+        if (user.isEmpty()) // 없으면
+            return Collections.emptyList();
+
+        Optional<UserDogNature> userDogNature = infUserDogNatureRepository.findByUser(user.get());
+        if (userDogNature.isEmpty()){ // 없는 경우에 그냥 반환
+
+        }
+
+
         return null;
     }
 

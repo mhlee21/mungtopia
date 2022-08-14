@@ -82,7 +82,10 @@ export default {
 			console.log('fetchBoardList', tagNo, pageNo, rootGetters);
 
 			axios({
-				url: api.board.boardMain(tagNo),
+				url: api.board.boardMain({
+					tagNo,
+					userSeq: rootGetters['auth/user'].userSeq,
+				}),
 				method: 'get',
 				headers: rootGetters['auth/authHeader'],
 				params: {

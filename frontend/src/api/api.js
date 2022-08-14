@@ -1,6 +1,6 @@
 // const HOST = 'https://i7d209.p.ssafy.io/api/v1/';
 const HOST = 'https://i7d209.p.ssafy.io:8081/api/v1/';
-// const HOST = 'https://localhost:8081/api/v1/';
+// const HOST = 'http://localhost:8081/api/v1/';
 
 const AUTH = 'auth/';
 const BOARD = 'board/';
@@ -62,7 +62,8 @@ export default {
 		// 별표삭제
 		starDelete: boardId => HOST + BOARD + `star/` + `${boardId}`,
 		// 입양신청서 작성
-		applicationCreate: boardId => HOST + BOARD + `${boardId}/` + APPLICANT,
+		applicationCreate: boardId =>
+			HOST + BOARD + 'detail/' + `${boardId}/` + APPLICANT,
 	},
 	game: {
 		// 게임 기록 저장

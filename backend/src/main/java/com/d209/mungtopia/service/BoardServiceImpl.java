@@ -41,7 +41,8 @@ public class BoardServiceImpl implements BoardService {
     private final InfImageStorageRepository imageStorageRepository;
     private final InfApplicationRepository applicationRepository;
     private final InfAnswerRepository answerRepository;
-    private final Path fileStorageLocation;
+    private final FileUtil fileUtil;
+    private final ServletContext servletContext;
 
     public Timestamp getNow() {
         return new Timestamp(System.currentTimeMillis());
@@ -409,15 +410,15 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Resource getImgFile(String fileName) throws IOException {
+    public Resource getImgFile(long boardId, int order) throws IOException {
 //        String root = System.getProperty("user.dir").toString() + "var/images";
 
-//        Optional<Board> board = boardRepository.findById(boardId);
-//        ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), order);
-//        String saveName = img.getSaveName();
+        Optional<Board> board = boardRepository.findById(boardId);
+        ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), order);
+        String saveName = img.getSaveName();
 
         try{
-            Resource urlResource = new FileUrlResource(fileName);
+            Resource urlResource = new FileUrlResource( saveName);
             if (urlResource.exists() || urlResource.isReadable()){
                 System.out.println("============= urlResource in!!! ============= ");
                 return urlResource;

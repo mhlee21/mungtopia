@@ -3,8 +3,6 @@
 		<swiper
 			:modules="modules"
 			:slides-per-view="1"
-			@swiper="onSwiper"
-			@slideChange="onSlideChange"
 			:pagination="{ clickable: true }"
 			loop
 		>

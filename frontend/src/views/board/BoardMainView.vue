@@ -7,6 +7,10 @@
 				<MainBoard></MainBoard>
 			</div>
 			<div style="height: 50px"></div>
+			<div>
+				<!-- 이미지 테스트 코드 -->
+				<img src="/api/board/img/9/1" />
+			</div>
 		</div>
 		<NavBar></NavBar>
 	</div>

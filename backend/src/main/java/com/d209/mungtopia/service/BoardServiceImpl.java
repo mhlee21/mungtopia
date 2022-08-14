@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Timestamp;
@@ -416,19 +417,17 @@ public class BoardServiceImpl implements BoardService {
         ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), order);
         String saveName = img.getSaveName();
 
-//        List<byte[]> response = new ArrayList<>();
-//        InputStream inputStream = new FileInputStream( saveName);
-//        byte[] imageByteArray = IOUtils.toByteArray(inputStream);
-//        response.add(imageByteArray);
-//        inputStream.close();
-
-        UrlResource urlResource = new UrlResource(saveName);
-        if (urlResource.exists() || urlResource.isReadable()){
-            System.out.println("============= urlResource in!!! ============= ");
-            return urlResource;
+        try{
+            Resource urlResource = new FileUrlResource( saveName);
+            if (urlResource.exists() || urlResource.isReadable()){
+                System.out.println("============= urlResource in!!! ============= ");
+                return urlResource;
+            }
+            else
+                throw new FileNotFoundException("could not find file!!");
+        }catch (MalformedURLException e){
+            throw  new FileNotFoundException("Could not download file");
         }
-        else
-            throw new FileNotFoundException("could not find file!!");
     }
 
     private final String getRandomString() {

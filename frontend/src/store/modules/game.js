@@ -64,6 +64,7 @@ export default {
 		PLUS_QUESTION_NUMBER: state => {
 			state.questionNumber += 1;
 		},
+
 		PLUS_CORRECT_ANSWER: state => {
 			state.correctAnswer += 1;
 		},
@@ -114,6 +115,28 @@ export default {
 		},
 		CLEAR_GAME: (state, { gameTag, result }) => {
 			state.isClear[gameTag] = result;
+		},
+
+		INIT_KNOWLEDGE_IMPO: state => {
+			state.questionNumber = 0;
+			state.correctAnswer = 0;
+		},
+
+		INIT_MBTI_IMPO: state => {
+			state.questionNumber = 0;
+			state.mbtiResult = '';
+			state.mbtiUserAnswer = 0;
+			state.mbtiCount = 0;
+			state.mbtiDog = {};
+		},
+
+		INIT_MATCH_IMPO: state => {
+			state.questionNumber = 0;
+			state.matchUserPoint = 0;
+			state.matchNum = [0, 0, 0, 0, 0, 0];
+			state.matchCount = 0;
+			state.matchAnswer = {};
+			state.matchData = [];
 		},
 	},
 	actions: {
@@ -330,6 +353,15 @@ export default {
 				.catch(err => {
 					console.error(err.response);
 				});
+		},
+		initUserImpo: ({ commit }, gameType) => {
+			if (gameType == 0) {
+				commit('INIT_KNOWLEDGE_IMPO');
+			} else if (gameType == 1) {
+				commit('INIT_MBTI_IMPO');
+			} else {
+				commit('INIT_MATCH_IMPO');
+			}
 		},
 	},
 };

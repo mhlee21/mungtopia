@@ -9,20 +9,20 @@
 	<div>
 		<div>
 			<input
-				v-model="inputText2"
+				v-model="inputText"
 				input="updateInput"
 				type="text"
 				placeholder="답변을 입력하세요."
 				style="width: 250px; height: 200px; font-size: 30px; margin: 20px"
 			/>
 		</div>
-		<div class="game-btn" v-if="questionCount > 0" @click="minustQuestion">
+		<div class="game-btn" v-if="questionCount > 0" @click="minusQuestion">
 			<div class="start-btn">BEFORE</div>
 		</div>
-		<div class="game-btn" v-if="questionCount < 14" @click="plustQuestion">
+		<div class="game-btn" v-if="questionCount < 14" @click="plusQuestion">
 			<div class="start-btn">NEXT</div>
 		</div>
-		<div class="game-btn" v-else>
+		<div class="game-btn" v-else @click="submitApplicationAnswer">
 			<div class="start-btn">제출</div>
 		</div>
 	</div>
@@ -31,35 +31,57 @@
 <script>
 import { useStore } from 'vuex';
 import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import router from '@/router';
 export default {
 	setup() {
+		const route = useRoute(0);
 		const store = useStore();
+		const boardId = computed(() => route.params.boardId);
 		store.dispatch('board/setAdoptQ');
-		let inputText2 = ref('a');
-		const updateText = event => {
-			let updatedText = event.target.value;
-			inputText2 = updatedText;
-			console.log(inputText2);
+		var answerList = Array(15).fill('');
+		const questionCount = computed(() => store.getters['board/questionCount']);
+		let inputText = ref(`${answerList[questionCount.value]}`);
+		const submitApplicationAnswer = () => {
+			const payload = {
+				userSeq: store.getters['auth/user']['userSeq'],
+				answer: answerList,
+			};
+			store.dispatch('Createapplication', {
+				payload: payload,
+				boardId: boardId,
+			});
+			router.push({
+				name: 'boardDetail',
+				params: { boardId: boardId },
+			});
 		};
+		// const updateText = event => {
+		// 	let updatedText = event.target.value;
+		// 	inputText = updatedText;
+		// };
 		const adoptQuestionList = computed(
 			() => store.getters['board/adoptQuestionList'],
 		);
-		const questionCount = computed(() => store.getters['board/questionCount']);
-		const plustQuestion = () => {
+		const plusQuestion = () => {
+			answerList[questionCount.value] = inputText.value;
 			store.dispatch('board/plusQuestionCount');
-			console.log(adoptQuestionList.value);
+			console.log(answerList);
+			inputText.value = answerList[questionCount.value];
 		};
 
-		const minustQuestion = () => {
+		const minusQuestion = () => {
 			store.dispatch('board/minusQuestionCount');
+			inputText.value = answerList[questionCount.value];
 		};
 		return {
 			adoptQuestionList,
 			questionCount,
-			plustQuestion,
-			minustQuestion,
-			inputText2,
-			updateText,
+			plusQuestion,
+			minusQuestion,
+			inputText,
+			answerList,
+			submitApplicationAnswer,
 		};
 	},
 };

@@ -242,10 +242,9 @@ public class BoardController {
     public ResponseEntity<?> getImgFile(@PathVariable long boardId, @PathVariable int order) throws IOException {
         Resource resource = boardService.getImgFile(boardId, order);
 
-        ResponseEntity.ok()
+       return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .body(resource);
     }
-
 }

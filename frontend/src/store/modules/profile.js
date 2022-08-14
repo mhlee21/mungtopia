@@ -9,7 +9,7 @@ export default {
 			boardList: null,
 			likeList: null,
 			starList: null,
-			userInfo: {},
+			userInfo: null,
 		};
 	},
 	getters: {
@@ -27,10 +27,10 @@ export default {
 		SET_USER_INFO: (state, userInfo) => (state.userInfo = userInfo),
 	},
 	actions: {
-		setBoardType({ commit }, boardType) {
+		setBoardType: ({ commit }, boardType) => {
 			commit('SET_BOARD_TYPE', boardType);
 		},
-		fetchBoardList({ commit, dispatch, rootGetters }) {
+		fetchBoardList: ({ commit, dispatch, rootGetters }) => {
 			console.log('fetchBoardList');
 			axios({
 				url: api.user.profileBoardList(rootGetters['auth/user']?.userSeq),
@@ -38,7 +38,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					// console.log(res.data.body.data);
 					dispatch('setBoardType', 'board');
 					commit('SET_BOARD_LIST', res.data.body.data.boardList);
 					commit('SET_LIKE_LIST', res.data.body.data.likeList);
@@ -48,7 +47,7 @@ export default {
 					console.error(err.response);
 				});
 		},
-		fetchUserInfo({ commit, rootGetters }) {
+		fetchUserInfo: ({ commit, rootGetters }) => {
 			console.log('fetchUserInfo');
 			axios({
 				url: api.user.profileDetail(rootGetters['auth/user']?.userSeq),
@@ -56,14 +55,16 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
+					console.log(rootGetters['profile/userInfo']);
+					console.log(rootGetters['profile/boardType']);
 					commit('SET_USER_INFO', res.data.body.data);
+					// console.log(res.data.body.data, getters['userInfo']);
 				})
 				.catch(err => {
 					console.error(err.response);
 				});
 		},
-		updateUserInfo({ rootGetters }, payload) {
+		updateUserInfo: ({ rootGetters }, payload) => {
 			axios({
 				url: api.user.profileDetailUpdate(rootGetters['auth/user']?.userSeq),
 				method: 'get',

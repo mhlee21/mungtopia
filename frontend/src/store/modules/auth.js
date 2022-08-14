@@ -22,10 +22,13 @@ export default {
 			state.token ? { Authorization: `Bearer ${state.token}` } : '',
 	},
 	mutations: {
-		SET_TOKEN(state, token) {
+		SET_TOKEN: (state, token) => {
 			state.token = token;
 		},
-		SET_USER(state, user) {
+		DELETE_TOKEN: state => {
+			state.token = '';
+		},
+		SET_USER: (state, user) => {
 			state.user = user;
 		},
 	},
@@ -47,6 +50,10 @@ export default {
 				.catch(err => {
 					console.error(err.response);
 				});
+		},
+		logout({ commit }) {
+			commit('DELETE_TOKEN');
+			localStorage.setItem('token', '');
 		},
 	},
 };

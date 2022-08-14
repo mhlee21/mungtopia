@@ -1,5 +1,6 @@
 package com.d209.mungtopia.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,5 +36,6 @@ public class ChatLog {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id", referencedColumnName = "chat_room_id")
+    @JsonIgnore
     private ChatRoom chatRoom;
 }

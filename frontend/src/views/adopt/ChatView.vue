@@ -1,40 +1,24 @@
-<template>
-	<v-container>
-		<v-expansion-panel>
-			<v-expansion-panel-header><h1>채팅</h1></v-expansion-panel-header>
-			<v-expansion-panel-content>
-				<v-card class="mt-2">
-					<v-card-title><h2>채팅 테스트</h2></v-card-title>
-					<v-card-text>
-						<v-alert dense type="info" color="teal lighten-3"
-							>두개 이상의 브라우저를 띄워 간단한 채팅을 확인해 볼 수
-							있다.</v-alert
-						>
-						<v-container>
-							uid :
-							<input v-model="uid" type="text" />
-							message :
-							<input v-model="message" type="text" @keyup="sendMessage" />
-							<div class="mt-2" v-for="(item, idx) in recvList" :key="idx">
-								<v-card
-									class="mt-2 mb-2"
-									color="teal lighten-3"
-									dark
-									max-width="400"
-								>
-									<v-card-text>
-										<div>uid : {{ item.userSeq }}</div>
-										<div>{{ item.content }}</div>
-										<div>{{ item.createtime }}</div>
-									</v-card-text>
-								</v-card>
-							</div>
-						</v-container>
-					</v-card-text>
-				</v-card>
-			</v-expansion-panel-content>
-		</v-expansion-panel>
-	</v-container>
+<!-- <template>
+	<v-card class="mt-2">
+		<v-card-title><h2>채팅 테스트</h2></v-card-title>
+		<v-card-text>
+			<v-container>
+				uid :
+				<input v-model="uid" type="text" />
+				message :
+				<input v-model="message" type="text" @keyup="sendMessage" />
+				<div class="mt-2" v-for="(item, idx) in recvList" :key="idx">
+					<v-card class="mt-2 mb-2" color="teal lighten-3" dark max-width="400">
+						<v-card-text>
+							<div>uid : {{ item.userSeq }}</div>
+							<div>{{ item.content }}</div>
+							<div>{{ item.createtime }}</div>
+						</v-card-text>
+					</v-card>
+				</div>
+			</v-container>
+		</v-card-text>
+	</v-card>
 </template>
 
 <script lang="js">
@@ -95,8 +79,9 @@ export default {
         }
     }
 }
-</script>
-<!-- <template>
+</script> -->
+
+<template>
 	<div class="chat-view">
 		<div style="height: 80%">
 			<div style="display: flex; position: relative; height: 10%">
@@ -187,4 +172,4 @@ export default {
 	border: white 10px solid;
 	offset: 10px;
 }
-</style> -->
+</style>

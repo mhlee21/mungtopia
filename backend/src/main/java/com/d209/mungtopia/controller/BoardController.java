@@ -12,9 +12,12 @@ import com.d209.mungtopia.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
 import org.apache.tomcat.util.file.ConfigurationSource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -232,9 +235,13 @@ public class BoardController {
         return ApiResponse.success("data", boardService.saveImgFile(multipartFiles, boardId));
     }
 
-    @GetMapping("/img/{boardId}")
-    public ApiResponse<List<byte[]>> getImgFile(@PathVariable long boardId) throws IOException {
-        return ApiResponse.success("data", boardService.getImgFile(boardId));
+    @GetMapping("/img/{boardId}/{order}")
+    public ResponseEntity getImgFile(@PathVariable long boardId, @PathVariable int order) throws IOException {
+        Resource resource = boardService.getImgFile(boardId, order);
+        IOUtils.toByteArray(resource.getInputStream());
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(resource);
     }
 
 }

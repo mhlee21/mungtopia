@@ -12,21 +12,8 @@ import com.d209.mungtopia.service.BoardService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
-import org.apache.tomcat.util.file.ConfigurationSource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.List;
 
 @RestController
@@ -44,8 +31,8 @@ public class BoardController {
     @GetMapping("{tag_no}")
     @ApiOperation(value = "mainInfo - 전체 글 불러오기", notes = "태그 별 게시글 리스트를 제공")
     public ApiResponse getBoardList(@PathVariable("tag_no") Long tagNo,
-                                    @RequestParam int pageNo) {
-        return ApiResponse.success("data", boardService.findBoardAll(tagNo, pageNo));
+                                    @RequestParam int pageNo, @RequestParam long userSeq) {
+        return ApiResponse.success("data", boardService.findBoardAll(tagNo, pageNo, userSeq));
     }
 
     @GetMapping("/search/{tag_no}")
@@ -237,30 +224,5 @@ public class BoardController {
     @PostMapping("/img/{boardId}")
     public ApiResponse saveImgFile(@RequestParam("files") List<MultipartFile> multipartFiles, @PathVariable long boardId) throws Exception {
         return ApiResponse.success("data", boardService.saveImgFile(multipartFiles, boardId));
-    }
-
-    @GetMapping("/img/{boardId}/{order}")
-    @ResponseBody
-    public ResponseEntity<?> getImgFile(@PathVariable long boardId, @PathVariable int order, HttpServletRequest request) throws IOException {
-        Resource resource = boardService.getImgFile(boardId, order);
-        // Try to determine file's content type
-        System.out.println("resource = " + resource.getURL());
-        System.out.println("resource.getURI() = " + resource.getURI());
-        System.out.println("resource.getFilename() = " + resource.getFilename());
-
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException ex) {
-        }
-
-        // Fallback to the default content type if type could not be determined
-        if(contentType == null) {
-            contentType = "application/octet-stream";
-        }
-       return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
     }
 }

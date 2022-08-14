@@ -206,9 +206,28 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Board> search(Long tagNo, int pageNo, String keyword) {
-        List<Board> boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue() - 1], keyword);
-        return boardList;
+    public List<BoardListDto.Response> search(Long tagNo, int pageNo, long userSeq, String keyword) {
+        System.out.println("keyword = " + keyword);
+        List<Board> boardList = null;
+        List<BoardListDto.Response> response = new ArrayList<>();
+        if (tagNo == 0){
+            boardList = boardRepository.findAll(keyword);
+        }else if (tagNo == 1){
+            boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue() - 1], keyword);
+        }else{
+            boardList = boardRepository.findAllByBoardTag(boardTag[tagNo.intValue() - 1], keyword);
+        }
+
+        for (Board board: boardList) {
+            BoardListDto.Response result = sameInfoLogic(board, userSeq);
+            if (board.getBoardTag().equals("입양")){
+                DogInfo dogInfo = board.getDogInfo();
+                result.setDogName(dogInfo.getName());
+                result.setDogInfo(setDogInfoDto(dogInfo));
+            }
+            response.add(result);
+        }
+        return response;
     }
 
     @Override

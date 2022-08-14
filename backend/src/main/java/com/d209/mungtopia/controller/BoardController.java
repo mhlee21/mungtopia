@@ -2,6 +2,7 @@ package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
 import com.d209.mungtopia.dto.*;
+import com.d209.mungtopia.dto.board.Keyword;
 import com.d209.mungtopia.entity.Board;
 import com.d209.mungtopia.entity.Comment;
 import com.d209.mungtopia.entity.Reply;
@@ -40,8 +41,9 @@ public class BoardController {
     @ApiOperation(value = "search - 검색", notes = "검색")
     public ApiResponse search(@PathVariable("tag_no") Long tagNo,
                               @RequestParam int pageNo,
-                              @RequestBody String keyword) {
-        return ApiResponse.success("data", boardService.search(tagNo, pageNo, keyword));
+                              @RequestParam long userSeq,
+                              @RequestBody Keyword keyword) {
+        return ApiResponse.success("data", boardService.search(tagNo, pageNo, userSeq, keyword.getKeyword()));
     }
 
     @PostMapping("{tag_no}")

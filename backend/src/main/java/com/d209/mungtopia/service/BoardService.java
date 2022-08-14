@@ -1,17 +1,18 @@
 package com.d209.mungtopia.service;
 
-import com.d209.mungtopia.dto.*;
+import com.d209.mungtopia.dto.applicant.AppDto;
+import com.d209.mungtopia.dto.board.BoardDto;
+import com.d209.mungtopia.dto.board.CommentDto;
+import com.d209.mungtopia.dto.board.ReplyDto;
 import com.d209.mungtopia.entity.*;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
 public interface BoardService {
-    List<Board> findBoardAll(Long tagNo, int pageNo);
+    List<Board> findBoardAll(Long tagNo, int pageNo, long userSeq);
 
     List<Board> search(Long tagNo, int pageNo, String keyword);
     Board saveBoard(Long tagNo, BoardDto boardDto);

@@ -34,10 +34,14 @@ export default {
 		const breed = computed(
 			() => store.getters['board/board']['dogInfo']['breed'],
 		);
+		const boardId = computed(() => router.params.boardId);
 
 		const adoptionApply = () => {
 			if (!isAdopting.value) {
-				router.push({ name: 'applicationCreate' });
+				router.push({
+					name: 'applicationCreateDetail',
+					params: { boardId: boardId },
+				});
 			}
 		};
 		return { dogName, areaSido, breed, isAdopting, adoptionApply };

@@ -233,7 +233,6 @@ public class BoardController {
     }
 
     @GetMapping("/img/{boardId}")
-    @ResponseBody
     public ApiResponse<List<byte[]>> getImgFile(@PathVariable long boardId) throws IOException {
         return ApiResponse.success("data", boardService.getImgFile(boardId));
     }

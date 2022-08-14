@@ -6,10 +6,10 @@ import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;
 import com.d209.mungtopia.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.UrlResource;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
 import java.io.*;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -340,53 +341,56 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public Boolean saveImgFile(List<MultipartFile> multipartFiles, long boardId) throws Exception {
+        // 비어있으면 false
         if (multipartFiles.isEmpty())
             return false;
 
+        // 파일 정보를 담을 수 있는 리스트
         List<ImageStorage> imageStorageDtoList = new ArrayList<>();
 
-        // 경로 설정 - src/webapp/img
-//        String realPath = servletContext.getRealPath("/img");
+        // 서버에서 / 로 출력
         String root = System.getProperty("user.dir").toString();
-        System.out.println("System.getProperty(\"java.home\") = " + System.getProperty("java.home"));
-        System.out.println("System.getProperty(\"java.class.path\") = " + System.getProperty("java.class.path"));
-        System.out.println("System.getProperty(\"user.home\") = " + System.getProperty("user.home"));
-        System.out.println("System.getProperty(\"user.dir\") = " + System.getProperty("user.dir"));
-        String path = "jenkins/jenkins_home/workspace/mungtopia/backend/src/main/webapp/img";
-        String savePath = root + path;
-        System.out.println("============== ubuntu = " + root + path);
-//        System.out.println("============== realPath 파일 경로 = " + realPath);
+
         int order = 1;
         // 파일 저장
-
-        File dir = new File(root + "/img");
+        Path path = Paths.get("img");
+        System.out.println("path = " + path);
+        // root/img
+        File dir = new File(root + "img");
         if (!dir.exists()){
+            // 해당하는 디렉터리가 존재하지 않으면, 부모 디렉터리를 포함한 모든 디렉터리 생성
             dir.mkdir();
         }
 
+        // 파일 개수 만큼 forEach
         for (MultipartFile file : multipartFiles) {
-            if (file.isEmpty())
+            if (file.isEmpty()) // 파일이 비어있으면 false;
                 return false;
 
             // 파일 확장자
             final String extension = FilenameUtils.getExtension(file.getOriginalFilename());
+
             // 서버 저장 파일 명
             String today = new SimpleDateFormat("yyMMdd").format(new Date());
             final String saveName = getRandomString() + today + "." + extension;
+
             // 업로드 경로에 saveName과 동일한 이름을 가진 파일 생성
-            File target = new File(root + "/img", saveName);
+            File target = new File(root + "img", saveName);
             String uploadPath = target.getPath();
             System.out.println("uploadPath = " + uploadPath);
+
+
             try {
                 file.transferTo(target); // 파일 저장
             } catch (IOException e) {
                 throw new IOException(e);
             }
+
+            // JPA 저장 - 수정 로직 필요?
             ImageStorage imageStorage = new ImageStorage(order, file.getOriginalFilename(), uploadPath);
             imageStorageDtoList.add(imageStorage);
 
             order++;
-
         }
 
 //         파일 정보 DB 저장
@@ -403,27 +407,28 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public UrlResource getImgFile(long boardId) throws IOException {
+    public List<byte[]> getImgFile(long boardId) throws IOException {
         String root = System.getProperty("user.dir").toString();
 
         Optional<Board> board = boardRepository.findById(boardId);
         ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), 1);
         String saveName = img.getSaveName();
 
-//        InputStream imageStream = new FileInputStream(savePath +"/" + saveName);
-//        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-//        int read;
-//        byte[] imageByteArray = new byte[imageStream.available()];
-//        while ((read = imageStream.read(imageByteArray, 0, imageByteArray.length)) != 1){
-//            buffer.write(imageByteArray, 0, read);
-//        }
-//        buffer.flush();
-//        byte[] targetArray = buffer.toByteArray();
-//        imageStream.close();
-//        UrlResource urlResource = new UrlResource();
+        Path path = Paths.get("img");
+        System.out.println("path img = " + path);
+
+        String realPath = servletContext.getRealPath("/img");
+        System.out.println("realPath = " + realPath);
 
         System.out.println("saveName = " + saveName);
-        return new UrlResource("file:"  + saveName);
+        System.out.println("saveName.split(\".\")[1] = " + saveName.split(".")[1]);
+
+        List<byte[]> response = new ArrayList<>();
+        InputStream inputStream = new FileInputStream(root + "img" + saveName);
+        byte[] imageByteArray = IOUtils.toByteArray(inputStream);
+        response.add(imageByteArray);
+        inputStream.close();
+       return response;
     }
 
     private final String getRandomString() {

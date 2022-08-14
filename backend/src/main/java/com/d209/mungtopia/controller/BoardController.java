@@ -229,17 +229,13 @@ public class BoardController {
 
     @PostMapping("/img/{boardId}")
     public ApiResponse saveImgFile(@RequestParam("files") List<MultipartFile> multipartFiles, @PathVariable long boardId) throws Exception {
-        boardService.saveImgFile(multipartFiles, boardId);
-        return ApiResponse.success();
+        return ApiResponse.success("data", boardService.saveImgFile(multipartFiles, boardId));
     }
 
     @GetMapping("/img/{boardId}")
     @ResponseBody
-    public Resource getImgFile(@PathVariable long boardId) throws IOException {
-        System.out.println("\"in!!!!!!!!!\" = " + "in!!!!!!!!!");
-        UrlResource urlResource = boardService.getImgFile(boardId);
-        System.out.println("urlResource = " + urlResource);
-        return urlResource;
+    public ApiResponse<List<byte[]>> getImgFile(@PathVariable long boardId) throws IOException {
+        return ApiResponse.success("data", boardService.getImgFile(boardId));
     }
 
 }

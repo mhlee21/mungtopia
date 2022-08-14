@@ -19,6 +19,7 @@
     "openvidu-browser": "^2.22.0",
     "sass-loader": "^13.0.2",
     "sockjs-client": "^1.6.1",
+    "swiper": "^8.3.2",
     "vue": "^3.2.13",
     "vue-kakao-sdk": "^0.2.5",
     "vue-router": "^4.0.3",

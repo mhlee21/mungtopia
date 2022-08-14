@@ -1,12 +1,7 @@
 <template>
 	<div>
 		<ul class="feed-wrap">
-			<li
-				class="feed-item"
-				@click="boardDetail(board.boardId)"
-				v-for="board in boardList"
-				:key="board.boardId"
-			>
+			<li class="feed-item" v-for="board in boardList" :key="board.boardId">
 				<MainBoardHeader
 					:author="board.author"
 					:createtime="board.createtime"
@@ -16,7 +11,10 @@
 						:image-list="board.imageList"
 						:board-tag="board.boardTag"
 					></MainBoardImage>
-					<MainBoardBody :board="board"></MainBoardBody>
+					<MainBoardBody
+						:board="board"
+						@click.stop="boardDetail(board.boardId)"
+					></MainBoardBody>
 				</div>
 			</li>
 		</ul>

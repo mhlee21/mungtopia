@@ -9,24 +9,28 @@
 </template>
 
 <script>
-import router from '@/router';
-import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
 import ApplicantDetailComponent from '@/components/adopt/detail/ApplicantDetailComponent';
 import AdoptDetailProcess from '@/components/adopt/detail/AdoptDetailProcess';
-
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 export default {
 	components: { ApplicantDetailComponent, AdoptDetailProcess },
 	setup() {
 		const store = useStore();
 		const route = useRoute();
+		const router = useRouter();
+		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
 		store.dispatch('adopt/fetchApplicantDetail', route.params.applicationId);
 		store.dispatch(
 			'adopt/fetchApplicantAdoptProcess',
 			route.params.applicationId,
 		);
 		const goBack = () => {
-			router.go(-1);
+			router.push({
+				name: 'adopt',
+				params: { userSeq: userSeq.value },
+			});
 		};
 		return { goBack };
 	},

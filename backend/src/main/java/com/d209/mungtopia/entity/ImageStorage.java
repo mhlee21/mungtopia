@@ -1,14 +1,12 @@
 package com.d209.mungtopia.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Getter
@@ -29,11 +27,21 @@ public class ImageStorage {
     private String filename;
 
     @Column(name = "origin_filename")
-    private String originFilename;
+    private String saveName;
 
     @ManyToOne(fetch = FetchType.LAZY)
 //    @JsonManagedReference // 순환 참조 방지
     @JsonIgnore
     @JoinColumn(name = "board_id", referencedColumnName = "board_id")
     private Board board;
+
+    public ImageStorage(int orders, String filename, String saveName){
+        this.orders = orders;
+        this.filename = filename;
+        this.saveName = saveName;
+    }
+
+    public void changeBoard(Board board){
+        this.board = board;
+    }
 }

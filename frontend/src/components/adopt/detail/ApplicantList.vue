@@ -1,21 +1,26 @@
 <template>
 	<div>
-		<h3>
-			신청자 <small>{{ protectorDetail.applicationList.length }}</small>
-		</h3>
-		<div
-			v-for="(applicant, index) in protectorDetail['applicationList']"
-			:key="index"
-		>
+		<div>
+			<h3 class="applicant-cnt">
+				신청자
+				<small class="applicant-num">{{ applicationList?.length }}</small>
+			</h3>
+		</div>
+		<div v-if="applicationList?.length === 0" class="no-applicant">
+			신청자가 없습니다.
+		</div>
+		<div v-for="(applicant, index) in applicationList" :key="index">
 			<div
 				class="application-list-component"
 				@click="clickApplicantComponent(index, applicant)"
 			>
-				<img style="width: 20%" :src="applicant.profile" />
-				<div style="width: 40%">
-					{{ applicant.name }}
+				<div class="profile-img-wrapper">
+					<img class="profile-img" :src="applicant.profileImg" />
 				</div>
-				<div style="width: 40%">
+				<div class="username-wrapper">
+					<h3 class="username">{{ applicant.username }}</h3>
+				</div>
+				<div class="applicant-btn-wrapper">
 					<button
 						@click="
 							goChatRoom(
@@ -24,10 +29,13 @@
 								applicant.applicationStatus,
 							)
 						"
+						class="applicant-btn"
 					>
-						채팅
+						<i class="fa-solid fa-comment-dots"></i>
 					</button>
-					<button>취소</button>
+					<button class="applicant-btn" @click="denyAdoption(index)">
+						<i class="fa-solid fa-xmark"></i>
+					</button>
 				</div>
 			</div>
 			<AdoptDetailProcess v-if="activeApplicant === index"></AdoptDetailProcess>
@@ -50,6 +58,11 @@ export default {
 		const activeApplicant = computed(
 			() => store.getters['adopt/activeApplicant'],
 		);
+		const applicationList = computed(() =>
+			protectorDetail?.value.applicationList?.filter(
+				application => application.applicationStatus !== 8,
+			),
+		);
 		store.dispatch('adopt/updateActiveApplicant', -1);
 		const clickApplicantComponent = (index, applicant) => {
 			if (activeApplicant.value === index) {
@@ -59,7 +72,6 @@ export default {
 				store.dispatch('adopt/fetchProtectorAdoptProcess', {
 					adoptionProcessId: applicant.adoptionProcessId,
 					applicationStatus: applicant.applicationStatus,
-					meetingRoomId: applicant.meetingRoomId,
 				});
 			}
 		};
@@ -77,23 +89,22 @@ export default {
 				},
 			});
 		};
+		const denyAdoption = index => {
+			const answer = confirm('입양을 반려하시겠습니까?');
+			if (answer == true) {
+				store.dispatch('adopt/protectorCancel', index);
+			}
+		};
 		return {
 			protectorDetail,
 			activeApplicant,
+			applicationList,
 			clickApplicantComponent,
 			goChatRoom,
+			denyAdoption,
 		};
 	},
 };
 </script>
 
-<style scoped>
-.application-list-component {
-	display: flex;
-	height: 10vh;
-	justify-content: center;
-	background-color: white;
-	border-radius: 1rem;
-	padding: 7% 5% 2%;
-}
-</style>
+<style scoped></style>

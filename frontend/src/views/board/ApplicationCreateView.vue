@@ -3,27 +3,11 @@
 		<div class="title">입양신청서</div>
 		<div class="Subframe">
 			<ApplicationQuestion></ApplicationQuestion>
-			<input
-				type="text"
-				placeholder="답변을 입력하세요."
-				style="width: 250px; height: 200px; font-size: 30px; margin: 20px"
-			/>
-		</div>
-		<div class="game-btn" v-if="questionCount > 0" @click="plustQuestion">
-			<div class="start-btn">BEFORE</div>
-		</div>
-		<div class="game-btn" v-if="questionCount < 15" @click="minustQuestion">
-			<div class="start-btn">NEXT</div>
-		</div>
-		<div class="game-btn" v-else>
-			<div class="start-btn">제출</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import { useStore } from 'vuex';
-import { computed } from 'vue';
 import ApplicationQuestion from '@/components/board/application/ApplicationQuestion.vue';
 // import { computed } from '@vue/reactivity';
 
@@ -32,15 +16,7 @@ export default {
 		ApplicationQuestion,
 	},
 	setup() {
-		const store = useStore();
-		const questionCount = computed(() => store.getters['game/questionCount']);
-		const plustQuestion = () => {
-			store.dispatch('board/plusQuestionNumber');
-		};
-		const minustQuestion = () => {
-			store.dispatch('board/minusQuestionNumber');
-		};
-		return { questionCount, plustQuestion, minustQuestion };
+		return {};
 	},
 };
 </script>

@@ -7,36 +7,25 @@
 			<div>현재 당신을 원하는 반려견이 있습니다.</div>
 		</div>
 		<div
-			style="
-				display: flex;
-				justify-content: space-between;
-				margin: 0px 0px 50px 0px;
-			"
+			style="text-align: center"
+			@click="enterDetailBoard(matchData['boardId'])"
 		>
-			<div>
-				<div style="text-align: center">짱구</div>
-				<div style="text-align: center">
-					<img src="" width="100px" height="100px" alt="" />
-				</div>
-			</div>
-			<div>
-				<div style="text-align: center">몽이</div>
-				<div style="text-align: center">
-					<img src="" width="100px" height="100px" alt="" />
-				</div>
-			</div>
-			<div>
-				<div style="text-align: center">유리</div>
-				<div style="text-align: center">
-					<img src="" width="100px" height="100px" alt="" />
-				</div>
-			</div>
+			<img class="matching-img" :src="matchData['dogImg']" alt="" />
+		</div>
+		<div
+			style="text-align: center"
+			@click="enterDetailBoard(matchData['boardId'])"
+		>
+			{{ matchData['dogName'] }}
+		</div>
+		<div style="text-align: center">
+			매칭 퍼센트 :{{ matchData['percent'] }}%
 		</div>
 		<div style="text-align: center">
 			<div class="game-btn" style="margin: 0% 5% 0% 0%">
-				<div class="start-btn">SHARE</div>
+				<div class="start-btn" @click="onClickShareStory">SHARE</div>
 			</div>
-			<div class="game-btn" style="margin: 0% 0% 0% 5%">
+			<div class="game-btn" style="margin: 0% 0% 0% 5%" @click="gameMenu">
 				<div class="start-btn">GAME MENU</div>
 			</div>
 		</div>
@@ -44,9 +33,25 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import router from '@/router';
+import { computed } from 'vue';
 export default {
 	setup() {
-		return {};
+		const onClickShareStory = () => {
+			window.Kakao.Link.sendCustom({
+				templateId: 81265,
+			});
+		};
+		const store = useStore();
+		const matchData = computed(() => store.getters['game/matchData']);
+		const enterDetailBoard = boardId => {
+			router.push({ path: '/board/detail/' + boardId });
+		};
+		const gameMenu = () => {
+			router.push({ path: '/game' });
+		};
+		return { onClickShareStory, matchData, enterDetailBoard, gameMenu };
 	},
 };
 </script>
@@ -105,5 +110,10 @@ export default {
 	color: #fffbf0;
 	font-size: 20px;
 	font-weight: bolder;
+}
+
+.matching-img {
+	width: 60%;
+	height: 30%;
 }
 </style>

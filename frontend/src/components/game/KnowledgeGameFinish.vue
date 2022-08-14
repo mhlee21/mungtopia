@@ -5,7 +5,17 @@
 				<h2 class="title">SUCCESS</h2>
 			</div>
 			<div style="text-align: center">
-				<img src="" alt="" />
+				<img
+					:src="
+						require('@/assets/images/KNOWLEDGE/' +
+							'knowledge_' +
+							'success' +
+							'.jpg')
+					"
+					width="150"
+					height="150"
+					alt=""
+				/>
 			</div>
 			<div class="content">
 				<div>10문제 중 {{ correctAnswer }}문제를 맞춰 성공하였어요!</div>
@@ -24,16 +34,26 @@
 				<h2 class="title">Fail</h2>
 			</div>
 			<div style="text-align: center">
-				<img src="" alt="" />
+				<img
+					:src="
+						require('@/assets/images/KNOWLEDGE/' +
+							'knowledge_' +
+							'fail' +
+							'.jpg')
+					"
+					width="150"
+					height="150"
+					alt=""
+				/>
 			</div>
 			<div class="content">
 				<div>10문제 중 {{ correctAnswer }}문제를 맞추었어요ㅠ</div>
 			</div>
 			<div class="game-btn">
-				<div class="start-btn">REPLAY</div>
+				<div class="start-btn" @click="onClickShareStory">SHARE</div>
 			</div>
-			<div class="game-btn">
-				<div class="start-btn">GAME MENU</div>
+			<div class="game-btn" @click="gameMenu">
+				<div class="start-btn">MENU</div>
 			</div>
 		</div>
 	</div>
@@ -42,12 +62,21 @@
 <script>
 import { useStore } from 'vuex';
 import { computed } from 'vue';
+import router from '@/router';
 
 export default {
 	setup() {
 		const store = useStore();
 		const correctAnswer = computed(() => store.getters['game/correctAnswer']);
-		return { correctAnswer };
+		const onClickShareStory = () => {
+			window.Kakao.Link.sendCustom({
+				templateId: 81263,
+			});
+		};
+		const gameMenu = () => {
+			router.push({ path: '/game' });
+		};
+		return { correctAnswer, onClickShareStory, gameMenu };
 	},
 };
 </script>

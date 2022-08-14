@@ -8,16 +8,43 @@
 			<!-- 게임 리스트 -->
 			<div class="game-list">
 				<div class="game-btn" @click="gameEnter(0)">
-					<img src="@/assets/images/knowledge.png" alt="" />
+					<img class="game-img" src="@/assets/images/knowledge.jpg" alt="" />
 					<div class="game-title">강아지식 테스트</div>
+					<div class="circle" v-if="isClear[0]">
+						<img
+							class="stamp"
+							:src="require('@/assets/images/' + 'dogPaws' + '.png')"
+							width="50"
+							height="50"
+							alt=""
+						/>
+					</div>
 				</div>
 				<div class="game-btn" @click="gameEnter(1)">
-					<img src="@/assets/images/mbti.jpg" alt="" />
+					<img class="game-img" src="@/assets/images/mbti.jpg" alt="" />
 					<div class="game-title">댕BTI</div>
+					<div class="circle" v-if="isClear[1]">
+						<img
+							class="stamp"
+							:src="require('@/assets/images/' + 'dogPaws' + '.png')"
+							width="50"
+							height="50"
+							alt=""
+						/>
+					</div>
 				</div>
 				<div class="game-btn" @click="gameEnter(2)">
-					<img src="@/assets/images/matching.png" alt="" />
+					<img class="game-img" src="@/assets/images/matching.jpg" alt="" />
 					<div class="game-title">나와 잘맞는 반려견은?</div>
+					<div class="circle" v-if="isClear[2]">
+						<img
+							class="stamp"
+							:src="require('@/assets/images/' + 'dogPaws' + '.png')"
+							width="50"
+							height="50"
+							alt=""
+						/>
+					</div>
 				</div>
 			</div>
 			<NavBar></NavBar>
@@ -30,6 +57,7 @@
 import { useStore } from 'vuex';
 import router from '@/router';
 import NavBar from '@/components/NavBar.vue';
+import { computed } from 'vue';
 
 export default {
 	components: {
@@ -37,6 +65,12 @@ export default {
 	},
 	setup() {
 		const store = useStore();
+		const user = computed(() => store.getters['auth/user']);
+		if (user.value != null) {
+			store.dispatch('game/receiveClear');
+		}
+		const isClear = computed(() => store.getters['game/isClear']);
+		console.log(isClear);
 		const gameEnter = gameType => {
 			store.dispatch('game/enterGame', gameType);
 			router.push({
@@ -44,7 +78,7 @@ export default {
 				params: { gameType: gameType },
 			});
 		};
-		return { gameEnter, NavBar };
+		return { gameEnter, NavBar, isClear };
 	},
 };
 </script>
@@ -86,10 +120,14 @@ export default {
 	padding: 25px 30px 85px;
 	box-sizing: border-box;
 }
-img {
+.game-img {
 	width: 130px;
 	height: 130px;
 	border-radius: 1rem;
+}
+.stamp {
+	width: 50px;
+	height: 40px;
 }
 .title {
 	text-align: center;
@@ -110,5 +148,24 @@ img {
 .game-menu-pg {
 	display: flex;
 	justify-content: center;
+}
+
+.material-symbols-outlined {
+	font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 48;
+	font-size: 50px !important;
+}
+
+.paws {
+	border-radius: 50%;
+	width: 50px !important;
+	height: 50px !important;
+}
+
+.circle {
+	margin: 0 auto;
+	width: 50px;
+	height: 45px;
+	border: 3px solid #000;
+	border-radius: 50%;
 }
 </style>

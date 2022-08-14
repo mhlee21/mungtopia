@@ -6,131 +6,173 @@
 		</div>
 		<div class="profile-info-form">
 			<div class="user-info-wrapper">
-				<!-- 이름 -->
-				<div class="user-info">
-					<div class="user-input-label label">이름</div>
-					<input class="user-info-input" v-model="name" :disabled="after" />
-				</div>
-				<!-- 성별 -->
-				<div class="user-info">
-					<div class="user-input-label label">성별</div>
-					<div class="user-gender">
-						<div>
-							<input
-								type="radio"
-								name="gender"
-								id="male"
-								v-model="gender"
-								value="남성"
-								:disabled="after"
-								checked
-							/>
-							<label for="male">남성</label>
-						</div>
-						<div>
-							<input
-								type="radio"
-								name="gender"
-								id="female"
-								v-model="gender"
-								value="여성"
-								:disabled="after"
-							/>
-							<label for="female">여성</label>
-						</div>
+				<form action="" @submit.prevent="submitProfile">
+					<!-- 이름 -->
+					<div class="user-info">
+						<div class="user-input-label label">이름</div>
+						<input
+							class="user-info-input"
+							:disabled="after"
+							v-model="newUserInfo.name"
+						/>
 					</div>
-				</div>
-				<!-- 생년월일 -->
-				<div class="user-info">
-					<label class="user-input-label label">생년월일</label>
-					<input class="user-info-input" v-model="birth" :disabled="after" />
-				</div>
-				<!-- 연락처 -->
-				<div class="user-info">
-					<label class="user-input-label label">연락처</label>
-					<input class="user-info-input" v-model="phone" :disabled="after" />
-				</div>
-				<!-- 직업 -->
-				<div class="user-info">
-					<label class="user-input-label label">직업</label>
-					<input class="user-info-input" v-model="job" :disabled="after" />
-				</div>
-				<!-- 주소 -->
-				<div class="user-info2">
-					<div class="label">주소</div>
-					<div class="user-info-address-box">
-						<div class="user-info2">
-							<label for="zonecode" class="label">우편번호</label>
+					<!-- 성별 -->
+					<div class="user-info">
+						<div class="user-input-label label">성별</div>
+						<div class="user-gender">
 							<div>
 								<input
-									type="text"
-									id="zonecode"
-									v-model="zonecode"
-									disabled
-									class="input-round"
+									type="radio"
+									name="gender"
+									id="male"
+									:disabled="after"
+									checked
+									v-model="newUserInfo.gender"
 								/>
-								<button v-if="!after">주소검색</button>
+								<label for="male">남성</label>
+							</div>
+							<div>
+								<input
+									type="radio"
+									name="gender"
+									id="female"
+									:disabled="after"
+									v-model="newUserInfo.gender"
+								/>
+								<label for="female">여성</label>
 							</div>
 						</div>
-						<div class="user-info2">
-							<label for="roadAddress" class="label">도로명 주소</label>
-							<input
-								type="text"
-								id="roadAddress"
-								v-model="roadAddress"
-								disabled
-								class="input-round"
-							/>
-						</div>
-						<div class="user-info2">
-							<label for="detailAddress" class="label">상세 주소</label>
-							<input
-								type="text"
-								id="detailAddress"
-								v-model="detailAddress"
-								:disabled="after"
-								class="input-round"
-							/>
+					</div>
+					<!-- 생년월일 -->
+					<div class="user-info">
+						<label class="user-input-label label">생년월일</label>
+						<input
+							class="user-info-input"
+							:disabled="after"
+							v-model="newUserInfo.birth"
+						/>
+					</div>
+					<!-- 연락처 -->
+					<div class="user-info">
+						<label class="user-input-label label">연락처</label>
+						<input
+							class="user-info-input"
+							:disabled="after"
+							v-model="newUserInfo.phoneNumber"
+						/>
+					</div>
+					<!-- 직업 -->
+					<div class="user-info">
+						<label class="user-input-label label">직업</label>
+						<input
+							class="user-info-input"
+							:disabled="after"
+							v-model="newUserInfo.job"
+						/>
+					</div>
+					<!-- 주소 -->
+					<div class="user-info2">
+						<div class="label">주소</div>
+						<div class="user-info-address-box">
+							<div class="user-info2">
+								<label for="zonecode" class="label">우편번호</label>
+								<div>
+									<input
+										type="text"
+										id="zonecode"
+										disabled
+										class="input-round"
+										v-model="newUserInfo.zonecode"
+									/>
+									<button v-if="!after">주소검색</button>
+								</div>
+							</div>
+							<div class="user-info2">
+								<label for="roadAddress" class="label">도로명 주소</label>
+								<input
+									type="text"
+									id="roadAddress"
+									disabled
+									class="input-round"
+									v-model="newUserInfo.roadAddress"
+								/>
+							</div>
+							<div class="user-info2">
+								<label for="detailAddress" class="label">상세 주소</label>
+								<input
+									type="text"
+									id="detailAddress"
+									:disabled="after"
+									class="input-round"
+									v-model="newUserInfo.detailAddress"
+								/>
+							</div>
 						</div>
 					</div>
-				</div>
-				<!-- 저장하기 버튼 -->
-				<div class="btn-wrapper">
-					<button class="save-btn">저장하기</button>
-				</div>
+					<!-- 저장하기 버튼 -->
+					<div class="btn-wrapper">
+						<button class="save-btn">저장하기</button>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import { ref } from 'vue';
-
+import { ref, computed, reactive } from 'vue';
+import { useStore } from 'vuex';
 export default {
 	setup() {
-		const name = ref(null);
-		const gender = ref(null);
-		const age = ref(null);
-		const birth = ref(null);
-		const phone = ref(null);
-		const job = ref(null);
-		const address = ref(null);
-		const zonecode = ref(null);
-		const roadAddress = ref(null);
-		const detailAddress = ref(null);
-		const after = ref(true);
+		const store = useStore();
+		store.dispatch('profile/fetchUserInfo');
+
+		const userInfo = computed(store.getters['profile/userInfo']);
+		const newUserInfo = reactive({
+			name: '',
+			gender: '',
+			birth: '',
+			phoneNumber: '',
+			job: '',
+			zonecode: '',
+			roadAddress: '',
+			detailAddress: '',
+		});
+		const name = ref('');
+		const gender = ref(userInfo?.value.gender);
+		const birth = ref(userInfo?.value.birth);
+		const phoneNumber = ref(userInfo?.value.phoneNumber);
+		const job = ref(userInfo?.value.job);
+		const zonecode = ref(userInfo?.value.zonecode);
+		const roadAddress = ref(userInfo?.value.roadAddress);
+		const detailAddress = ref(userInfo?.value.detailAddress);
+		const after = ref(false);
+		const submitProfile = () => {
+			const payload = {
+				name: name.value,
+				gender: gender.value,
+				birth: birth.value,
+				phoneNumber: phoneNumber.value,
+				job: job.value,
+				zonecode: zonecode.value,
+				roadAddress: roadAddress.value,
+				detailAddress: detailAddress.value,
+			};
+			store.dispatch('profile/updateUserInfo', payload);
+		};
 		return {
+			after,
+			newUserInfo,
+			userInfo,
 			name,
 			gender,
-			age,
 			birth,
-			phone,
+			phoneNumber,
 			job,
-			address,
 			zonecode,
 			roadAddress,
 			detailAddress,
-			after,
+			submitProfile,
 		};
 	},
 };

@@ -102,7 +102,7 @@ export default {
 		// 입양 신청서
 		application: applicationId => HOST + ADOPT + `${applicationId}`,
 		// 채팅
-		chats: chatRoomId => HOST + ADOPT + CHAT + `${chatRoomId}`,
+		chats: () => HOST + ADOPT + CHAT + 'log',
 		// 채팅 보내기
 		chatCreate: (chatRoomId, userSeq) =>
 			HOST + ADOPT + CHAT + `${chatRoomId}/` + `${userSeq}`,

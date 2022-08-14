@@ -24,7 +24,9 @@ export default {
 		SET_BOARD_LIST: (state, boardList) => (state.boardList = boardList),
 		SET_LIKE_LIST: (state, likeList) => (state.likeList = likeList),
 		SET_STAR_LIST: (state, starList) => (state.starList = starList),
-		SET_USER_INFO: (state, userInfo) => (state.userInfo = userInfo),
+		SET_USER_INFO: (state, userInfo) => {
+			state.userInfo = userInfo;
+		},
 	},
 	actions: {
 		setBoardType: ({ commit }, boardType) => {
@@ -55,19 +57,17 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(rootGetters['profile/userInfo']);
-					console.log(rootGetters['profile/boardType']);
 					commit('SET_USER_INFO', res.data.body.data);
-					// console.log(res.data.body.data, getters['userInfo']);
 				})
 				.catch(err => {
 					console.error(err.response);
 				});
 		},
 		updateUserInfo: ({ rootGetters }, payload) => {
+			console.log(payload);
 			axios({
-				url: api.user.profileDetailUpdate(rootGetters['auth/user']?.userSeq),
-				method: 'get',
+				url: api.user.profileDetailUpdate(rootGetters['auth/user'].userSeq),
+				method: 'put',
 				headers: rootGetters['auth/authHeader'],
 				data: payload,
 			}).catch(err => {

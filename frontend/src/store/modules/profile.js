@@ -9,7 +9,7 @@ export default {
 			boardList: null,
 			likeList: null,
 			starList: null,
-			userInfo: {},
+			userInfo: null,
 		};
 	},
 	getters: {
@@ -24,13 +24,15 @@ export default {
 		SET_BOARD_LIST: (state, boardList) => (state.boardList = boardList),
 		SET_LIKE_LIST: (state, likeList) => (state.likeList = likeList),
 		SET_STAR_LIST: (state, starList) => (state.starList = starList),
-		SET_USER_INFO: (state, userInfo) => (state.userInfo = userInfo),
+		SET_USER_INFO: (state, userInfo) => {
+			state.userInfo = userInfo;
+		},
 	},
 	actions: {
-		setBoardType({ commit }, boardType) {
+		setBoardType: ({ commit }, boardType) => {
 			commit('SET_BOARD_TYPE', boardType);
 		},
-		fetchBoardList({ commit, dispatch, rootGetters }) {
+		fetchBoardList: ({ commit, dispatch, rootGetters }) => {
 			console.log('fetchBoardList');
 			axios({
 				url: api.user.profileBoardList(rootGetters['auth/user']?.userSeq),
@@ -38,7 +40,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					// console.log(res.data.body.data);
 					dispatch('setBoardType', 'board');
 					commit('SET_BOARD_LIST', res.data.body.data.boardList);
 					commit('SET_LIKE_LIST', res.data.body.data.likeList);
@@ -48,7 +49,7 @@ export default {
 					console.error(err.response);
 				});
 		},
-		fetchUserInfo({ commit, rootGetters }) {
+		fetchUserInfo: ({ commit, rootGetters }) => {
 			console.log('fetchUserInfo');
 			axios({
 				url: api.user.profileDetail(rootGetters['auth/user']?.userSeq),
@@ -56,17 +57,17 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_USER_INFO', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
 				});
 		},
-		updateUserInfo({ rootGetters }, payload) {
+		updateUserInfo: ({ rootGetters }, payload) => {
+			console.log(payload);
 			axios({
-				url: api.user.profileDetailUpdate(rootGetters['auth/user']?.userSeq),
-				method: 'get',
+				url: api.user.profileDetailUpdate(rootGetters['auth/user'].userSeq),
+				method: 'put',
 				headers: rootGetters['auth/authHeader'],
 				data: payload,
 			}).catch(err => {

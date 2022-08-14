@@ -107,7 +107,10 @@ export default {
 			});
 		};
 		const changeProfile = () => {};
-		const logout = () => {};
+		const logout = () => {
+			store.dispatch('auth/logout');
+			router.push({ name: 'login' });
+		};
 		return {
 			user,
 			changeBoardType,

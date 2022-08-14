@@ -21,10 +21,10 @@
 				<div>10문제 중 {{ correctAnswer }}문제를 맞춰 성공하였어요!</div>
 			</div>
 			<div class="game-btn">
-				<div class="start-btn">SHARE</div>
+				<div class="start-btn" @click="onClickShareStory">SHARE</div>
 			</div>
-			<div class="game-btn">
-				<div class="start-btn">GAME MENU</div>
+			<div class="game-btn" @click="gameMenu">
+				<div class="start-btn">MENU</div>
 			</div>
 		</div>
 	</div>

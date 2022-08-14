@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
 
@@ -241,7 +242,7 @@ public class BoardController {
 
     @GetMapping("/img/{boardId}/{order}")
     @ResponseBody
-    public ResponseEntity<?> getImgFile(@PathVariable long boardId, @PathVariable int order, HttpServletRequest request) throws IOException {
+    public ResponseEntity<byte[]> getImgFile(@PathVariable long boardId, @PathVariable int order, HttpServletRequest request) throws IOException {
         Resource resource = boardService.getImgFile(boardId, order);
         // Try to determine file's content type
         System.out.println("resource = " + resource.getURL());
@@ -258,9 +259,12 @@ public class BoardController {
         if(contentType == null) {
             contentType = "application/octet-stream";
         }
+
+        InputStream in = resource.getInputStream();
+
        return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
+                .body(IOUtils.toByteArray(in));
     }
 }

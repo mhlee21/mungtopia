@@ -9,6 +9,7 @@ export default {
 			boardList: null,
 			likeList: null,
 			starList: null,
+			userInfo: {},
 		};
 	},
 	getters: {
@@ -16,12 +17,14 @@ export default {
 		boardList: state => state.boardList,
 		likeList: state => state.likeList,
 		starList: state => state.starList,
+		userInfo: state => state.userInfo,
 	},
 	mutations: {
 		SET_BOARD_TYPE: (state, boardType) => (state.boardType = boardType),
 		SET_BOARD_LIST: (state, boardList) => (state.boardList = boardList),
 		SET_LIKE_LIST: (state, likeList) => (state.likeList = likeList),
 		SET_STAR_LIST: (state, starList) => (state.starList = starList),
+		SET_USER_INFO: (state, userInfo) => (state.userInfo = userInfo),
 	},
 	actions: {
 		setBoardType({ commit }, boardType) {
@@ -44,6 +47,31 @@ export default {
 				.catch(err => {
 					console.error(err.response);
 				});
+		},
+		fetchUserInfo({ commit, rootGetters }) {
+			console.log('fetchUserInfo');
+			axios({
+				url: api.user.profileDetail(rootGetters['auth/user']?.userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data.body.data);
+					commit('SET_USER_INFO', res.data.body.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+		updateUserInfo({ rootGetters }, payload) {
+			axios({
+				url: api.user.profileDetailUpdate(rootGetters['auth/user']?.userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			}).catch(err => {
+				console.error(err.response);
+			});
 		},
 	},
 };

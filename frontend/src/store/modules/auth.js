@@ -20,7 +20,6 @@ export default {
 		token: state => state.token,
 		authHeader: state =>
 			state.token ? { Authorization: `Token ${state.token}` } : '',
-		userInfo: state => state.userInfo,
 	},
 	mutations: {
 		SET_TOKEN(state, token) {
@@ -28,9 +27,6 @@ export default {
 		},
 		SET_USER(state, user) {
 			state.user = user;
-		},
-		SET_USER_INFO: (state, userInfo) => {
-			state.userInfo = userInfo;
 		},
 	},
 	actions: {
@@ -42,7 +38,7 @@ export default {
 			axios({
 				url: api.auth.getUser(),
 				method: 'get',
-				headers: getters['auth/authHeader'],
+				headers: getters['authHeader'],
 			})
 				.then(res => {
 					console.log(res.data.body.user);

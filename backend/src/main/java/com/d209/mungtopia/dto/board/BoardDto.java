@@ -1,4 +1,4 @@
-package com.d209.mungtopia.dto;
+package com.d209.mungtopia.dto.board;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

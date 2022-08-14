@@ -18,11 +18,13 @@ export default {
 		const userSeq = computed(() => store.getters['auth/user']['userSeq']);
 		const sendMessage = () => {
 			console.log(userSeq);
+			const date = new Date(Date.now());
 			const chat = {
-				// userSeq,
-				userSeq: 2,
-				time: Date.now(),
-				message: message.value,
+				userSeq: userSeq,
+				createtime: date,
+				content: message.value,
+				isRequest: false,
+				chatRoomId: 4, //chatRoomId?
 			};
 			store.dispatch('adopt/sendChat', chat);
 		};

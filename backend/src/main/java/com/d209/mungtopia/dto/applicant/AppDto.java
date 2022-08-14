@@ -13,5 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 public class AppDto {
     private Long userSeq;
-    private List<AnswerDto> applicantAnswerList;
+    private List<String> applicantAnswerList;
 }

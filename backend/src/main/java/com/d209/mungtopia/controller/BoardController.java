@@ -238,10 +238,9 @@ public class BoardController {
     @GetMapping("/img/{boardId}/{order}")
     public ResponseEntity getImgFile(@PathVariable long boardId, @PathVariable int order) throws IOException {
         Resource resource = boardService.getImgFile(boardId, order);
-        IOUtils.toByteArray(resource.getInputStream());
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(resource);
+                .body(IOUtils.toByteArray(resource.getInputStream()));
     }
 
 }

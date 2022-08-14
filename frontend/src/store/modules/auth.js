@@ -19,7 +19,7 @@ export default {
 		user: state => state.user,
 		token: state => state.token,
 		authHeader: state =>
-			state.token ? { Authorization: `Token ${state.token}` } : '',
+			state.token ? { Authorization: `Bearer ${state.token}` } : '',
 	},
 	mutations: {
 		SET_TOKEN(state, token) {

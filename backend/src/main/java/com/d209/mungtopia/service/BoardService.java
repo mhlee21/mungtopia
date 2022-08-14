@@ -32,5 +32,5 @@ public interface BoardService {
     List<Comment> deleteReply(Board board, Reply reply, ReplyDto replyDto);
 
     Boolean saveImgFile(List<MultipartFile> multipartFiles, long boardId) throws Exception;
-    Resource getImgFile(long boardId, int order) throws IOException;
+    Resource getImgFile(String fileName) throws IOException;
 }

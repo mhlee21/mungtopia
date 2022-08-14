@@ -23,6 +23,7 @@ export default {
 			matchAnswer: {},
 			matchData: [],
 			statusWidth: 0,
+			isClear: [false, false, false],
 		};
 	},
 	getters: {
@@ -42,6 +43,7 @@ export default {
 		matchAnswer: state => state.matchAnswer,
 		matchData: state => state.matchData,
 		statusWidth: state => state.statusWidth,
+		isClear: state => state.isClear,
 	},
 	mutations: {
 		SET_GAME_TYPE: (state, gameType) => {
@@ -110,17 +112,20 @@ export default {
 		PLUS_STATUS_WIDTH: (state, statusWidth) => {
 			state.statusWidth = statusWidth;
 		},
+		CLEAR_GAME: (state, { gameTag, result }) => {
+			state.isClear[gameTag] = result;
+		},
 	},
 	actions: {
 		enterGame: ({ commit }, gameType) => {
 			commit('SET_GAME_TYPE', gameType);
-			if (gameType === 0) {
+			if (gameType == 0) {
 				commit('SET_GAME_TITLE', '강아지식테스트');
 				commit(
 					'SET_GAME_DESCRIPTION',
-					'10문제 중 7문제 이상 맞춰\n 당신의 반려견에게\n 뼈다귀를 선물하세요!',
+					'10문제 중 7문제 이상 맞춰\n 당신의 반려견 지식을\n 뽐내보세요!',
 				);
-			} else if (gameType === 1) {
+			} else if (gameType == 1) {
 				commit('SET_GAME_TITLE', '댕BTI');
 				commit(
 					'SET_GAME_DESCRIPTION',
@@ -135,16 +140,16 @@ export default {
 			}
 		},
 
-		solveGame: ({ commit, getters }) => {
-			const gameType = getters.gameType;
+		solveGame: ({ commit }, gameType) => {
 			const res = Qdata;
-			if (gameType === 0) {
+			if (gameType == 0) {
 				const data = res.knowledge.map(d => ({
 					question: d.question,
+					img: d.img,
 					answer: d.answer,
 				}));
 				commit('SET_GAME_QUESTION', data);
-			} else if (gameType === 1) {
+			} else if (gameType == 1) {
 				const data = res.MBTI.map(d => ({
 					question_type: d.question_type,
 					question: d.question,
@@ -172,7 +177,7 @@ export default {
 		plusMbtiAnswer: ({ commit, getters }, { question_type, userAnswer }) => {
 			const mbtiUserAnswer = getters.mbtiUserAnswer;
 			const mbtiCount = getters.mbtiCount;
-			if (mbtiCount <= 2) {
+			if (mbtiCount < 2) {
 				commit('PLUS_MBTI_USER_ANSWER', userAnswer);
 				commit('MBTI_COUNT');
 			} else {
@@ -224,7 +229,6 @@ export default {
 		},
 
 		plusMatchAnswer: ({ commit, getters }, { question_type, userAnswer }) => {
-			// const matchUserPoint = getters.matchUserPoint;
 			const matchCount = getters.matchCount;
 			if (matchCount < 2) {
 				commit('PLUS_MATCH_USER_POINT', userAnswer);
@@ -255,33 +259,24 @@ export default {
 			// })
 		},
 
-		sendMatchResult: ({ rootGetters }, payload) => {
+		sendMatchResult: ({ commit, rootGetters }, payload) => {
 			axios({
-				url: api.game.saveGame(),
+				url: api.game.receiveGame(),
 				method: 'post',
 				headers: rootGetters['auth/authHeader'],
 				data: payload,
-			}).catch(err => {
-				console.error(err.response);
-			});
-			// .then(res => {
-			// 	console.log(res.body.data);
-
-			// })
-		},
-
-		receiveMatchResult: ({ commit, rootGetters }) => {
-			axios({
-				url: api.game.receiveGame(),
-				method: 'get',
-				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					commit('SET_MATCH_DATA', res.body.data);
+					console.log(res.data.body.data);
+					commit('SET_MATCH_DATA', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
 				});
+			// .then(res => {
+			// 	console.log(res.body.data);
+
+			// })
 		},
 
 		updateProgressbar: ({ commit, getters }) => {
@@ -303,6 +298,38 @@ export default {
 				if (width > 100) width = 100;
 				commit('PLUS_STATUS_WIDTH', width);
 			}
+		},
+
+		receiveClear: ({ commit, rootGetters }) => {
+			axios({
+				url: api.game.clearGame(rootGetters['auth/user'].userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					// commit('SET_MATCH_DATA', res.body.data);
+					if (res.data.body.data[0]) {
+						commit('CLEAR_GAME', {
+							gameTag: res.data.body.data[0].gameTag,
+							result: res.data.body.data[0].result,
+						});
+					}
+					if (res.data.body.data[1]) {
+						commit('CLEAR_GAME', {
+							gameTag: res.data.body.data[1].gameTag,
+							result: res.data.body.data[1].result,
+						});
+					}
+					if (res.data.body.data[2]) {
+						commit('CLEAR_GAME', {
+							gameTag: res.data.body.data[2].gameTag,
+							result: res.data.body.data[2].result,
+						});
+					}
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 	},
 };

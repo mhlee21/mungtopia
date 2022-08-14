@@ -5,7 +5,12 @@ export default {
 	namespaced: true,
 	state() {
 		return {
-			user: null,
+			// user: null,
+			user: {
+				userSeq: 6,
+				username: '황희원',
+				profile: 'https://www.snsboom.co.kr/common/img/default_profile.png',
+			},
 			token: localStorage.getItem('token') || '',
 			userInfo: null,
 		};
@@ -14,8 +19,7 @@ export default {
 		user: state => state.user,
 		token: state => state.token,
 		authHeader: state =>
-			state.token ? { Authorization: `Token ${state.token}` } : '',
-		userInfo: state => state.userInfo,
+			state.token ? { Authorization: `Bearer ${state.token}` } : '',
 	},
 	mutations: {
 		SET_TOKEN(state, token) {
@@ -23,9 +27,6 @@ export default {
 		},
 		SET_USER(state, user) {
 			state.user = user;
-		},
-		SET_USER_INFO: (state, userInfo) => {
-			state.userInfo = userInfo;
 		},
 	},
 	actions: {
@@ -37,10 +38,11 @@ export default {
 			axios({
 				url: api.auth.getUser(),
 				method: 'get',
-				headers: { Authorization: `Bearer ${getters.token}` },
+				headers: getters['authHeader'],
 			})
 				.then(res => {
-					commit('SET_USER', res.body.data.user);
+					console.log(res.data.body.user);
+					commit('SET_USER', res.data.body.user);
 				})
 				.catch(err => {
 					console.error(err.response);

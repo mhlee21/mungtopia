@@ -1,10 +1,41 @@
 <template>
-	<div class="frame">
+	<div class="frame" style="overflow: scroll">
 		<div class="status">
 			<GamePlayStatus></GamePlayStatus>
 		</div>
-		<div style="text-align: center">
-			<img src="" alt="" />
+		<div style="text-align: center" v-if="gameType == 0">
+			<img
+				:src="
+					require('@/assets/images/KNOWLEDGE/' +
+						'knowledge_' +
+						questionNumber +
+						'.jpg')
+				"
+				width="150"
+				height="150"
+				alt=""
+				v-if="questionNumber < 10"
+			/>
+		</div>
+		<div style="text-align: center" v-else-if="gameType == 1">
+			<img
+				:src="
+					require('@/assets/images/MBTI/' + 'MBTI_' + questionNumber + '.jpg')
+				"
+				width="150"
+				height="150"
+				alt=""
+			/>
+		</div>
+		<div style="text-align: center" v-else>
+			<img
+				:src="
+					require('@/assets/images/MATCH/' + 'match_' + questionNumber + '.jpg')
+				"
+				width="150"
+				height="150"
+				alt=""
+			/>
 		</div>
 		<GameQuestion :gameQuestion="gameQuestion"></GameQuestion>
 	</div>
@@ -24,8 +55,11 @@ export default {
 	},
 	setup() {
 		const store = useStore();
+
+		let questionNumber = computed(() => store.getters['game/questionNumber']);
+		let gameType = computed(() => store.getters['game/gameType']);
 		let gameQuestion = computed(() => store.getters['game/gameQuestion']);
-		return { gameQuestion };
+		return { gameQuestion, questionNumber, gameType };
 	},
 };
 </script>
@@ -60,6 +94,7 @@ export default {
 img {
 	width: 200px;
 	height: 200px;
+	border-radius: 1rem;
 }
 
 .content {

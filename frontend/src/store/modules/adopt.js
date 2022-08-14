@@ -5,9 +5,8 @@ export default {
 	namespaced: true,
 	state() {
 		return {
-			adoptType: '',
-			applicantMainList: [],
-			protectorMainList: [],
+			adoptType: 'applicant',
+			mainList: null,
 			applicantDetail: {},
 			protectorDetail: {},
 			adoptProcess: [],
@@ -17,15 +16,14 @@ export default {
 			you: {},
 			chatList: [],
 			date: '',
-			meetingRoomId: null,
 			chatRoomId: null,
 			applicationAnswer: null,
+			application: null,
 		};
 	},
 	getters: {
 		adoptType: state => state.adoptType,
-		applicantMainList: state => state.applicantMainList,
-		protectorMainList: state => state.protectorMainList,
+		mainList: state => state.mainList,
 		isApplicant: state => state.adoptType === 'applicant',
 		applicantDetail: state => state.applicantDetail,
 		protectorDetail: state => state.protectorDetail,
@@ -37,11 +35,12 @@ export default {
 		you: state => state.you,
 		date: state => state.date,
 		chatRoomId: state => state.chatRoomId,
-		meetingRoomId: state => state.meetingRoomId,
 		applicationAnswer: state => state.applicationAnswer,
+		application: state => state.application,
 	},
 	mutations: {
 		SET_ADOPT_TYPE: (state, adoptType) => (state.adoptType = adoptType),
+		SET_MAIN_LIST: (state, mainList) => (state.mainList = mainList),
 		SET_APPLICANT_MAIN_LIST: (state, applicantMainList) =>
 			(state.applicantMainList = applicantMainList),
 		SET_PROTECTOR_MAIN_LIST: (state, protectorMainList) =>
@@ -58,11 +57,10 @@ export default {
 			(state.adoptionProcessId = adoptionProcessId),
 		SET_APPLICATION_STATUS: (state, applicationStatus) =>
 			(state.applicationStatus = applicationStatus),
+		SET_APPLICATION: (state, application) => (state.application = application),
 		SET_CHAT_LIST: (state, chatList) => (state.chatList = chatList),
 		SET_YOU: (state, you) => (state.you = you),
 		SET_DATE: (state, date) => (state.date = date),
-		SET_MEETING_ROOM_ID: (state, meetingRoomId) =>
-			(state.meetingRoomId = meetingRoomId),
 		SET_CHAT_ROOM_ID: (state, chatRoomId) => (state.chatRoomId = chatRoomId),
 		SET_OPENVIDU_TOKEN: (state, openviduToken) =>
 			(state.openviduToken = openviduToken),
@@ -75,357 +73,186 @@ export default {
 		SET_APPLICATION_ANSWER: (state, applicationAnswer) => {
 			state.applicationAnswer = applicationAnswer;
 		},
+		DELETE_APPLICANT: (state, index) => {
+			state.protectorDetail.splice(index, 1);
+		},
 	},
 	actions: {
-		// 입양하기 메인
-		fetchApplicantMainList: ({ commit, rootGetters }, userSeq) => {
+		// 입양하기/입양보내기 메인
+		fetchMainList: ({ commit, rootGetters }, { userSeq, adoptType }) => {
 			console.log(rootGetters, userSeq);
-			axios({
-				url: api.adopt.applicantMain(userSeq),
-				method: 'get',
-				headers: rootGetters['auth/authHeader'],
-			})
-				.then(res => {
-					console.log(res.body.data);
-					commit('SET_ADOPT_TYPE', 'applicant');
-					commit('SET_APPLICANT_MAIN_LIST', res.body.data.applicationList);
-				})
-				.catch(err => {
-					console.error(err.response);
-				});
-			// const newApplicationList = [
-			// 	{
-			// 		applicationId: 1,
-			// 		dogImg:
-			// 			'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-			// 		dogName: '처음',
-			// 		applicationStatus: 1,
-			// 	},
-			// 	{
-			// 		applicationId: 2,
-			// 		dogImg:
-			// 			'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-			// 		dogName: '예시',
-			// 		applicationStatus: 6,
-			// 	},
-			// ];
-			// commit('SET_ADOPT_TYPE', 'applicant');
-			// commit('SET_APPLICANT_MAIN_LIST', newApplicationList);
-		},
-		// 입양하기 & 입양보내기 메인
-		changeAdoptType: ({ commit, rootGetters }, { adoptType, userSeq }) => {
-			console.log(commit, rootGetters, adoptType, userSeq);
 			if (adoptType === 'applicant') {
-				// 입양하기 버튼
 				axios({
 					url: api.adopt.applicantMain(userSeq),
 					method: 'get',
 					headers: rootGetters['auth/authHeader'],
 				})
 					.then(res => {
-						console.log(res.body.data.applicationList);
 						commit('SET_ADOPT_TYPE', 'applicant');
-						commit('SET_APPLICANT_MAIN_LIST', res.body.data.applicationList);
+						commit('SET_MAIN_LIST', res.data.body.data);
 					})
 					.catch(err => {
 						console.error(err.response);
 					});
 			} else {
-				// 입양보내기 버튼
 				axios({
 					url: api.adopt.protectorMain(userSeq),
 					method: 'get',
 					headers: rootGetters['auth/authHeader'],
 				})
 					.then(res => {
-						console.log(res.body.data.boardList);
 						commit('SET_ADOPT_TYPE', 'protector');
-						commit('SET_PROTECTOR_MAIN_LIST', res.body.data.boardList);
+						commit('SET_MAIN_LIST', res.data.body.data);
 					})
 					.catch(err => {
 						console.error(err.response);
 					});
 			}
-
-			// if (adoptType === 'applicant') {
-			// 	const newApplicationList = [
-			// 		{
-			// 			applicationId: 1,
-			// 			dogImg:
-			// 				'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-			// 			dogName: '버튼누르기',
-			// 			applicationStatus: 1,
-			// 		},
-			// 		{
-			// 			applicationId: 2,
-			// 			dogImg:
-			// 				'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-			// 			dogName: '예시',
-			// 			applicationStatus: 6,
-			// 		},
-			// 	];
-			// 	commit('SET_ADOPT_TYPE', 'applicant');
-			// 	commit('SET_APPLICANT_MAIN_LIST', newApplicationList);
-			// } else {
-			// 	const newProtectorMainList = [
-			// 		{
-			// 			boardId: 1,
-			// 			dogImg:
-			// 				'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-			// 			dogName: '보호자 예시',
-			// 			adoptionStatus: 0, // 0, 1, 2
-			// 		},
-			// 		{
-			// 			boardId: 2,
-			// 			dogImg:
-			// 				'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-			// 			dogName: '몽이',
-			// 			adoptionStatus: 1, // 0, 1, 2
-			// 		},
-			// 	];
-			// 	commit('SET_ADOPT_TYPE', 'protector');
-			// 	commit('SET_PROTECTOR_MAIN_LIST', newProtectorMainList);
-			// }
 		},
-
 		// 입양하기 상세
 		fetchApplicantDetail: ({ commit, rootGetters }, applicationId) => {
-			console.log(rootGetters, applicationId);
-			// axios({
-			// 	url: api.adopt.applicantDetail(applicationId),
-			// 	method: 'get',
-			// 	headers: rootGetters['auth/authHeader'],
-			// })
-			// 	.then(res => {
-			// 		console.log(res.body.data);
-			// 		commit('SET_APPLICANT_DETAIL', res.body.data);
-			// 		commit('SET_APPLICATION_STATUS', res.body.data.applicationStatus);
-			// commit(
-			// 	'SET_MEETING_ROOM_ID',
-			// 	res.body.data.meetingRoom.meetingRoomId,
-			// );
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
-
-			const newApplicantDetail = {
-				dogImg:
-					'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-				dogName: '몽이',
-				boardId: 1,
-				chatRoomId: 1,
-				applicationStatus: 2,
-				meetingRoom: {
-					meetingRoomId: 1,
-					active: true,
-				},
-			};
-			commit('SET_APPLICANT_DETAIL', newApplicantDetail);
-			commit('SET_APPLICATION_STATUS', newApplicantDetail.applicationStatus);
-			commit(
-				'SET_MEETING_ROOM_ID',
-				newApplicantDetail.meetingRoom.meetingRoomId,
-			);
+			axios({
+				url: api.adopt.applicantDetail(applicationId),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data.body.data);
+					commit('SET_APPLICANT_DETAIL', res.data.body.data);
+					commit(
+						'SET_APPLICATION_STATUS',
+						res.data.body.data.applicationStatus,
+					);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 		// 입양하기 - 입양절차
 		fetchApplicantAdoptProcess: ({ commit, rootGetters }, applicationId) => {
-			// axios({
-			// 	url: api.adopt.applicantDetailProcess(applicationId),
-			// 	method: 'get',
-			// 	headers: rootGetters['auth/authHeader'],
-			// })
-			// 	.then(res => {
-			// 		console.log(res.body.data.adoptProcess);
-			// const process = res.body.data.adoptProcess;
-			// 		commit('SET_ADOPT_PROCESS', res.body.data.adoptProcess);
-			// 		commit('SET_ADOPTION_PROCESS_ID', res.body.data.adoptionProcessId);
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
-
-			console.log(rootGetters, applicationId);
-			const adoptionProcessId = 1;
-			const newAdoptProcess = [
-				{
-					step: 1,
-					stepStatus: true,
-					date: '2022.07.12 13:00:00',
-				},
-				{
-					step: 2, // 1,2,3,4,5
-					stepStatus: true,
-					date: '2022.07.12 13:00:00',
-				},
-				{
-					step: 3, // 1,2,3,4,5
-					stepStatus: false,
-					date: '',
-				},
-				{
-					step: 4, // 1,2,3,4,5
-					stepStatus: false,
-					date: '',
-				},
-				{
-					step: 5, // 1,2,3,4,5
-					stepStatus: false,
-					date: '',
-				},
-			];
-			commit('SET_ADOPTION_PROCESS_ID', adoptionProcessId);
-			commit('SET_ADOPT_PROCESS', newAdoptProcess);
+			axios({
+				url: api.adopt.applicantDetailProcess(applicationId),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					commit('SET_ADOPT_PROCESS', res.data.body.data.applicantProcessRes);
+					commit(
+						'SET_ADOPTION_PROCESS_ID',
+						res.data.body.data.adoptionProcessId,
+					);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
-
 		// 입양보내기 상세
 		fetchProtectorDetail: ({ commit, rootGetters }, boardId) => {
-			// axios({
-			// 	url: api.adopt.protectorDetail(boardId),
-			// 	method: 'get',
-			// 	headers: rootGetters['auth/authHeader'],
-			// })
-			// 	.then(res => {
-			// 		console.log(res.body.data);
-			// 		commit('SET_PROTECTOR_DETAIL', res.body.data);
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
-			console.log(rootGetters, boardId);
-			const newProtectorDetail = {
-				boardId: 1,
-				dogImg:
-					'https://upload.wikimedia.org/wikipedia/commons/c/c4/Emily_Maltese.jpg', // 제일 첫번째 사진
-				dogName: '몽이',
-				applicationList: [
-					{
-						userSeq: 1,
-						profile: 'https://freesvg.org/img/abstract-user-flat-4.png',
-						name: '황희원',
-						applicationStatus: 4,
-						adoptionProcessId: 3,
-						chatRoomId: 1,
-						meetingRoom: {
-							meetingRoomId: 1,
-							active: true,
-						},
-					},
-				],
-			};
-			commit('SET_PROTECTOR_DETAIL', newProtectorDetail);
+			axios({
+				url: api.adopt.protectorDetail(boardId),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data.body.data);
+					commit('SET_PROTECTOR_DETAIL', res.data.body.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 		// 입양 보내기 - 입양절차
 		fetchProtectorAdoptProcess: (
 			{ commit, rootGetters },
-			{ adoptionProcessId, applicationStatus, meetingRoomId },
+			{ adoptionProcessId, applicationStatus },
 		) => {
 			commit('SET_APPLICATION_STATUS', applicationStatus);
 			commit('SET_ADOPTION_PROCESS_ID', adoptionProcessId);
-			commit('SET_MEETING_ROOM_ID', meetingRoomId);
-			// axios({
-			// 	url: api.adopt.protectorDetailProcess(adoptionProcessId),
-			// 	method: 'get',
-			// 	headers: rootGetters['auth/authHeader'],
-			// })
-			// 	.then(res => {
-			// 		console.log(res.body.data);
-			// 		const process = res.body.data.adoptProcess
-			// 		commit('SET_ADOPT_PROCESS', process);
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
-
-			console.log(rootGetters);
-			const newAdoptProcess = [
-				{
-					step: 1,
-					stepStatus: true,
-					date: '2022.07.12 13:00:00',
-				},
-				{
-					step: 2, // 1,2,3,4,5
-					stepStatus: true,
-					date: '2022.07.12 13:00:00',
-				},
-				{
-					step: 3, // 1,2,3,4,5
-					stepStatus: true,
-					date: '2022.07.12 13:00:00',
-				},
-				{
-					step: 4, // 1,2,3,4,5
-					stepStatus: true,
-					date: '2022.07.12 13:00:00',
-				},
-				{
-					step: 5, // 1,2,3,4,5
-					stepStatus: false,
-					date: '',
-				},
-			];
-			commit('SET_ADOPT_PROCESS', newAdoptProcess);
-			commit('SET_ADOPTION_PROCESS_ID', adoptionProcessId);
-			commit('SET_APPLICATION_STATUS', applicationStatus);
+			axios({
+				url: api.adopt.protectorDetailProcess(adoptionProcessId),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data.body.data);
+					commit('SET_ADOPT_PROCESS', res.data.body.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 		updateActiveApplicant: ({ commit }, activeApplicant) => {
 			commit('SET_ACTIVE_APPICANT', activeApplicant);
 		},
-
-		// 입양 상태 변경
-		updateAdoptProcess: (
-			{ commit, rootGetters },
-			{ step, adoptionProcessId },
-		) => {
-			// axios({
-			// 	url: api.adopt.processUpdate(adoptionProcessId),
-			// 	method: 'put',
-			// 	data: { step, stepStatus: true },
-			// 	headers: rootGetters['auth/authHeader'],
-			// })
-			// 	.then(res => {
-			// 		console.log(res.body.data);
-			// 		commit('SET_ADOPT_PROCESS', res.body.data.adoptProcess);
-			// 		commit('UPDATE_APPLICATION_STATUS');
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
-			console.log(rootGetters, step, adoptionProcessId);
-
-			const newAdoptProcess = [
-				{
-					step: 1,
-					stepStatus: true,
-					date: '2022.07.10',
-				},
-				{
-					step: 2, // 1,2,3,4,5
-					stepStatus: true,
-					date: '2022.07.12 2PM',
-				},
-				{
-					step: 3, // 1,2,3,4,5
-					stepStatus: true,
-					date: '2022.07.12 2PM',
-				},
-				{
-					step: 4, // 1,2,3,4,5
-					stepStatus: true,
-					date: '2022.07.12 2PM',
-				},
-				{
-					step: 5, // 1,2,3,4,5
-					stepStatus: true,
-					date: '2022.07.12 2PM',
-				},
-			];
-			commit('SET_ADOPT_PROCESS', newAdoptProcess);
-			commit('UPDATE_APPLICATION_STATUS');
+		// 입양 반려
+		protectorCancel: ({ commit, rootGetters, getters }, index) => {
+			const adoptionProcessId =
+				getters['protectorDetail'][index]['adoptionProcessId'];
+			axios({
+				url: api.adopt.processUpdate(adoptionProcessId),
+				method: 'delete',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(() => {
+					commit('DELETE_APPLICANT', index);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
-
-		// 스케줄 일정 저장
+		// 입양 취소
+		applicantCancel: ({ dispatch, rootGetters, getters }) => {
+			axios({
+				url: api.adopt.applicantCancel(getters.adoptionProcessId),
+				method: 'delete',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(() => {
+					dispatch('fetchMainList', {
+						userSeq: rootGetters['auth/user'].userSeq,
+						adoptType: 'applicant',
+					});
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+		// 입양 내역 삭제
+		deleteAdoption: (
+			{ commit, rootGetters, getters },
+			{ isApplicant, index },
+		) => {
+			axios({
+				url: api.adopt.deleteAdoption(getters.adoptionProcessId),
+				method: 'delete',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(() => {
+					if (!isApplicant) {
+						commit('DELETE_APPLICANT', index);
+					}
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+		// 입양 상태 변경
+		updateAdoptProcess: ({ commit, rootGetters, getters }, step) => {
+			axios({
+				url: api.adopt.processUpdate(getters['adoptionProcessId']),
+				method: 'put',
+				data: step,
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					commit('UPDATE_APPLICATION_STATUS');
+					commit('SET_ADOPT_PROCESS', res.data.body.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+		// 일정 저장
 		saveDate: (
 			{ commit, rootGetters },
 			{ adoptionProcessId, applicationStatus },
@@ -438,9 +265,9 @@ export default {
 			// 	headers: rootGetters['auth/authHeader'],
 			// })
 			// 	.then(res => {
-			// 		console.log(res.body.data);
-			// 		commit('SET_DATE', res.body.data.date);
-			// 		commit('SET_APPLICATION_STATUS', res.body.data.step);
+			// 		console.log(res.data.body.data);
+			// 		commit('SET_DATE', res.data.body.data.date);
+			// 		commit('SET_APPLICATION_STATUS', res.data.body.data.step);
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -449,7 +276,6 @@ export default {
 			commit('SET_APPLICATION_STATUS', 4);
 			commit('SET_DATE', '08/17/2022, 14:56');
 		},
-
 		// chatList 받기
 		fetchChatMain: ({ commit, rootGetters }, chatRoomId) => {
 			axios({
@@ -536,7 +362,7 @@ export default {
 			// 	headers: rootGetters['auth/authHeader'],
 			// })
 			// 	.then(res => {
-			// 		console.log(res.body.data);
+			// 		console.log(res.data.body.data);
 			// 		commit('UPDATE_NEW_CHAT', chat);
 			// 	})
 			// 	.catch(err => {
@@ -546,7 +372,6 @@ export default {
 			console.log(rootGetters, chat, getters);
 			commit('UPDATE_NEW_CHAT', chat);
 		},
-
 		// 일정 예약 및 수정
 		saveSchedule: ({ commit, rootGetters, getters }, date) => {
 			const payload = { step: getters.applicationStatus, date };
@@ -588,7 +413,6 @@ export default {
 			// });
 			commit('SET_DATE', '');
 		},
-
 		// 비디오 토큰 받기
 		getToken: ({ commit }, sessionName) => {
 			axios({
@@ -611,90 +435,20 @@ export default {
 					console.error(err.response);
 				});
 		},
-
 		// 입양신청서 정보 받기
 		fetchApplication: ({ commit, rootGetters }, applicationId) => {
 			console.log(commit, rootGetters, applicationId);
-			// axios({
-			// 	url: api.adopt.application(applicationId),
-			// 	method: 'get',
-			// 	headers: rootGetters['auth/authHeader'],
-			// })
-			// 	.then(res => {
-			// 		console.log(res.body.data);
-			// 		commit('auth/SET_USER_INFO', res.body.data.userInfo, {
-			// 			root: true,
-			// 		});
-			// 		commit('SET_APPLICATION_ANSWER', res.body.data.answer);
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
-			const data = {
-				userInfo: {
-					name: '이연정',
-					phoneNumber: null,
-					birth: '20000103',
-					gender: 'W',
-					job: '무직',
-					zonecode: '12345',
-					roadAddress: '대구광역시 ',
-					detailAddress: '101동',
-					etc: '눈누난나',
-				},
-				createtime: '2022-08-03 11:57:04',
-				applicationStatus: 7,
-				answer: [
-					{
-						order: 1,
-						answer: 'ddd',
-					},
-					{
-						order: 2,
-						answer: 'qq',
-					},
-					{
-						order: 3,
-						answer: 'ww',
-					},
-					{
-						order: 4,
-						answer: 'ee',
-					},
-					{
-						order: 5,
-						answer: 'rr',
-					},
-					{
-						order: 6,
-						answer: 'tty',
-					},
-					{
-						order: 7,
-						answer: 'ddf',
-					},
-					{
-						order: 8,
-						answer: 'sdf',
-					},
-					{
-						order: 9,
-						answer: 'dfdf',
-					},
-					{
-						order: 10,
-						answer: 'sdf',
-					},
-					{
-						order: 11,
-						answer: 'wwe',
-					},
-				],
-			};
-			commit('auth/SET_USER_INFO', data.userInfo, {
-				root: true,
-			});
-			commit('SET_APPLICATION_ANSWER', data.answer);
+			axios({
+				url: api.adopt.application(applicationId),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					commit('SET_APPLICATION', res.data.body.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 	},
 };

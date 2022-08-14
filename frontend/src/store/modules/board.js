@@ -51,9 +51,21 @@ export default {
 		SET_CATEGORY: (state, category) => (state.category = category),
 		SET_APPLICATION_PAGE_NUM: (state, applicationPageNum) =>
 			(state.applicationPageNum = applicationPageNum),
-		UPDATE_IS_LIKE: state => (state.board.isLike = !state.board.isLike),
-		UPDATE_HAVE_INTEREST: state =>
-			(state.board.haveInterest = !state.board.haveInterest),
+		UPDATE_IS_LIKE: (state, index) => {
+			if (index === -1) {
+				state.board.isLike = !state.board.isLike;
+			} else {
+				state.boardList[index].isLike = !state.boardList[index].isLike;
+			}
+		},
+		UPDATE_HAVE_INTEREST: (state, index) => {
+			if (index === -1) {
+				state.board.haveInterest = !state.board.haveInterest;
+			} else {
+				state.boardList[index].haveInterest =
+					!state.boardList[index].haveInterest;
+			}
+		},
 		SET_ADOPT_QUESTION_LIST: (state, adoptQuestionList) => {
 			state.adoptQuestionList = adoptQuestionList;
 		},
@@ -70,7 +82,10 @@ export default {
 			console.log('fetchBoardList', tagNo, pageNo, rootGetters);
 
 			axios({
-				url: api.board.boardMain(tagNo),
+				url: api.board.boardMain({
+					tagNo,
+					userSeq: rootGetters['auth/user'].userSeq,
+				}),
 				method: 'get',
 				headers: rootGetters['auth/authHeader'],
 				params: {
@@ -80,7 +95,7 @@ export default {
 				.then(res => {
 					console.log(res);
 					commit('SET_PAGE_NO', pageNo + 1);
-					commit('SET_BOARD_LIST', res.body.data.boardList);
+					commit('SET_BOARD_LIST', res.data.body.data.boardList);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -150,7 +165,7 @@ export default {
 			})
 				.then(res => {
 					console.log(res);
-					commit('SET_BOARD_LIST', res.body.data.boardList);
+					commit('SET_BOARD_LIST', res.data.body.data.boardList);
 					commit('SET_PAGE_NO', pageNo + 1);
 				})
 				.catch(err => {
@@ -205,8 +220,8 @@ export default {
 			// 	headers: rootGetters['auth/authHeader'],
 			// })
 			// 	.then(res => {
-			// 		console.log(res.body.data);
-			// 		commit('SET_BOARD', res.body.data)
+			// 		console.log(res.data.body.data);
+			// 		commit('SET_BOARD', res.data.body.data)
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -217,8 +232,8 @@ export default {
 			// 	headers: rootGetters['auth/authHeader'],
 			// })
 			// 	.then(res => {
-			// 		console.log(res.body.data);
-			// 		commit('SET_IS_ADOPTING', res.body.data.status);
+			// 		console.log(res.data.body.data);
+			// 		commit('SET_IS_ADOPTING', res.data.body.data.status);
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -297,7 +312,7 @@ export default {
 			// 	headers: rootGetters['auth/authHeader'],
 			// })
 			// 	.then(res => {
-			// console.log(res.body.data);
+			// console.log(res.data.body.data);
 			// commit('SET_ADOPT_STATUS', adoptStatus);
 			// 	})
 			// 	.catch(err => {
@@ -310,26 +325,25 @@ export default {
 		// 글 쓰기
 		createBoard: ({ commit, rootGetters }, payload) => {
 			console.log('createBoard', commit, rootGetters, payload);
-			router.push({
-				name: 'boardDetail',
-				params: { boardId: 1 },
-			});
-			// axios({
-			// 	url: api.board.boardCreate(),
-			// 	method: 'post',
-			// 	headers: {rootGetters['auth/authHeader'], "Content-Type": "multipart/form-data"},
-			// 	data: payload,
-			// })
-			// 	.then(res => {
-			// 		console.log(res.body.data.boardId);
-			// 		this.$router.push({
-			// 			name: 'boardDetail',
-			// 			params: { boardId: res.body.data.boardId },
-			// 		});
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
+			axios({
+				url: api.board.boardCreate(),
+				method: 'post',
+				headers: {
+					...rootGetters['auth/authHeader'],
+					'Content-Type': 'multipart/form-data',
+				},
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data.body.data.boardId);
+					router.push({
+						name: 'boardDetail',
+						params: { boardId: res.data.body.data.boardId },
+					});
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 
 		// 글 수정
@@ -342,7 +356,7 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.body.data);
+					console.log(res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -358,7 +372,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.body.data);
+					console.log(res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -395,7 +409,7 @@ export default {
 			})
 				.then(res => {
 					dispatch('fetchDetailBoard', boardId);
-					console.log(res.body.data);
+					console.log(res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -417,7 +431,7 @@ export default {
 			})
 				.then(res => {
 					dispatch('fetchDetailBoard', boardId);
-					console.log(res.body.data);
+					console.log(res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -438,7 +452,7 @@ export default {
 			})
 				.then(res => {
 					dispatch('fetchDetailBoard', boardId);
-					console.log(res.body.data);
+					console.log(res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -459,7 +473,7 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.body.data);
+					console.log(res.data.body.data);
 					dispatch('fetchDetailBoard', boardId);
 				})
 				.catch(err => {
@@ -481,7 +495,7 @@ export default {
 			})
 				.then(res => {
 					dispatch('fetchDetailBoard', boardId);
-					console.log(res.body.data);
+					console.log(res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -500,7 +514,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.body.data);
+					console.log(res.data.body.data);
 					dispatch('fetchDetailBoard', boardId);
 				})
 				.catch(err => {
@@ -508,12 +522,13 @@ export default {
 				});
 		},
 		// 좋아요 하기
-		createLike: ({ commit, rootGetters }, { boardId }) => {
+		createLike: ({ commit, rootGetters }, { boardId, index }) => {
 			const payload = {
-				userSeq: rootGetters['user/userSeq'],
+				userSeq: rootGetters['auth/user'].userSeq,
 			};
 			console.log('createLike', commit, rootGetters, boardId, payload);
-			commit('UPDATE_IS_LIKE');
+			commit('UPDATE_IS_LIKE', index);
+
 			// axios({
 			// 	url: api.board.likeCreate(boardId),
 			// 	method: 'post',
@@ -521,7 +536,7 @@ export default {
 			// 	data: payload,
 			// })
 			// 	.then(res => {
-			// 		console.log(res.body.data);
+			// 		console.log(res.data.body.data);
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -529,12 +544,12 @@ export default {
 		},
 
 		// 좋아요 삭제
-		deleteLike: ({ commit, rootGetters }, { boardId }) => {
+		deleteLike: ({ commit, rootGetters }, { boardId, index }) => {
 			const payload = {
-				userSeq: rootGetters['user/userSeq'],
+				userSeq: rootGetters['auth/user'].userSeq,
 			};
 			console.log('deleteLike', commit, rootGetters, boardId, payload);
-			commit('UPDATE_IS_LIKE');
+			commit('UPDATE_IS_LIKE', index);
 			// axios({
 			// 	url: api.board.likeDelete(boardId),
 			// 	method: 'delete',
@@ -542,7 +557,7 @@ export default {
 			// 	data: payload,
 			// })
 			// 	.then(res => {
-			// 		console.log(res.body.data);
+			// 		console.log(res.data.body.data);
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -550,12 +565,12 @@ export default {
 		},
 
 		// 별표 하기
-		createStar: ({ commit, rootGetters }, { boardId }) => {
+		createStar: ({ commit, rootGetters }, { boardId, index }) => {
 			const payload = {
-				userSeq: rootGetters['user/userSeq'],
+				userSeq: rootGetters['auth/user'].userSeq,
 			};
 			console.log('createStar', commit, rootGetters, boardId, payload);
-			commit('UPDATE_HAVE_INTEREST');
+			commit('UPDATE_HAVE_INTEREST', index);
 			// axios({
 			// 	url: api.board.starCreate(boardId),
 			// 	method: 'post',
@@ -563,19 +578,19 @@ export default {
 			// 	data: payload,
 			// })
 			// 	.then(res => {
-			// 		console.log(res.body.data);
+			// 		console.log(res.data.body.data);
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
 			// 	});
 		},
 		// 별표 삭제
-		deleteStar: ({ commit, rootGetters }, { boardId }) => {
+		deleteStar: ({ commit, rootGetters }, { boardId, index }) => {
 			const payload = {
-				userSeq: rootGetters['user/userSeq'],
+				userSeq: rootGetters['auth/user'].userSeq,
 			};
 			console.log('deleteStar', commit, rootGetters, boardId, payload);
-			commit('UPDATE_HAVE_INTEREST');
+			commit('UPDATE_HAVE_INTEREST', index);
 			// axios({
 			// 	url: api.board.starDelete(boardId),
 			// 	method: 'delete',
@@ -583,7 +598,7 @@ export default {
 			// 	data: payload,
 			// })
 			// 	.then(res => {
-			// 		console.log(res.body.data);
+			// 		console.log(res.data.body.data);
 			// 	})
 			// 	.catch(err => {
 			// 		console.error(err.response);
@@ -600,7 +615,7 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.body.data);
+					console.log(res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -626,10 +641,10 @@ export default {
 			commit('SET_ADOPT_QUESTION_LIST', data);
 		},
 
-		plusQuestionNumber: ({ commit }) => {
+		plusQuestionCount: ({ commit }) => {
 			commit('PLUS_QUESTION_COUNT');
 		},
-		minusQuestionNumber: ({ commit }) => {
+		minusQuestionCount: ({ commit }) => {
 			commit('MINUS_QUESTION_COUNT');
 		},
 	},

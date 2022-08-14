@@ -5,7 +5,10 @@ import com.d209.mungtopia.dto.board.BoardDto;
 import com.d209.mungtopia.dto.board.CommentDto;
 import com.d209.mungtopia.dto.board.ReplyDto;
 import com.d209.mungtopia.entity.*;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface BoardService {
@@ -28,4 +31,7 @@ public interface BoardService {
     List<Comment> saveReply(Board board, Comment comment, ReplyDto replyDto);
     List<Comment> updateReply(Board board, Reply reply, ReplyDto replyDto);
     List<Comment> deleteReply(Board board, Reply reply, ReplyDto replyDto);
+
+    Boolean saveImgFile(List<MultipartFile> multipartFiles, long boardId) throws Exception;
+    Resource getImgFile(long boardId, int order) throws IOException;
 }

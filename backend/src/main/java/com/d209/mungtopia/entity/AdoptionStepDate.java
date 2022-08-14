@@ -35,4 +35,9 @@ public class AdoptionStepDate {
     public void changeDate(LocalDateTime date){
         this.date = date;
     }
+
+    public AdoptionStepDate(int step, AdoptionProcess adoptionProcess){
+        this.step = step;
+        this.adoptionProcess = adoptionProcess;
+    }
 }

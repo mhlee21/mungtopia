@@ -49,11 +49,11 @@ export default {
 			};
 			store.dispatch('board/createApplication', {
 				payload: payload,
-				boardId: boardId,
+				boardId: boardId.value,
 			});
 			router.push({
 				name: 'boardDetail',
-				params: { boardId: boardId },
+				params: { boardId: boardId.value },
 			});
 		};
 		// const updateText = event => {

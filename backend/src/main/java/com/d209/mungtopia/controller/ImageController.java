@@ -22,14 +22,10 @@ public class ImageController {
 
     private final BoardService boardService;
 
-    @GetMapping("/{boardId}/{order}")
+    @GetMapping("/{fileName}")
     @ResponseBody
-    public ResponseEntity<byte[]> getImgFile(@PathVariable long boardId, @PathVariable int order, HttpServletRequest request) throws IOException {
-        Resource resource = boardService.getImgFile(boardId, order);
-        // Try to determine file's content type
-        System.out.println("resource = " + resource.getURL());
-        System.out.println("resource.getURI() = " + resource.getURI());
-        System.out.println("resource.getFilename() = " + resource.getFilename());
+    public ResponseEntity<byte[]> getImgFile(@PathVariable String fileName, HttpServletRequest request) throws IOException {
+        Resource resource = boardService.getImgFile(fileName);
 
         String contentType = null;
         try {

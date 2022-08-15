@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface InfImageStorageRepository extends JpaRepository<ImageStorage, Long> {
     ImageStorage findByBoardAndOrders(Board board, int order);
-//    List<ImageStorage> findByBoardOrderByOrders(Board board);
+    List<ImageStorage> findByBoardOrderByOrders(Board board);
+    ImageStorage findImageStorageBySaveFileName(String fileName);
 }

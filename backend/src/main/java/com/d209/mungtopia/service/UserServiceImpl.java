@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService{
         for (Board board: boardList) {
             Info info = new Info();
             info.setUserSeq(board.getBoardId());
-            info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
+            info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getOriginFileName());
             response.getBoardList().add(info);
         }
 
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService{
             Board board = like.getBoard();
             Info info = new Info();
             info.setUserSeq(board.getBoardId());
-            info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
+            info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getOriginFileName());
             response.getLikeList().add(info);
         }
 
@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService{
             Board board = star.getBoard();
             Info info = new Info();
             info.setUserSeq(board.getBoardId());
-            info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getFilename());
+            info.setProfile(infImageStorageRepository.findByBoardAndOrders(board, 1).getOriginFileName());
             response.getStarList().add(info);
         }
         return response;

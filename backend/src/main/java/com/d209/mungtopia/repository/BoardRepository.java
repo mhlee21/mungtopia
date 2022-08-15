@@ -34,7 +34,7 @@ public class BoardRepository {
 //        imageStorage.stream().filter
         for (ImageStorage img: imageStorage) {
             if (img.getOrders() == 1)
-                return img.getFilename();
+                return img.getOriginFileName();
         }
         return null;
     }

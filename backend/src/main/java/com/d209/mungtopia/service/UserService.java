@@ -1,12 +1,19 @@
 package com.d209.mungtopia.service;
 
 import com.d209.mungtopia.dto.user.Info;
-import com.d209.mungtopia.dto.user.UserBoaordRes;
+import com.d209.mungtopia.dto.user.UseInfoReq;
+import com.d209.mungtopia.dto.user.UserBoardRes;
 import com.d209.mungtopia.entity.UserInfo;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 public interface UserService {
-    UserInfo getUser(long userSeq);
-    Boolean putUser (long userSeq, UserInfo userInfo);
-    UserBoaordRes getUserBoard(long userSeq);
+    Info getUser(long userSeq);
+    Boolean putDetailUser (long userSeq, UseInfoReq userInfo);
+    Boolean putUserProfile(Long userSeq, MultipartFile multipartFile) throws IOException;
+    UserBoardRes getUserBoard(long userSeq);
+    UserInfo getDetailUser(long userSeq);
     Info getUserSeq(String token);
 }

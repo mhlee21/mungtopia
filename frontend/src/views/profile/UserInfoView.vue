@@ -28,6 +28,7 @@
 									:disabled="after"
 									checked
 									v-model="newUserInfo.gender"
+									value="M"
 								/>
 								<label for="male">남성</label>
 							</div>
@@ -38,6 +39,7 @@
 									id="female"
 									:disabled="after"
 									v-model="newUserInfo.gender"
+									value="W"
 								/>
 								<label for="female">여성</label>
 							</div>

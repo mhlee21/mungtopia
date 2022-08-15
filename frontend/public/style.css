@@ -1731,16 +1731,19 @@ body {
   padding: 10px 30px;
   box-sizing: border-box;
 }
-.profile-pg .info-wrapper .info-component {
+.profile-pg .info-wrapper .info-component{
   width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  text-align: center;
+  align-items: center;
 }
+
 .profile-pg .info-wrapper .info-component .change-btn {
   color: #626262;
-  margin: 10px;
-  padding-left: 4vw;
+  padding: 1rem;
+  /* padding-left: 4vw; */
 }
 .profile-pg .info-wrapper .info-component .change-input {
   display: none;
@@ -1754,17 +1757,19 @@ body {
   border-radius: 15px;
   border: none;
   height: 30px;
+  width: 100%;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 14px;
 }
 .profile-pg .image-wrapper {
   border-radius: 50%;
-  width: 30vw;
-  height: 30vw;
+  width: 20vw;
+  height: 20vw;
+  margin-bottom: 1rem;
   overflow: hidden;
 }
 .profile-pg .image-wrapper .profile-img {
-  height: 30vw;
+  height: 20vw;
 }
 .profile-pg .board-wrapper {
   margin: 20px 0;
@@ -1817,7 +1822,6 @@ body {
   object-fit: cover;
   margin: auto;
 }
-
 
 .profile-pg .btn-wrapper {
   width: 100%;

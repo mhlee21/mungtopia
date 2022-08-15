@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UseInfoReq {
-    private String userName;
+    private String name;
     private String gender;
     private String birth;
     private String phoneNumber;

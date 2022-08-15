@@ -36,10 +36,7 @@
 			<div style="text-align: center">
 				<img
 					:src="
-						require('@/assets/img/KNOWLEDGE/' +
-							'knowledge_' +
-							'fail' +
-							'.jpg')
+						require('@/assets/img/KNOWLEDGE/' + 'knowledge_' + 'fail' + '.jpg')
 					"
 					width="150"
 					height="150"

@@ -13,7 +13,7 @@
 							<textarea
 								cols="30"
 								rows="4"
-								v-model="comment.contents"
+								v-model="newComment.contents"
 								class="comment-change-box"
 							></textarea>
 						</div>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, reactive } from 'vue';
 import { useStore } from 'vuex';
 
 export default {
@@ -68,6 +68,7 @@ export default {
 		const store = useStore();
 
 		const comment = computed(() => store.getters['board/comment']);
+		const newComment = reactive(comment);
 		const reply = computed(() => store.getters['board/reply']);
 		const modalType = computed(() => store.getters['board/modalType']);
 
@@ -76,17 +77,17 @@ export default {
 			if (modalType?.value === 0) {
 				data = {
 					title: '댓글 수정',
-					contents: comment.value?.contents,
+					contents: newComment.value?.contents,
 					buttonValue: ['완료', '취소'],
 					buttonFunction: updateComment,
-					commentId: comment.value?.commentId,
+					commentId: newComment.value?.commentId,
 				};
 			} else if (modalType?.value === 1) {
 				data = {
 					title: '댓글 삭제',
 					buttonValue: ['예', '아니오'],
 					buttonFunction: deleteComment,
-					commentId: comment.value?.commentId,
+					commentId: newComment.value?.commentId,
 				};
 			} else if (modalType?.value === 2) {
 				data = {
@@ -94,7 +95,7 @@ export default {
 					contents: reply.value?.contents,
 					buttonValue: ['완료', '취소'],
 					buttonFunction: updateReply,
-					comment: comment.value?.commentId,
+					comment: newComment.value?.commentId,
 					reply: reply.value?.replyId,
 				};
 			} else {
@@ -102,21 +103,24 @@ export default {
 					title: '답글 삭제',
 					buttonValue: ['예', '아니오'],
 					buttonFunction: deleteReply,
-					comment: comment.value?.commentId,
+					comment: newComment.value?.commentId,
 					reply: reply.value?.replyId,
 				};
 			}
 			return data;
 		});
 
-		const userSeq = computed(() => store.getters['auth/user']?.userSeq) || 1;
+		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
 
 		// 댓글 수정
 		const updateComment = commentId => {
 			emit('closeModal');
+			console.log('comment', newComment.value);
 			const payload = {
 				userSeq: userSeq.value,
-				content: '이 강아지 너무 귀엽',
+				secret: newComment.value.secret,
+				content: newComment.value.contents,
+				// userNickname: newComment.value.userNickname;
 			};
 			store.dispatch('board/updateComment', { commentId, payload });
 		};

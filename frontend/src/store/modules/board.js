@@ -13,6 +13,7 @@ export default {
 			board: {},
 			adoptStatus: null,
 			comment: {},
+			commentList: [],
 			reply: {},
 			modalType: null,
 			isAdopting: null,
@@ -30,6 +31,7 @@ export default {
 		boardId: state => state.board.boardId,
 		adoptStatus: state => state.adoptStatus,
 		comment: state => state.comment,
+		commentList: state => state.commentList,
 		reply: state => state.reply,
 		modalType: state => state.modalType,
 		isAdopting: state => state.isAdopting,
@@ -45,6 +47,7 @@ export default {
 		SET_BOARD: (state, board) => (state.board = board),
 		SET_ADOPT_STATUS: (state, adoptStatus) => (state.adoptStatus = adoptStatus),
 		SET_COMMENT: (state, comment) => (state.comment = comment),
+		SET_COMMENT_LIST: (state, commentList) => (state.commentList = commentList),
 		SET_REPLY: (state, reply) => (state.reply = reply),
 		SET_MODAL_TYPE: (state, modalType) => (state.modalType = modalType),
 		SET_IS_ADOPTING: (state, isAdopting) => (state.isAdopting = isAdopting),
@@ -207,7 +210,7 @@ export default {
 		},
 
 		// 상세글 불러오기
-		fetchDetailBoard: ({ commit, rootGetters }, { boardId }) => {
+		fetchDetailBoard: ({ commit, rootGetters }, boardId) => {
 			console.log('featureDetailBoard', commit, rootGetters, boardId);
 			// axios({
 			// 	url: api.board.boardDetail(boardId),
@@ -221,18 +224,20 @@ export default {
 			// 	.catch(err => {
 			// 		console.error(err.response);
 			// 	});
-			// axios({
-			// 	url: api.board.adoptionStatusCheck(rootGetters['auth/user']['userSeq']),
-			// 	method: 'get',
-			// 	headers: rootGetters['auth/authHeader'],
-			// })
-			// 	.then(res => {
-			// 		console.log(res.data.body.data);
-			// 		commit('SET_IS_ADOPTING', res.data.body.data.status);
-			// 	})
-			// 	.catch(err => {
-			// 		console.error(err.response);
-			// 	});
+
+			// 댓글 목록 가져오기
+			axios({
+				url: api.board.commentList(boardId),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data.body.data);
+					commit('SET_COMMENT_LIST', res.data.body.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 
 			const board = {
 				boardId: 1,
@@ -268,31 +273,6 @@ export default {
 					neutering: 'Y',
 					areaSido: '대구',
 				},
-				commentList: [
-					{
-						commentId: 1,
-						author: {
-							userSeq: 1,
-							nickname: '황희원',
-							profile: 'https://freesvg.org/img/abstract-user-flat-4.png',
-						},
-						contents: '많이 짖는 편인가요?',
-						secret: false,
-						createtime: '2022.08.07 11:23:00',
-						replyList: [
-							{
-								replyId: 2,
-								contents: '아뇨 몽이 거의 안 짖어요! 순둥이입니다',
-								createtime: '2022.08.07 12:25:00',
-								author: {
-									userSeq: 2,
-									nickname: '이연정',
-									profile: 'https://freesvg.org/img/abstract-user-flat-4.png',
-								},
-							},
-						],
-					},
-				],
 			};
 			commit('SET_BOARD', board);
 			commit('SET_IS_ADOPTING', false);
@@ -390,10 +370,7 @@ export default {
 		},
 
 		// 댓글 쓰기
-		createComment: (
-			{ commit, dispatch, getters, rootGetters },
-			{ payload },
-		) => {
+		createComment: ({ commit, getters, rootGetters }, payload) => {
 			console.log('createComment', commit, rootGetters);
 			const boardId = getters['boardId'];
 			axios({
@@ -403,8 +380,7 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					dispatch('fetchDetailBoard', boardId);
-					console.log(res.data.body.data);
+					commit('SET_COMMENT_LIST', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -413,7 +389,7 @@ export default {
 
 		// 댓글 수정
 		updateComment: (
-			{ commit, dispatch, rootGetters, getters },
+			{ commit, rootGetters, getters },
 			{ commentId, payload },
 		) => {
 			console.log('updateComment', commit, rootGetters);
@@ -425,8 +401,7 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					dispatch('fetchDetailBoard', boardId);
-					console.log(res.data.body.data);
+					commit('SET_COMMENT_LIST', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -605,20 +580,20 @@ export default {
 		},
 		// 입양 신청서 작성
 		createApplication: ({ rootGetters, getters }, boardId) => {
-			// const applicantAnswerList = getters['application'].map(
-			// 	(answer, index) => {
-			// 		return { answer, index };
-			// 	},
-			// );
-			// const payload = {
-			// 	userSeq: rootGetters['auth/user']['userSeq'],
-			// 	applicantAnswerList,
-			// };
-			// console.log(payload);
+			const applicantAnswerList = getters['application'].map(
+				(answer, index) => {
+					return { answer, index };
+				},
+			);
 			const payload = {
-				applicantAnswerList: getters['application'],
 				userSeq: rootGetters['auth/user']['userSeq'],
+				applicantAnswerList,
 			};
+			console.log(payload);
+			// const payload = {
+			// 	applicantAnswerList: getters['application'],
+			// 	userSeq: rootGetters['auth/user']['userSeq'],
+			// };
 			axios({
 				url: api.board.applicationCreate(boardId),
 				method: 'post',

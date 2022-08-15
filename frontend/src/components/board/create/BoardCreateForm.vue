@@ -247,7 +247,7 @@ export default {
 					userSeq: store.getters['auth/user']?.userSeq,
 					boardTag: category.value,
 					contents: contents.value,
-					createtime: JSON.stringify(new Date()),
+					createtime: new Date(),
 				};
 			}
 			formData.append(

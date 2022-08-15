@@ -18,7 +18,7 @@ public interface BoardService {
 
     // 글 관련
     Board saveBoard(List<MultipartFile> multipartFiles, BoardDto boardDto) throws Exception;
-    Board updateBoard(Board board, BoardDto boardDto) throws Exception;
+    Board updateBoard(List<MultipartFile> multipartFiles, BoardDto boardDto, Board board) throws Exception;
     Boolean deleteBoard(Board board);
     Board findBoardDetail(Long boardId);
 

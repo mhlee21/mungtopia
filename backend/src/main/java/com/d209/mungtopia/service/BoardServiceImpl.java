@@ -165,6 +165,7 @@ public class BoardServiceImpl implements BoardService {
                 dogInfo.getAge(),
                 dogInfo.getWeight(),
                 dogInfo.getBreed(),
+                dogInfo.getNeutering(),
                 dogInfo.getVaccination(),
                 dogInfo.getAdoptionStatus()
         );
@@ -235,64 +236,63 @@ public class BoardServiceImpl implements BoardService {
 
     /**
      * 글 저장
-     * @param tagNo
+     * @param multipartFiles
      * @param boardDto
      * @return
      */
     @Override
-    public Board saveBoard(Long tagNo, BoardDto boardDto) {
-        User user = userRepository.findById(boardDto.getUserSeq()).get();
+    public Board saveBoard(List<MultipartFile> multipartFiles, BoardDto boardDto) throws Exception {
+        Optional<User> user = userRepository.findById(boardDto.getUserSeq());
+        if (user.isEmpty())
+            return null;
 
         // 글 저장
         Board board = Board.builder()
-                .boardTag(boardTag[tagNo.intValue() - 1])
+                .boardTag(boardTag[boardDto.getBoardTag() - 1])
                 .contents(boardDto.getContents())
-                .createtime(getNow())
-                .user(user)
+                .createtime(boardDto.getCreatetime() == null ? getNow() : boardDto.getCreatetime())
+                .user(user.get())
                 .build();
         boardRepository.save(board);
 
-
         // 이미지 저장
-        List<ImageStorage> imageStorageList = new ArrayList<>();
-        for (ImageStorageDto imageStorageDto : boardDto.getImageStorageDtoList()) {
-            ImageStorage imageStorage = ImageStorage.builder()
-                    .orders(imageStorageDto.getOrders())
-                    .originFileName(imageStorageDto.getServerPath())
-                    .board(board)
-                    .build();
-            imageStorageRepository.save(imageStorage);
-            imageStorageList.add(imageStorage);
+        try{
+            List<ImageStorage> imageStorages = saveImgFile(multipartFiles, board);
+            board.setImageStorageList(imageStorages);
+        }catch (Exception e){
+            throw  new Exception(e);
         }
-        board.setImageStorageList(imageStorageList);
+
 
         // 입양일 경우 추가 저장
-        if (tagNo == 1) {
+        if (boardDto.getBoardTag() == 1) {
+            DogInfoDto inputDogInfo = boardDto.getDogInfoDto();
             DogInfo dogInfo = DogInfo.builder()
                     .board(board)
-                    .name(boardDto.getName())
-                    .areaSido(boardDto.getAreaSido())
-                    .areaGugun(boardDto.getAreaGugun())
-                    .gender(boardDto.getGender())
-                    .age(boardDto.getAge())
-                    .weight(boardDto.getWeight())
-                    .breed(boardDto.getBreed())
-                    .vaccination(boardDto.getVaccination())
-                    .neutering(boardDto.getNeutering())
-                    .adoptionStatus(boardDto.getAdoptionStatus())
+                    .name(inputDogInfo.getName())
+                    .areaSido(inputDogInfo.getAreaSido())
+                    .areaGugun(inputDogInfo.getAreaGugun())
+                    .gender(inputDogInfo.getGender())
+                    .age(inputDogInfo.getAge())
+                    .weight(inputDogInfo.getWeight())
+                    .breed(inputDogInfo.getBreed())
+                    .vaccination(inputDogInfo.isVaccination())
+                    .neutering(inputDogInfo.isNeutering())
+                    .adoptionStatus(inputDogInfo.isAdoptionStatus())
                     .build();
             dogInfoRepository.save(dogInfo);
             board.setDogInfo(dogInfo);
 
             DogNature dogNature = DogNature.builder()
                     .dogInfo(dogInfo)
-                    .nature1(boardDto.getNature1())
-                    .nature2(boardDto.getNature2())
-                    .nature3(boardDto.getNature3())
-                    .nature4(boardDto.getNature4())
-                    .nature5(boardDto.getNature5())
-                    .nature6(boardDto.getNature6())
+                    .nature1(boardDto.getDogNature().get(0))
+                    .nature2(boardDto.getDogNature().get(1))
+                    .nature3(boardDto.getDogNature().get(2))
+                    .nature4(boardDto.getDogNature().get(3))
+                    .nature5(boardDto.getDogNature().get(4))
+                    .nature6(boardDto.getDogNature().get(5))
                     .build();
+
             dogNatureRepository.save(dogNature);
             dogInfo.setDogNature(dogNature);
         }
@@ -300,7 +300,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public Board updateBoard(Board board, BoardDto boardDto) {
+    public Board updateBoard(List<MultipartFile> multipartFiles, BoardDto boardDto, Board board) throws Exception {
         //Contents 수정
         board.setContents(boardDto.getContents());
 
@@ -310,44 +310,53 @@ public class BoardServiceImpl implements BoardService {
             //기존 이미지 모두 지우기
             for (ImageStorage imageStorage : imageStorageList) {
                 imageStorageRepository.delete(imageStorage);
+                File file = new File("/var/images/" + imageStorage.getSaveFileName());
+
+                if (file.exists()){
+                    if (file.delete())
+                        System.out.println("=============== 파일 삭제 성공 =================");
+                    else
+                        System.out.println("=============== 파일 삭제 실패 =================");
+                }else{
+                    System.out.println("=============== 파일이 존재하지 않음 =================");
+                }
+                // 서버 이미지도 지워야함!!
             }
         }
 
         //이미지 새로 저장하기
-
-        List<ImageStorage> newImageStorageList = new ArrayList<>();
-        for (ImageStorageDto imageStorageDto : boardDto.getImageStorageDtoList()) {
-            ImageStorage imageStorage = ImageStorage.builder()
-                    .orders(imageStorageDto.getOrders())
-                    .originFileName(imageStorageDto.getServerPath())
-                    .board(board)
-                    .build();
-            newImageStorageList.add(imageStorage);
+        // 이미지 저장
+        try{
+            List<ImageStorage> imageStorages = saveImgFile(multipartFiles, board);
+            board.setImageStorageList(imageStorages);
+        }catch (Exception e){
+            throw  new Exception(e);
         }
-        board.setImageStorageList(newImageStorageList);
+
 
         //DogInfo 수정
+        DogInfoDto inputDogInfo = boardDto.getDogInfoDto();
         DogInfo dogInfo = board.getDogInfo();
-        dogInfo.setName(boardDto.getName());
-        dogInfo.setAreaSido(boardDto.getAreaSido());
-        dogInfo.setAreaGugun(boardDto.getAreaGugun());
-        dogInfo.setGender(boardDto.getGender());
-        dogInfo.setAge(boardDto.getAge());
-        dogInfo.setWeight(boardDto.getWeight());
-        dogInfo.setBreed(boardDto.getBreed());
-        dogInfo.setVaccination(boardDto.getVaccination());
-        dogInfo.setNeutering(boardDto.getNeutering());
-        dogInfo.setAdoptionStatus(boardDto.getAdoptionStatus());
+        dogInfo.setName(inputDogInfo.getName());
+        dogInfo.setAreaSido(inputDogInfo.getAreaSido());
+        dogInfo.setAreaGugun(inputDogInfo.getAreaGugun());
+        dogInfo.setGender(inputDogInfo.getGender());
+        dogInfo.setAge(inputDogInfo.getAge());
+        dogInfo.setWeight(inputDogInfo.getWeight());
+        dogInfo.setBreed(inputDogInfo.getBreed());
+        dogInfo.setVaccination(inputDogInfo.isVaccination());
+        dogInfo.setNeutering(inputDogInfo.isNeutering());
+        dogInfo.setAdoptionStatus(inputDogInfo.isAdoptionStatus());
         dogInfoRepository.save(dogInfo);
 
         //DogNature 수정
         DogNature dogNature = dogInfo.getDogNature();
-        dogNature.setNature1(boardDto.getNature1());
-        dogNature.setNature2(boardDto.getNature2());
-        dogNature.setNature3(boardDto.getNature3());
-        dogNature.setNature4(boardDto.getNature4());
-        dogNature.setNature5(boardDto.getNature5());
-        dogNature.setNature6(boardDto.getNature6());
+        dogNature.setNature1(boardDto.getDogNature().get(0));
+        dogNature.setNature2(boardDto.getDogNature().get(1));
+        dogNature.setNature3(boardDto.getDogNature().get(2));
+        dogNature.setNature4(boardDto.getDogNature().get(3));
+        dogNature.setNature5(boardDto.getDogNature().get(4));
+        dogNature.setNature6(boardDto.getDogNature().get(5));
         dogNatureRepository.save(dogNature);
 
         return board;
@@ -548,23 +557,18 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public Boolean saveImgFile(List<MultipartFile> multipartFiles, long boardId) throws Exception {
+    public List<ImageStorage> saveImgFile(List<MultipartFile> multipartFiles, Board board) throws Exception {
         // 비어있으면 false
         if (multipartFiles.isEmpty())
-            return false;
+            return Collections.emptyList();
 
         // 파일 정보를 담을 수 있는 리스트
         List<ImageStorage> imageStorageDtoList = new ArrayList<>();
 
         // 서버에서 / 로 출력
         String root = System.getProperty("user.dir").toString() + "var/images";
-        System.out.println("root = " + root);
 
-        // 파일 저장
-        Path path = Paths.get("var", "images");
-        System.out.println("path = " + path);
         int order = 1;
-
 
         File dir = new File(root);
         if (!dir.exists()){
@@ -575,7 +579,7 @@ public class BoardServiceImpl implements BoardService {
         // 파일 개수 만큼 forEach
         for (MultipartFile file : multipartFiles) {
             if (file.isEmpty()) // 파일이 비어있으면 false;
-                return false;
+                return Collections.emptyList();
 
             // 파일 확장자
             final String extension = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -598,35 +602,27 @@ public class BoardServiceImpl implements BoardService {
 
             // JPA 저장 - 수정 로직 필요?
 
-            ImageStorage imageStorage = new ImageStorage(order, file.getOriginalFilename(), uploadPath);
+            ImageStorage imageStorage = new ImageStorage(order,
+                    file.getOriginalFilename(),
+                    path + saveName,
+                    saveName,
+                    board);
             imageStorageDtoList.add(imageStorage);
-
             order++;
         }
 
-//         파일 정보 DB 저장
-        Optional<Board> board = boardRepository.findById(boardId);
-        if (board.isEmpty())
-            return false;
+        imageStorageRepository.saveAll(imageStorageDtoList);
 
-        for (ImageStorage img : imageStorageDtoList) {
-            img.changeBoard(board.get());
-            imageStorageRepository.save(img);
-        }
-
-        return true;
+        return imageStorageDtoList;
     }
 
     @Override
-    public Resource getImgFile(long boardId, int order) throws IOException {
-//        String root = System.getProperty("user.dir").toString() + "var/images";
-
-        Optional<Board> board = boardRepository.findById(boardId);
-        ImageStorage img = imageStorageRepository.findByBoardAndOrders(board.get(), order);
-        String saveName = img.getServerPath();
+    public Resource getImgFile(String fileName) throws IOException {
+        ImageStorage img = imageStorageRepository.findImageStorageBySaveFileName(fileName);
+        String saveName = img.getSaveFileName();
 
         try{
-            Resource urlResource = new FileUrlResource( saveName);
+            Resource urlResource = new FileUrlResource("/var/images/" + fileName);
             if (urlResource.exists() || urlResource.isReadable()){
                 System.out.println("============= urlResource in!!! ============= ");
                 return urlResource;

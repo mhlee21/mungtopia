@@ -38,10 +38,11 @@ public class ImageStorage {
     @JoinColumn(name = "board_id", referencedColumnName = "board_id")
     private Board board;
 
-    public ImageStorage(int orders, String filename, String saveName){
+    public ImageStorage(int orders, String originFileName, String serverPath, String saveFileName, Board board){
         this.orders = orders;
-        this.originFileName = filename;
-        this.serverPath = saveName;
+        this.originFileName = originFileName;
+        this.serverPath = serverPath;
+        this.saveFileName = saveFileName;
     }
 
     public void changeBoard(Board board){

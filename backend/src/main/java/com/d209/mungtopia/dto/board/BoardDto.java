@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -12,29 +14,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardDto {
-    private String contents;
+    private Long boardId;
     private Long userSeq;
+    private String contents;
+    private int boardTag;
+    private Timestamp createtime;
 
     //ImageStorage
     List<ImageStorageDto> imageStorageDtoList;
 
     //DogInfo
-    private String name;
-    private String areaSido;
-    private String areaGugun;
-    private String gender;
-    private String age;
-    private String weight;
-    private String breed;
-    private Boolean vaccination;
-    private Boolean neutering;
-    private Boolean adoptionStatus;
+    DogInfoDto dogInfoDto;
 
     //DogNature
-    private int nature1;
-    private int nature2;
-    private int nature3;
-    private int nature4;
-    private int nature5;
-    private int nature6;
+    List<Integer> dogNature;
 }

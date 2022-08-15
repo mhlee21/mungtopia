@@ -15,10 +15,13 @@ import java.util.List;
 public interface BoardService {
     List<BoardListDto.Response> findBoardAll(int tagNo, int pageNo, long userSeq);
     List<BoardListDto.Response> search(Long tagNo, int pageNo, long userSeq, String keyword);
-    Board saveBoard(Long tagNo, BoardDto boardDto);
-    Board updateBoard(Board board, BoardDto boardDto);
+
+    // 글 관련
+    Board saveBoard(List<MultipartFile> multipartFiles, BoardDto boardDto) throws Exception;
+    Board updateBoard(Board board, BoardDto boardDto) throws Exception;
     Boolean deleteBoard(Board board);
     Board findBoardDetail(Long boardId);
+
     Application saveApplication(Board board, AppDto appDto);
     Boolean likes(User user, Board board);
     Boolean unlikes(User user, Board board);
@@ -32,6 +35,6 @@ public interface BoardService {
     List<Comment> updateReply(Board board, Reply reply, ReplyDto replyDto);
     List<Comment> deleteReply(Board board, Reply reply, ReplyDto replyDto);
 
-    Boolean saveImgFile(List<MultipartFile> multipartFiles, long boardId) throws Exception;
-    Resource getImgFile(long boardId, int order) throws IOException;
+    List<ImageStorage> saveImgFile(List<MultipartFile> multipartFiles,Board board) throws Exception;
+    Resource getImgFile(String fileName) throws IOException;
 }

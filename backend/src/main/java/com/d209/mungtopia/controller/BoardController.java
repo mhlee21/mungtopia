@@ -1,6 +1,7 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
+import com.d209.mungtopia.dto.board.Keyword;
 import com.d209.mungtopia.dto.applicant.AppDto;
 import com.d209.mungtopia.dto.board.BoardDto;
 import com.d209.mungtopia.dto.board.CommentDto;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/board")
@@ -31,9 +33,9 @@ public class BoardController {
     private final UserRepository userRepository;
     private final BoardService boardService;
 
-    @GetMapping("{tag_no}")
+    @GetMapping("/{tag_no}")
     @ApiOperation(value = "mainInfo - 전체 글 불러오기", notes = "태그 별 게시글 리스트를 제공")
-    public ApiResponse getBoardList(@PathVariable("tag_no") Long tagNo,
+    public ApiResponse getBoardList(@PathVariable("tag_no") int tagNo,
                                     @RequestParam int pageNo, @RequestParam long userSeq) {
         return ApiResponse.success("data", boardService.findBoardAll(tagNo, pageNo, userSeq));
     }
@@ -42,15 +44,16 @@ public class BoardController {
     @ApiOperation(value = "search - 검색", notes = "검색")
     public ApiResponse search(@PathVariable("tag_no") Long tagNo,
                               @RequestParam int pageNo,
-                              @RequestBody String keyword) {
-        return ApiResponse.success("data", boardService.search(tagNo, pageNo, keyword));
+                              @RequestParam long userSeq,
+                              @RequestBody Keyword keyword) {
+        return ApiResponse.success("data", boardService.search(tagNo, pageNo, userSeq, keyword.getKeyword()));
     }
 
-    @PostMapping("{tag_no}")
+    @PostMapping("/")
     @ApiOperation(value = "saveBoard - 글 쓰기", notes = "글 쓰기")
-    public ApiResponse saveBoard(@PathVariable("tag_no") Long tagNo,
-                                     @RequestBody BoardDto boardDto) {
-        return ApiResponse.success("data", boardService.saveBoard(tagNo, boardDto));
+    public ApiResponse saveBoard(@RequestParam("files") List<MultipartFile> multipartFiles,
+                                     @RequestParam("data") BoardDto boardDto) throws Exception {
+        return ApiResponse.success("data", boardService.saveBoard(multipartFiles, boardDto));
     }
 
     @PutMapping("detail/{board_id}/{user_id}")
@@ -61,10 +64,11 @@ public class BoardController {
         Board board = boardRepository.findById(boardId).get();
         User user = userRepository.findById(userId).get();
         if (board.getUser() == user) {
-            return ApiResponse.success("data", boardService.updateBoard(board, boardDto));
+//            return ApiResponse.success("data", boardService.updateBoard(board, boardDto));
         } else {
             return ApiResponse.fail();
         }
+        return ApiResponse.success();
     }
     @DeleteMapping("detail/{board_id}/{user_id}")
     @ApiOperation(value = "deleteBoard - 글 삭제", notes = "글 삭제")
@@ -100,8 +104,9 @@ public class BoardController {
             @RequestBody Long userId
         ) {
         User user = userRepository.getReferenceById(userId);
-        Board board = boardRepository.getReferenceById(boardId);
-        return ApiResponse.success("data", boardService.likes(user, board));
+        Optional<Board> board = boardRepository.findById(boardId);
+
+        return ApiResponse.success("data", boardService.likes(user, board.get()));
     }
 
     @DeleteMapping("like/{board_id}")
@@ -111,8 +116,8 @@ public class BoardController {
             @RequestBody Long userId
     ) {
         User user = userRepository.getReferenceById(userId);
-        Board board = boardRepository.getReferenceById(boardId);
-        return ApiResponse.success("data", boardService.unlikes(user, board));
+        Optional<Board> board = boardRepository.findById(boardId);
+        return ApiResponse.success("data", boardService.unlikes(user, board.get()));
     }
 
     @PostMapping("star/{board_id}")
@@ -122,8 +127,8 @@ public class BoardController {
             @RequestBody Long userId
     ) {
         User user = userRepository.getReferenceById(userId);
-        Board board = boardRepository.getReferenceById(boardId);
-        return ApiResponse.success("data", boardService.star(user, board));
+        Optional<Board> board = boardRepository.findById(boardId);
+        return ApiResponse.success("data", boardService.star(user, board.get()));
     }
 
     @DeleteMapping("star/{board_id}")
@@ -133,15 +138,15 @@ public class BoardController {
             @RequestBody Long userId
     ) {
         User user = userRepository.getReferenceById(userId);
-        Board board = boardRepository.getReferenceById(boardId);
-        return ApiResponse.success("data", boardService.unstar(user, board));
+        Optional<Board> board = boardRepository.findById(boardId);
+        return ApiResponse.success("data", boardService.unstar(user, board.get()));
     }
 
     @GetMapping("{board_id}/comments")
     @ApiOperation(value = "getCommentList - 댓글 목록 가져오기", notes = "댓글 목록 가져오기")
     public ApiResponse getCommentList (@PathVariable("board_id") Long boardId) {
-        Board board = boardRepository.getReferenceById(boardId);
-        return ApiResponse.success("data", boardService.CommentAll(board));
+        Optional<Board> board = boardRepository.findById(boardId);
+        return ApiResponse.success("data", boardService.CommentAll(board.get()));
     }
 
     @PostMapping("{board_id}/comments")
@@ -223,9 +228,9 @@ public class BoardController {
         // 기존 userSeq 와 userNickname 비교하여 유효성 검사 필요
         return ApiResponse.success("data", boardService.deleteReply(board, reply, replyDto));
     }
-
-    @PostMapping("/img/{boardId}")
-    public ApiResponse saveImgFile(@RequestParam("files") List<MultipartFile> multipartFiles, @PathVariable long boardId) throws Exception {
-        return ApiResponse.success("data", boardService.saveImgFile(multipartFiles, boardId));
-    }
+// 이미지 저장
+//    @PostMapping("/img/{boardId}")
+//    public ApiResponse saveImgFile(@RequestParam("files") List<MultipartFile> multipartFiles, @PathVariable long boardId) throws Exception {
+//        return ApiResponse.success("data", boardService.saveImgFile(multipartFiles, boardId));
+//    }
 }

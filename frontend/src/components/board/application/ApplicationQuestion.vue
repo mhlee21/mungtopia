@@ -25,12 +25,10 @@
 		<!-- 문제 답변 -->
 		<textarea
 			v-model="inputText"
-			name=""
-			id=""
-			cols="30"
-			rows="10"
 			placeholder="답변을 입력하세요"
 			class="question-answer"
+			autofocus
+			maxlength="300"
 		></textarea>
 
 		<!-- 문제 버튼 -->
@@ -50,7 +48,7 @@
 				다음
 			</button>
 			<button class="question-btn" v-else @click="submitApplicationAnswer">
-				제출
+				완료
 			</button>
 		</div>
 	</div>
@@ -59,43 +57,36 @@
 <script>
 import { useStore } from 'vuex';
 import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import router from '@/router';
+import { useRouter } from 'vue-router';
+
 export default {
 	setup() {
-		const route = useRoute();
 		const store = useStore();
-		const boardId = computed(() => route.params.boardId);
+		const router = useRouter();
 		store.dispatch('board/setAdoptQ');
-		var answerList = Array(15).fill('');
-		const questionCount = computed(() => store.getters['board/questionCount']);
-		let inputText = ref(`${answerList[questionCount.value]}`);
+		var application = Array(15).fill('');
+		const questionCount = ref(0);
+		let inputText = ref(`${application[questionCount.value]}`);
+
+		// 입양신청서 작성 완료
 		const submitApplicationAnswer = () => {
-			const payload = {
-				userSeq: store.getters['auth/user']['userSeq'],
-				applicantAnswerList: answerList,
-			};
-			store.dispatch('board/createApplication', {
-				payload: payload,
-				boardId: boardId.value,
-			});
-			router.push({
-				name: 'boardDetail',
-				params: { boardId: boardId.value },
-			});
+			application[questionCount.value] = inputText.value;
+			store.dispatch('board/saveApplication', application);
+			router.go(-1);
 		};
 		const adoptQuestionList = computed(
 			() => store.getters['board/adoptQuestionList'],
 		);
+
 		const plusQuestion = () => {
-			answerList[questionCount.value] = inputText.value;
-			store.dispatch('board/plusQuestionCount');
-			inputText.value = answerList[questionCount.value];
+			application[questionCount.value] = inputText.value;
+			questionCount.value++;
+			inputText.value = application[questionCount.value];
 		};
 
 		const minusQuestion = () => {
-			store.dispatch('board/minusQuestionCount');
-			inputText.value = answerList[questionCount.value];
+			questionCount.value--;
+			inputText.value = application[questionCount.value];
 		};
 		const barWidth = computed(() => ((questionCount.value + 1) / 15) * 100);
 		return {
@@ -105,7 +96,7 @@ export default {
 			plusQuestion,
 			minusQuestion,
 			inputText,
-			answerList,
+			application,
 			submitApplicationAnswer,
 		};
 	},

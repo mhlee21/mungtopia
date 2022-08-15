@@ -562,8 +562,7 @@ public class BoardServiceImpl implements BoardService {
         commentRepository.save(comment);
         commentRepository.flush();
 
-        List<CommentRes> commentResList = getCommentAll(board);
-        return commentResList;
+        return getCommentAll(board);
     }
 
     @Override
@@ -583,32 +582,33 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public List<Comment> saveReply(Board board, Comment comment, ReplyDto replyDto) {
+    public List<CommentRes> saveReply(Board board, Comment comment, ReplyDto replyDto) {
         Reply reply = Reply.builder()
                 .userSeq(replyDto.getUserSeq())
                 .userNickname(replyDto.getUserNickname())
-                .content(replyDto.getContent())
+                .content(replyDto.getContents())
                 .secret(replyDto.isSecret())
                 .createtime(getNow())
                 .comment(comment)
                 .build();
         replyRepository.save(reply);
-        return commentRepository.findByBoard(board);
+        return getCommentAll(board);
     }
 
     @Override
-    public List<Comment> updateReply(Board board, Reply reply, ReplyDto replyDto) {
-        reply.setContent(replyDto.getContent());
+    public List<CommentRes> updateReply(Board board, Reply reply, ReplyDto replyDto) {
+        System.out.println("reply = " + reply.getReplyId());
+        reply.setContent(replyDto.getContents());
         reply.setSecret(replyDto.isSecret());
 //        reply.setCreatetime(getNow());
         replyRepository.save(reply);
-        return commentRepository.findByBoard(board);
+        return getCommentAll(board);
     }
 
     @Override
-    public List<Comment> deleteReply(Board board, Reply reply, ReplyDto replyDto) {
+    public List<CommentRes> deleteReply(Board board, Reply reply) {
         replyRepository.delete(reply);
-        return commentRepository.findByBoard(board);
+        return getCommentAll(board);
     }
 
     @Override

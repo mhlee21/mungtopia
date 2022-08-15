@@ -409,10 +409,7 @@ export default {
 		},
 
 		// 댓글 삭제
-		deleteComment: (
-			{ commit, dispatch, rootGetters, getters },
-			{ commentId },
-		) => {
+		deleteComment: ({ commit, rootGetters, getters }, { commentId }) => {
 			console.log('deleteComment', commit, rootGetters);
 			const boardId = getters['boardId'];
 			axios({
@@ -421,8 +418,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					dispatch('fetchDetailBoard', boardId);
-					console.log(res.data.body.data);
+					commit('SET_COMMENT_LIST', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -430,10 +426,7 @@ export default {
 		},
 
 		// 대댓글 쓰기
-		createReply: (
-			{ commit, dispatch, rootGetters, getters },
-			{ commentId, payload },
-		) => {
+		createReply: ({ commit, rootGetters, getters }, { commentId, payload }) => {
 			console.log('createReply', commit, rootGetters);
 			const boardId = getters['boardId'];
 			axios({
@@ -443,8 +436,7 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.data.body.data);
-					dispatch('fetchDetailBoard', boardId);
+					commit('SET_COMMENT_LIST', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -453,10 +445,11 @@ export default {
 
 		// 대댓글 수정
 		updateReply: (
-			{ commit, dispatch, rootGetters },
-			{ boardId, commentId, replyId, payload },
+			{ commit, rootGetters, getters },
+			{ commentId, replyId, payload },
 		) => {
 			console.log('updateReply', commit, rootGetters);
+			const boardId = getters['boardId'];
 			axios({
 				url: api.board.replyUpdate(boardId, commentId, replyId),
 				method: 'put',
@@ -464,8 +457,7 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					dispatch('fetchDetailBoard', boardId);
-					console.log(res.data.body.data);
+					commit('SET_COMMENT_LIST', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -474,18 +466,20 @@ export default {
 
 		// 대댓글 삭제
 		deleteReply: (
-			{ commit, dispatch, rootGetters },
-			{ boardId, commentId, replyId },
+			{ commit, rootGetters, getters },
+			{ commentId, replyId, payload },
 		) => {
 			console.log('deleteReply', commit, rootGetters);
+			const boardId = getters['boardId'];
 			axios({
 				url: api.board.replyDelete(boardId, commentId, replyId),
 				method: 'delete',
 				headers: rootGetters['auth/authHeader'],
+				data: payload,
 			})
 				.then(res => {
-					console.log(res.data.body.data);
-					dispatch('fetchDetailBoard', boardId);
+					console.log('delete', res.data.body.data);
+					commit('SET_COMMENT_LIST', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);

@@ -224,14 +224,13 @@ public class BoardController {
     public ApiResponse deleteReply (
             @PathVariable("board_id") Long boardId,
             @PathVariable("comment_id") Long commentId,
-            @PathVariable("reply_id") Long replyId,
-            @RequestBody ReplyDto replyDto
+            @PathVariable("reply_id") Long replyId
     ) {
         Board board = boardRepository.findById(boardId).get();
 //        Comment comment = commentRepository.findById(commentId).get();
         Reply reply = replyRepository.findById(replyId).get();
         // 기존 userSeq 와 userNickname 비교하여 유효성 검사 필요
-        return ApiResponse.success("data", boardService.deleteReply(board, reply, replyDto));
+        return ApiResponse.success("data", boardService.deleteReply(board, reply));
     }
 // 이미지 저장
 //    @PostMapping("/img/{boardId}")

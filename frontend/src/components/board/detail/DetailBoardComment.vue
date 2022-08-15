@@ -45,7 +45,7 @@
 		<div v-if="comment.replyList">
 			<!-- 답글 달기 폼 -->
 			<form
-				@submit.prevent="createReply()"
+				@submit.prevent="createReply(comment.commentId)"
 				class="reply-form"
 				v-if="writeReply"
 			>
@@ -127,7 +127,9 @@ export default {
 		// boardAuthor
 		const boardAuthor = computed(() => store.getters['board/board']['author']);
 		// userSeq
-		const userSeq = computed(() => store.getters['auth/user']?.userSeq) || 1;
+		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
+		// nickname
+		const nickname = computed(() => store.getters['auth/user']?.userNickname);
 
 		// 대댓글 생성
 		const writeReply = ref(false);
@@ -146,6 +148,7 @@ export default {
 					userSeq: userSeq.value,
 					content: newReply.value,
 					secret: isReplySecret.value,
+					userNickname: nickname.value,
 				};
 				store.dispatch('board/createReply', { commentId, payload });
 				newReply.value = null;

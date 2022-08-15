@@ -40,19 +40,31 @@ export default {
 		commentCreate: boardId => HOST + BOARD + `${boardId}` + `/comments`,
 		// 댓글 수정
 		commentUpdate: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}` + `/comments/` + `${commentId}`,
+			HOST + BOARD + `${boardId}/` + `comments/` + `${commentId}`,
 		// 댓글 삭제
 		commentDelete: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}` + `/comments/` + `${commentId}`,
+			HOST + BOARD + `${boardId}/` + `comments/` + `${commentId}`,
 		// 대댓글 쓰기
 		replyCreate: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}/` + `${commentId}`,
+			HOST + BOARD + `${boardId}/` + `comments/` + `${commentId}`,
 		// 대댓글 수정
 		replyUpdate: (boardId, commentId, replyId) =>
-			HOST + BOARD + `${boardId}/` + `${commentId}/` + `${replyId}`,
+			HOST +
+			BOARD +
+			`${boardId}/` +
+			`comments/` +
+			`${commentId}/` +
+			`reply/` +
+			`${replyId}`,
 		// 대댓글 삭제
 		replyDelete: (boardId, commentId, replyId) =>
-			HOST + BOARD + `${boardId}/` + `${commentId}/` + `${replyId}`,
+			HOST +
+			BOARD +
+			`${boardId}/` +
+			`comments/` +
+			`${commentId}/` +
+			`reply/` +
+			`${replyId}`,
 		// 검색
 		boardSearch: tagNum => HOST + BOARD + `search/` + `${tagNum}`,
 		// 좋아요

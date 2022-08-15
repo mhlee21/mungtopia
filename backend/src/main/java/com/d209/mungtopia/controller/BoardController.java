@@ -46,10 +46,11 @@ public class BoardController {
         return ApiResponse.success("data", boardService.search(tagNo, pageNo, userSeq, keyword.getKeyword()));
     }
 
-    @PostMapping("{tag_no}")
+    @PostMapping("/{tag_no}")
     @ApiOperation(value = "saveBoard - 글 쓰기", notes = "글 쓰기")
     public ApiResponse saveBoard(@PathVariable("tag_no") Long tagNo,
-                                     @RequestBody BoardDto boardDto) {
+                                     @RequestBody BoardDto boardDto
+                                ) {
         return ApiResponse.success("data", boardService.saveBoard(tagNo, boardDto));
     }
 

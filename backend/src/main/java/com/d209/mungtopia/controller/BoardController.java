@@ -154,11 +154,13 @@ public class BoardController {
     @ApiOperation(value = "saveComment - 댓글 달기", notes = "댓글 달기")
     public ApiResponse saveComment(
             @PathVariable("board_id") Long boardId,
-            @RequestBody CommentDto commentDto
-    ) {
-        Board board = boardRepository.findById(boardId).get();
+            @RequestBody CommentDto commentDto) {
+        Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
         // userSeq 와 userNickname 비교하여 유효성 검사 필요
-        return ApiResponse.success("data", boardService.saveComment(board, commentDto));
+        return ApiResponse.success("data", boardService.saveComment(board.get(), commentDto));
     }
 
     @PutMapping("{board_id}/comments/{comment_id}")

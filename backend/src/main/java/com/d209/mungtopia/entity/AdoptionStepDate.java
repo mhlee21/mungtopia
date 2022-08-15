@@ -40,4 +40,8 @@ public class AdoptionStepDate {
         this.step = step;
         this.adoptionProcess = adoptionProcess;
     }
+
+    public void setAdoptionProcess(AdoptionProcess adoptionProcess) {
+        this.adoptionProcess = adoptionProcess;
+    }
 }

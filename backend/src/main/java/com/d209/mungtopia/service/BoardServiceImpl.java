@@ -262,6 +262,7 @@ public class BoardServiceImpl implements BoardService {
 
         // 이미지 저장
         try{
+            System.out.println("board.getBoardId() = " + board.getBoardId());
             List<ImageStorage> imageStorages = saveImgFile(multipartFiles, board);
             board.setImageStorageList(imageStorages);
         }catch (Exception e){

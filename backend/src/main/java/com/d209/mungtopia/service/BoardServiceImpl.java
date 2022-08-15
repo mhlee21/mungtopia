@@ -4,6 +4,7 @@ import com.d209.mungtopia.dto.applicant.AnswerDto;
 import com.d209.mungtopia.dto.board.DogInfoDto;
 import com.d209.mungtopia.dto.applicant.AppDto;
 import com.d209.mungtopia.dto.board.*;
+import com.d209.mungtopia.dto.user.Info;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;
@@ -440,7 +441,6 @@ public class BoardServiceImpl implements BoardService {
         chatRoomRepository.save(chatRoom);
 
     //==========================================================================
-
         return application;
     }
 
@@ -503,13 +503,55 @@ public class BoardServiceImpl implements BoardService {
         return true;
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<Comment> CommentAll(Board board) {
-        return commentRepository.findByBoard(board);
+    public List<CommentRes> getCommentAll(Board board){
+        System.out.println("board.getBoardId() = " + board.getBoardId());
+        //전체 댓글 리스트 반환
+        List<Comment> commentList = commentRepository.findByBoard(board);
+        if (commentList.isEmpty()) {
+            return null;
+        }
+        List<CommentRes> commentResList = new ArrayList<CommentRes>();
+        for(Comment cmt : commentList) {
+            User cmtUser = userRepository.findById(cmt.getUserSeq()).get();
+            Info cmtInfo = new Info(cmtUser.getUserSeq(), cmtUser.getProfileImageUrl(), cmtUser.getUsername());
+
+            //대댓글
+            Optional<List<Reply>> replyList = Optional.ofNullable(cmt.getReplyList());
+            List<ReplyRes> replyResList = new ArrayList<ReplyRes>();
+            if (replyList.isPresent()) {
+                for (Reply reply : replyList.get()) {
+                    User repUser = userRepository.findById(reply.getUserSeq()).get();
+                    Info repInfo = new Info(repUser.getUserSeq(), repUser.getProfileImageUrl(), repUser.getUsername());
+                    ReplyRes replyRes = new ReplyRes(
+                            reply.getReplyId(),
+                            repInfo,
+                            reply.getContent(),
+                            reply.isSecret(),
+                            reply.getCreatetime().toLocalDateTime()
+                                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    replyResList.add(replyRes);
+                }
+            }
+            CommentRes commentRes = new CommentRes(
+                    cmt.getCommentId(),
+                    cmtInfo,
+                    cmt.getContents(),
+                    cmt.isSecret(),
+                    cmt.getCreatetime().toLocalDateTime()
+                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                    replyResList);
+            commentResList.add(commentRes);
+        }
+        return commentResList;
     }
 
-    public List<Comment> saveComment(Board board, CommentDto commentDto) {
+    @Override
+    @Transactional(readOnly = true)
+    public List<CommentRes> CommentAll(Board board) {
+        return getCommentAll(board);
+    }
+
+    public List<CommentRes> saveComment(Board board, CommentDto commentDto) {
         Comment comment = Comment.builder()
                 .userSeq(commentDto.getUserSeq())
                 .userNickname(commentDto.getUserNickname())
@@ -519,23 +561,26 @@ public class BoardServiceImpl implements BoardService {
                 .board(board)
                 .build();
         commentRepository.save(comment);
-        return commentRepository.findByBoard(board);
+        commentRepository.flush();
+
+        List<CommentRes> commentResList = getCommentAll(board);
+        return commentResList;
     }
 
     @Override
-    public List<Comment> updateComment(Board board, Comment comment, CommentDto commentDto) {
+    public List<CommentRes> updateComment(Board board, Comment comment, CommentDto commentDto) {
         comment.setContents(commentDto.getContents());
         comment.setSecret(commentDto.isSecret());
 //        comment.setCreatetime(getNow());
         commentRepository.save(comment);
-        return commentRepository.findByBoard(board);
+        return getCommentAll(board);
     }
 
 
     @Override
-    public List<Comment> deleteComment(Board board, Comment comment, CommentDto commentDto) {
+    public List<CommentRes> deleteComment(Board board, Comment comment, CommentDto commentDto) {
         commentRepository.delete(comment);
-        return commentRepository.findByBoard(board);
+        return getCommentAll(board);
     }
 
     @Override

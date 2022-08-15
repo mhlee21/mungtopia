@@ -74,7 +74,7 @@ export default {
 		const gameEnter = gameType => {
 			store.dispatch('game/enterGame', gameType);
 			router.push({
-				name: 'GameIntro',
+				name: 'gameIntro',
 				params: { gameType: gameType },
 			});
 		};

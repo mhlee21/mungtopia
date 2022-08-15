@@ -6,7 +6,7 @@
 		<div style="text-align: center" v-if="gameType == 0">
 			<img
 				:src="
-					require('@/assets/images/KNOWLEDGE/' +
+					require('@/assets/img/KNOWLEDGE/' +
 						'knowledge_' +
 						questionNumber +
 						'.jpg')
@@ -19,9 +19,7 @@
 		</div>
 		<div style="text-align: center" v-else-if="gameType == 1">
 			<img
-				:src="
-					require('@/assets/images/MBTI/' + 'MBTI_' + questionNumber + '.jpg')
-				"
+				:src="require('@/assets/img/MBTI/' + 'MBTI_' + questionNumber + '.jpg')"
 				width="150"
 				height="150"
 				alt=""
@@ -30,7 +28,7 @@
 		<div style="text-align: center" v-else>
 			<img
 				:src="
-					require('@/assets/images/MATCH/' + 'match_' + questionNumber + '.jpg')
+					require('@/assets/img/MATCH/' + 'match_' + questionNumber + '.jpg')
 				"
 				width="150"
 				height="150"

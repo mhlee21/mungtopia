@@ -63,7 +63,7 @@ export default {
 		starDelete: boardId => HOST + BOARD + `star/` + `${boardId}`,
 		// 입양신청서 작성
 		applicationCreate: boardId =>
-			HOST + BOARD + 'detail/' + `${boardId}/` + APPLICANT,
+			HOST + BOARD + 'detail/' + `${boardId}/` + `applicant`,
 	},
 	game: {
 		// 게임 기록 저장

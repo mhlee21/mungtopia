@@ -138,15 +138,14 @@ export default {
 
 		const userInfo = computed(() => store.getters['profile/userInfo']);
 		const newUserInfo = reactive(userInfo);
-		const userSeq = computed(() => store.getters['auth/user'].userSeq);
 
 		const after = ref(false);
 		const submitProfile = () => {
 			store.dispatch('profile/updateUserInfo', newUserInfo.value);
-			router.push({ name: 'profile', params: userSeq.value });
+			router.go(-1);
 		};
 		const cancel = () => {
-			router.push({ name: 'profile', params: userSeq.value });
+			router.go(-1);
 		};
 		const searchAddress = () => {};
 		return {

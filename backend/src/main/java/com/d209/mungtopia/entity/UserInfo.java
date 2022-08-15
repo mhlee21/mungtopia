@@ -70,6 +70,26 @@ public class UserInfo {
         this.etc = etc;
     }
 
+    public UserInfo(String name,
+                    String gender,
+                    String birth,
+                    String phoneNumber,
+                    String job,
+                    String zonecode,
+                    String roadAddress,
+                    String detailAddress,
+                    String etc) {
+        this.name = name;
+        this.gender = gender;
+        this.birth = birth;
+        this.phoneNumber = phoneNumber;
+        this.job = job;
+        this.zonecode = zonecode;
+        this.roadAddress = roadAddress;
+        this.detailAddress = detailAddress;
+        this.etc = etc;
+    }
+
     public void changeName(String name){
         this.name = name;
     }

@@ -13,4 +13,5 @@ public class Info {
     private long userSeq;
     private String profile;
     private String username;
+    private String nickname;
 }

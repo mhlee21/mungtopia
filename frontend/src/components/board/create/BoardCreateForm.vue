@@ -10,7 +10,7 @@
 			<!-- 두번째 페이지 -->
 			<div v-if="applicationPageNum === 2" class="adopt-input-form">
 				<!-- 입양 -->
-				<div v-if="category === 0">
+				<div v-if="category === 1">
 					<div class="adopt-input-info">
 						<i class="fa-solid fa-shield-dog adopt-input-info-icon"></i>
 						<div class="adopt-input-info-text">
@@ -88,7 +88,7 @@
 							type="radio"
 							name="neutering"
 							id="not-yet"
-							value="0"
+							value="false"
 							v-model="neutering"
 							checked
 						/>
@@ -97,7 +97,7 @@
 							type="radio"
 							name="neutering"
 							id="done"
-							value="1"
+							value="true"
 							v-model="neutering"
 						/>
 						<label for="done" class="radio-answer">완료</label>
@@ -112,7 +112,7 @@
 				</div>
 			</div>
 
-			<div v-if="category === 0">
+			<div v-if="category === 1">
 				<!-- 세번째 페이지 -->
 				<div v-if="applicationPageNum === 3" class="adopt-input-form">
 					<div class="adopt-input-form-box2">
@@ -224,7 +224,7 @@ export default {
 		};
 		const clickSubmitButton = () => {
 			let data = {};
-			if (category.value === 0) {
+			if (category.value === 1) {
 				data = {
 					userSeq: store.getters['auth/user']?.userSeq,
 					boardTag: category.value,
@@ -239,7 +239,7 @@ export default {
 						areaSido: areaSido.value,
 						neutering: neutering.value,
 						dogNature: dogNature.value,
-						apoptionStatus: 1,
+						adoptionStatus: true,
 					},
 				};
 			} else {
@@ -247,7 +247,7 @@ export default {
 					userSeq: store.getters['auth/user']?.userSeq,
 					boardTag: category.value,
 					contents: contents.value,
-					createtime: JSON.stringify(new Date()),
+					createtime: new Date(),
 				};
 			}
 			formData.append(
@@ -269,9 +269,9 @@ export default {
 		};
 		// 마지막 페이지 여부 확인
 		const isLastPage = computed(() => {
-			if (category.value === 0 && applicationPageNum.value === 4) {
+			if (category.value === 1 && applicationPageNum.value === 4) {
 				return true;
-			} else if (category.value !== 0 && applicationPageNum.value === 2) {
+			} else if (category.value !== 1 && applicationPageNum.value === 2) {
 				return true;
 			} else {
 				return false;

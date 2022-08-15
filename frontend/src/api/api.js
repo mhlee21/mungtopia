@@ -34,14 +34,16 @@ export default {
 		boardUpdate: boardId => HOST + BOARD + `${boardId}`,
 		// 글 삭제
 		boardDelete: boardId => HOST + BOARD + `${boardId}`,
+		// 댓글 리스트 가져오기
+		commentList: boardId => HOST + BOARD + `${boardId}` + `/comments`,
 		// 댓글 쓰기
-		commentCreate: boardId => HOST + BOARD + `${boardId}`,
+		commentCreate: boardId => HOST + BOARD + `${boardId}` + `/comments`,
 		// 댓글 수정
 		commentUpdate: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}/` + `${commentId}`,
+			HOST + BOARD + `${boardId}` + `/comments/` + `${commentId}`,
 		// 댓글 삭제
 		commentDelete: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}/` + `${commentId}`,
+			HOST + BOARD + `${boardId}` + `/comments/` + `${commentId}`,
 		// 대댓글 쓰기
 		replyCreate: (boardId, commentId) =>
 			HOST + BOARD + `${boardId}/` + `${commentId}`,
@@ -132,8 +134,8 @@ export default {
 		// 유저 프로필 이미지 수정
 		profileImageUpdate: userSeq => HOST + USER + `${userSeq}`,
 		// 유저 상세 정보
-		profileDetail: userSeq => HOST + USER + `${userSeq}`,
+		profileDetail: userSeq => HOST + USER + '/detail' + `${userSeq}`,
 		// 유저 정보 수정
-		profileDetailUpdate: userSeq => HOST + USER + `${userSeq}`,
+		profileDetailUpdate: userSeq => HOST + USER + '/detail' + `${userSeq}`,
 	},
 };

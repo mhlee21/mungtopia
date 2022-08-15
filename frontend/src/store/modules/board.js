@@ -19,7 +19,7 @@ export default {
 			category: 0,
 			applicationPageNum: 1,
 			adoptQuestionList: [],
-			questionCount: 0,
+			application: Array(15).fill(''),
 		};
 	},
 	getters: {
@@ -36,7 +36,7 @@ export default {
 		category: state => state.category,
 		applicationPageNum: state => state.applicationPageNum,
 		adoptQuestionList: state => state.adoptQuestionList,
-		questionCount: state => state.questionCount,
+		application: state => state.application,
 	},
 	mutations: {
 		SET_BOARD_LIST: (state, boardList) => (state.boardList = boardList),
@@ -51,6 +51,7 @@ export default {
 		SET_CATEGORY: (state, category) => (state.category = category),
 		SET_APPLICATION_PAGE_NUM: (state, applicationPageNum) =>
 			(state.applicationPageNum = applicationPageNum),
+		SET_APPLICATION: (state, application) => (state.application = application),
 		UPDATE_IS_LIKE: (state, index) => {
 			if (index === -1) {
 				state.board.isLike = !state.board.isLike;
@@ -68,12 +69,6 @@ export default {
 		},
 		SET_ADOPT_QUESTION_LIST: (state, adoptQuestionList) => {
 			state.adoptQuestionList = adoptQuestionList;
-		},
-		PLUS_QUESTION_COUNT: state => {
-			state.questionCount += 1;
-		},
-		MINUS_QUESTION_COUNT: state => {
-			state.questionCount -= 1;
 		},
 	},
 	actions: {
@@ -604,22 +599,34 @@ export default {
 			// 		console.error(err.response);
 			// 	});
 		},
-
+		// 입양신청서 저장
+		saveApplication: ({ commit }, application) => {
+			commit('SET_APPLICATION', application);
+		},
 		// 입양 신청서 작성
-		createApplication: ({ commit, rootGetters }, { boardId, payload }) => {
-			console.log('createApplication', commit, rootGetters);
+		createApplication: ({ rootGetters, getters }, boardId) => {
+			// const applicantAnswerList = getters['application'].map(
+			// 	(answer, index) => {
+			// 		return { answer, index };
+			// 	},
+			// );
+			// const payload = {
+			// 	userSeq: rootGetters['auth/user']['userSeq'],
+			// 	applicantAnswerList,
+			// };
+			// console.log(payload);
+			const payload = {
+				applicantAnswerList: getters['application'],
+				userSeq: rootGetters['auth/user']['userSeq'],
+			};
 			axios({
 				url: api.board.applicationCreate(boardId),
 				method: 'post',
 				headers: rootGetters['auth/authHeader'],
 				data: payload,
-			})
-				.then(res => {
-					console.log(res.data.body.data);
-				})
-				.catch(err => {
-					console.error(err.response);
-				});
+			}).catch(err => {
+				console.error(err.response);
+			});
 		},
 
 		// 카테고리 설정
@@ -639,13 +646,6 @@ export default {
 				question: d.question,
 			}));
 			commit('SET_ADOPT_QUESTION_LIST', data);
-		},
-
-		plusQuestionCount: ({ commit }) => {
-			commit('PLUS_QUESTION_COUNT');
-		},
-		minusQuestionCount: ({ commit }) => {
-			commit('MINUS_QUESTION_COUNT');
 		},
 	},
 };

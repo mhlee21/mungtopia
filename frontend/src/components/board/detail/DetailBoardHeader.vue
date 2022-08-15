@@ -41,7 +41,7 @@ export default {
 		const adoptionApply = () => {
 			if (!isAdopting.value) {
 				router.push({
-					name: 'applicationCreateDetail',
+					name: 'application',
 					params: { boardId: boardId.value },
 				});
 			}

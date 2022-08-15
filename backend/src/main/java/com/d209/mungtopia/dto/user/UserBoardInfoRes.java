@@ -2,15 +2,12 @@ package com.d209.mungtopia.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class Info {
-    private long userSeq;
+public class UserBoardInfoRes {
+    private Long id;
     private String profile;
-    private String username;
 }

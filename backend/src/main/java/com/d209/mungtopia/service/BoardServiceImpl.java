@@ -512,7 +512,7 @@ public class BoardServiceImpl implements BoardService {
         List<CommentRes> commentResList = new ArrayList<CommentRes>();
         for(Comment cmt : commentList) {
             User cmtUser = userRepository.findById(cmt.getUserSeq()).get();
-            Info cmtInfo = new Info(cmtUser.getUserSeq(), cmtUser.getProfileImageUrl(), cmtUser.getUsername());
+            Info cmtInfo = new Info(cmtUser.getUserSeq(), cmtUser.getProfileImageUrl(), cmtUser.getUsername(), cmtUser.getNickname());
 
             //대댓글
             Optional<List<Reply>> replyList = Optional.ofNullable(cmt.getReplyList());
@@ -520,7 +520,7 @@ public class BoardServiceImpl implements BoardService {
             if (replyList.isPresent()) {
                 for (Reply reply : replyList.get()) {
                     User repUser = userRepository.findById(reply.getUserSeq()).get();
-                    Info repInfo = new Info(repUser.getUserSeq(), repUser.getProfileImageUrl(), repUser.getUsername());
+                    Info repInfo = new Info(repUser.getUserSeq(), repUser.getProfileImageUrl(), repUser.getUsername(), repUser.getNickname());
                     ReplyRes replyRes = new ReplyRes(
                             reply.getReplyId(),
                             repInfo,
@@ -577,7 +577,7 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
-    public List<CommentRes> deleteComment(Board board, Comment comment, CommentDto commentDto) {
+    public List<CommentRes> deleteComment(Board board, Comment comment) {
         commentRepository.delete(comment);
         return getCommentAll(board);
     }

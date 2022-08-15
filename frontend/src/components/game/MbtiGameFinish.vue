@@ -10,7 +10,7 @@
 	</div>
 	<div style="text-align: center">
 		<img
-			:src="require('@/assets/images/' + mbtiResult + '.jpg')"
+			:src="require('@/assets/img/' + mbtiResult + '.jpg')"
 			width="150"
 			height="150"
 			alt=""
@@ -27,7 +27,7 @@
 			</div>
 			<div style="text-align: center">
 				<img
-					:src="require('@/assets/images/' + mbtiDog?.fitWell[0] + '.jpg')"
+					:src="require('@/assets/img/' + mbtiDog?.fitWell[0] + '.jpg')"
 					width="75"
 					height="75"
 					alt=""
@@ -41,7 +41,7 @@
 			</div>
 			<div style="text-align: center">
 				<img
-					:src="require('@/assets/images/' + mbtiDog?.fitWell[1] + '.jpg')"
+					:src="require('@/assets/img/' + mbtiDog?.fitWell[1] + '.jpg')"
 					width="75"
 					height="75"
 					alt=""
@@ -55,7 +55,7 @@
 			</div>
 			<div style="text-align: center">
 				<img
-					:src="require('@/assets/images/' + mbtiDog?.fitWell[2] + '.jpg')"
+					:src="require('@/assets/img/' + mbtiDog?.fitWell[2] + '.jpg')"
 					width="75"
 					height="75"
 					alt=""

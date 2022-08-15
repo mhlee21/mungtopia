@@ -1,6 +1,6 @@
 // const HOST = 'https://i7d209.p.ssafy.io/api/v1/';
-// const HOST = 'https://i7d209.p.ssafy.io:8081/api/v1/';
-const HOST = 'http://localhost:8081/api/v1/';
+const HOST = 'https://i7d209.p.ssafy.io:8081/api/v1/';
+// const HOST = 'http://localhost:8081/api/v1/';
 
 const AUTH = 'auth/';
 const BOARD = 'board/';
@@ -40,10 +40,10 @@ export default {
 		commentCreate: boardId => HOST + BOARD + `${boardId}` + `/comments`,
 		// 댓글 수정
 		commentUpdate: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}/` + `/comments` + `${commentId}`,
+			HOST + BOARD + `${boardId}` + `/comments/` + `${commentId}`,
 		// 댓글 삭제
 		commentDelete: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}/` + `/comments` + `${commentId}`,
+			HOST + BOARD + `${boardId}` + `/comments/` + `${commentId}`,
 		// 대댓글 쓰기
 		replyCreate: (boardId, commentId) =>
 			HOST + BOARD + `${boardId}/` + `${commentId}`,

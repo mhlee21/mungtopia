@@ -24,7 +24,7 @@
 							<textarea
 								cols="30"
 								rows="4"
-								v-model="reply.contents"
+								v-model="reply.content"
 								class="comment-change-box"
 							></textarea>
 						</div>
@@ -82,6 +82,7 @@ export default {
 					buttonFunction: updateComment,
 					commentId: newComment.value?.commentId,
 				};
+				console.log('data', data);
 			} else if (modalType?.value === 1) {
 				data = {
 					title: '댓글 삭제',
@@ -92,7 +93,7 @@ export default {
 			} else if (modalType?.value === 2) {
 				data = {
 					title: '답글 수정',
-					contents: reply.value?.contents,
+					contents: reply.value?.content,
 					buttonValue: ['완료', '취소'],
 					buttonFunction: updateReply,
 					comment: newComment.value?.commentId,
@@ -115,12 +116,11 @@ export default {
 		// 댓글 수정
 		const updateComment = commentId => {
 			emit('closeModal');
-			console.log('comment', newComment.value);
 			const payload = {
 				userSeq: userSeq.value,
 				secret: newComment.value.secret,
-				content: newComment.value.contents,
-				// userNickname: newComment.value.userNickname;
+				contents: newComment.value.contents,
+				userNickname: newComment.value.nickname,
 			};
 			store.dispatch('board/updateComment', { commentId, payload });
 		};
@@ -144,7 +144,7 @@ export default {
 			store.dispatch('board/deleteReply', { commentId, replyId });
 		};
 
-		return { modalData, comment, reply, modalType };
+		return { modalData, comment, newComment, reply, modalType };
 	},
 };
 </script>

@@ -1687,6 +1687,17 @@ body {
 }
 .application-pg .btn-wrapper .btn {
   margin: 10px 0;
+  background-color: white;
+  color: #ff9898;
+  border-radius: 5px;
+  height: 50px;
+  border: #ff9898 2px solid;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.application-pg .btn-wrapper .submit-btn {
+  margin: 10px 0;
   background-color: #ff9898;
   color: white;
   border-radius: 5px;
@@ -2146,12 +2157,12 @@ body {
   width: 100vw;
 	background-color: #F1F2F7;
 	text-align: center;
-  height: 70vh;
+  height: 65vh;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  padding: 10px 0;
+  padding: 20px 0;
   align-content: flex-start;
 }
 .application-create-pg .application-body .question-status {
@@ -2186,7 +2197,8 @@ body {
   background-color: white;
   border-radius: 1rem;
   width: 90%;
-  height: 94%;
+  height: 90%;
+  padding: 10px;
 }
 .application-create-pg .question-header {
   display: flex;
@@ -2214,16 +2226,19 @@ body {
   align-items: center;
   text-align: left;
   padding: 0 10px;
+  font-size: 16px;
+  line-height: 1.1;
 }
 .application-create-pg .question-answer {
   background-color: #EFF0F5;
   border: none;
   border-radius: 2rem;
   width: 80%;
-  height: 70%;
+  height: 65%;
   padding: 1rem;
   margin: 0 10px;
   font-family: 'Noto Sans KR', sans-serif;
+  font-size: 16px;
 }
 .application-create-pg .question-btn-wrapper {
   display: flex;

@@ -68,6 +68,7 @@ public class BoardController {
         } else {
             return ApiResponse.fail();
         }
+        return ApiResponse.success();
     }
     @DeleteMapping("detail/{board_id}/{user_id}")
     @ApiOperation(value = "deleteBoard - 글 삭제", notes = "글 삭제")

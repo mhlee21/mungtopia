@@ -40,10 +40,12 @@ public class UserServiceImpl implements UserService{
     public Info getUser(long userSeq) {
         User user = infUserRepository.getReferenceById(userSeq);
         // user 생성 시 null처리
+        // 이름 + 닉네임
         Info response = new Info(
                 user.getUserSeq(),
                 user.getProfileImageUrl(),
-                user.getUsername()
+                user.getUsername(),
+                user.getNickname()
         );
         return response;
     }

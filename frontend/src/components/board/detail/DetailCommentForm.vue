@@ -18,25 +18,31 @@
 
 <script>
 import { useStore } from 'vuex';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 export default {
 	setup() {
 		const store = useStore();
 
 		// 댓글 생성
-		const userSeq = store.getters['auth/user']?.userSeq;
+		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
+		const userNickname = computed(
+			() => store.getters['auth/user']?.userNickname,
+		);
 		const newComment = ref(null);
 		const isCommentSecret = ref(false);
 		const commentSecret = () => {
 			isCommentSecret.value = !isCommentSecret.value;
 		};
+
 		const createComment = () => {
 			if (newComment.value) {
 				const payload = {
-					userSeq,
-					content: newComment.value,
+					userSeq: userSeq.value,
+					contents: newComment.value,
 					secret: isCommentSecret.value,
+					userNickname: userNickname.value,
 				};
+				console.log('payload', payload);
 				store.dispatch('board/createComment', payload);
 				newComment.value = null;
 				isCommentSecret.value = false;
@@ -44,7 +50,12 @@ export default {
 				alert('댓글을 작성해주세요');
 			}
 		};
-		return { newComment, commentSecret, isCommentSecret, createComment };
+		return {
+			newComment,
+			commentSecret,
+			isCommentSecret,
+			createComment,
+		};
 	},
 };
 </script>

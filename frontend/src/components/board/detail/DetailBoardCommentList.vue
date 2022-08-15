@@ -16,11 +16,12 @@
 <script>
 import DetailBoardComment from '@/components/board/detail/DetailBoardComment.vue';
 import { useStore } from 'vuex';
+import { computed } from 'vue';
 export default {
 	components: { DetailBoardComment },
 	setup() {
 		const store = useStore();
-		const commentList = store.getters['board/board']['commentList'];
+		const commentList = computed(() => store.getters['board/commentList']);
 		return { commentList };
 	},
 };

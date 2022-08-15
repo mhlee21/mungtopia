@@ -157,11 +157,13 @@ public class BoardController {
     @ApiOperation(value = "saveComment - 댓글 달기", notes = "댓글 달기")
     public ApiResponse saveComment(
             @PathVariable("board_id") Long boardId,
-            @RequestBody CommentDto commentDto
-    ) {
-        Board board = boardRepository.findById(boardId).get();
+            @RequestBody CommentDto commentDto) {
+        Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
         // userSeq 와 userNickname 비교하여 유효성 검사 필요
-        return ApiResponse.success("data", boardService.saveComment(board, commentDto));
+        return ApiResponse.success("data", boardService.saveComment(board.get(), commentDto));
     }
 
     @PutMapping("{board_id}/comments/{comment_id}")
@@ -181,13 +183,12 @@ public class BoardController {
     @ApiOperation(value = "deleteComment - 댓글 삭제", notes = "댓글 삭제")
     public ApiResponse deleteComment (
             @PathVariable("board_id") Long boardId,
-            @PathVariable("comment_id") Long commentId,
-            @RequestBody CommentDto commentDto
+            @PathVariable("comment_id") Long commentId
     ) {
         Board board = boardRepository.findById(boardId).get();
         Comment comment = commentRepository.findById(commentId).get();
         // 기존 userSeq 와 userNickname 비교하여 유효성 검사 필요
-        return ApiResponse.success("data", boardService.deleteComment(board, comment, commentDto));
+        return ApiResponse.success("data", boardService.deleteComment(board, comment));
     }
 
     @PostMapping("{board_id}/comments/{comment_id}")

@@ -19,18 +19,17 @@ export default {
 		user: state => state.user,
 		token: state => state.token,
 		authHeader: state =>
-			state.token ? { Authorization: `Token ${state.token}` } : '',
-		userInfo: state => state.userInfo,
+			state.token ? { Authorization: `Bearer ${state.token}` } : '',
 	},
 	mutations: {
-		SET_TOKEN(state, token) {
+		SET_TOKEN: (state, token) => {
 			state.token = token;
 		},
-		SET_USER(state, user) {
-			state.user = user;
+		DELETE_TOKEN: state => {
+			state.token = '';
 		},
-		SET_USER_INFO: (state, userInfo) => {
-			state.userInfo = userInfo;
+		SET_USER: (state, user) => {
+			state.user = user;
 		},
 	},
 	actions: {
@@ -42,7 +41,7 @@ export default {
 			axios({
 				url: api.auth.getUser(),
 				method: 'get',
-				headers: getters['auth/authHeader'],
+				headers: getters['authHeader'],
 			})
 				.then(res => {
 					console.log(res.data.body.user);
@@ -51,6 +50,10 @@ export default {
 				.catch(err => {
 					console.error(err.response);
 				});
+		},
+		logout({ commit }) {
+			commit('DELETE_TOKEN');
+			localStorage.setItem('token', '');
 		},
 	},
 };

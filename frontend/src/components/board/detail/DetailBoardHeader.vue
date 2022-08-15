@@ -21,10 +21,11 @@
 <script>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 export default {
 	setup() {
 		const store = useStore();
+		const route = useRoute();
 		const router = useRouter();
 		const dogName = computed(() => store.getters['board/board']['dogName']);
 		const isAdopting = computed(() => store.getters['board/isAdopting']);
@@ -34,10 +35,15 @@ export default {
 		const breed = computed(
 			() => store.getters['board/board']['dogInfo']['breed'],
 		);
+		const boardId = computed(() => route.params.boardId);
+		console.log(boardId.value);
 
 		const adoptionApply = () => {
 			if (!isAdopting.value) {
-				router.push({ name: 'applicationCreate' });
+				router.push({
+					name: 'application',
+					params: { boardId: boardId.value },
+				});
 			}
 		};
 		return { dogName, areaSido, breed, isAdopting, adoptionApply };

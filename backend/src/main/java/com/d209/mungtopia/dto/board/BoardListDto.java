@@ -1,4 +1,4 @@
-package com.d209.mungtopia.dto;
+package com.d209.mungtopia.dto.board;
 
 import com.d209.mungtopia.dto.board.DogInfoDto;
 import com.d209.mungtopia.entity.DogInfo;

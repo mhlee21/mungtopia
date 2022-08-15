@@ -1,6 +1,9 @@
 package com.d209.mungtopia.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -9,6 +12,9 @@ import java.util.Objects;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "chat_room", schema = "mungtopia")
 public class ChatRoom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,9 +38,13 @@ public class ChatRoom {
     private Timestamp createtime;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id", nullable = false)
+    @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id")
     private AdoptionProcess adoptionProcess;
 
     @OneToMany(mappedBy = "chatRoom")
     private List<ChatLog> chatLogList;
+
+    public void setAdoptionProcess(AdoptionProcess adoptionProcess) {
+        this.adoptionProcess = adoptionProcess;
+    }
 }

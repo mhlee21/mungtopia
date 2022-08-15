@@ -9,5 +9,5 @@ import lombok.Setter;
 @Setter
 public class UserBoardInfoRes {
     private Long id;
-    private String profile;
+    private String imgUrl;
 }

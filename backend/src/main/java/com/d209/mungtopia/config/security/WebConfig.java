@@ -2,7 +2,9 @@ package com.d209.mungtopia.config.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -18,10 +20,11 @@ public class WebConfig implements WebMvcConfigurer {
 //    }
 
     @Bean
-    public CommonsMultipartResolver multipartResolver(){
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setDefaultEncoding("UTF-8");
-        multipartResolver.setMaxUploadSize(5 * 1024 * 1024); // 5MB - 나중에 조정
+    public MultipartResolver multipartResolver(){
+        // commonmultipartResolve 작동 X
+        StandardServletMultipartResolver multipartResolver = new StandardServletMultipartResolver();
+//        multipartResolver.("UTF-8");
+//        multipartResolver.setMaxUploadSize(5 * 1024 * 1024); // 5MB - 나중에 조정
         return multipartResolver;
     }
 }

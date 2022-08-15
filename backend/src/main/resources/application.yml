@@ -95,6 +95,10 @@ spring:
           tokenUri: https://kauth.kakao.com/oauth/token
           userInfoUri: https://kapi.kakao.com/v2/user/me
           userNameAttribute: id
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 # cors 설정
 cors:

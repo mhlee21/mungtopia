@@ -23,8 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
 import java.io.*;
 import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -265,6 +263,7 @@ public class BoardServiceImpl implements BoardService {
 
         // 이미지 저장
         try{
+            System.out.println("board.getBoardId() = " + board.getBoardId());
             List<ImageStorage> imageStorages = saveImgFile(multipartFiles, board);
             board.setImageStorageList(imageStorages);
         }catch (Exception e){
@@ -274,7 +273,7 @@ public class BoardServiceImpl implements BoardService {
 
         // 입양일 경우 추가 저장
         if (boardDto.getBoardTag() == 1) {
-            DogInfoDto inputDogInfo = boardDto.getDogInfoDto();
+            DogInfoDto inputDogInfo = boardDto.getDogInfo();
             DogInfo dogInfo = DogInfo.builder()
                     .board(board)
                     .name(inputDogInfo.getName())
@@ -293,12 +292,12 @@ public class BoardServiceImpl implements BoardService {
 
             DogNature dogNature = DogNature.builder()
                     .dogInfo(dogInfo)
-                    .nature1(boardDto.getDogNature().get(0))
-                    .nature2(boardDto.getDogNature().get(1))
-                    .nature3(boardDto.getDogNature().get(2))
-                    .nature4(boardDto.getDogNature().get(3))
-                    .nature5(boardDto.getDogNature().get(4))
-                    .nature6(boardDto.getDogNature().get(5))
+                    .nature1(boardDto.getDogInfo().getDogNature().get(0))
+                    .nature2(boardDto.getDogInfo().getDogNature().get(1))
+                    .nature3(boardDto.getDogInfo().getDogNature().get(2))
+                    .nature4(boardDto.getDogInfo().getDogNature().get(3))
+                    .nature5(boardDto.getDogInfo().getDogNature().get(4))
+                    .nature6(boardDto.getDogInfo().getDogNature().get(5))
                     .build();
 
             dogNatureRepository.save(dogNature);
@@ -343,7 +342,7 @@ public class BoardServiceImpl implements BoardService {
 
 
         //DogInfo 수정
-        DogInfoDto inputDogInfo = boardDto.getDogInfoDto();
+        DogInfoDto inputDogInfo = boardDto.getDogInfo();
         DogInfo dogInfo = board.getDogInfo();
         dogInfo.setName(inputDogInfo.getName());
         dogInfo.setAreaSido(inputDogInfo.getAreaSido());
@@ -359,12 +358,12 @@ public class BoardServiceImpl implements BoardService {
 
         //DogNature 수정
         DogNature dogNature = dogInfo.getDogNature();
-        dogNature.setNature1(boardDto.getDogNature().get(0));
-        dogNature.setNature2(boardDto.getDogNature().get(1));
-        dogNature.setNature3(boardDto.getDogNature().get(2));
-        dogNature.setNature4(boardDto.getDogNature().get(3));
-        dogNature.setNature5(boardDto.getDogNature().get(4));
-        dogNature.setNature6(boardDto.getDogNature().get(5));
+        dogNature.setNature1(boardDto.getDogInfo().getDogNature().get(0));
+        dogNature.setNature2(boardDto.getDogInfo().getDogNature().get(1));
+        dogNature.setNature3(boardDto.getDogInfo().getDogNature().get(2));
+        dogNature.setNature4(boardDto.getDogInfo().getDogNature().get(3));
+        dogNature.setNature5(boardDto.getDogInfo().getDogNature().get(4));
+        dogNature.setNature6(boardDto.getDogInfo().getDogNature().get(5));
         dogNatureRepository.save(dogNature);
 
         return board;
@@ -675,9 +674,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Resource getImgFile(String fileName) throws IOException {
-        ImageStorage img = imageStorageRepository.findImageStorageBySaveFileName(fileName);
-        String saveName = img.getSaveFileName();
-
         try{
             Resource urlResource = new FileUrlResource("/var/images/" + fileName);
             if (urlResource.exists() || urlResource.isReadable()){

@@ -17,7 +17,7 @@ export default {
 			reply: {},
 			modalType: null,
 			isAdopting: null,
-			category: 0,
+			category: 1,
 			applicationPageNum: 1,
 			adoptQuestionList: [],
 			application: Array(15).fill(''),

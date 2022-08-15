@@ -43,6 +43,7 @@ public class ImageStorage {
         this.originFileName = originFileName;
         this.serverPath = serverPath;
         this.saveFileName = saveFileName;
+        this.board = board;
     }
 
     public void changeBoard(Board board){

@@ -229,7 +229,7 @@ export default {
 					userSeq: store.getters['auth/user']?.userSeq,
 					boardTag: category.value,
 					contents: contents.value,
-					createtime: JSON.stringify(new Date()),
+					createtime: new Date(),
 					dogInfo: {
 						name: name.value,
 						gender: gender.value,

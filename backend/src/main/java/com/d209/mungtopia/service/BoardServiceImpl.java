@@ -1,11 +1,13 @@
 package com.d209.mungtopia.service;
 
+import com.d209.mungtopia.dto.applicant.AnswerDto;
 import com.d209.mungtopia.dto.board.DogInfoDto;
 import com.d209.mungtopia.dto.applicant.AppDto;
 import com.d209.mungtopia.dto.board.*;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;
+import com.d209.mungtopia.utils.FileUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.*;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.nio.file.Path;

@@ -88,7 +88,7 @@
 							type="radio"
 							name="neutering"
 							id="not-yet"
-							value="0"
+							value="false"
 							v-model="neutering"
 							checked
 						/>
@@ -97,7 +97,7 @@
 							type="radio"
 							name="neutering"
 							id="done"
-							value="1"
+							value="true"
 							v-model="neutering"
 						/>
 						<label for="done" class="radio-answer">완료</label>

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,7 +47,7 @@ public class Comment {
     @OneToMany(mappedBy = "comment")
 //    이거 아님
 //    @JsonBackReference //순환 참조 방지
-    private List<Reply> replyList;
+    private List<Reply> replyList = new ArrayList<>();
 
     public void setContents(String contents) {
         this.contents = contents;

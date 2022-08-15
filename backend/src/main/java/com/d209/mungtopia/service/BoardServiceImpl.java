@@ -38,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
             "후기", 2,
             "잡담", 3
     );
-    private final static String path = "https://i7d209.p.ssafy.io:8080/api/v1/image/";
+    private final static String path = "https://i7d209.p.ssafy.io:8081/api/v1/image/";
     private final UserRepository userRepository;
     private final InfUserRepository infUserRepository;
     private final InfBoardRepository boardRepository;

@@ -10,8 +10,8 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserBoaordRes {
-    List<Info> boardList = new ArrayList<>();
-    List<Info> likeList = new ArrayList<>();
-    List<Info> starList = new ArrayList<>();
+public class UserBoardRes {
+    List<UserBoardInfoRes> boardList = new ArrayList<>();
+    List<UserBoardInfoRes> likeList = new ArrayList<>();
+    List<UserBoardInfoRes> starList = new ArrayList<>();
 }

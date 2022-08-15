@@ -90,6 +90,7 @@ public class BoardController {
     public ApiResponse saveApplication(@PathVariable("board_id") Long boardId,
                                        @RequestBody AppDto appDto) {
         Board board = boardRepository.findById(boardId).get();
+        System.out.println("boardId = " + boardId);
         return ApiResponse.success("data", boardService.saveApplication(board, appDto));
     }
 

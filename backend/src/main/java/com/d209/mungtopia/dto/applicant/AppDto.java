@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -13,5 +14,5 @@ import java.util.List;
 @AllArgsConstructor
 public class AppDto {
     private Long userSeq;
-    private List<String> applicantAnswerList;
+    private List<AnswerDto> applicantAnswerList = new ArrayList<>();
 }

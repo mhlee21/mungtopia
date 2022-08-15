@@ -1,11 +1,8 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
-import com.d209.mungtopia.dto.board.Keyword;
+import com.d209.mungtopia.dto.board.*;
 import com.d209.mungtopia.dto.applicant.AppDto;
-import com.d209.mungtopia.dto.board.BoardDto;
-import com.d209.mungtopia.dto.board.CommentDto;
-import com.d209.mungtopia.dto.board.ReplyDto;
 import com.d209.mungtopia.entity.Board;
 import com.d209.mungtopia.entity.Comment;
 import com.d209.mungtopia.entity.Reply;
@@ -19,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -49,11 +47,16 @@ public class BoardController {
         return ApiResponse.success("data", boardService.search(tagNo, pageNo, userSeq, keyword.getKeyword()));
     }
 
-    @PostMapping("/")
+    @PostMapping(value = "/",consumes = {"multipart/form-data"})
     @ApiOperation(value = "saveBoard - 글 쓰기", notes = "글 쓰기")
-    public ApiResponse saveBoard(@RequestParam("files") List<MultipartFile> multipartFiles,
-                                     @RequestParam("data") BoardDto boardDto) throws Exception {
-        return ApiResponse.success("data", boardService.saveBoard(multipartFiles, boardDto));
+    public ApiResponse saveBoard(
+//            @ModelAttribute BoardSaveReq boardSaveReq
+            @RequestPart(value = "data") BoardDto data,
+            @RequestPart(value = "files", required = false) List<MultipartFile> files
+                                     ) throws Exception {
+//        System.out.println("data = " + boardSaveReq.getData());
+        return ApiResponse.success("data", boardService.saveBoard(files, data));
+//        return ApiResponse.success();
     }
 
     @PutMapping("detail/{board_id}/{user_id}")

@@ -34,14 +34,16 @@ export default {
 		boardUpdate: boardId => HOST + BOARD + `${boardId}`,
 		// 글 삭제
 		boardDelete: boardId => HOST + BOARD + `${boardId}`,
+		// 댓글 리스트 가져오기
+		commentList: boardId => HOST + BOARD + `${boardId}` + `/comments`,
 		// 댓글 쓰기
-		commentCreate: boardId => HOST + BOARD + `${boardId}`,
+		commentCreate: boardId => HOST + BOARD + `${boardId}` + `/comments`,
 		// 댓글 수정
 		commentUpdate: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}/` + `${commentId}`,
+			HOST + BOARD + `${boardId}` + `/comments/` + `${commentId}`,
 		// 댓글 삭제
 		commentDelete: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}/` + `${commentId}`,
+			HOST + BOARD + `${boardId}` + `/comments/` + `${commentId}`,
 		// 대댓글 쓰기
 		replyCreate: (boardId, commentId) =>
 			HOST + BOARD + `${boardId}/` + `${commentId}`,

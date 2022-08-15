@@ -18,6 +18,7 @@ public class DogInfoDto {
     private String age;
     private String weight;
     private String breed;
+    private boolean neutering; // 중성화 여부
     private boolean vaccination;
     private boolean adoptionStatus;
 }

@@ -49,12 +49,11 @@ public class BoardController {
         return ApiResponse.success("data", boardService.search(tagNo, pageNo, userSeq, keyword.getKeyword()));
     }
 
-    @PostMapping("/{tag_no}")
+    @PostMapping("/")
     @ApiOperation(value = "saveBoard - 글 쓰기", notes = "글 쓰기")
-    public ApiResponse saveBoard(@PathVariable("tag_no") Long tagNo,
-                                     @RequestBody BoardDto boardDto
-                                ) {
-        return ApiResponse.success("data", boardService.saveBoard(tagNo, boardDto));
+    public ApiResponse saveBoard(@RequestParam("files") List<MultipartFile> multipartFiles,
+                                     @RequestParam("data") BoardDto boardDto) throws Exception {
+        return ApiResponse.success("data", boardService.saveBoard(multipartFiles, boardDto));
     }
 
     @PutMapping("detail/{board_id}/{user_id}")
@@ -65,7 +64,7 @@ public class BoardController {
         Board board = boardRepository.findById(boardId).get();
         User user = userRepository.findById(userId).get();
         if (board.getUser() == user) {
-            return ApiResponse.success("data", boardService.updateBoard(board, boardDto));
+//            return ApiResponse.success("data", boardService.updateBoard(board, boardDto));
         } else {
             return ApiResponse.fail();
         }
@@ -228,9 +227,9 @@ public class BoardController {
         // 기존 userSeq 와 userNickname 비교하여 유효성 검사 필요
         return ApiResponse.success("data", boardService.deleteReply(board, reply, replyDto));
     }
-
-    @PostMapping("/img/{boardId}")
-    public ApiResponse saveImgFile(@RequestParam("files") List<MultipartFile> multipartFiles, @PathVariable long boardId) throws Exception {
-        return ApiResponse.success("data", boardService.saveImgFile(multipartFiles, boardId));
-    }
+// 이미지 저장
+//    @PostMapping("/img/{boardId}")
+//    public ApiResponse saveImgFile(@RequestParam("files") List<MultipartFile> multipartFiles, @PathVariable long boardId) throws Exception {
+//        return ApiResponse.success("data", boardService.saveImgFile(multipartFiles, boardId));
+//    }
 }

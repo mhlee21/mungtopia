@@ -47,6 +47,7 @@ public class BoardServiceImpl implements BoardService {
     private final InfUserDogNatureRepository infUserDogNatureRepository;
     private final InfChatRoomRepository chatRoomRepository;
     private final InfAdoptionProcessRepository adoptionProcessRepository;
+    private final InfAdoptionStepDateRepository adoptionStepDateRepository;
     private final FileUtil fileUtil;
     private final ServletContext servletContext;
 
@@ -237,8 +238,8 @@ public class BoardServiceImpl implements BoardService {
 
         //입양 신청서 질문
         List<Answer> answerList = new ArrayList<>();
-        for (String ansStr : appDto.getApplicantAnswerList()) {
-            Answer answer = new Answer(ansStr, application);
+        for (AnswerDto answerDto : appDto.getApplicantAnswerList()) {
+            Answer answer = new Answer(answerDto, application);
             answerRepository.save(answer);
             answerList.add(answer);
         }
@@ -267,11 +268,16 @@ public class BoardServiceImpl implements BoardService {
                 .chatRoom(chatRoom)
                 .adoptionStepDateList(adoptionStepDateList)
                 .build();
+        adoptionProcessRepository.save(adoptionProcess);
+
+        AdoptionStepDate adoptionStepDate = new AdoptionStepDate();
+        adoptionStepDate.setAdoptionProcess(adoptionProcess);
+        adoptionStepDateRepository.save(adoptionStepDate);
+        adoptionStepDateList.add(adoptionStepDate);
 
         chatRoom.setAdoptionProcess(adoptionProcess);
         chatRoomRepository.save(chatRoom);
 
-        adoptionProcessRepository.save(adoptionProcess);
     //==========================================================================
 
         return application;

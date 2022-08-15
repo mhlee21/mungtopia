@@ -1,5 +1,6 @@
 package com.d209.mungtopia.entity;
 
+import com.d209.mungtopia.dto.applicant.AnswerDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,8 +30,9 @@ public class Answer {
     @JsonIgnore
     private Application application;
 
-    public Answer(String answer, Application application) {
-        this.answer = answer;
+    public Answer(AnswerDto answerDto, Application application) {
+        this.idx = answerDto.getIdx();
+        this.answer = answerDto.getAnswer();
         this.application = application;
     }
 }

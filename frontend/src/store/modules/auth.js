@@ -9,6 +9,7 @@ export default {
 			user: {
 				userSeq: 6,
 				username: '황희원',
+				userNickname: 'HHW',
 				profile: 'https://www.snsboom.co.kr/common/img/default_profile.png',
 			},
 			token: localStorage.getItem('token') || '',

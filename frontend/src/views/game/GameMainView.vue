@@ -8,12 +8,12 @@
 			<!-- 게임 리스트 -->
 			<div class="game-list">
 				<div class="game-btn" @click="gameEnter(0)">
-					<img class="game-img" src="@/assets/images/knowledge.jpg" alt="" />
+					<img class="game-img" src="@/assets/img/knowledge.jpg" alt="" />
 					<div class="game-title">강아지식 테스트</div>
 					<div class="circle" v-if="isClear[0]">
 						<img
 							class="stamp"
-							:src="require('@/assets/images/' + 'dogPaws' + '.png')"
+							:src="require('@/assets/img/' + 'dogPaws' + '.png')"
 							width="50"
 							height="50"
 							alt=""
@@ -21,12 +21,12 @@
 					</div>
 				</div>
 				<div class="game-btn" @click="gameEnter(1)">
-					<img class="game-img" src="@/assets/images/mbti.jpg" alt="" />
+					<img class="game-img" src="@/assets/img/mbti.jpg" alt="" />
 					<div class="game-title">댕BTI</div>
 					<div class="circle" v-if="isClear[1]">
 						<img
 							class="stamp"
-							:src="require('@/assets/images/' + 'dogPaws' + '.png')"
+							:src="require('@/assets/img/' + 'dogPaws' + '.png')"
 							width="50"
 							height="50"
 							alt=""
@@ -34,12 +34,12 @@
 					</div>
 				</div>
 				<div class="game-btn" @click="gameEnter(2)">
-					<img class="game-img" src="@/assets/images/matching.jpg" alt="" />
+					<img class="game-img" src="@/assets/img/matching.jpg" alt="" />
 					<div class="game-title">나와 잘맞는 반려견은?</div>
 					<div class="circle" v-if="isClear[2]">
 						<img
 							class="stamp"
-							:src="require('@/assets/images/' + 'dogPaws' + '.png')"
+							:src="require('@/assets/img/' + 'dogPaws' + '.png')"
 							width="50"
 							height="50"
 							alt=""

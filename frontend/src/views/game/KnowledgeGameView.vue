@@ -2,13 +2,13 @@
 	<div class="frame">
 		<GameTitle :gameTitle="gameTitle"></GameTitle>
 		<div style="text-align: center" v-if="gameType == 0">
-			<img src="@/assets/images/knowledge.jpg" alt="" />
+			<img src="@/assets/img/knowledge.jpg" alt="" />
 		</div>
 		<div style="text-align: center" v-else-if="gameType == 1">
-			<img src="@/assets/images/mbti.jpg" alt="" />
+			<img src="@/assets/img/mbti.jpg" alt="" />
 		</div>
 		<div style="text-align: center" v-else>
-			<img src="@/assets/images/matching.jpg" alt="" />
+			<img src="@/assets/img/matching.jpg" alt="" />
 		</div>
 		<GameDescription :gameDescription="gameDescription"></GameDescription>
 		<GameMainButton></GameMainButton>

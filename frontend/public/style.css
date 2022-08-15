@@ -2255,3 +2255,87 @@ body {
   font-weight: 600;
   font-size: 14px;
 }
+
+
+/* 로그인 페이지 */
+.login-pg {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 40px 0px;
+}
+.login-pg .logo-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login-pg h1 {
+  text-align: center;
+  font-weight: 600;
+  font-size: 18px;
+  margin: 10px 0 20px;
+}
+.login-pg .login-wrap {
+  width: 100%;
+  border-radius: 10px;
+}
+.login-pg .login-wrap > ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.login-pg .login-btn {
+  border-radius: 5px;
+}
+.login-pg .login-btn + .login-btn {
+  margin-top: 8px;
+}
+.login-pg .login-btn > a{
+  display: flex;
+  align-items: center;
+  width: 240px;
+  height: 50px;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.login-pg .login-btn.kakao {
+  background-color: #FFE812;
+}
+.login-pg .login-btn.kakao img {
+  width: 25px;
+}
+.login-pg .login-btn.naver {
+  background-color:#03C75A;
+  color: #fff;
+}
+.login-pg .login-btn.naver a {
+  color: #fff;
+}
+.login-pg .login-btn.naver img {
+  width: 30px;
+}
+.login-pg .login-btn.google {
+  background-color: #f4f4f4;
+}
+.login-pg .login-btn.google img {
+  width: 17px;
+}
+.login-pg .login-btn.basic {
+  background: #ff9898;
+}
+.login-pg .login-btn.basic a {
+  justify-content: center;
+  color: #fff;
+}
+.login-pg .login-btn .icon-box {
+  width: 30px;
+  display: flex;
+  justify-content: center;
+}
+.login-pg .login-btn p {
+  width: calc(100% - 31px);
+  text-align: center;
+}

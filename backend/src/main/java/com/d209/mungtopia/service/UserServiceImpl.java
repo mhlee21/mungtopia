@@ -78,11 +78,12 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public Boolean putDetailUser(long userSeq, UseInfoReq inputUserInfo) {
         User user = infUserRepository.getReferenceById(userSeq);
+
         if (user == null)
             return false;
 
         UserInfo userInfo = user.getUserInfo();
-        user.changeUserName(inputUserInfo.getUserName());
+        user.changeUserName(inputUserInfo.getName());
         userInfo.setGender(inputUserInfo.getGender());
         userInfo.setBirth(inputUserInfo.getBirth());
         userInfo.setPhoneNumber(inputUserInfo.getPhoneNumber());

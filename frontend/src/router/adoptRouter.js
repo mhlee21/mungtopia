@@ -5,7 +5,6 @@ import ApplicationDetailView from '@/views/adopt/ApplicationDetailView';
 import ChatView from '@/views/adopt/ChatView';
 import ScheduleView from '@/views/adopt/ScheduleView';
 import MeetingView from '@/views/adopt/MeetingView';
-// import ApplicationView from '@/views/adopt/ApplicationView';
 
 export default [
 	{
@@ -23,11 +22,6 @@ export default [
 		name: 'protectorDetail',
 		component: ProtectorDetailView,
 	},
-	// {
-	// 	path: '/adopt/application/after/:applicationId',
-	// 	name: 'application',
-	// 	component: ApplicationView,
-	// },
 	{
 		path: '/adopt/detail/application/:applicationId',
 		name: 'applicationDetail',

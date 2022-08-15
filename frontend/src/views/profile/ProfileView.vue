@@ -55,7 +55,7 @@
 					:key="board.id"
 					@click="clickBoard(board.id)"
 				>
-					<img src="board.imgUrl" alt="board" />
+					<img :src="board.imgUrl" alt="board" />
 				</div>
 			</div>
 		</div>

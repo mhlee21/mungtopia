@@ -132,8 +132,8 @@ export default {
 		// 유저 프로필 이미지 수정
 		profileImageUpdate: userSeq => HOST + USER + `${userSeq}`,
 		// 유저 상세 정보
-		profileDetail: userSeq => HOST + USER + `${userSeq}`,
+		profileDetail: userSeq => HOST + USER + '/detail' + `${userSeq}`,
 		// 유저 정보 수정
-		profileDetailUpdate: userSeq => HOST + USER + `${userSeq}`,
+		profileDetailUpdate: userSeq => HOST + USER + '/detail' + `${userSeq}`,
 	},
 };

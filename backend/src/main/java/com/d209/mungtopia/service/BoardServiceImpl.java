@@ -629,9 +629,6 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Resource getImgFile(String fileName) throws IOException {
-        ImageStorage img = imageStorageRepository.findImageStorageBySaveFileName(fileName);
-        String saveName = img.getSaveFileName();
-
         try{
             Resource urlResource = new FileUrlResource("/var/images/" + fileName);
             if (urlResource.exists() || urlResource.isReadable()){

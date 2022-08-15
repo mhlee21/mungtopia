@@ -230,10 +230,17 @@ public class BoardServiceImpl implements BoardService {
         return response;
     }
 
+    /**
+     * 글 저장
+     * @param tagNo
+     * @param boardDto
+     * @return
+     */
     @Override
     public Board saveBoard(Long tagNo, BoardDto boardDto) {
         User user = userRepository.findById(boardDto.getUserSeq()).get();
 
+        // 글 저장
         Board board = Board.builder()
                 .boardTag(boardTag[tagNo.intValue() - 1])
                 .contents(boardDto.getContents())
@@ -242,6 +249,8 @@ public class BoardServiceImpl implements BoardService {
                 .build();
         boardRepository.save(board);
 
+
+        // 이미지 저장
         List<ImageStorage> imageStorageList = new ArrayList<>();
         for (ImageStorageDto imageStorageDto : boardDto.getImageStorageDtoList()) {
             ImageStorage imageStorage = ImageStorage.builder()
@@ -254,7 +263,8 @@ public class BoardServiceImpl implements BoardService {
         }
         board.setImageStorageList(imageStorageList);
 
-        if (tagNo == 1) { // 입양
+        // 입양일 경우 추가 저장
+        if (tagNo == 1) {
             DogInfo dogInfo = DogInfo.builder()
                     .board(board)
                     .name(boardDto.getName())
@@ -301,6 +311,7 @@ public class BoardServiceImpl implements BoardService {
         }
 
         //이미지 새로 저장하기
+
         List<ImageStorage> newImageStorageList = new ArrayList<>();
         for (ImageStorageDto imageStorageDto : boardDto.getImageStorageDtoList()) {
             ImageStorage imageStorage = ImageStorage.builder()
@@ -553,6 +564,7 @@ public class BoardServiceImpl implements BoardService {
             }
 
             // JPA 저장 - 수정 로직 필요?
+
             ImageStorage imageStorage = new ImageStorage(order, file.getOriginalFilename(), uploadPath);
             imageStorageDtoList.add(imageStorage);
 

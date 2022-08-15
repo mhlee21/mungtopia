@@ -8,9 +8,9 @@
 			v-model="category"
 			@change="selectCategory()"
 		>
-			<option :value="0">입양</option>
-			<option :value="1">후기</option>
-			<option :value="2">잡담</option>
+			<option :value="1">입양</option>
+			<option :value="2">후기</option>
+			<option :value="3">잡담</option>
 		</select>
 	</div>
 </template>
@@ -21,7 +21,7 @@ import { ref } from 'vue';
 export default {
 	setup() {
 		const store = useStore();
-		const category = ref(0);
+		const category = ref(1);
 		const selectCategory = () => {
 			store.dispatch('board/selectCategory', category.value);
 		};

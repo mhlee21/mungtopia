@@ -1761,6 +1761,7 @@ body {
 .profile-pg .info-wrapper .info-component .change-btn {
   color: #626262;
   padding: 1rem;
+  font-size: 0.8rem;
   /* padding-left: 4vw; */
 }
 .profile-pg .info-wrapper .info-component .change-input {
@@ -1770,8 +1771,8 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-top: 1.8rem;
-  font-size: 18px;
+  padding-top: 1.2rem;
+  font-size: 1rem;
 }
 
 .profile-pg .info-wrapper .info-component .username-wrapper .username {

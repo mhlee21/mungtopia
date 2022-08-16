@@ -7,7 +7,7 @@
 				</div>
 				<div>
 					<!-- <a @click.prevent="changeProfile" -->
-					<label for="user.profile" class="change-btn">
+					<label for="profile" class="change-btn">
 						<small>사진 변경</small>
 					</label>
 					<input

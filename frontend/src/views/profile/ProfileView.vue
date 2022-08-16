@@ -23,12 +23,12 @@
 				<div class="username-wrapper">
 					<div>
 						<div v-show="isClicked" class="username">
-							{{ newNickName }}
+							{{ user.nickname }}
 						</div>
 						<div v-show="!isClicked">
 							<input
 								placeholder="user.username"
-								v-model="newNickName"
+								v-model="user.nickname"
 								@change="changeNickname"
 							/>
 						</div>
@@ -109,7 +109,7 @@ export default {
 		store.dispatch('profile/fetchBoardList');
 		store.dispatch('profile/getUserInfo');
 		const user = computed(() => store.getters['profile/userInfo']);
-		const newNickName = ref(user.value?.username);
+		// const newNickName = ref(user.value.nickname);
 		const isClicked = ref(true);
 		// const newProfile = ref(user.value.profile);
 		const formData = new FormData();
@@ -150,7 +150,7 @@ export default {
 		const sendChangeNickname = () => {
 			isClicked.value = true;
 			const payload = {
-				nickname: newNickName.value,
+				nickname: user.value.nickname,
 			};
 			store.dispatch('profile/updateUserNickname', payload);
 		};
@@ -177,7 +177,6 @@ export default {
 			curBoardList,
 			clickBoard,
 			changeBtnStatus,
-			newNickName,
 			isClicked,
 			sendChangeNickname,
 		};

@@ -101,48 +101,60 @@ public class BoardController {
         return ApiResponse.success("data", boardService.saveApplication(board, appDto));
     }
 
-    @PostMapping("like/{board_id}")
+    @PostMapping("like/{boardId}/{userSeq}")
     @ApiOperation(value = "likes - 좋아요 하기", notes = "좋아요 하기")
     public ApiResponse likes(
-            @PathVariable("board_id") Long boardId,
-            @RequestBody Long userId
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
         ) {
-        User user = userRepository.getReferenceById(userId);
+        User user = userRepository.getReferenceById(userSeq);
         Optional<Board> board = boardRepository.findById(boardId);
-
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
         return ApiResponse.success("data", boardService.likes(user, board.get()));
     }
 
-    @DeleteMapping("like/{board_id}")
+    @DeleteMapping("like/{boardId}/{userSeq}")
     @ApiOperation(value = "unlikes - 좋아요 삭제", notes = "좋아요 삭제")
     public ApiResponse unlikes(
-            @PathVariable("board_id") Long boardId,
-            @RequestBody Long userId
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
     ) {
-        User user = userRepository.getReferenceById(userId);
+        User user = userRepository.getReferenceById(userSeq);
         Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
         return ApiResponse.success("data", boardService.unlikes(user, board.get()));
     }
 
-    @PostMapping("star/{board_id}")
+    @PostMapping("star/{boardId}/{userSeq}")
     @ApiOperation(value = "star - 별표 하기", notes = "별표 하기")
     public ApiResponse star(
-            @PathVariable("board_id") Long boardId,
-            @RequestBody Long userId
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
     ) {
-        User user = userRepository.getReferenceById(userId);
+        System.out.println("userSeq = " + userSeq);
+        User user = userRepository.getReferenceById(userSeq);
         Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
         return ApiResponse.success("data", boardService.star(user, board.get()));
     }
 
-    @DeleteMapping("star/{board_id}")
+    @DeleteMapping("star/{boardId}/{userSeq}")
     @ApiOperation(value = "unstar - 별표 삭제", notes = "별표 삭제")
     public ApiResponse unstar(
-            @PathVariable("board_id") Long boardId,
-            @RequestBody Long userId
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
     ) {
-        User user = userRepository.getReferenceById(userId);
+        User user = userRepository.getReferenceById(userSeq);
         Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
         return ApiResponse.success("data", boardService.unstar(user, board.get()));
     }
 

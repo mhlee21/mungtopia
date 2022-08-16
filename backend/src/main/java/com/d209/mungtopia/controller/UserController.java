@@ -49,13 +49,17 @@ public class UserController {
         return ApiResponse.success("data", userService.getUser(userSeq));
     }
 
-    /**
+    /*
      * 유저 프로필 이미지 수정
+     * @param userSeq
+     * @param multipartFile
+     * @return
+     * @throws IOException
      */
     @PostMapping("/{user_seq}")
     public ApiResponse putUserProfile(@PathVariable("user_seq") Long userSeq,
                                       @RequestPart("files") MultipartFile multipartFile) throws IOException {
-//        System.out.println("multipartFile = " + multipartFile.isEmpty());
+        System.out.println("multipartFile = " + multipartFile.isEmpty());
         return ApiResponse.success("data", userService.putUserProfile(userSeq, multipartFile));
 //        return ApiResponse.success();
     }
@@ -93,6 +97,7 @@ public class UserController {
     }
 
     @PutMapping("/name/{userSeq}")
+    @ApiOperation(value = "putUserNickName - 유저 닉네임 변경", notes = "유저 닉네임 변경")
     public ApiResponse putUserNickName(@PathVariable Long userSeq, @RequestBody UserNicknameRes nickname){
         return ApiResponse.success("data", userService.putUserNickName(userSeq, nickname.getNickname()));
     }

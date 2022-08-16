@@ -53,9 +53,9 @@
 </template>
 
 <script>
-import { MATCH } from '@/assets/Qdata.json';
+import Qdata from '@/assets/Qdata.json';
 import { useRoute, useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 export default {
 	setup() {
@@ -63,6 +63,8 @@ export default {
 		const store = useStore();
 		const route = useRoute();
 		const router = useRouter();
+		const user = computed(() => store.getters['auth/user']);
+		// 게임 정답 저장
 		const answerList = [
 			'매우 그렇다',
 			'그렇다',
@@ -70,20 +72,39 @@ export default {
 			'아니다',
 			'매우 아니다',
 		];
-		const answer = Array(MATCH.length);
+		const MATCH = computed(() => Qdata?.MATCH);
+		const answer = Array(MATCH.value.length).fill(0);
+		// 답 선택
+		const matchNum = Array(6).fill(0);
+		const questionType = idx => MATCH.value[idx]['question_type'];
 		const clickAnswerButton = index => {
-			answer[qNum] = index;
-			if (qNum.value < MATCH.length) {
+			answer[qNum.value - 1] = 6 - (index + 1);
+			// 마지막 문제가 아닐때
+			if (qNum.value < MATCH.value.length) {
 				qNum.value++;
 			} else {
-				store.dispatch('game/saveAnswer', answer);
-				console.log(answer);
+				// 마지막 문제일 때
+				if (user.value) {
+					// matchNum 결과 저장
+					for (let idx = 0; idx < MATCH.value.length; idx++) {
+						const qType = questionType(idx);
+						matchNum[qType] += answer[idx];
+					}
+					const payload = {
+						userSeq: user.value?.userSeq,
+						matchAnswer: matchNum,
+						gameTag: 2,
+					};
+					store.dispatch('game/sendMatchResult', payload);
+				}
 				router.push({
 					name: 'gameResult',
 					params: { gameType: route.params.gameType },
 				});
 			}
 		};
+
+		// 뒤로가기 버튼
 		const clickBackButton = () => {
 			if (qNum.value === 1) {
 				router.push({
@@ -93,6 +114,7 @@ export default {
 			}
 			qNum.value--;
 		};
+		// 나가기 버튼
 		const clickX = () => {
 			router.push({ name: 'game' });
 		};

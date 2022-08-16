@@ -47,33 +47,6 @@
 			매우 아니다
 		</button>
 	</div>
-
-	<!-- <div class="MATCH-game-btn">
-			<div class="MATCH-start-btn" @click="plusMatchAnswer(5)">
-				{{ gameQuestion[questionNumber]['answer'][0] }}
-			</div>
-		</div>
-		<div class="MATCH-game-btn">
-			<div class="MATCH-start-btn" @click="plusMatchAnswer(4)">
-				{{ gameQuestion[questionNumber]['answer'][1] }}
-			</div>
-		</div>
-		<div class="MATCH-game-btn">
-			<div class="MATCH-start-btn" @click="plusMatchAnswer(3)">
-				{{ gameQuestion[questionNumber]['answer'][2] }}
-			</div>
-		</div>
-		<div class="MATCH-game-btn">
-			<div class="MATCH-start-btn" @click="plusMatchAnswer(2)">
-				{{ gameQuestion[questionNumber]['answer'][3] }}
-			</div>
-		</div>
-		<div class="MATCH-game-btn">
-			<div class="MATCH-start-btn" @click="plusMatchAnswer(1)">
-				{{ gameQuestion[questionNumber]['answer'][4] }}
-			</div>
-		</div>
-	</div> -->
 </template>
 
 <script>
@@ -111,6 +84,7 @@ export default {
 				router.push({ path: '/game/0/finish' });
 			}
 		};
+
 		const plusMbtiAnswer = userAnswer => {
 			store.dispatch('game/plusMbtiAnswer', {
 				question_type:

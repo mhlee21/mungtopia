@@ -20,7 +20,36 @@
 				</div>
 			</div>
 			<div class="info-component">
-				<div class="username">{{ user.username }}</div>
+				<div class="username-wrapper">
+					<div>
+						<div v-show="isClicked" class="username">
+							{{ user.nickname }}
+						</div>
+						<div v-show="!isClicked">
+							<input
+								placeholder="user.username"
+								v-model="user.nickname"
+								@change="changeNickname"
+							/>
+						</div>
+					</div>
+					<div class="change-username">
+						<button
+							v-show="isClicked"
+							class="info-btn"
+							@click="changeBtnStatus"
+						>
+							수정
+						</button>
+						<button
+							v-show="!isClicked"
+							class="info-btn"
+							@click="sendChangeNickname"
+						>
+							확인
+						</button>
+					</div>
+				</div>
 				<button class="info-btn" @click="goToUserInfo()">회원정보</button>
 			</div>
 		</div>
@@ -68,17 +97,22 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+
 export default {
 	components: { NavBar },
 	setup() {
 		const router = useRouter();
 		const store = useStore();
-		const user = computed(() => store.getters['auth/user']);
-
 		store.dispatch('profile/fetchBoardList');
+		store.dispatch('profile/getUserInfo');
+		const user = computed(() => store.getters['profile/userInfo']);
+		// const newNickName = ref(user.value.nickname);
+		const isClicked = ref(true);
+		// const newProfile = ref(user.value.profile);
+		const formData = new FormData();
 
 		const boardType = computed(() => store.getters['profile/boardType']);
 
@@ -91,9 +125,11 @@ export default {
 				return store.getters['profile/likeList'];
 			}
 		});
+
 		const changeBoardType = type => {
 			store.dispatch('profile/setBoardType', type);
 		};
+
 		const goToUserInfo = () => {
 			router.push({
 				name: 'userInfo',
@@ -106,7 +142,27 @@ export default {
 				params: { boardId: boardId },
 			});
 		};
-		const changeProfile = () => {};
+
+		// 닉네임 수정 input 값 CSS 처리
+		const changeBtnStatus = () => {
+			isClicked.value = false;
+		};
+		const sendChangeNickname = () => {
+			isClicked.value = true;
+			const payload = {
+				nickname: user.value.nickname,
+			};
+			store.dispatch('profile/updateUserNickname', payload);
+		};
+		const changeProfile = e => {
+			if (e.target.files.length > 1) {
+				alert('프로필 사진은 한장만 선택해주세요!');
+			} else {
+				// let data = URL.createObjectURL(e.target.files);
+				formData.append('files', e.target.files[0]);
+				store.dispatch('profile/updateUserProfile', formData);
+			}
+		};
 		const logout = () => {
 			store.dispatch('auth/logout');
 			router.push({ name: 'login' });
@@ -120,6 +176,9 @@ export default {
 			goToUserInfo,
 			curBoardList,
 			clickBoard,
+			changeBtnStatus,
+			isClicked,
+			sendChangeNickname,
 		};
 	},
 };

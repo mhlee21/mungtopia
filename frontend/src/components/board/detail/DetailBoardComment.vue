@@ -8,7 +8,7 @@
 					<p class="user-name">{{ comment.author.nickname }}</p>
 					<!-- 댓글 내용 -->
 					<!-- 비밀댓글이 아니거나, 작성자일 때 댓글 보여주기 -->
-					<div v-if="!comment.secret || comment.author.userSeq === userSeq">
+					<div v-if="!comment.secret || comment.author?.userSeq === userSeq">
 						<p class="content">{{ comment.contents }}</p>
 					</div>
 					<div v-else>
@@ -30,8 +30,8 @@
 						<div
 							v-if="
 								!comment.secret ||
-								comment.author.userSeq === userSeq ||
-								boardAuthor.userSeq === userSeq
+								comment.author?.userSeq === userSeq ||
+								boardAuthor?.userSeq === userSeq
 							"
 						>
 							<a @click.prevent="showReplyForm()">답글달기</a>
@@ -45,7 +45,7 @@
 		<div v-if="comment.replyList">
 			<!-- 답글 달기 폼 -->
 			<form
-				@submit.prevent="createReply()"
+				@submit.prevent="createReply(comment.commentId)"
 				class="reply-form"
 				v-if="writeReply"
 			>
@@ -76,7 +76,7 @@
 					<div>
 						<p class="time">{{ difTime(new Date(reply.createtime)) }}</p>
 						<!-- 대댓글 작성자가 본인	일 때 -->
-						<div class="motion-wrap" v-if="reply.author.userSeq === userSeq">
+						<div class="motion-wrap" v-if="reply.author?.userSeq === userSeq">
 							<a @click.prevent="clickModalButton(2, comment, reply)">수정</a>
 							<a @click.prevent="clickModalButton(3, comment, reply)">삭제</a>
 						</div>
@@ -127,7 +127,9 @@ export default {
 		// boardAuthor
 		const boardAuthor = computed(() => store.getters['board/board']['author']);
 		// userSeq
-		const userSeq = computed(() => store.getters['auth/user']?.userSeq) || 1;
+		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
+		// nickname
+		const nickname = computed(() => store.getters['auth/user']?.userNickname);
 
 		// 대댓글 생성
 		const writeReply = ref(false);
@@ -146,6 +148,7 @@ export default {
 					userSeq: userSeq.value,
 					content: newReply.value,
 					secret: isReplySecret.value,
+					userNickname: nickname.value,
 				};
 				store.dispatch('board/createReply', { commentId, payload });
 				newReply.value = null;

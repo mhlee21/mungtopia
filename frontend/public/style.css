@@ -919,10 +919,10 @@ body {
   border-radius: 10px;
   justify-content: center;
 }
-.adopt-detail-pg .dog-detail-li:last-child {
+/* .adopt-detail-pg .dog-detail-li:last-child {
   width: 100%;
   margin-top: 5px;
-}
+} */
 .adopt-detail-pg .dog-detail-li .tit {
   font-size: 12px;
   color: #ff9898;
@@ -1754,40 +1754,54 @@ body {
   padding: 10px 30px;
   box-sizing: border-box;
 }
-.profile-pg .info-wrapper .info-component {
+.profile-pg .info-wrapper .info-component{
   width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  text-align: center;
+  align-items: center;
 }
+
 .profile-pg .info-wrapper .info-component .change-btn {
   color: #626262;
-  margin: 10px;
-  padding-left: 4vw;
+  padding: 1rem;
+  font-size: 0.8rem;
+  /* padding-left: 4vw; */
 }
 .profile-pg .info-wrapper .info-component .change-input {
   display: none;
 }
-.profile-pg .info-wrapper .info-component .username {
-  padding-top: 30px;
-  font-size: 18px;
+.profile-pg .info-wrapper .info-component .username-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 1.2rem;
+  font-size: 1rem;
+}
+
+.profile-pg .info-wrapper .info-component .username-wrapper .username {
+  /* padding-top: 1.8rem;
+  font-size: 18px; */
 }
 .profile-pg .info-wrapper .info-component .info-btn {
   background-color: #F2F2F2;
   border-radius: 15px;
   border: none;
   height: 30px;
+  width: 100%;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 14px;
 }
 .profile-pg .image-wrapper {
   border-radius: 50%;
-  width: 30vw;
-  height: 30vw;
+  width: 20vw;
+  height: 20vw;
+  margin-bottom: 1rem;
   overflow: hidden;
 }
 .profile-pg .image-wrapper .profile-img {
-  height: 30vw;
+  height: 20vw;
 }
 .profile-pg .board-wrapper {
   margin: 20px 0;
@@ -1827,7 +1841,20 @@ body {
   height: 22vw;
   box-sizing: border-box;
   margin: 1px;
+  position: relative;
 }
+
+.profile-pg .board-wrapper .board-content-wrapper .board-content img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(50, 50);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: auto;
+}
+
 .profile-pg .btn-wrapper {
   width: 100%;
 }

@@ -30,6 +30,8 @@ public class BoardController {
     private final InfReplyRepository replyRepository;
     private final UserRepository userRepository;
     private final BoardService boardService;
+    private final InfLikeRepository likeRepository;
+    private final InfStarRepository starRepository;
 
     @GetMapping("/{tag_no}")
     @ApiOperation(value = "mainInfo - 전체 글 불러오기", notes = "태그 별 게시글 리스트를 제공")
@@ -101,50 +103,103 @@ public class BoardController {
         return ApiResponse.success("data", boardService.saveApplication(board, appDto));
     }
 
-    @PostMapping("like/{board_id}")
+    @GetMapping("like/{boardId}/{userSeq}")
+    @ApiOperation(value = "likes - 좋아요 여부 알려주기", notes = "좋아요 여부 알려주기")
+    public ApiResponse getLikes(
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
+    ) {
+        User user = userRepository.getReferenceById(userSeq);
+        Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
+        return ApiResponse.success("data", boardService.getLikes(user, board.get()));
+    }
+
+    @PostMapping("like/{boardId}/{userSeq}")
     @ApiOperation(value = "likes - 좋아요 하기", notes = "좋아요 하기")
     public ApiResponse likes(
-            @PathVariable("board_id") Long boardId,
-            @RequestBody Long userId
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
         ) {
-        User user = userRepository.getReferenceById(userId);
+        User user = userRepository.getReferenceById(userSeq);
         Optional<Board> board = boardRepository.findById(boardId);
-
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
+        if (likeRepository.findLikesByUserAndBoard(user, board.get()).isPresent()) {
+            return ApiResponse.fail();
+        }
         return ApiResponse.success("data", boardService.likes(user, board.get()));
     }
 
-    @DeleteMapping("like/{board_id}")
+    @DeleteMapping("like/{boardId}/{userSeq}")
     @ApiOperation(value = "unlikes - 좋아요 삭제", notes = "좋아요 삭제")
     public ApiResponse unlikes(
-            @PathVariable("board_id") Long boardId,
-            @RequestBody Long userId
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
     ) {
-        User user = userRepository.getReferenceById(userId);
+        User user = userRepository.getReferenceById(userSeq);
         Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
+        if (likeRepository.findLikesByUserAndBoard(user, board.get()).isEmpty()) {
+            return ApiResponse.fail();
+        }
         return ApiResponse.success("data", boardService.unlikes(user, board.get()));
     }
 
-    @PostMapping("star/{board_id}")
+    @GetMapping("star/{boardId}/{userSeq}")
+    @ApiOperation(value = "star - 별표 여부 알려주기", notes = "별표 여부 알려주기")
+    public ApiResponse getStar(
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
+    ) {
+        User user = userRepository.getReferenceById(userSeq);
+        Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
+        return ApiResponse.success("data", boardService.getStar(user, board.get()));
+    }
+
+    @PostMapping("star/{boardId}/{userSeq}")
     @ApiOperation(value = "star - 별표 하기", notes = "별표 하기")
     public ApiResponse star(
-            @PathVariable("board_id") Long boardId,
-            @RequestBody Long userId
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
     ) {
-        User user = userRepository.getReferenceById(userId);
+        User user = userRepository.getReferenceById(userSeq);
         Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
+        if (starRepository.findStarByUserAndBoard(user, board.get()).isPresent()) {
+            return ApiResponse.fail();
+        }
         return ApiResponse.success("data", boardService.star(user, board.get()));
     }
 
-    @DeleteMapping("star/{board_id}")
+    @DeleteMapping("star/{boardId}/{userSeq}")
     @ApiOperation(value = "unstar - 별표 삭제", notes = "별표 삭제")
     public ApiResponse unstar(
-            @PathVariable("board_id") Long boardId,
-            @RequestBody Long userId
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
     ) {
-        User user = userRepository.getReferenceById(userId);
+        User user = userRepository.getReferenceById(userSeq);
         Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
+        if (starRepository.findStarByUserAndBoard(user, board.get()).isEmpty()) {
+            return ApiResponse.fail();
+        }
         return ApiResponse.success("data", boardService.unstar(user, board.get()));
     }
+
+
 
     @GetMapping("{board_id}/comments")
     @ApiOperation(value = "getCommentList - 댓글 목록 가져오기", notes = "댓글 목록 가져오기")
@@ -224,14 +279,13 @@ public class BoardController {
     public ApiResponse deleteReply (
             @PathVariable("board_id") Long boardId,
             @PathVariable("comment_id") Long commentId,
-            @PathVariable("reply_id") Long replyId,
-            @RequestBody ReplyDto replyDto
+            @PathVariable("reply_id") Long replyId
     ) {
         Board board = boardRepository.findById(boardId).get();
 //        Comment comment = commentRepository.findById(commentId).get();
         Reply reply = replyRepository.findById(replyId).get();
         // 기존 userSeq 와 userNickname 비교하여 유효성 검사 필요
-        return ApiResponse.success("data", boardService.deleteReply(board, reply, replyDto));
+        return ApiResponse.success("data", boardService.deleteReply(board, reply));
     }
 // 이미지 저장
 //    @PostMapping("/img/{boardId}")

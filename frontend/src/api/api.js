@@ -25,7 +25,7 @@ export default {
 		boardMain: ({ tagNo, userSeq }) =>
 			HOST + BOARD + `${tagNo}/` + `${userSeq}`,
 		// 상세 글 불러오기
-		boardDetail: boardId => HOST + BOARD + `${boardId}`,
+		boardDetail: boardId => HOST + BOARD + `detail/` + `${boardId}`,
 		// 입양 상태 확인
 		adoptionStatusCheck: userSeq => HOST + BOARD + `status/` + `${userSeq}`,
 		// 글 쓰기
@@ -40,29 +40,51 @@ export default {
 		commentCreate: boardId => HOST + BOARD + `${boardId}` + `/comments`,
 		// 댓글 수정
 		commentUpdate: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}` + `/comments/` + `${commentId}`,
+			HOST + BOARD + `${boardId}/` + `comments/` + `${commentId}`,
 		// 댓글 삭제
 		commentDelete: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}` + `/comments/` + `${commentId}`,
+			HOST + BOARD + `${boardId}/` + `comments/` + `${commentId}`,
 		// 대댓글 쓰기
 		replyCreate: (boardId, commentId) =>
-			HOST + BOARD + `${boardId}/` + `${commentId}`,
+			HOST + BOARD + `${boardId}/` + `comments/` + `${commentId}`,
 		// 대댓글 수정
 		replyUpdate: (boardId, commentId, replyId) =>
-			HOST + BOARD + `${boardId}/` + `${commentId}/` + `${replyId}`,
+			HOST +
+			BOARD +
+			`${boardId}/` +
+			`comments/` +
+			`${commentId}/` +
+			`reply/` +
+			`${replyId}`,
 		// 대댓글 삭제
 		replyDelete: (boardId, commentId, replyId) =>
-			HOST + BOARD + `${boardId}/` + `${commentId}/` + `${replyId}`,
+			HOST +
+			BOARD +
+			`${boardId}/` +
+			`comments/` +
+			`${commentId}/` +
+			`reply/` +
+			`${replyId}`,
 		// 검색
 		boardSearch: tagNum => HOST + BOARD + `search/` + `${tagNum}`,
+		// 좋아요 여부
+		isLike: (boardId, userSeq) =>
+			HOST + BOARD + `like/` + `${boardId}/` + `${userSeq}`,
 		// 좋아요
-		likeCreate: boardId => HOST + BOARD + `like/` + `${boardId}`,
+		likeCreate: (boardId, userSeq) =>
+			HOST + BOARD + `like/` + `${boardId}/` + `${userSeq}`,
 		// 좋아요 삭제
-		likeDelete: boardId => HOST + BOARD + `like/` + `${boardId}`,
+		likeDelete: (boardId, userSeq) =>
+			HOST + BOARD + `like/` + `${boardId}/` + `${userSeq}`,
+		// 별표 여부
+		haveStar: (boardId, userSeq) =>
+			HOST + BOARD + `star/` + `${boardId}/` + `${userSeq}`,
 		// 별표
-		starCreate: boardId => HOST + BOARD + `star/` + `${boardId}`,
+		starCreate: (boardId, userSeq) =>
+			HOST + BOARD + `star/` + `${boardId}/` + `${userSeq}`,
 		// 별표삭제
-		starDelete: boardId => HOST + BOARD + `star/` + `${boardId}`,
+		starDelete: (boardId, userSeq) =>
+			HOST + BOARD + `star/` + `${boardId}/` + `${userSeq}`,
 		// 입양신청서 작성
 		applicationCreate: boardId =>
 			HOST + BOARD + 'detail/' + `${boardId}/` + `applicant`,
@@ -129,13 +151,17 @@ export default {
 		sessionDelete: applicationId => HOST + MEETING + `${applicationId}`,
 	},
 	user: {
+		// 유저 정보 가져오기
+		profileGetUser: userSeq => HOST + USER + `${userSeq}`,
 		// 유저 게시판 정보
 		profileBoardList: userSeq => HOST + USER + BOARD + `${userSeq}`,
 		// 유저 프로필 이미지 수정
 		profileImageUpdate: userSeq => HOST + USER + `${userSeq}`,
 		// 유저 상세 정보
-		profileDetail: userSeq => HOST + USER + '/detail' + `${userSeq}`,
+		profileDetail: userSeq => HOST + USER + 'detail/' + `${userSeq}`,
 		// 유저 정보 수정
-		profileDetailUpdate: userSeq => HOST + USER + '/detail' + `${userSeq}`,
+		profileDetailUpdate: userSeq => HOST + USER + 'detail/' + `${userSeq}`,
+		// 유저 닉네임 수정
+		profileNameUpdate: userSeq => HOST + USER + 'name/' + `${userSeq}`,
 	},
 };

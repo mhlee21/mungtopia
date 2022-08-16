@@ -100,7 +100,7 @@ export default {
 		},
 		getUserInfo: ({ commit, rootGetters }) => {
 			axios({
-				url: api.user.profileNameUpdate(rootGetters['auth/user'].userSeq),
+				url: api.user.profileGetUser(rootGetters['auth/user'].userSeq),
 				method: 'get',
 				headers: rootGetters['auth/authHeader'],
 			})

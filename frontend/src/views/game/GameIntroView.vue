@@ -5,7 +5,6 @@
 				:src="require('@/assets/img/gameMain1.png')"
 				alt="개 아이콘  제작자: Freepik - Flaticon"
 			/>
-			<!-- <a href="https://www.flaticon.com/kr/free-icons/" title="개 아이콘">개 아이콘  제작자: Freepik - Flaticon</a> -->
 		</div>
 		<div class="game-body">
 			<div class="title">나와 잘맞는 반려견은?</div>

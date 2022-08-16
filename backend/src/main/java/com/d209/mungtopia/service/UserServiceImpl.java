@@ -10,12 +10,14 @@ import com.d209.mungtopia.repository.InfUserRepository;
 import com.d209.mungtopia.repository.user.UserRefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +33,7 @@ public class UserServiceImpl implements UserService{
     private final InfImageStorageRepository infImageStorageRepository;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
     private final static String path = "https://i7d209.p.ssafy.io:8081/api/v1/image/";
-
+    private final BoardService boardService;
     /**
      * 간단한 메인 정보 보내주기
      * @param userSeq
@@ -105,7 +107,7 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     @Transactional
-    public String putUserProfile(Long userSeq, MultipartFile multipartFile) throws IOException {
+    public byte[] putUserProfile(Long userSeq, MultipartFile multipartFile) throws IOException {
        String domin = "i7d209.p.ssafy.io";
         // ========= 이미지 서버 삭제 ========
         User user = infUserRepository.getReferenceById(userSeq);
@@ -153,7 +155,8 @@ public class UserServiceImpl implements UserService{
         // ======== 이미지 DB 저장  =========
         user.changeImg(path + saveName);
         infUserRepository.save(user);
-        return path + saveName;
+        InputStream in = multipartFile.getInputStream();
+        return IOUtils.toByteArray(in);
     }
 
     private final String getRandomString() {

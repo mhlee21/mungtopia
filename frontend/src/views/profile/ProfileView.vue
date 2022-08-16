@@ -161,6 +161,7 @@ export default {
 				// let data = URL.createObjectURL(e.target.files);
 				formData.append('files', e.target.files[0]);
 				store.dispatch('profile/updateUserProfile', formData);
+				this.isChangeProfile = false;
 			}
 		};
 		const logout = () => {

@@ -1,5 +1,6 @@
 package com.d209.mungtopia.controller;
 import com.d209.mungtopia.dto.user.UseInfoReq;
+import com.d209.mungtopia.dto.user.UserNicknameRes;
 import com.d209.mungtopia.entity.UserInfo;
 import com.d209.mungtopia.service.UserService;
 import com.d209.mungtopia.common.ApiResponse;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -90,4 +92,8 @@ public class UserController {
         return ApiResponse.success("data", userService.getUserBoard(userSeq));
     }
 
+    @PutMapping("/name/{userSeq}")
+    public ApiResponse putUserNickName(@PathVariable Long userSeq, @RequestBody UserNicknameRes nickname){
+        return ApiResponse.success("data", userService.putUserNickName(userSeq, nickname.getNickname()));
+    }
 }

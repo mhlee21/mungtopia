@@ -444,14 +444,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    public Boolean getLikes(User user, Board board) {
+        System.out.println("user.getUserSeq() = " + user.getUserSeq());
+        System.out.println("board.getBoardId() = " + board.getBoardId());
+        return likeRepository.findLikesByUserAndBoard(user, board).isPresent();
+    }
+
+    @Override
     public Boolean likes(User user, Board board) {
-        LikesDto likesDto = new LikesDto(user, board);
-
-        //이미 좋아요 한 board 인 경우 409 에러
-        if (likeRepository.findLikesByUserAndBoard(user, board).isPresent()) {
-            return false;
-        }
-
         Likes likes = Likes.builder() //롬복의 @Builder 어노테이션 사용
                 .createtime(getNow())
                 .user(user)
@@ -459,47 +459,39 @@ public class BoardServiceImpl implements BoardService {
                 .build();
         likeRepository.save(likes);
 
-        return true;
+        return likeRepository.findLikesByUserAndBoard(user, board).isPresent();
     }
 
     @Override
     public Boolean unlikes(User user, Board board) {
         Optional<Likes> likes = likeRepository.findLikesByUserAndBoard(user, board);
-        if (likes.isEmpty()) {
-            return false;
-        }
-
         likeRepository.delete(likes.get());
-        return true;
+        return likeRepository.findLikesByUserAndBoard(user, board).isPresent();
+    }
+
+    @Override
+    public Boolean getStar(User user, Board board) {
+        System.out.println("user.getUserSeq() = " + user.getUserSeq());
+        System.out.println("board.getBoardId() = " + board.getBoardId());
+        return starRepository.findStarByUserAndBoard(user, board).isPresent();
     }
 
     @Override
     public Boolean star(User user, Board board) {
-        StarDto starDto = new StarDto(user, board);
-
-        //이미 좋아요 한 board 인 경우 409 에러
-        if (starRepository.findStarByUserAndBoard(user, board).isPresent()) {
-            return false;
-        }
-
         Star star = Star.builder() //롬복의 @Builder 어노테이션 사용
                 .createtime(getNow())
                 .user(user)
                 .board(board)
                 .build();
         starRepository.save(star);
-        return true;
+        return starRepository.findStarByUserAndBoard(user, board).isPresent();
     }
 
     @Override
     public Boolean unstar(User user, Board board) {
         Optional<Star> star = starRepository.findStarByUserAndBoard(user, board);
-        if (star.isEmpty()) {
-            return false;
-        }
-
         starRepository.delete(star.get());
-        return true;
+        return starRepository.findStarByUserAndBoard(user, board).isPresent();
     }
 
     public List<CommentRes> getCommentAll(Board board){

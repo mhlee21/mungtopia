@@ -89,11 +89,11 @@ export default {
 			axios({
 				url: api.board.boardMain({
 					tagNo,
-					userSeq: rootGetters['auth/user'].userSeq,
 				}),
 				method: 'get',
 				headers: rootGetters['auth/authHeader'],
 				params: {
+					userSeq: rootGetters['auth/user'].userSeq,
 					pageNo,
 				},
 			})

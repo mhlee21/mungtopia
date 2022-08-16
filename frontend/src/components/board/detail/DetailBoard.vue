@@ -58,7 +58,7 @@ export default {
 		// boardId
 		const boardId = computed(() => store.getters['board/board']['boardId']);
 		// 좋아요
-		const isLike = computed(() => store.getters['board/board']['isLike']);
+		const isLike = computed(() => store.getters['board/likeInDetail']);
 		const clickLike = () => {
 			if (isLike.value) {
 				// 좋아요 삭제
@@ -76,9 +76,7 @@ export default {
 		};
 
 		// 관심
-		const haveInterest = computed(
-			() => store.getters['board/board']['haveInterest'],
-		);
+		const haveInterest = computed(() => store.getters['board/starInDetail']);
 		const clickStar = () => {
 			if (haveInterest.value) {
 				// 관심 삭제

@@ -1,6 +1,6 @@
 // const HOST = 'https://i7d209.p.ssafy.io/api/v1/';
-const HOST = 'https://i7d209.p.ssafy.io:8081/api/v1/';
-// const HOST = 'http://localhost:8081/api/v1/';
+// const HOST = 'https://i7d209.p.ssafy.io:8081/api/v1/';
+const HOST = 'http://localhost:8081/api/v1/';
 
 const AUTH = 'auth/';
 const BOARD = 'board/';
@@ -67,12 +67,18 @@ export default {
 			`${replyId}`,
 		// 검색
 		boardSearch: tagNum => HOST + BOARD + `search/` + `${tagNum}`,
+		// 좋아요 여부
+		isLike: (boardId, userSeq) =>
+			HOST + BOARD + `like/` + `${boardId}/` + `${userSeq}`,
 		// 좋아요
 		likeCreate: (boardId, userSeq) =>
 			HOST + BOARD + `like/` + `${boardId}/` + `${userSeq}`,
 		// 좋아요 삭제
 		likeDelete: (boardId, userSeq) =>
 			HOST + BOARD + `like/` + `${boardId}/` + `${userSeq}`,
+		// 별표 여부
+		haveStar: (boardId, userSeq) =>
+			HOST + BOARD + `star/` + `${boardId}/` + `${userSeq}`,
 		// 별표
 		starCreate: (boardId, userSeq) =>
 			HOST + BOARD + `star/` + `${boardId}/` + `${userSeq}`,

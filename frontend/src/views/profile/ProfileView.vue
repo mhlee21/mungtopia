@@ -158,7 +158,7 @@ export default {
 				alert('프로필 사진은 한장만 선택해주세요!');
 			} else {
 				// let data = URL.createObjectURL(e.target.files);
-				formData.append('files', e.target.files);
+				formData.append('files', e.target.files[0]);
 				store.dispatch('profile/updateUserProfile', formData);
 			}
 		};

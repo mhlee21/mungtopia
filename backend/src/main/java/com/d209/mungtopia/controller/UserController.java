@@ -1,5 +1,6 @@
 package com.d209.mungtopia.controller;
 import com.d209.mungtopia.dto.user.UseInfoReq;
+import com.d209.mungtopia.dto.user.UserNicknameRes;
 import com.d209.mungtopia.entity.UserInfo;
 import com.d209.mungtopia.service.UserService;
 import com.d209.mungtopia.common.ApiResponse;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -47,13 +49,17 @@ public class UserController {
         return ApiResponse.success("data", userService.getUser(userSeq));
     }
 
-    /**
+    /*
      * 유저 프로필 이미지 수정
+     * @param userSeq
+     * @param multipartFile
+     * @return
+     * @throws IOException
      */
     @PostMapping("/{user_seq}")
     public ApiResponse putUserProfile(@PathVariable("user_seq") Long userSeq,
-                                      @RequestParam("files") MultipartFile multipartFile) throws IOException {
-//        System.out.println("multipartFile = " + multipartFile.isEmpty());
+                                      @RequestPart("files") MultipartFile multipartFile) throws IOException {
+        System.out.println("multipartFile = " + multipartFile.isEmpty());
         return ApiResponse.success("data", userService.putUserProfile(userSeq, multipartFile));
 //        return ApiResponse.success();
     }
@@ -90,4 +96,9 @@ public class UserController {
         return ApiResponse.success("data", userService.getUserBoard(userSeq));
     }
 
+    @PutMapping("/name/{userSeq}")
+    @ApiOperation(value = "putUserNickName - 유저 닉네임 변경", notes = "유저 닉네임 변경")
+    public ApiResponse putUserNickName(@PathVariable Long userSeq, @RequestBody UserNicknameRes nickname){
+        return ApiResponse.success("data", userService.putUserNickName(userSeq, nickname.getNickname()));
+    }
 }

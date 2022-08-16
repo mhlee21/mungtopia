@@ -55,9 +55,8 @@
 <script>
 import Qdata from '@/assets/Qdata.json';
 import { useRoute, useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
-import { computed } from '@vue/reactivity';
 export default {
 	setup() {
 		const qNum = ref(1);
@@ -74,7 +73,7 @@ export default {
 			'매우 아니다',
 		];
 		const MATCH = computed(() => Qdata?.MATCH);
-		const answer = Array(MATCH.length).fill(0);
+		const answer = Array(MATCH.value.length).fill(0);
 		// 답 선택
 		const matchNum = Array(6).fill(0);
 		const questionType = idx => MATCH.value[idx]['question_type'];

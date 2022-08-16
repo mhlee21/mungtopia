@@ -14,6 +14,6 @@ import java.sql.Timestamp;
 public class ReplyDto {
     private Long userSeq;
     private String userNickname;
-    private String content;
+    private String contents;
     private boolean secret;
 }

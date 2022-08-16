@@ -135,5 +135,7 @@ export default {
 		profileDetail: userSeq => HOST + USER + 'detail/' + `${userSeq}`,
 		// 유저 정보 수정
 		profileDetailUpdate: userSeq => HOST + USER + 'detail/' + `${userSeq}`,
+		// 유저 닉네임 수정
+		profileNameUpdate: userSeq => HOST + USER + 'name/' + `${userSeq}`,
 	},
 };

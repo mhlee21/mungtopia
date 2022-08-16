@@ -1748,9 +1748,17 @@ body {
 .profile-pg .info-wrapper .info-component .change-input {
   display: none;
 }
-.profile-pg .info-wrapper .info-component .username {
-  padding-top: 30px;
+.profile-pg .info-wrapper .info-component .username-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 1.8rem;
   font-size: 18px;
+}
+
+.profile-pg .info-wrapper .info-component .username-wrapper .username {
+  /* padding-top: 1.8rem;
+  font-size: 18px; */
 }
 .profile-pg .info-wrapper .info-component .info-btn {
   background-color: #F2F2F2;

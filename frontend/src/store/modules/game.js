@@ -296,10 +296,6 @@ export default {
 				.catch(err => {
 					console.error(err.response);
 				});
-			// .then(res => {
-			// 	console.log(res.body.data);
-
-			// })
 		},
 
 		updateProgressbar: ({ commit, getters }) => {

@@ -112,10 +112,13 @@ public class UserServiceImpl implements UserService{
         String profileImageUrl = user.getProfileImageUrl();
         // 기존에 우리 서버에 저장된 것만 서버에서 삭제해야함
         if (profileImageUrl.contains(domin)){
+            System.out.println(" ================= file delete in!! ==========" );
             String[] split = profileImageUrl.split("/");
             String originSaveName = split[split.length - 1];
+            System.out.println("======= originSaveName ======" + originSaveName);
             File file = new File("/var/images/" + originSaveName);
             if (file.exists()){
+                System.out.println("=============== 파일 존재 =================");
                 if (file.delete())
                     System.out.println("=============== 파일 삭제 성공 =================");
                 else
@@ -125,6 +128,7 @@ public class UserServiceImpl implements UserService{
             }
         }
         // ======== 이미지 서버 저장  =========
+        System.out.println("=============== ...이미지 저장 시작... =================");
         if (multipartFile.isEmpty())
             return null;
 
@@ -148,6 +152,7 @@ public class UserServiceImpl implements UserService{
 
         // ======== 이미지 DB 저장  =========
         user.changeImg(path + saveName);
+        infUserRepository.save(user);
         return path + saveName;
     }
 

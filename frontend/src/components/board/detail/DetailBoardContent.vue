@@ -17,7 +17,7 @@
 				<p class="tit">접종여부</p>
 				<p class="txt">{{ neutering }}</p>
 			</li>
-			<div class="dog-detail-li">
+			<!-- <div class="dog-detail-li">
 				<p class="tit">성격</p>
 				<div class="character-box">
 					<p
@@ -28,7 +28,7 @@
 						{{ nature }}
 					</p>
 				</div>
-			</div>
+			</div> -->
 		</ol>
 		<div class="textbox">
 			<p>
@@ -44,15 +44,15 @@ import { useStore } from 'vuex';
 export default {
 	setup() {
 		const store = useStore();
-		const age = computed(() => store.getters['board/board']['dogInfo']['age']);
+		const age = computed(() => store.getters['board/board']['dogInfo']?.age);
 		const weight = computed(
-			() => store.getters['board/board']['dogInfo']['weight'],
+			() => store.getters['board/board']['dogInfo']?.weight,
 		);
-		const neutering = computed(
-			() => store.getters['board/board']['dogInfo']['neutering'],
+		const neutering = computed(() =>
+			store.getters['board/board']['dogInfo']?.neutering === true ? 'Y' : 'N',
 		);
 		const gender = computed(
-			() => store.getters['board/board']['dogInfo']['gender'],
+			() => store.getters['board/board']['dogInfo']?.gender,
 		);
 		const dogNature = computed(() => store.getters['board/board']['dogNature']);
 		const contents = computed(() => store.getters['board/board']['contents']);

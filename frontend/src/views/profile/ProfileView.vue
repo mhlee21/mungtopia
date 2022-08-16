@@ -20,7 +20,36 @@
 				</div>
 			</div>
 			<div class="info-component">
-				<div class="username">{{ user.username }}</div>
+				<div class="username-wrapper">
+					<div>
+						<div v-show="isClicked" class="username">
+							{{ newNickName }}
+						</div>
+						<div v-show="!isClicked">
+							<input
+								placeholder="user.username"
+								v-model="newNickName"
+								@change="changeNickname"
+							/>
+						</div>
+					</div>
+					<div class="change-username">
+						<button
+							v-show="isClicked"
+							class="info-btn"
+							@click="changeBtnStatus"
+						>
+							수정
+						</button>
+						<button
+							v-show="!isClicked"
+							class="info-btn"
+							@click="sendChangeNickname"
+						>
+							확인
+						</button>
+					</div>
+				</div>
 				<button class="info-btn" @click="goToUserInfo()">회원정보</button>
 			</div>
 		</div>
@@ -68,16 +97,19 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import { computed } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+
 export default {
 	components: { NavBar },
 	setup() {
 		const router = useRouter();
 		const store = useStore();
 		const user = computed(() => store.getters['auth/user']);
+		const newNickName = reactive(user.value.username);
 
+		const isClicked = ref(true);
 		store.dispatch('profile/fetchBoardList');
 
 		const boardType = computed(() => store.getters['profile/boardType']);
@@ -91,9 +123,11 @@ export default {
 				return store.getters['profile/likeList'];
 			}
 		});
+
 		const changeBoardType = type => {
 			store.dispatch('profile/setBoardType', type);
 		};
+
 		const goToUserInfo = () => {
 			router.push({
 				name: 'userInfo',
@@ -105,6 +139,12 @@ export default {
 				name: 'boardDetail',
 				params: { boardId: boardId },
 			});
+		};
+		const changeBtnStatus = () => {
+			isClicked.value = false;
+		};
+		const sendChangeNickname = () => {
+			isClicked.value = true;
 		};
 		const changeProfile = () => {};
 		const logout = () => {
@@ -120,6 +160,10 @@ export default {
 			goToUserInfo,
 			curBoardList,
 			clickBoard,
+			changeBtnStatus,
+			newNickName,
+			isClicked,
+			sendChangeNickname,
 		};
 	},
 };

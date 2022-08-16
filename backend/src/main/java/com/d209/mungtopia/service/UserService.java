@@ -3,6 +3,7 @@ package com.d209.mungtopia.service;
 import com.d209.mungtopia.dto.user.Info;
 import com.d209.mungtopia.dto.user.UseInfoReq;
 import com.d209.mungtopia.dto.user.UserBoardRes;
+import com.d209.mungtopia.entity.Board;
 import com.d209.mungtopia.entity.UserInfo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,4 +17,5 @@ public interface UserService {
     UserBoardRes getUserBoard(long userSeq);
     UserInfo getDetailUser(long userSeq);
     Info getUserSeq(String token);
+    Boolean putUserNickName(long userSeq, String name);
 }

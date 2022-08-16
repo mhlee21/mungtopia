@@ -39,7 +39,7 @@ export default {
 		const clickFilter = num => {
 			store.dispatch('board/fetchBoardList', {
 				tagNo: num,
-				pageNum: 0,
+				pageNo: 0,
 			});
 		};
 

@@ -143,8 +143,8 @@ export default {
 			// 		},
 			// 	],
 			// };
-			const boardList = data.boardList;
-			commit('SET_BOARD_LIST', boardList);
+			// const boardList = data.boardList;
+			// commit('SET_BOARD_LIST', boardList);
 			commit('SET_PAGE_NO', pageNo + 1);
 			commit('SET_TAG_NO', tagNo);
 		},

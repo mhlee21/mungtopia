@@ -126,8 +126,10 @@ export default {
 			HOST + ADOPT + PROTECTOR + `${adoptionProcessId}`,
 		// 입양 신청서
 		application: applicationId => HOST + ADOPT + `${applicationId}`,
+		// 웹소켓 연결
+		chatStart: () => HOST + CHAT,
 		// 채팅
-		chats: () => HOST + ADOPT + CHAT + 'log',
+		chats: () => HOST + CHAT + 'log',
 		// 채팅 보내기
 		chatCreate: (chatRoomId, userSeq) =>
 			HOST + ADOPT + CHAT + `${chatRoomId}/` + `${userSeq}`,

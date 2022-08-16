@@ -279,26 +279,26 @@ export default {
 		// chatList 받기
 		fetchChatMain: ({ commit, rootGetters }, chatRoomId) => {
 			axios({
-				// url: api.adopt.chats(),
-				url: 'http://localhost:8081/api/v1/chat/log',
+				url: api.adopt.chats(),
 				method: 'get',
-				params: { page: 1, chat_room_id: 4 },
+				params: {
+					page: 0,
+					chatRoomId: chatRoomId,
+					userSeq: rootGetters['auth/user'].userSeq,
+				},
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log('chatList', res.data.body.data.content);
+					console.log('chatList', res);
+					commit('SET_CHAT_LIST', res.data.body.data.chatLogDtoList);
+					commit('SET_CHAT_ROOM_ID', chatRoomId);
 
 					const you = {
-						// userSeq: res.body.data.userSeq,
-						// nickname: res.body.data.nickname,
-						// profile: res.body.data.profile,
-						userSeq: 1,
-						nickname: '이면',
-						profile: '',
+						userSeq: res.data.body.data.userSeq,
+						nickname: res.data.body.data.nickname,
+						profile: res.data.body.data.profile,
 					};
-					commit('SET_CHAT_LIST', res.data.body.data.content);
 					commit('SET_YOU', you);
-					commit('SET_CHAT_ROOM_ID', chatRoomId);
 				})
 				.catch(err => {
 					console.error(err.response);

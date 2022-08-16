@@ -24,7 +24,7 @@ export default {
 		const store = useStore();
 		store.dispatch('board/fetchBoardList', {
 			tagNo: 0,
-			pageNum: 0,
+			pageNo: 0,
 		});
 		return {};
 	},

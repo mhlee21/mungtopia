@@ -94,7 +94,22 @@ export default {
 					'Content-Type': 'multipart/form-data',
 				},
 				data: payload,
-			}).catch();
+			}).catch(err => {
+				console.log(err);
+			});
+		},
+		getUserInfo: ({ commit, rootGetters }) => {
+			axios({
+				url: api.user.profileNameUpdate(rootGetters['auth/user'].userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					commit.SET_USER_INFO(res.data.body.data);
+				})
+				.catch(err => {
+					console.log(err);
+				});
 		},
 	},
 };

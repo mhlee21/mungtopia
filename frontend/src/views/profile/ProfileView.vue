@@ -106,7 +106,7 @@ export default {
 	setup() {
 		const router = useRouter();
 		const store = useStore();
-		const user = computed(() => store.getters['auth/userInfo']);
+		const user = computed(() => store.getters['profile/userInfo']);
 		const newNickName = ref(user.value.username);
 		const isClicked = ref(true);
 		// const newProfile = ref(user.value.profile);

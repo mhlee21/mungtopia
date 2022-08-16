@@ -151,6 +151,8 @@ export default {
 		sessionDelete: applicationId => HOST + MEETING + `${applicationId}`,
 	},
 	user: {
+		// 유저 정보 가져오기
+		profileGetUser: userSeq => HOST + USER + `${userSeq}`,
 		// 유저 게시판 정보
 		profileBoardList: userSeq => HOST + USER + BOARD + `${userSeq}`,
 		// 유저 프로필 이미지 수정

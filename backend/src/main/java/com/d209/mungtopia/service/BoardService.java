@@ -28,9 +28,9 @@ public interface BoardService {
     List<CommentRes> saveComment(Board board, CommentDto commentDto);
     List<CommentRes> updateComment(Board board, Comment comment, CommentDto commentDto);
     List<CommentRes> deleteComment(Board board, Comment comment);
-    List<Comment> saveReply(Board board, Comment comment, ReplyDto replyDto);
-    List<Comment> updateReply(Board board, Reply reply, ReplyDto replyDto);
-    List<Comment> deleteReply(Board board, Reply reply, ReplyDto replyDto);
+    List<CommentRes> saveReply(Board board, Comment comment, ReplyDto replyDto);
+    List<CommentRes> updateReply(Board board, Reply reply, ReplyDto replyDto);
+    List<CommentRes> deleteReply(Board board, Reply reply);
 
     List<ImageStorage> saveImgFile(List<MultipartFile> multipartFiles,Board board) throws Exception;
     Resource getImgFile(String fileName) throws IOException;

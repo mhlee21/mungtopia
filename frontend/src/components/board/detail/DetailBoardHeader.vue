@@ -27,16 +27,18 @@ export default {
 		const store = useStore();
 		const route = useRoute();
 		const router = useRouter();
-		const dogName = computed(() => store.getters['board/board']['dogName']);
+		const dogName = computed(
+			() => store.getters['board/board']['dogInfo']?.name,
+		);
+		console.log('dogName', dogName.value);
 		const isAdopting = computed(() => store.getters['board/isAdopting']);
 		const areaSido = computed(
-			() => store.getters['board/board']['dogInfo']['areaSido'],
+			() => store.getters['board/board']['dogInfo']?.areaSido,
 		);
 		const breed = computed(
-			() => store.getters['board/board']['dogInfo']['breed'],
+			() => store.getters['board/board']['dogInfo']?.breed,
 		);
 		const boardId = computed(() => route.params.boardId);
-		console.log(boardId.value);
 
 		const adoptionApply = () => {
 			if (!isAdopting.value) {

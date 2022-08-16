@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     @Transactional
-    public Boolean putUserProfile(Long userSeq, MultipartFile multipartFile) throws IOException {
+    public String putUserProfile(Long userSeq, MultipartFile multipartFile) throws IOException {
        String domin = "i7d209.p.ssafy.io";
         // ========= 이미지 서버 삭제 ========
         User user = infUserRepository.getReferenceById(userSeq);
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService{
         }
         // ======== 이미지 서버 저장  =========
         if (multipartFile.isEmpty())
-            return false;
+            return null;
 
         String root = System.getProperty("user.dir").toString() + "var/images";
         final String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService{
 
         // ======== 이미지 DB 저장  =========
         user.changeImg(path + saveName);
-        return true;
+        return path + saveName;
     }
 
     private final String getRandomString() {
@@ -210,12 +210,12 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     @Transactional
-    public Boolean putUserNickName(long userSeq, String name) {
+    public String putUserNickName(long userSeq, String name) {
         Optional<User> user = infUserRepository.findById(userSeq);
         if (user.isEmpty())
-            return false;
+            return null;
         user.get().changeNickName(name);
         infUserRepository.save(user.get());
-        return true;
+        return name;
     }
 }

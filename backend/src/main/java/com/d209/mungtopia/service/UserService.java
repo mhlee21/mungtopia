@@ -13,7 +13,7 @@ import java.util.List;
 public interface UserService {
     Info getUser(long userSeq);
     Boolean putDetailUser (long userSeq, UseInfoReq userInfo);
-    byte[] putUserProfile(Long userSeq, MultipartFile multipartFile) throws IOException;
+    String putUserProfile(Long userSeq, MultipartFile multipartFile) throws IOException;
     UserBoardRes getUserBoard(long userSeq);
     UserInfo getDetailUser(long userSeq);
     Info getUserSeq(String token);

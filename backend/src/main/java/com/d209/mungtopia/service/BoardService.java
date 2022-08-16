@@ -20,8 +20,10 @@ public interface BoardService {
     Board findBoardDetail(Long boardId);
 
     Application saveApplication(Board board, AppDto appDto);
+    Boolean getLikes(User user, Board board);
     Boolean likes(User user, Board board);
     Boolean unlikes(User user, Board board);
+    Boolean getStar(User user, Board board);
     Boolean star(User user, Board board);
     Boolean unstar(User user, Board board);
     List<CommentRes> CommentAll(Board board);

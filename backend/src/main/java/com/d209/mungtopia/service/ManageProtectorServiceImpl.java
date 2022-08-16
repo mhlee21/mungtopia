@@ -50,7 +50,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
             for (int j = 0; j < board.getImageStorageList().size(); j++) {
                 Integer orders = board.getImageStorageList().get(j).getOrders();
                 if (orders.equals(1)){
-                    protectorBoard.setDogImg(board.getImageStorageList().get(j).getOriginFileName());
+                    protectorBoard.setDogImg(board.getImageStorageList().get(j).getServerPath());
                 }
             }
 
@@ -78,7 +78,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
         for (int i = 0; i < board.getImageStorageList().size(); i++) {
             ImageStorage imageStorage = board.getImageStorageList().get(i);
             if (imageStorage.getOrders() == 1){
-                applicantList.setDogImg(imageStorage.getOriginFileName());
+                applicantList.setDogImg(imageStorage.getServerPath());
             }
         }
 

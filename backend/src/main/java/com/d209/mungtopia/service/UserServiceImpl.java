@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -78,11 +79,12 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public Boolean putDetailUser(long userSeq, UseInfoReq inputUserInfo) {
         User user = infUserRepository.getReferenceById(userSeq);
+
         if (user == null)
             return false;
 
         UserInfo userInfo = user.getUserInfo();
-        user.changeUserName(inputUserInfo.getUserName());
+        user.changeUserName(inputUserInfo.getName());
         userInfo.setGender(inputUserInfo.getGender());
         userInfo.setBirth(inputUserInfo.getBirth());
         userInfo.setPhoneNumber(inputUserInfo.getPhoneNumber());
@@ -198,5 +200,22 @@ public class UserServiceImpl implements UserService{
         info.setProfile(user.getProfileImageUrl());
         info.setUsername(user.getNickname()); // nickname으로 저장
         return info;
+    }
+
+    /**
+     * 닉네임 변경
+     * @param userSeq
+     * @param name
+     * @return
+     */
+    @Override
+    @Transactional
+    public Boolean putUserNickName(long userSeq, String name) {
+        Optional<User> user = infUserRepository.findById(userSeq);
+        if (user.isEmpty())
+            return false;
+        user.get().changeNickName(name);
+        infUserRepository.save(user.get());
+        return true;
     }
 }

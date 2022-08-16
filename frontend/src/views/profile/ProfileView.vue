@@ -7,7 +7,7 @@
 				</div>
 				<div>
 					<!-- <a @click.prevent="changeProfile" -->
-					<label for="profile" class="change-btn">
+					<label for="user.profile" class="change-btn">
 						<small>사진 변경</small>
 					</label>
 					<input
@@ -110,8 +110,9 @@ export default {
 		const newNickName = ref(user.value.username);
 		const isClicked = ref(true);
 		// const newProfile = ref(user.value.profile);
+		const formData = new FormData();
 		store.dispatch('profile/fetchBoardList');
-
+		store.dispatch('profile/getUserInfo');
 		const boardType = computed(() => store.getters['profile/boardType']);
 
 		const curBoardList = computed(() => {
@@ -157,10 +158,8 @@ export default {
 				alert('프로필 사진은 한장만 선택해주세요!');
 			} else {
 				// let data = URL.createObjectURL(e.target.files);
-				const payload = {
-					files: e.target.files,
-				};
-				store.dispatch('profile/updateUserProfile', payload);
+				formData.append('files', e.target.files);
+				store.dispatch('profile/updateUserProfile', formData);
 			}
 		};
 		const logout = () => {

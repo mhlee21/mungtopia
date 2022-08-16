@@ -81,9 +81,13 @@ export default {
 				method: 'put',
 				headers: rootGetters['auth/authHeader'],
 				data: payload,
-			}).catch(err => {
-				console.log(err.response);
-			});
+			})
+				.then(res => {
+					this.state.userInfo.username = res.data.body.data;
+				})
+				.catch(err => {
+					console.log(err.response);
+				});
 		},
 		updateUserProfile: ({ rootGetters }, payload) => {
 			axios({
@@ -94,9 +98,14 @@ export default {
 					'Content-Type': 'multipart/form-data',
 				},
 				data: payload,
-			}).catch(err => {
-				console.log(err);
-			});
+			})
+				.then(res => {
+					console.log(res.data.body.data);
+					this.state.userInfo.profile = res.data.body.data;
+				})
+				.catch(err => {
+					console.log(err);
+				});
 		},
 		getUserInfo: ({ commit, rootGetters }) => {
 			axios({
@@ -105,7 +114,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					commit.SET_USER_INFO(res.data.body.data);
+					commit('SET_USER_INFO', res.data.body.data);
 				})
 				.catch(err => {
 					console.log(err);

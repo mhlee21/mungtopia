@@ -2505,7 +2505,7 @@ body {
 
 .game-result-pg {
   background-color: white;
-  height: 100vh;
+  height: 95vh;
   padding: 5vh 0 0;
   font-family: 'GongGothicLight';
 }
@@ -2524,7 +2524,11 @@ body {
 }
 .game-result-pg .dog-image-wrapper {
   border-radius: 2rem;
-  border: black 1px solid;
+  height: 70vw;
+  width: 70vw;
+  overflow: hidden;
+}
+.game-result-pg .dog-image-wrapper .dog-img{
   height: 70vw;
   width: 70vw;
 }
@@ -2566,7 +2570,7 @@ body {
   padding-top: 5vh;
 }
 .game-result-pg .button-wrapper .menu-btn {
-  color: #BFBFBF;
+  color: #848181;
 }
 .game-result-pg .button-wrapper .share-btn {
   background-color: #BDD9F2;

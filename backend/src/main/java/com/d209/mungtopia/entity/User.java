@@ -129,6 +129,10 @@ public class User {
         this.username = username;
     }
 
+    public void changeNickName(String nickname){
+        this.nickname = nickname;
+    }
+
     public void changeImg(String imgUrl){
         this.profileImageUrl = imgUrl;
     }

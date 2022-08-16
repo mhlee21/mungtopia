@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService{
     private final InfImageStorageRepository infImageStorageRepository;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
     private final static String path = "https://i7d209.p.ssafy.io:8081/api/v1/image/";
-    private final BoardService boardService;
     /**
      * 간단한 메인 정보 보내주기
      * @param userSeq
@@ -107,7 +106,7 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     @Transactional
-    public byte[] putUserProfile(Long userSeq, MultipartFile multipartFile) throws IOException {
+    public String putUserProfile(Long userSeq, MultipartFile multipartFile) throws IOException {
        String domin = "i7d209.p.ssafy.io";
         // ========= 이미지 서버 삭제 ========
         User user = infUserRepository.getReferenceById(userSeq);
@@ -155,8 +154,9 @@ public class UserServiceImpl implements UserService{
         // ======== 이미지 DB 저장  =========
         user.changeImg(path + saveName);
         infUserRepository.save(user);
-        InputStream in = multipartFile.getInputStream();
-        return IOUtils.toByteArray(in);
+//        InputStream in = multipartFile.getInputStream();
+//        IOUtils.toByteArray(in);
+        return path + saveName;
     }
 
     private final String getRandomString() {

@@ -8,7 +8,7 @@
 					<p class="user-name">{{ comment.author.nickname }}</p>
 					<!-- 댓글 내용 -->
 					<!-- 비밀댓글이 아니거나, 작성자일 때 댓글 보여주기 -->
-					<div v-if="!comment.secret || comment.author.userSeq === userSeq">
+					<div v-if="!comment.secret || comment.author?.userSeq === userSeq">
 						<p class="content">{{ comment.contents }}</p>
 					</div>
 					<div v-else>
@@ -30,8 +30,8 @@
 						<div
 							v-if="
 								!comment.secret ||
-								comment.author.userSeq === userSeq ||
-								boardAuthor.userSeq === userSeq
+								comment.author?.userSeq === userSeq ||
+								boardAuthor?.userSeq === userSeq
 							"
 						>
 							<a @click.prevent="showReplyForm()">답글달기</a>
@@ -76,7 +76,7 @@
 					<div>
 						<p class="time">{{ difTime(new Date(reply.createtime)) }}</p>
 						<!-- 대댓글 작성자가 본인	일 때 -->
-						<div class="motion-wrap" v-if="reply.author.userSeq === userSeq">
+						<div class="motion-wrap" v-if="reply.author?.userSeq === userSeq">
 							<a @click.prevent="clickModalButton(2, comment, reply)">수정</a>
 							<a @click.prevent="clickModalButton(3, comment, reply)">삭제</a>
 						</div>

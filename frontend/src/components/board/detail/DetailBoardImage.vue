@@ -6,8 +6,8 @@
 			:pagination="{ clickable: true }"
 			loop
 		>
-			<swiper-slide v-for="image in imageList" :key="image.order">
-				<img :src="image.url" class="image"
+			<swiper-slide v-for="image in imageList" :key="image.orders">
+				<img :src="image.serverPath" class="image"
 			/></swiper-slide>
 		</swiper>
 	</div>
@@ -27,7 +27,7 @@ export default {
 	},
 	setup() {
 		const store = useStore();
-		const imageList = computed(() => store.getters['board/board']['imageList']);
+		const imageList = computed(() => store.getters['board/imageList']);
 		return { imageList, modules: [Pagination, A11y] };
 	},
 };

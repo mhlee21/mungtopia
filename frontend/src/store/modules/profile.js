@@ -74,5 +74,27 @@ export default {
 				console.error(err.response);
 			});
 		},
+		updateUserNickname: ({ rootGetters }, payload) => {
+			console.log(payload);
+			axios({
+				url: api.user.profileNameUpdate(rootGetters['auth/user'].userSeq),
+				method: 'put',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			}).catch(err => {
+				console.log(err.response);
+			});
+		},
+		updateUserProfile: ({ rootGetters }, payload) => {
+			axios({
+				url: api.user.profileImageUpdate(rootGetters['auth/user'].userSeq),
+				method: 'post',
+				headers: {
+					...rootGetters['auth/authHeader'],
+					'Content-Type': 'multipart/form-data',
+				},
+				data: payload,
+			}).catch();
+		},
 	},
 };

@@ -97,7 +97,7 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import { computed, reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -107,9 +107,9 @@ export default {
 		const router = useRouter();
 		const store = useStore();
 		const user = computed(() => store.getters['auth/user']);
-		const newNickName = reactive(user.value.username);
-
+		const newNickName = ref(user.value.username);
 		const isClicked = ref(true);
+		// const newProfile = ref(user.value.profile);
 		store.dispatch('profile/fetchBoardList');
 
 		const boardType = computed(() => store.getters['profile/boardType']);
@@ -140,13 +140,29 @@ export default {
 				params: { boardId: boardId },
 			});
 		};
+
+		// 닉네임 수정 input 값 CSS 처리
 		const changeBtnStatus = () => {
 			isClicked.value = false;
 		};
 		const sendChangeNickname = () => {
 			isClicked.value = true;
+			const payload = {
+				nickname: newNickName.value,
+			};
+			store.dispatch('profile/updateUserNickname', payload);
 		};
-		const changeProfile = () => {};
+		const changeProfile = e => {
+			if (e.target.files.length > 1) {
+				alert('프로필 사진은 한장만 선택해주세요!');
+			} else {
+				// let data = URL.createObjectURL(e.target.files);
+				const payload = {
+					files: e.target.files,
+				};
+				store.dispatch('profile/updateUserProfile', payload);
+			}
+		};
 		const logout = () => {
 			store.dispatch('auth/logout');
 			router.push({ name: 'login' });

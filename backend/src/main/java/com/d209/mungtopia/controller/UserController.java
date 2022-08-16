@@ -54,7 +54,7 @@ public class UserController {
      */
     @PostMapping("/{user_seq}")
     public ApiResponse putUserProfile(@PathVariable("user_seq") Long userSeq,
-                                      @RequestParam("files") MultipartFile multipartFile) throws IOException {
+                                      @RequestPart("files") MultipartFile multipartFile) throws IOException {
 //        System.out.println("multipartFile = " + multipartFile.isEmpty());
         return ApiResponse.success("data", userService.putUserProfile(userSeq, multipartFile));
 //        return ApiResponse.success();

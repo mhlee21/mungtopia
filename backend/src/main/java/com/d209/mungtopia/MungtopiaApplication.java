@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 		AppProperties.class,
 		CorsProperties.class
 })
+@CrossOrigin("http://localhost:3000")
 public class MungtopiaApplication {
 
 	public static void main(String[] args) {

@@ -84,19 +84,26 @@ export default {
 				qNum.value++;
 			} else {
 				// 마지막 문제일 때
+				// matchNum 결과 저장
+				for (let idx = 0; idx < MATCH.value.length; idx++) {
+					const qType = questionType(idx);
+					matchNum[qType] += answer[idx];
+				}
+				let payload = {};
 				if (user.value) {
-					// matchNum 결과 저장
-					for (let idx = 0; idx < MATCH.value.length; idx++) {
-						const qType = questionType(idx);
-						matchNum[qType] += answer[idx];
-					}
-					const payload = {
+					payload = {
 						userSeq: user.value?.userSeq,
 						matchAnswer: matchNum,
 						gameTag: 2,
 					};
-					store.dispatch('game/sendMatchResult', payload);
+				} else {
+					payload = {
+						userSeq: 0,
+						matchAnswer: matchNum,
+						gameTag: 2,
+					};
 				}
+				store.dispatch('game/sendMatchResult', payload);
 				router.push({
 					name: 'gameResult',
 					params: { gameType: route.params.gameType },

@@ -106,13 +106,14 @@ export default {
 	setup() {
 		const router = useRouter();
 		const store = useStore();
+		store.dispatch('profile/fetchBoardList');
+		store.dispatch('profile/getUserInfo');
 		const user = computed(() => store.getters['profile/userInfo']);
-		const newNickName = ref(user.value.username);
+		const newNickName = ref(user.value?.username);
 		const isClicked = ref(true);
 		// const newProfile = ref(user.value.profile);
 		const formData = new FormData();
-		store.dispatch('profile/fetchBoardList');
-		store.dispatch('profile/getUserInfo');
+
 		const boardType = computed(() => store.getters['profile/boardType']);
 
 		const curBoardList = computed(() => {

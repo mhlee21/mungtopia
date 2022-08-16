@@ -17,6 +17,8 @@ export default {
 			reply: {},
 			modalType: null,
 			isAdopting: null,
+			likeInDetail: false,
+			starInDetail: false,
 			category: 1,
 			applicationPageNum: 1,
 			adoptQuestionList: [],
@@ -36,6 +38,8 @@ export default {
 		reply: state => state.reply,
 		modalType: state => state.modalType,
 		isAdopting: state => state.isAdopting,
+		likeInDetail: state => state.likeInDetail,
+		starInDetail: state => state.starInDetail,
 		category: state => state.category,
 		applicationPageNum: state => state.applicationPageNum,
 		adoptQuestionList: state => state.adoptQuestionList,
@@ -71,6 +75,8 @@ export default {
 					!state.boardList[index].haveInterest;
 			}
 		},
+		SET_LIKE_IN_DETAIL: (state, isLike) => (state.likeInDetail = isLike),
+		SET_STAR_IN_DETAIL: (state, haveStar) => (state.starInDetail = haveStar),
 		SET_ADOPT_QUESTION_LIST: (state, adoptQuestionList) => {
 			state.adoptQuestionList = adoptQuestionList;
 		},
@@ -241,42 +247,38 @@ export default {
 					console.error(err.response);
 				});
 
-			// const board = {
-			// 	boardId: 1,
-			// 	tag: 1,
-			// 	dogName: '몽이',
-			// 	contents:
-			// 		'귀여움이 큰 매력인 몽이예요! 사람을 좋아해요! 보면 볼수록 매력이 넘치는 아이랍니다 이 아이와 가족이 되어줄 분을 구하고 있어요 우리 몽이와 가족 되어주세요 연락 기다리겠습니다',
-			// 	createtime: '2022.08.07 11:20:00',
-			// 	dogNature: ['온순함', '귀여움', '조용함', '사람 좋아함'],
-			// 	isLike: true,
-			// 	haveInterest: false, // 입양글일때만 존재
-			// 	imageList: [
-			// 		{
-			// 			order: 1,
-			// 			url: 'https://images.pexels.com/photos/33053/dog-young-dog-small-dog-maltese.jpg',
-			// 		},
-			// 		{
-			// 			order: 2,
-			// 			url: 'https://images.pexels.com/photos/33053/dog-young-dog-small-dog-maltese.jpg',
-			// 		},
-			// 	],
-			// 	author: {
-			// 		status: 1,
-			// 		userSeq: 2,
-			// 		nickname: '이연정',
-			// 		profile: 'https://freesvg.org/img/abstract-user-flat-4.png',
-			// 	},
-			// 	dogInfo: {
-			// 		gender: '암컷',
-			// 		age: '1살',
-			// 		weight: '3kg',
-			// 		breed: '말티즈',
-			// 		neutering: 'Y',
-			// 		areaSido: '대구',
-			// 	},
-			// };
-			// commit('SET_BOARD', board);
+			// 좋아요 여부 가져오기
+			console.log(api.board.isLike(boardId, rootGetters['auth/user'].userSeq));
+			axios({
+				url: api.board.isLike(boardId, rootGetters['auth/user'].userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log('isLike', res.data.body.data);
+					commit('SET_LIKE_IN_DETAIL', res.data.body.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+
+			// 별표 여부 가져오기
+			console.log(
+				api.board.haveStar(boardId, rootGetters['auth/user'].userSeq),
+			);
+			axios({
+				url: api.board.haveStar(boardId, rootGetters['auth/user'].userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log('haveStar', res.data.body.data);
+					commit('SET_STAR_IN_DETAIL', res.data.body.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+
 			commit('SET_IS_ADOPTING', false);
 		},
 
@@ -487,6 +489,23 @@ export default {
 					console.error(err.response);
 				});
 		},
+
+		// 좋아요 여부 가져오기
+		getLike: ({ commit, rootGetters }, { boardId }) => {
+			axios({
+				url: api.board.isLike(boardId, rootGetters['auth/user'].userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data.body.data);
+					commit('SET_LIKE_IN_DETAIL', res.data.body.data);
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
 		// 좋아요 하기
 		createLike: ({ commit, rootGetters }, { boardId, index }) => {
 			const payload = {
@@ -503,6 +522,7 @@ export default {
 			})
 				.then(res => {
 					console.log(res.data.body.data);
+					commit('SET_LIKE_IN_DETAIL', res.data.body.data); // 상세 페이지
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -525,6 +545,23 @@ export default {
 			})
 				.then(res => {
 					console.log(res.data.body.data);
+					commit('SET_LIKE_IN_DETAIL', res.data.body.data); // 상세 페이지
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
+		},
+
+		// 별표 여부 가져오기
+		getStar: ({ commit, rootGetters }, { boardId }) => {
+			axios({
+				url: api.board.haveStar(boardId, rootGetters['auth/user'].userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data.body.data);
+					commit('SET_STAR_IN_DETAIL', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);
@@ -546,11 +583,13 @@ export default {
 			})
 				.then(res => {
 					console.log(res.data.body.data);
+					commit('SET_STAR_IN_DETAIL', res.data.body.data); // 상세 페이지
 				})
 				.catch(err => {
 					console.error(err.response);
 				});
 		},
+
 		// 별표 삭제
 		deleteStar: ({ commit, rootGetters }, { boardId, index }) => {
 			const payload = {
@@ -566,6 +605,7 @@ export default {
 			})
 				.then(res => {
 					console.log(res.data.body.data);
+					commit('SET_STAR_IN_DETAIL', res.data.body.data); // 상세 페이지
 				})
 				.catch(err => {
 					console.error(err.response);

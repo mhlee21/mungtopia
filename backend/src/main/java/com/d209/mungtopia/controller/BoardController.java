@@ -30,6 +30,8 @@ public class BoardController {
     private final InfReplyRepository replyRepository;
     private final UserRepository userRepository;
     private final BoardService boardService;
+    private final InfLikeRepository likeRepository;
+    private final InfStarRepository starRepository;
 
     @GetMapping("/{tag_no}")
     @ApiOperation(value = "mainInfo - 전체 글 불러오기", notes = "태그 별 게시글 리스트를 제공")
@@ -101,6 +103,20 @@ public class BoardController {
         return ApiResponse.success("data", boardService.saveApplication(board, appDto));
     }
 
+    @GetMapping("like/{boardId}/{userSeq}")
+    @ApiOperation(value = "likes - 좋아요 여부 알려주기", notes = "좋아요 여부 알려주기")
+    public ApiResponse getLikes(
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
+    ) {
+        User user = userRepository.getReferenceById(userSeq);
+        Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
+        return ApiResponse.success("data", boardService.getLikes(user, board.get()));
+    }
+
     @PostMapping("like/{boardId}/{userSeq}")
     @ApiOperation(value = "likes - 좋아요 하기", notes = "좋아요 하기")
     public ApiResponse likes(
@@ -110,6 +126,9 @@ public class BoardController {
         User user = userRepository.getReferenceById(userSeq);
         Optional<Board> board = boardRepository.findById(boardId);
         if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
+        if (likeRepository.findLikesByUserAndBoard(user, board.get()).isPresent()) {
             return ApiResponse.fail();
         }
         return ApiResponse.success("data", boardService.likes(user, board.get()));
@@ -126,7 +145,24 @@ public class BoardController {
         if (board.isEmpty()) {
             return ApiResponse.fail();
         }
+        if (likeRepository.findLikesByUserAndBoard(user, board.get()).isEmpty()) {
+            return ApiResponse.fail();
+        }
         return ApiResponse.success("data", boardService.unlikes(user, board.get()));
+    }
+
+    @GetMapping("star/{boardId}/{userSeq}")
+    @ApiOperation(value = "star - 별표 여부 알려주기", notes = "별표 여부 알려주기")
+    public ApiResponse getStar(
+            @PathVariable("boardId") Long boardId,
+            @PathVariable("userSeq") Long userSeq
+    ) {
+        User user = userRepository.getReferenceById(userSeq);
+        Optional<Board> board = boardRepository.findById(boardId);
+        if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
+        return ApiResponse.success("data", boardService.getStar(user, board.get()));
     }
 
     @PostMapping("star/{boardId}/{userSeq}")
@@ -135,10 +171,12 @@ public class BoardController {
             @PathVariable("boardId") Long boardId,
             @PathVariable("userSeq") Long userSeq
     ) {
-        System.out.println("userSeq = " + userSeq);
         User user = userRepository.getReferenceById(userSeq);
         Optional<Board> board = boardRepository.findById(boardId);
         if (board.isEmpty()) {
+            return ApiResponse.fail();
+        }
+        if (starRepository.findStarByUserAndBoard(user, board.get()).isPresent()) {
             return ApiResponse.fail();
         }
         return ApiResponse.success("data", boardService.star(user, board.get()));
@@ -155,8 +193,13 @@ public class BoardController {
         if (board.isEmpty()) {
             return ApiResponse.fail();
         }
+        if (starRepository.findStarByUserAndBoard(user, board.get()).isEmpty()) {
+            return ApiResponse.fail();
+        }
         return ApiResponse.success("data", boardService.unstar(user, board.get()));
     }
+
+
 
     @GetMapping("{board_id}/comments")
     @ApiOperation(value = "getCommentList - 댓글 목록 가져오기", notes = "댓글 목록 가져오기")

@@ -114,6 +114,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
+					console.log(res.data.body.data);
 					commit('SET_USER_INFO', res.data.body.data);
 				})
 				.catch(err => {

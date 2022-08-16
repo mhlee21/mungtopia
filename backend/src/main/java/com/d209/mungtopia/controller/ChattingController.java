@@ -19,14 +19,15 @@ public class ChattingController {
 
     @MessageMapping("/receive")
     @SendTo("/send")
-    public ChatLogDto chattingHandler(ChatLogDto chatLogDto){
+    public ChatLogDto.Response chattingHandler(ChatLogDto.Request chatLogDto){
         return chattingService.chattingHandler(chatLogDto);
     }
 
     @GetMapping("/log")
     public ApiResponse chatLog(@RequestParam("page") int page,
-                               @RequestParam("chat_room_id") Long chatRoomId) {
-        return ApiResponse.success("data", chattingService.chatLog(page, chatRoomId));
+                               @RequestParam("chatRoomId") Long chatRoomId,
+                               @RequestParam("userSeq") Long userSeq) {
+        return ApiResponse.success("data", chattingService.chatLog(page, chatRoomId, userSeq));
     }
 
 }

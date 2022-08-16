@@ -24,7 +24,7 @@
 							<textarea
 								cols="30"
 								rows="4"
-								v-model="reply.content"
+								v-model="newReply.contents"
 								class="comment-change-box"
 							></textarea>
 						</div>
@@ -70,6 +70,7 @@ export default {
 		const comment = computed(() => store.getters['board/comment']);
 		const newComment = reactive(comment);
 		const reply = computed(() => store.getters['board/reply']);
+		const newReply = reactive(reply);
 		const modalType = computed(() => store.getters['board/modalType']);
 
 		const modalData = computed(() => {
@@ -93,19 +94,19 @@ export default {
 			} else if (modalType?.value === 2) {
 				data = {
 					title: '답글 수정',
-					contents: reply.value?.content,
+					contents: reply.value?.contents,
 					buttonValue: ['완료', '취소'],
 					buttonFunction: updateReply,
-					comment: newComment.value?.commentId,
-					reply: reply.value?.replyId,
+					commentId: newComment.value?.commentId,
+					replyId: reply.value?.replyId,
 				};
 			} else {
 				data = {
 					title: '답글 삭제',
 					buttonValue: ['예', '아니오'],
 					buttonFunction: deleteReply,
-					comment: newComment.value?.commentId,
-					reply: reply.value?.replyId,
+					commentId: newComment.value?.commentId,
+					replyId: reply.value?.replyId,
 				};
 			}
 			return data;
@@ -136,15 +137,24 @@ export default {
 		// 대댓글 수정
 		const updateReply = (commentId, replyId) => {
 			emit('closeModal');
-			store.dispatch('board/updateReply', { commentId, replyId });
+			const payload = {
+				userSeq: userSeq.value,
+				secret: newReply.value.secret,
+				contents: newReply.value.contents,
+				userNickname: newReply.value.author.nickname,
+			};
+			store.dispatch('board/updateReply', { commentId, replyId, payload });
 		};
 		// 대댓글 삭제
 		const deleteReply = (commentId, replyId) => {
 			emit('closeModal');
-			store.dispatch('board/deleteReply', { commentId, replyId });
+			const payload = {
+				userSeq: userSeq.value,
+			};
+			store.dispatch('board/deleteReply', { commentId, replyId, payload });
 		};
 
-		return { modalData, comment, newComment, reply, modalType };
+		return { modalData, comment, newComment, reply, newReply, modalType };
 	},
 };
 </script>

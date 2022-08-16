@@ -83,6 +83,7 @@ export default {
 				data: payload,
 			})
 				.then(res => {
+					console.log(res.data.body.data);
 					this.state.userInfo.username = res.data.body.data;
 				})
 				.catch(err => {

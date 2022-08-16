@@ -35,7 +35,11 @@
 					</div>
 					<div class="game-title">댕BTI</div>
 				</div>
-				<div class="game-btn game-btn3" @click="gameEnter(0)">
+				<div
+					class="game-btn game-btn3"
+					@click="gameEnter(0)"
+					style="position: relative"
+				>
 					<div v-if="isClear[0]" class="img-wrapper">
 						<img
 							:src="require('@/assets/img/dog3_bone.png')"
@@ -50,6 +54,12 @@
 						/>
 					</div>
 					<div class="game-title">강아지식<br />테스트</div>
+					<a
+						href="https://www.flaticon.com/kr/free-icons/"
+						title="개 아이콘"
+						style="position: absolute; bottom: 0; right: 0; color: slategray"
+						>개 아이콘 제작자: Freepik - Flaticon</a
+					>
 				</div>
 			</div>
 		</div>
@@ -77,11 +87,18 @@ export default {
 		const isClear = computed(() => store.getters['game/isClear']);
 		console.log(isClear);
 		const gameEnter = gameType => {
-			store.dispatch('game/enterGame', gameType);
-			router.push({
-				name: 'gameIntro',
-				params: { gameType: gameType },
-			});
+			if (gameType === 2) {
+				router.push({
+					name: 'gameIntro',
+					params: { gameType: gameType },
+				});
+			} else {
+				store.dispatch('game/enterGame', gameType);
+				router.push({
+					name: 'GameIntro',
+					params: { gameType: gameType },
+				});
+			}
 		};
 		return { gameEnter, NavBar, isClear };
 	},

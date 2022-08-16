@@ -1,6 +1,6 @@
 // const HOST = 'https://i7d209.p.ssafy.io/api/v1/';
-// const HOST = 'https://i7d209.p.ssafy.io:8081/api/v1/';
-const HOST = 'http://localhost:8081/api/v1/';
+const HOST = 'https://i7d209.p.ssafy.io:8081/api/v1/';
+// const HOST = 'http://localhost:8081/api/v1/';
 
 const AUTH = 'auth/';
 const BOARD = 'board/';
@@ -126,8 +126,10 @@ export default {
 			HOST + ADOPT + PROTECTOR + `${adoptionProcessId}`,
 		// 입양 신청서
 		application: applicationId => HOST + ADOPT + `${applicationId}`,
+		// 웹소켓 연결
+		chatStart: () => HOST + CHAT,
 		// 채팅
-		chats: () => HOST + ADOPT + CHAT + 'log',
+		chats: () => HOST + CHAT + 'log',
 		// 채팅 보내기
 		chatCreate: (chatRoomId, userSeq) =>
 			HOST + ADOPT + CHAT + `${chatRoomId}/` + `${userSeq}`,

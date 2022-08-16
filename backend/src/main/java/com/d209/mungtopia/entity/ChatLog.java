@@ -25,14 +25,14 @@ public class ChatLog {
     @Column(name = "user_seq")
     private Long userSeq;
 
+    @Column(name = "user_nickname")
+    private String nickname;
+
     @Column(name = "content")
     private String content;
 
     @Column(name = "createtime")
     private LocalDateTime createtime;
-
-    @Column(name = "is_request")
-    private Boolean isRequest;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id", referencedColumnName = "chat_room_id")

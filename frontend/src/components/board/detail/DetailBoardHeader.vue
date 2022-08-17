@@ -1,6 +1,6 @@
 <template>
 	<div class="tit-box">
-		<div v-show="isAdoption" class="brief-info-box">
+		<div v-show="boardTag == '입양'" class="brief-info-box">
 			<h2 class="dog-name">{{ dogName }}</h2>
 			<ol class="hashtag-box">
 				<li class="hashtag">{{ areaSido }}</li>
@@ -10,7 +10,7 @@
 		<!-- 입양신청한 강아지가 있다면 disabled -->
 		<!-- 입양글이 아니라면 안보임 -->
 		<a
-			v-show="isAdoption"
+			v-show="boardTag == '입양' && userSeq != authorSeq"
 			@click.prevent="adoptionApply()"
 			:class="{ 'is-adopting': isAdopting }"
 			class="brief-btn"
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 export default {
@@ -41,10 +41,10 @@ export default {
 		);
 		const boardId = computed(() => route.params.boardId);
 		const boardTag = computed(() => store.getters['board/board'].boardTag);
-		const isAdoption = ref(true);
-		if (boardTag.value != '입양') {
-			isAdoption.value = false;
-		}
+		const authorSeq = computed(
+			() => store.getters['board/board']['user'].userSeq,
+		);
+		const userSeq = computed(() => store.getters['auth/user'].userSeq);
 		const adoptionApply = () => {
 			if (!isAdopting.value) {
 				router.push({
@@ -59,8 +59,9 @@ export default {
 			breed,
 			isAdopting,
 			adoptionApply,
-			isAdoption,
 			boardTag,
+			authorSeq,
+			userSeq,
 		};
 	},
 };

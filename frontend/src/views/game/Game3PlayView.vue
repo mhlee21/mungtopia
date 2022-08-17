@@ -54,14 +54,13 @@
 
 <script>
 import Qdata from '@/assets/Qdata.json';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 export default {
 	setup() {
 		const qNum = ref(1);
 		const store = useStore();
-		const route = useRoute();
 		const router = useRouter();
 		const user = computed(() => store.getters['auth/user']);
 		// 게임 정답 저장
@@ -94,19 +93,17 @@ export default {
 					payload = {
 						userSeq: user.value?.userSeq,
 						matchAnswer: matchNum,
-						gameTag: 2,
 					};
 				} else {
 					payload = {
 						userSeq: 0,
 						matchAnswer: matchNum,
-						gameTag: 2,
 					};
 				}
+				console.log(payload, user.value);
 				store.dispatch('game/sendMatchResult', payload);
 				router.push({
-					name: 'gameResult',
-					params: { gameType: route.params.gameType },
+					name: 'game3Result',
 				});
 			}
 		};
@@ -116,7 +113,7 @@ export default {
 			if (qNum.value === 1) {
 				router.push({
 					name: 'gameIntro',
-					params: { gameType: route.params.gameType },
+					params: { gameTag: 3 },
 				});
 			}
 			qNum.value--;

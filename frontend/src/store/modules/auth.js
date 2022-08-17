@@ -7,7 +7,7 @@ export default {
 		return {
 			// user: null,
 			user: {
-				userSeq: 6,
+				userSeq: 17,
 				username: '황희원',
 				userNickname: 'HHW',
 				profile: 'https://www.snsboom.co.kr/common/img/default_profile.png',

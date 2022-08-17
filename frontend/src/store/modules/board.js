@@ -97,7 +97,7 @@ export default {
 				},
 			})
 				.then(res => {
-					console.log(res);
+					console.log(res.data.body.data.imageStorageList);
 					commit('SET_PAGE_NO', pageNo + 1);
 					commit('SET_BOARD_LIST', res.data.body.data);
 				})

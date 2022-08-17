@@ -57,15 +57,6 @@ export default {
 		);
 		const dogNature = computed(() => store.getters['board/board']['dogNature']);
 		const contents = computed(() => store.getters['board/board']['contents']);
-
-		if (contents.value == undefined || contents.value == null) {
-			return '';
-		}
-
-		contents.value = contents.value.replace(/\r\n/gi, '<br>');
-		contents.value = contents.value.replace(/\\n/gi, '<br>');
-		contents.value = contents.value.replace(/\n/gi, '<br>');
-
 		const boardTag = computed(() => store.getters['board/board']['boardTag']);
 		console.log('boardTag : ' + boardTag.value);
 		if (boardTag.value != '입양') {

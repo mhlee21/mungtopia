@@ -958,6 +958,7 @@ body {
 .adopt-detail-pg .dog-detail-wrap .textbox p {
   line-height: 1.25;
   font-size: 14px;
+  white-space: pre-wrap;
 }
 .adopt-detail-pg .adopt-detail-comment-wrap {
   margin-top: 20px;

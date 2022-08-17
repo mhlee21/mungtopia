@@ -402,7 +402,7 @@ public class BoardServiceImpl implements BoardService {
                 .userInfo(user.getUserInfo())
                 .user(user)
                 .createtime(LocalDateTime.now())
-                .applicationStatus(0)
+                .applicationStatus(1)
                 .build();
 
         //입양 신청서 질문

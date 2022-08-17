@@ -23,12 +23,12 @@
 				<div class="username-wrapper">
 					<div>
 						<div v-show="isClicked" class="username">
-							{{ newNickName }}
+							{{ user.nickname }}
 						</div>
 						<div v-show="!isClicked">
 							<input
 								placeholder="user.username"
-								v-model="newNickName"
+								v-model="user.nickname"
 								@change="changeNickname"
 							/>
 						</div>
@@ -97,7 +97,7 @@
 
 <script>
 import NavBar from '@/components/NavBar.vue';
-import { computed, reactive, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -106,11 +106,13 @@ export default {
 	setup() {
 		const router = useRouter();
 		const store = useStore();
-		const user = computed(() => store.getters['auth/user']);
-		const newNickName = reactive(user.value.username);
-
-		const isClicked = ref(true);
 		store.dispatch('profile/fetchBoardList');
+		store.dispatch('profile/getUserInfo');
+		const user = computed(() => store.getters['profile/userInfo']);
+		// const newNickName = ref(user.value.nickname);
+		const isClicked = ref(true);
+		// const newProfile = ref(user.value.profile);
+		const formData = new FormData();
 
 		const boardType = computed(() => store.getters['profile/boardType']);
 
@@ -140,13 +142,28 @@ export default {
 				params: { boardId: boardId },
 			});
 		};
+
+		// 닉네임 수정 input 값 CSS 처리
 		const changeBtnStatus = () => {
 			isClicked.value = false;
 		};
 		const sendChangeNickname = () => {
 			isClicked.value = true;
+			const payload = {
+				nickname: user.value.nickname,
+			};
+			store.dispatch('profile/updateUserNickname', payload);
 		};
-		const changeProfile = () => {};
+		const changeProfile = e => {
+			if (e.target.files.length > 1) {
+				alert('프로필 사진은 한장만 선택해주세요!');
+			} else {
+				// let data = URL.createObjectURL(e.target.files);
+				formData.append('files', e.target.files[0]);
+				store.dispatch('profile/updateUserProfile', formData);
+				this.isChangeProfile = false;
+			}
+		};
 		const logout = () => {
 			store.dispatch('auth/logout');
 			router.push({ name: 'login' });
@@ -161,7 +178,6 @@ export default {
 			curBoardList,
 			clickBoard,
 			changeBtnStatus,
-			newNickName,
 			isClicked,
 			sendChangeNickname,
 		};

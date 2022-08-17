@@ -10,12 +10,14 @@ import com.d209.mungtopia.repository.InfUserRepository;
 import com.d209.mungtopia.repository.user.UserRefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +33,6 @@ public class UserServiceImpl implements UserService{
     private final InfImageStorageRepository infImageStorageRepository;
     private final UserRefreshTokenRepository userRefreshTokenRepository;
     private final static String path = "https://i7d209.p.ssafy.io:8081/api/v1/image/";
-
     /**
      * 간단한 메인 정보 보내주기
      * @param userSeq
@@ -105,17 +106,20 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     @Transactional
-    public Boolean putUserProfile(Long userSeq, MultipartFile multipartFile) throws IOException {
+    public String putUserProfile(Long userSeq, MultipartFile multipartFile) throws IOException {
        String domin = "i7d209.p.ssafy.io";
         // ========= 이미지 서버 삭제 ========
         User user = infUserRepository.getReferenceById(userSeq);
         String profileImageUrl = user.getProfileImageUrl();
         // 기존에 우리 서버에 저장된 것만 서버에서 삭제해야함
         if (profileImageUrl.contains(domin)){
+            System.out.println(" ================= file delete in!! ==========" );
             String[] split = profileImageUrl.split("/");
             String originSaveName = split[split.length - 1];
+            System.out.println("======= originSaveName ======" + originSaveName);
             File file = new File("/var/images/" + originSaveName);
             if (file.exists()){
+                System.out.println("=============== 파일 존재 =================");
                 if (file.delete())
                     System.out.println("=============== 파일 삭제 성공 =================");
                 else
@@ -125,8 +129,9 @@ public class UserServiceImpl implements UserService{
             }
         }
         // ======== 이미지 서버 저장  =========
+        System.out.println("=============== ...이미지 저장 시작... =================");
         if (multipartFile.isEmpty())
-            return false;
+            return null;
 
         String root = System.getProperty("user.dir").toString() + "var/images";
         final String extension = FilenameUtils.getExtension(multipartFile.getOriginalFilename());
@@ -148,7 +153,10 @@ public class UserServiceImpl implements UserService{
 
         // ======== 이미지 DB 저장  =========
         user.changeImg(path + saveName);
-        return true;
+        infUserRepository.save(user);
+//        InputStream in = multipartFile.getInputStream();
+//        IOUtils.toByteArray(in);
+        return path + saveName;
     }
 
     private final String getRandomString() {
@@ -210,12 +218,12 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     @Transactional
-    public Boolean putUserNickName(long userSeq, String name) {
+    public String putUserNickName(long userSeq, String name) {
         Optional<User> user = infUserRepository.findById(userSeq);
         if (user.isEmpty())
-            return false;
+            return null;
         user.get().changeNickName(name);
         infUserRepository.save(user.get());
-        return true;
+        return name;
     }
 }

@@ -74,5 +74,53 @@ export default {
 				console.error(err.response);
 			});
 		},
+		updateUserNickname: ({ rootGetters }, payload) => {
+			console.log(payload);
+			axios({
+				url: api.user.profileNameUpdate(rootGetters['auth/user'].userSeq),
+				method: 'put',
+				headers: rootGetters['auth/authHeader'],
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data.body.data);
+					this.state.userInfo.username = res.data.body.data;
+				})
+				.catch(err => {
+					console.log(err.response);
+				});
+		},
+		updateUserProfile: ({ rootGetters }, payload) => {
+			axios({
+				url: api.user.profileImageUpdate(rootGetters['auth/user'].userSeq),
+				method: 'post',
+				headers: {
+					...rootGetters['auth/authHeader'],
+					'Content-Type': 'multipart/form-data',
+				},
+				data: payload,
+			})
+				.then(res => {
+					console.log(res.data.body.data);
+					this.state.userInfo.profile = res.data.body.data;
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
+		getUserInfo: ({ commit, rootGetters }) => {
+			axios({
+				url: api.user.profileGetUser(rootGetters['auth/user'].userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					console.log(res.data.body.data);
+					commit('SET_USER_INFO', res.data.body.data);
+				})
+				.catch(err => {
+					console.log(err);
+				});
+		},
 	},
 };

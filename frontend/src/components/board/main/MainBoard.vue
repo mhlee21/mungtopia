@@ -7,19 +7,20 @@
 				:key="board.boardId"
 			>
 				<MainBoardHeader
-					:author="board.author"
+					:username="board.username"
 					:createtime="board.createtime"
+					:profile="board.profile"
 				></MainBoardHeader>
 				<div class="dog-cont-box">
 					<MainBoardImage
-						:image-list="board.imageList"
-						:board-tag="board.boardTag"
+						:imageStrorageList="board.imageStorageList"
+						:boardTag="board.boardTag"
 					></MainBoardImage>
 					<MainBoardBody
 						:board="board"
 						@click.stop="boardDetail(board.boardId)"
-						@click-star="clickStar(board.boardId, index, board.isLike)"
-						@click-heart="clickHeart(board.boardId, index, board.haveInterest)"
+						@click-star="clickStar(board.boardId, index, board.star)"
+						@click-heart="clickHeart(board.boardId, index, board.like)"
 					></MainBoardBody>
 				</div>
 			</li>
@@ -43,17 +44,17 @@ export default {
 		const boardDetail = boardId => {
 			router.push({ name: 'boardDetail', params: { boardId } });
 		};
-		const clickHeart = (boardId, index, isLike) => {
-			console.log(isLike);
-			if (isLike) {
+		const clickHeart = (boardId, index, like) => {
+			console.log(like);
+			if (like) {
 				store.dispatch('board/deleteLike', { boardId, index });
 			} else {
 				store.dispatch('board/createLike', { boardId, index });
 			}
 		};
-		const clickStar = (boardId, index, haveInterest) => {
-			console.log(haveInterest);
-			if (haveInterest) {
+		const clickStar = (boardId, index, star) => {
+			console.log(star);
+			if (star) {
 				store.dispatch('board/deleteStar', { boardId, index });
 			} else {
 				store.dispatch('board/createStar', { boardId, index });

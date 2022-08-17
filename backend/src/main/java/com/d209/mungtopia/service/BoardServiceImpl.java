@@ -215,6 +215,14 @@ public class BoardServiceImpl implements BoardService {
         return result;
     }
 
+    /**
+     * 글 검색
+     * @param tagNo
+     * @param pageNo
+     * @param userSeq
+     * @param keyword
+     * @return
+     */
     @Override
     public List<BoardListDto.Response> search(Long tagNo, int pageNo, long userSeq, String keyword) {
         System.out.println("keyword = " + keyword);

@@ -99,7 +99,7 @@ export default {
 				.then(res => {
 					console.log(res);
 					commit('SET_PAGE_NO', pageNo + 1);
-					commit('SET_BOARD_LIST', res.data.body.data.boardList);
+					commit('SET_BOARD_LIST', res.data.body.data);
 				})
 				.catch(err => {
 					console.error(err.response);

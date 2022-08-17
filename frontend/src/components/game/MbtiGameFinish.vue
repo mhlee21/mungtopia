@@ -1,75 +1,70 @@
 <template>
-	<div class="hash">
-		<div style="color: #61378c">
-			{{ mbtiDog?.hashtag[0] }} {{ mbtiDog?.hashtag[1] }} <br />
-			{{ mbtiDog?.hashtag[2] }}<br />
-		</div>
-	</div>
-	<div class="content">
-		{{ mbtiResult }}
-	</div>
-	<div style="text-align: center">
-		<img
-			:src="require('@/assets/img/' + mbtiResult + '.jpg')"
-			width="150"
-			height="150"
-			alt=""
-		/>
-	</div>
-	<div class="content">
-		<div>당신과 잘 맞는 MBTI는?</div>
-	</div>
-	<div style="display: flex; justify-content: space-between">
+	<div class="mbti-result-frame">
 		<div>
-			<div style="text-align: center">
-				{{ mbtiDog?.fitWell[0] }}<br />
-				{{ mbtiDog?.fitWellDog[0] }}
+			<ol class="hashtag">
+				<li>{{ mbtiDog?.hashtag[0] }}</li>
+				<li>{{ mbtiDog?.hashtag[1] }}</li>
+				<li>{{ mbtiDog?.hashtag[2] }}</li>
+			</ol>
+		</div>
+		<div style="text-align: center">
+			<img
+				:src="require('@/assets/img/' + mbtiResult + '.jpg')"
+				width="150"
+				height="150"
+				alt=""
+			/>
+		</div>
+		<div class="mbti">
+			{{ mbtiResult }}
+		</div>
+		<div class="content">
+			<p>당신과 잘 맞는 MBTI는?</p>
+		</div>
+		<div class="mbti-match">
+			<div class="dog-match">
+				<div>
+					<img
+						:src="require('@/assets/img/' + mbtiDog?.fitWell[0] + '.jpg')"
+						class="dog-img"
+						alt=""
+					/>
+				</div>
+				<div class="dog-title">
+					<div>{{ mbtiDog?.fitWell[0] }}</div>
+					<div>{{ mbtiDog?.fitWellDog[0] }}</div>
+				</div>
 			</div>
-			<div style="text-align: center">
-				<img
-					:src="require('@/assets/img/' + mbtiDog?.fitWell[0] + '.jpg')"
-					width="75"
-					height="75"
-					alt=""
-				/>
+			<div class="dog-match">
+				<div>
+					<img
+						:src="require('@/assets/img/' + mbtiDog?.fitWell[1] + '.jpg')"
+						class="dog-img"
+						alt=""
+					/>
+				</div>
+				<div class="dog-title">
+					<div>{{ mbtiDog?.fitWell[1] }}</div>
+					<div>{{ mbtiDog?.fitWellDog[1] }}</div>
+				</div>
+			</div>
+			<div class="dog-match">
+				<div>
+					<img
+						:src="require('@/assets/img/' + mbtiDog?.fitWell[2] + '.jpg')"
+						class="dog-img"
+						alt=""
+					/>
+				</div>
+				<div class="dog-title">
+					<div>{{ mbtiDog?.fitWell[2] }}</div>
+					<div>{{ mbtiDog?.fitWellDog[2] }}</div>
+				</div>
 			</div>
 		</div>
-		<div>
-			<div style="text-align: center">
-				{{ mbtiDog?.fitWell[1] }}<br />
-				{{ mbtiDog?.fitWellDog[1] }}
-			</div>
-			<div style="text-align: center">
-				<img
-					:src="require('@/assets/img/' + mbtiDog?.fitWell[1] + '.jpg')"
-					width="75"
-					height="75"
-					alt=""
-				/>
-			</div>
-		</div>
-		<div>
-			<div style="text-align: center">
-				{{ mbtiDog?.fitWell[2] }}<br />
-				{{ mbtiDog?.fitWellDog[2] }}
-			</div>
-			<div style="text-align: center">
-				<img
-					:src="require('@/assets/img/' + mbtiDog?.fitWell[2] + '.jpg')"
-					width="75"
-					height="75"
-					alt=""
-				/>
-			</div>
-		</div>
-	</div>
-	<div style="text-align: center">
-		<div class="game-btn" style="margin: 0% 5% 0% 0%">
-			<div class="start-btn" @click="onClickShareStory">SHARE</div>
-			<!-- <div class="modal" v-html="msg">No message</div> -->
-		</div>
-		<div class="game-btn" style="margin: 0% 0% 0% 5%" @click="gameMenu">
-			<div class="start-btn">GAME MENU</div>
+		<div class="button-wrapper">
+			<a class="menu-btn" @click="gameMenu">Back to Menu</a>
+			<button @click="onClickShareStory" class="share-btn">Share</button>
 		</div>
 	</div>
 </template>
@@ -117,18 +112,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
-	text-align: center;
-	margin: 0px 20px 0px 20px;
-	padding: 30px;
-	font-weight: bold;
-}
-.hash {
-	text-align: center;
-	margin: 0px 20px 0px 20px;
-	font-weight: bold;
-}
-
 .game-btn {
 	width: 90px;
 	height: 75px;

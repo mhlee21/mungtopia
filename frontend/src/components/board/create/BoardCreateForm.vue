@@ -239,7 +239,7 @@ export default {
 						areaSido: areaSido.value,
 						neutering: neutering.value,
 						dogNature: dogNature.value,
-						adoptionStatus: true,
+						adoptionStatus: false,
 					},
 				};
 			} else {

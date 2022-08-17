@@ -1,5 +1,5 @@
 <template>
-	<div class="frame" style="overflow: scroll">
+	<div class="mbti-frame" style="overflow: scroll">
 		<div>
 			<h2 class="title">당신의 결과는?</h2>
 		</div>
@@ -20,24 +20,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.frame {
-	width: 100vw;
-	height: 100vh;
-	background-color: #fffbf0;
-	border-radius: 1rem;
-	box-sizing: border-box;
-	position: relative;
-	padding-top: 50px;
-	flex-direction: column;
-}
-.title {
-	text-align: center;
-	margin: 20px;
-	color: #000000;
-	padding: 10px;
-	font-size: 20px;
-}
-
 // img {
 // 	width: 200px;
 // 	height: 200px;

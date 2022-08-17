@@ -32,7 +32,7 @@ export default {
 	setup() {
 		const router = useRouter();
 		const clickMenu = () => {
-			router.push({ name: 'gameIntro' });
+			router.push({ name: 'gameIntro', params: { gameTag: 3 } });
 		};
 		const store = useStore();
 		const matchData = computed(() => store.getters['game/matchData']);

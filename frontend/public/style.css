@@ -2407,10 +2407,10 @@ body {
   text-align: center;
 }
 
+/* 게임 메뉴 페이지 */
 .game-menu-pg {
   overflow: hidden;
 }
-
 .game-menu-pg .game-menu-wrapper {
   display: flex;
   flex-direction: column;
@@ -2435,7 +2435,6 @@ body {
   box-sizing: border-box;
   margin: 0 8vw;
 }
-
 .game-menu-pg .game-menu-wrapper .game-list .game-btn1 {
   background-color: #BDD9F2;
 }
@@ -2445,12 +2444,10 @@ body {
 .game-menu-pg .game-menu-wrapper .game-list .game-btn3 {
   background-color: #88AABF;
 }
-
 .game-menu-pg .game-menu-wrapper .game-list .game-img {
   width: 40vw;
   height: 40vw;
   margin: 0 5vw 2vw;
-
 }
 .game-menu-pg .game-menu-wrapper .game-list .game-title {
   font-family: 'GongGothicBold';
@@ -2464,9 +2461,8 @@ body {
   background-color: white;
   height: 100vh;  
 }
-
 .game-main-pg .game-header {
-  background-color:#BDD9F2;
+  /* background-color:#BDD9F2; */
   height: 50vh;
   display: flex;
   justify-content: center;
@@ -2488,6 +2484,7 @@ body {
   line-height: 1.2;
   font-weight: 100;
   font-family: 'GongGothicLight';
+  white-space: pre-line;
 }
 .game-main-pg .game-body .button-wrapper {
   display: flex;
@@ -2507,17 +2504,28 @@ body {
   font-family: 'HS-Regular';
 }
 
+/* 게임 진행중 페이지 */
 .game-play-pg {
   background-color: white;
   height: 100vh;
+  overflow: hidden;
 }
-
 .game-play-pg .game-header {
   background-color:#BDD9F2;
   height: 30vh;
   padding: 5vh 0 0;
   width: 100vw;
   font-weight: 500;
+}
+.game-play-pg .game-header2 {
+  background-color: #AEB9F2;
+  height: 50vh;
+  overflow: hidden;
+}
+.game-play-pg .game-header3 {
+  background-color: #88AABF;
+  height: 10vh;
+  color: white;
 }
 .game-play-pg .game-header .game-controller {
   margin: 2vh;
@@ -2534,8 +2542,17 @@ body {
   height: 0.8vh;
   width: 90%;
   border-radius: 5px;
+  border: 2px white solid;
+  display: flex;
+  align-items: center;
 }
 .game-play-pg .game-status-bar-inner {
+  background-color: #BDD9F2;
+}
+.game-play-pg .game-status-bar-inner2 {
+  background-color: #AEB9F2;
+}
+.game-play-pg .game-status-bar-inner3 {
   background-color: #88AABF;
 }
 .game-play-pg .game-question-wrapper {
@@ -2552,6 +2569,30 @@ body {
   line-height: 1.5;
   box-sizing: border-box;
 }
+.game-play-pg .game-question-wrapper2 {
+  margin: 10vw;
+  display: flex;
+  flex-direction: column;
+  width: 80vw;
+  box-sizing: border-box;
+}
+.game-play-pg .game-question-wrapper2 .question2 {
+  font-size: 26px;
+  width: 100%;
+  white-space: pre-line;
+  font-family: 'GongGothicMedium';
+  line-height: 1.5;
+  box-sizing: border-box;
+  text-align: end;  
+  margin: 3vh 0 5vh;
+}
+.game-play-pg .game-question-wrapper2 .question3 {
+  font-size: 100px;
+  text-align: start;
+  font-family: 'GongGothicMedium';
+  color: white;
+  margin-bottom: 3vh;
+}
 .game-play-pg .game-question-wrapper .question-icon {
   width: 20%;
   font-size: 25vw;
@@ -2559,15 +2600,92 @@ body {
   color: #88AABF;
   box-sizing: border-box;
 }
-
-.game-play-pg .game-body {
-  padding: 2vh 5vw 0;
-  height: 63vh;
+.game-play-pg .game-question-wrapper2 .question-icon2 {
+  color: white;
+  font-size: 230px;
+  opacity: 50%;
+  position: relative;
+  bottom: 80px;
 }
+.game-play-pg .game-body {
+  padding: 2vh 0 0;
+  height: 63vh;
+  background-color: #f4f4f4;
+}
+.game-play-pg .game-body2 {
+  height: 85vh;
+  background-color: #f4f4f4;
+  display: flex;
+  align-items: center;
+}
+.game-play-pg .game-body2 .card {
+  width: 90vw;
+  height: 70vh;
+  background-color: white;
+  margin: auto;
+  border-radius: 2rem;
+  filter: drop-shadow(
+    1px 2px 4px rgb(216, 216, 216)
+  );;
+  font-size: 20px;
+}
+.game-play-pg .game-body2 .card .card-title {
+  margin: 10%;
+}
+.game-play-pg .game-body2 .card .question-wrapper {
+  height: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10vw;
+  line-height: 1.4;
+}
+.game-play-pg .game-body2 .card .answer-wrapper {
+  height: 32vh;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.game-play-pg .game-body2 .card .answer-box {
+  width: 80%;
+  background-color: #f4f4f4;
+  height: 45vh;
+  border-radius: 2rem;
+  display: flex;
+  margin: 2%;
+  justify-content: center;
+  align-items: center;
+  font-size: 4em;
+}
+.game-play-pg .game-body2 .card .answer-box:hover {
+  background-color: #88AABF;
+}
+.game-play-pg .game-body .game-answer-btn2 {
+  width: 100vw;
+  background-color: white;
+  border: none;
+  height: 15vh;
+  font-family: 'GongGothicLight';
+  font-size: 20px;
+  color: #666667;
+  border: #f4f4f4 4px solid ;
+  box-sizing: border-box;
+  padding: 0 20px;
+  box-shadow: 0px 4px 1px 0 #f4f4f4;
+
+}
+.game-play-pg .game-body .game-answer-btn2:active {
+  box-shadow: -10px -10px 15px rgba(255, 255, 255, 0.5),
+  10px 10px 15px rgba(70, 70, 70, 0.12),
+  inset -10px -10px 15px rgba(255, 255, 255, 0.5),
+  inset 10px 10px 15px rgba(70, 70, 70, 0.12);
+}
+
 .game-play-pg .game-answer-btn {
   border: #D9D9D9 1px solid;
   border-radius: 1.5rem;
-  margin: 1vh 0;
+  margin: 1vh 5vw;
   display: flex;
   align-items: center;
   padding: 2vh;
@@ -2576,7 +2694,7 @@ body {
   color: #666667;
   font-size: 20px;
   font-family: 'GongGothicLight';
-  width: 100%;
+  width: 90vw;
   height: 9vh;
   border: #ddd 2px solid;
   background-color: white;
@@ -2603,7 +2721,6 @@ body {
   width: 13vw;
   height: 13vw;
 }
-
 .game-result-pg {
   background-color: white;
   height: 95vh;

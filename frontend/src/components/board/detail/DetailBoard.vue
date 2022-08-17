@@ -52,7 +52,7 @@ export default {
 		const router = useRouter();
 		const store = useStore();
 		const goBoardMain = () => {
-			router.push({ name: 'boardMain' });
+			router.go(-1);
 		};
 
 		// boardId

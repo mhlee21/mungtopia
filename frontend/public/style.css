@@ -104,6 +104,7 @@ body {
   align-items: center;
   position: sticky;
   margin: 3px;
+  margin-bottom: 1rem;
   box-shadow: -2px 3px 4px rgba(0,0,0,0.2),2px 2px 4px rgba(0,0,0,0.2);
 }
 .back-button {
@@ -526,6 +527,7 @@ body {
 .review-pg .dog-cont-box .text-box p{
   font-size: 14px;
   line-height: 1.25;
+  white-space: pre-wrap;
 }
 .review-pg .dog-cont-box .brief-box {
   display: flex;
@@ -680,6 +682,7 @@ body {
 .board-pg .dog-cont-box .text-box p{
   font-size: 14px;
   line-height: 1.25;
+  white-space: pre-wrap;
 }
 .board-pg .dog-cont-box .brief-box {
   display: flex;
@@ -950,6 +953,7 @@ body {
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
+ 
 }
 .adopt-detail-pg .dog-detail-wrap .textbox p {
   line-height: 1.25;
@@ -1910,7 +1914,10 @@ body {
   display: flex;
   margin: 10px 0;
   align-items: baseline;
+  /* font-size: 16px; */
 }
+
+
 .profile-info-pg .user-info-wrapper .user-info .user-input-label {
   width: 20vw;
 }
@@ -1922,6 +1929,9 @@ body {
 }
 .profile-info-pg .label {
   font-weight: 600;
+}
+.profile-info-pg .user-info-wrapper .user-info .fontsize {
+  font-size: 16px;
 }
 .profile-info-pg .user-info-wrapper .user-info .user-info-input {
   width: max-content;
@@ -1951,6 +1961,7 @@ body {
   display: flex;
   flex-direction: column;
   margin: 10px 0 10px;
+  /* font-size: 0.5rem; */
 }
 .profile-info-pg .user-info2 .user-info-address-box {
   background-color: #F2F2F2;

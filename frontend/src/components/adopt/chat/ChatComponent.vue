@@ -1,8 +1,30 @@
 <template>
 	<div class="chat-component">
-		<div id="mydiv" class="chat-message-list">
+		<div class="chat-message-list" ref="scroll">
+			<infinite-scroll
+				direction="top"
+				@infinite-scroll="infiniteHandler"
+				force-use-infinite-wrapper=".chat-message-list__body-wrapper"
+			>
+			</infinite-scroll>
 			<div v-for="(chat, index) in chatList" :key="index">
-				<div>
+				<div class="chat-box" :class="{ 'chat-box-me': !isYou(chat.userSeq) }">
+					<small v-if="!isYou(chat.userSeq)" class="chat-time">{{
+						difTime(chat.createtime)
+					}}</small>
+					<div
+						class="chat-message"
+						:class="{ 'chat-message-me': !isYou(chat.userSeq) }"
+					>
+						{{ chat.content }}
+					</div>
+					<small v-if="isYou(chat.userSeq)" class="chat-time">{{
+						difTime(chat.createtime)
+					}}</small>
+				</div>
+			</div>
+			<div v-for="(chat, index) in newChatList" :key="index">
+				<div class="chat-box" :class="{ 'chat-box-me': !isYou(chat.userSeq) }">
 					<small v-if="!isYou(chat.userSeq)" class="chat-time">{{
 						difTime(chat.createtime)
 					}}</small>
@@ -19,7 +41,7 @@
 			</div>
 		</div>
 		<div>
-			<form @submit.prevent="sendMessage()">
+			<form class="chat-form" @submit.prevent="sendMessage()">
 				<input type="text" v-model="message" />
 				<button>보내기</button>
 			</form>
@@ -30,26 +52,29 @@
 <script>
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
-import { computed, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
 import api from '@/api/api';
+import InfiniteScroll from 'infinite-loading-vue3';
+import axios from 'axios';
 
 export default {
+	components: {
+		InfiniteScroll,
+	},
 	setup() {
 		const store = useStore();
 
 		//이전 기록 불러오기
-		// store.dispatch('adopt/fetchChatMain');
-		const chatList = computed(() => store.getters['adopt/chatList']);
+		const preChatList = reactive([]);
+		const chatList = reactive(store.getters['adopt/chatList']);
 		console.log('이전 기록 불러오기...', chatList.value);
 
 		const newChatList = reactive([]);
 		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
 		const you = computed(() => store.getters['adopt/you']);
 		const isYou = userSeq => userSeq === you.value.userSeq;
-		// console.log('you', you.value);
-		// console.log('유저', userSeq.value);
 
 		// 시간 처리
 		const difTime = timeValue => {
@@ -118,18 +143,77 @@ export default {
 					createtime: date,
 					chatRoomId: chatRoomId,
 				};
+				console.log(msg);
 				stompClient.value.send('/receive', JSON.stringify(msg), {});
 			}
 		};
+
+		// 스크롤 구현
+		const page = ref(1);
+		const done = ref(false);
+		const scroll = ref(null);
+		onMounted(() => {
+			scroll.value?.addEventListener('scroll', () => {
+				const scrollTop = scroll.value.scrollTop;
+				if (scrollTop === 0) {
+					infiniteHandler();
+				}
+			});
+		});
+		const infiniteHandler = () => {
+			console.log(chatRoomId, page.value, userSeq.value);
+			if (done.value === false) {
+				axios({
+					url: api.adopt.chats(),
+					method: 'get',
+					params: {
+						page: page.value,
+						chatRoomId: chatRoomId,
+						userSeq: userSeq.value,
+					},
+					headers: store.getters['auth/authHeader'],
+				})
+					.then(res => {
+						if (res.data.body.data.chatLogDtoList.length === 0) {
+							done.value = true;
+						}
+						console.log('length', res.data.body.data.chatLogDtoList.length);
+						// console.log(chatRoomId, page, userSeq);
+						console.log('chatList', res);
+						console.log(res.data.body.data.chatLogDtoList);
+						store.commit(
+							'adopt/SET_CHAT_LIST',
+							res.data.body.data.chatLogDtoList,
+						);
+						store.commit('adopt/SET_CHAT_ROOM_ID', chatRoomId);
+
+						const you = {
+							userSeq: res.data.body.data.userSeq,
+							nickname: res.data.body.data.nickname,
+							profile: res.data.body.data.profile,
+						};
+						store.commit('adopt/SET_YOU', you);
+						page.value += 1;
+					})
+					.catch(err => {
+						console.error(err.response);
+					});
+			}
+		};
+
 		return {
-			// you,
+			you,
 			isYou,
 			difTime,
 			chatRoomId,
 			message,
 			sendMessage,
+			preChatList,
 			chatList,
 			newChatList,
+			page,
+			infiniteHandler,
+			scroll,
 		};
 	},
 };
@@ -145,12 +229,21 @@ export default {
 	width: 90%;
 }
 .chat-message-list {
+	height: 90%;
 	overflow: auto;
-	height: 80vh;
+}
+.chat-box {
+	display: flex;
+	justify-content: start;
+}
+.chat-box-me {
+	justify-content: end;
 }
 .chat-time {
 	font-size: 10px;
 	color: gray;
+	display: flex;
+	align-items: flex-end;
 }
 .chat-message {
 	margin-top: 2vh;
@@ -165,5 +258,40 @@ export default {
 .chat-message-me {
 	background-color: #efefef;
 	border-radius: 20px 20px 0px 20px;
+}
+.chat-form {
+	position: fixed;
+	bottom: 20px;
+	border: 1px solid #d6d6d6;
+	box-shadow: -2px 3px 4px rgba(0, 0, 0, 0.2), 2px 2px 4px rgba(0, 0, 0, 0.2);
+	border-radius: 30px;
+	background-color: #fff;
+	z-index: 10;
+	bottom: 80px;
+	width: 320px;
+	height: 35px;
+	padding: 5px 15px;
+	box-sizing: border-box;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+}
+.chat-form input {
+	width: 200px;
+	margin-left: 5px;
+	border: none;
+	outline: none;
+	font-size: 14px;
+}
+.chat-form button {
+	padding: 0;
+	border: none;
+	background-color: transparent;
+	width: calc(100% - 218px);
+	text-align: right;
+	cursor: pointer;
+	font-size: 14px;
 }
 </style>

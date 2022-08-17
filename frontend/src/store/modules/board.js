@@ -525,6 +525,7 @@ export default {
 				.then(res => {
 					console.log(res.data.body.data);
 					commit('SET_LIKE_IN_DETAIL', res.data.body.data); // 상세 페이지
+					//
 				})
 				.catch(err => {
 					console.error(err.response);

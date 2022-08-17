@@ -7,14 +7,14 @@
 				<li
 					class="star icon"
 					:class="{ active: haveInterest }"
-					@click.stop="$emit('clickStar')"
+					@click.stop="clickStarEve"
 				>
 					<i class="fa-solid fa-star"></i>
 				</li>
 				<li
 					class="heart icon"
 					:class="{ active: isLike }"
-					@click.stop="$emit('clickHeart')"
+					@click.stop="clickLikeEve"
 				>
 					<i class="fa-solid fa-heart"></i>
 				</li>
@@ -72,19 +72,38 @@
 
 <script>
 // import board from '@/store/modules/board';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 export default {
 	props: {
 		board: Object,
 	},
 	emits: ['clickHeart', 'clickStar'],
-	setup(props) {
-		const isLike = computed(() => props.board.like);
-		const haveInterest = computed(() => props.board.star);
+	setup(props, context) {
+		// isLike 변경...!
+		const isLike = ref(props.board.like);
+		const haveInterest = ref(props.board.star);
 		const changeBoolean = computed(() => props.board.dogInfo.neutering)
 			? 'Y'
 			: 'N';
-		return { isLike, haveInterest, changeBoolean };
+		const clickStarEve = () => {
+			console.log('star' + haveInterest.value);
+			if (haveInterest.value) {
+				haveInterest.value = false;
+			} else {
+				haveInterest.value = true;
+			}
+			context.emit('clickStar');
+		};
+		const clickLikeEve = () => {
+			console.log('like' + haveInterest.value);
+			if (isLike.value) {
+				isLike.value = false;
+			} else {
+				isLike.value = true;
+			}
+			context.emit('clickHeart');
+		};
+		return { isLike, haveInterest, changeBoolean, clickStarEve, clickLikeEve };
 	},
 };
 </script>

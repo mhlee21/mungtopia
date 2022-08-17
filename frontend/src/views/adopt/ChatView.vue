@@ -2,25 +2,25 @@
 	<div class="chat-view">
 		<div style="height: 80vh">
 			<div style="display: flex; position: relative; height: 10%">
-				<div style="width: 20%">
-					<button @click="goBack">back</button>
+				<div class="back-button-wrapper">
+					<i class="fa-solid fa-angle-left back-button" @click="goBack"></i>
 				</div>
 				<div>
-					<div style="width: 30%">
-						<h3>{{ you.nickname }}</h3>
-						<div v-if="!isApplicant">
+					<div class="chat-header">
+						<div>
+							<h3 class="chat-nickname">{{ you.nickname }}</h3>
+						</div>
+
+						<!-- <div v-if="!isApplicant"> -->
+						<div>
 							<button
+								class="chat-schedule-btn"
 								v-if="!isReservated"
 								@click="adoptSchedule()"
-								style="background-color: white"
 							>
 								일정 예약
 							</button>
-							<button
-								v-else
-								@click="adoptSchedule()"
-								style="background-color: white"
-							>
+							<button v-else @click="adoptSchedule()" class="chat-schedule-btn">
 								일정 수정
 							</button>
 						</div>

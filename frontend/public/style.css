@@ -2667,3 +2667,31 @@ body {
   font-size: 18px;
   font-family: 'GongGothicLight';
 }
+/* 채팅 헤더 버튼 */
+.chat-view .chat-header{
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-view .chat-header .chat-nickname{
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  color: white;
+}
+
+.chat-view .chat-header .chat-schedule-btn{
+  background-color: #F2F2F2;
+  border-radius: 15px;
+  border: none;
+  height: 30px;
+  width: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1rem;
+  color: #ff9898;
+}
+
+.chat-form .icon{
+  color: #666667;
+}

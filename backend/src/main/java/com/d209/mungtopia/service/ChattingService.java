@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,6 +28,10 @@ public class ChattingService {
     private final InfChatLogRepository chatLogRepository;
     private final InfChatRoomRepository chatRoomRepository;
 
+    public Timestamp getNow() {
+        return new Timestamp(System.currentTimeMillis());
+    }
+
     public ChatLogDto.Response chattingHandler(ChatLogDto.Request chatLogDto) {
         User user = userRepository.findById(chatLogDto.getUserSeq())
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
@@ -35,7 +40,7 @@ public class ChattingService {
         ChatLog chatLog = ChatLog.builder()
                         .userSeq(chatLogDto.getUserSeq())
                         .content(chatLogDto.getContent())
-                        .createtime(chatLogDto.getCreatetime())
+                        .createtime(getNow())
                         .chatRoom(chatRoom)
                         .build();
         chatLogRepository.save(chatLog);
@@ -44,6 +49,7 @@ public class ChattingService {
                 chatLogDto.getUserSeq(),
                 chatLogDto.getContent(),
                 chatLogDto.getCreatetime()
+                        .toLocalDateTime()
                         .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                 chatLogDto.getChatRoomId()
         );
@@ -74,6 +80,7 @@ public class ChattingService {
                     chatLog.getUserSeq(),
                     chatLog.getContent(),
                     chatLog.getCreatetime()
+                            .toLocalDateTime()
                             .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
                     chatLog.getChatRoom().getChatRoomId()
             );

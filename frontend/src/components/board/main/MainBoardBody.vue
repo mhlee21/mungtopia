@@ -78,8 +78,8 @@ export default {
 	},
 	emits: ['clickHeart', 'clickStar'],
 	setup(props) {
-		const isLike = computed(() => props.board.isLike);
-		const haveInterest = computed(() => props.board.haveInterest);
+		const isLike = computed(() => props.board.like);
+		const haveInterest = computed(() => props.board.star);
 		return { isLike, haveInterest };
 	},
 };

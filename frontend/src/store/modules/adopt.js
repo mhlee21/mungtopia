@@ -58,7 +58,7 @@ export default {
 		SET_APPLICATION_STATUS: (state, applicationStatus) =>
 			(state.applicationStatus = applicationStatus),
 		SET_APPLICATION: (state, application) => (state.application = application),
-		SET_CHAT_LIST: (state, chatList) => (state.chatList = chatList),
+		SET_CHAT_LIST: (state, chatList) => state.chatList.unshift(...chatList),
 		SET_YOU: (state, you) => (state.you = you),
 		SET_DATE: (state, date) => (state.date = date),
 		SET_CHAT_ROOM_ID: (state, chatRoomId) => (state.chatRoomId = chatRoomId),
@@ -277,12 +277,12 @@ export default {
 			commit('SET_DATE', '08/17/2022, 14:56');
 		},
 		// chatList 받기
-		fetchChatMain: ({ commit, rootGetters }, chatRoomId) => {
+		fetchChatMain: ({ commit, rootGetters }, { chatRoomId, page }) => {
 			axios({
 				url: api.adopt.chats(),
 				method: 'get',
 				params: {
-					page: 0,
+					page: page,
 					chatRoomId: chatRoomId,
 					userSeq: rootGetters['auth/user'].userSeq,
 				},

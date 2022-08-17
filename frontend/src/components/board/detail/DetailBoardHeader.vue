@@ -1,6 +1,6 @@
 <template>
 	<div class="tit-box">
-		<div class="brief-info-box">
+		<div v-show="isAdoption" class="brief-info-box">
 			<h2 class="dog-name">{{ dogName }}</h2>
 			<ol class="hashtag-box">
 				<li class="hashtag">{{ areaSido }}</li>
@@ -10,6 +10,7 @@
 		<!-- 입양신청한 강아지가 있다면 disabled -->
 		<!-- 입양글이 아니라면 안보임 -->
 		<a
+			v-show="isAdoption"
 			@click.prevent="adoptionApply()"
 			:class="{ 'is-adopting': isAdopting }"
 			class="brief-btn"
@@ -19,7 +20,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 export default {
@@ -39,7 +40,11 @@ export default {
 			() => store.getters['board/board']['dogInfo']?.breed,
 		);
 		const boardId = computed(() => route.params.boardId);
-
+		const boardTag = computed(() => store.getters['board/board'].boardTag);
+		const isAdoption = ref(true);
+		if (boardTag.value != '입양') {
+			isAdoption.value = false;
+		}
 		const adoptionApply = () => {
 			if (!isAdopting.value) {
 				router.push({
@@ -48,7 +53,15 @@ export default {
 				});
 			}
 		};
-		return { dogName, areaSido, breed, isAdopting, adoptionApply };
+		return {
+			dogName,
+			areaSido,
+			breed,
+			isAdopting,
+			adoptionApply,
+			isAdoption,
+			boardTag,
+		};
 	},
 };
 </script>

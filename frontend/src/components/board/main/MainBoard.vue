@@ -13,8 +13,8 @@
 				></MainBoardHeader>
 				<div class="dog-cont-box">
 					<MainBoardImage
-						:image-list="board.imageStorageList"
-						:board-tag="board.boardTag"
+						:imageStrorageList="board.imageStorageList"
+						:boardTag="board.boardTag"
 					></MainBoardImage>
 					<MainBoardBody
 						:board="board"

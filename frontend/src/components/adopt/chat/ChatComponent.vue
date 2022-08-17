@@ -10,7 +10,7 @@
 			<div v-for="(chat, index) in chatList" :key="index">
 				<div class="chat-box" :class="{ 'chat-box-me': !isYou(chat.userSeq) }">
 					<small v-if="!isYou(chat.userSeq)" class="chat-time">{{
-						difTime(chat.createtime)
+						difTime(chat.createtime.replace(/-/g, '/'))
 					}}</small>
 					<div
 						class="chat-message"
@@ -19,14 +19,14 @@
 						{{ chat.content }}
 					</div>
 					<small v-if="isYou(chat.userSeq)" class="chat-time">{{
-						difTime(chat.createtime)
+						difTime(chat.createtime.replace(/-/g, '/'))
 					}}</small>
 				</div>
 			</div>
 			<div v-for="(chat, index) in newChatList" :key="index">
 				<div class="chat-box" :class="{ 'chat-box-me': !isYou(chat.userSeq) }">
 					<small v-if="!isYou(chat.userSeq)" class="chat-time">{{
-						difTime(chat.createtime)
+						difTime(chat.createtime.replace(/-/g, '/'))
 					}}</small>
 					<div
 						class="chat-message"
@@ -35,7 +35,7 @@
 						{{ chat.content }}
 					</div>
 					<small v-if="isYou(chat.userSeq)" class="chat-time">{{
-						difTime(chat.createtime)
+						difTime(chat.createtime.replace(/-/g, '/'))
 					}}</small>
 				</div>
 			</div>

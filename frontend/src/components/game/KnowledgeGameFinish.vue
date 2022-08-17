@@ -50,15 +50,14 @@
 </template>
 
 <script>
-import { useStore } from 'vuex';
-import { computed } from 'vue';
-import router from '@/router';
+import { useRoute, useRouter } from 'vue-router';
 
 export default {
 	setup() {
-		const store = useStore();
+		const route = useRoute();
+		const router = useRouter();
 		const randomNum = Math.floor(Math.random() * 3) + 1;
-		const correctAnswer = computed(() => store.getters['game/correctAnswer']);
+		const correctAnswer = route.params.score;
 		const onClickShareStory = () => {
 			window.Kakao.Link.sendCustom({
 				templateId: 81263,

@@ -69,21 +69,19 @@ export default {
 						score++;
 					}
 				}
-				let payload = {};
 				if (user.value) {
-					payload = {
+					const payload = {
 						userSeq: user.value?.userSeq,
 						result: score,
 						gameTag: 1,
 					};
-					store.dispatch('game/sendknowledgeResult', payload);
+					store.dispatch('game/sendResult', payload);
 				}
 				router.push({
-					name: 'gameResult',
-					params: { gameTag: 1 },
+					name: 'game1Result',
+					params: { score: score },
 				});
 			}
-			console.log(answer);
 		};
 		// 뒤로가기 버튼
 		const clickBackButton = () => {

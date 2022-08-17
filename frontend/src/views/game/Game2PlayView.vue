@@ -70,38 +70,43 @@ export default {
 		const answerList = computed(() => MBTI.value[qNum.value - 1].answer);
 		const answer = Array(MBTI.value.length).fill(0);
 		// 답 선택
-		const matchNum = Array(8).fill(0);
 		const questionType = idx => MBTI.value[idx]['question_type'];
 		const clickAnswerButton = index => {
-			answer[qNum.value - 1] = 2 - (index + 1);
+			answer[qNum.value - 1] = index;
 			// 마지막 문제가 아닐때
 			if (qNum.value < MBTI.value.length) {
 				qNum.value++;
+				console.log(answer);
 			} else {
 				// 마지막 문제일 때
 				// matchNum 결과 저장
+				const result = [0, 0, 0, 0];
 				for (let idx = 0; idx < MBTI.value.length; idx++) {
-					const qType = questionType(idx);
-					matchNum[qType] += answer[idx];
+					const qIndex = questionType(idx) - 1;
+					result[qIndex] += answer[idx];
 				}
-				let payload = {};
+				const mbtiData = [
+					['I', 'E'],
+					['S', 'N'],
+					['T', 'F'],
+					['J', 'P'],
+				];
+				const MBTIResult = result
+					.map((num, index) =>
+						num < 2 ? mbtiData[index][0] : mbtiData[index][1],
+					)
+					.join('');
 				if (user.value) {
-					payload = {
-						userSeq: user.value?.userSeq,
-						matchAnswer: matchNum,
+					const payload = {
+						userSeq: store.getters['auth/user']['userSeq'],
+						result: 1,
 						gameTag: 2,
 					};
-				} else {
-					payload = {
-						userSeq: 0,
-						matchAnswer: matchNum,
-						gameTag: 2,
-					};
+					store.dispatch('game/sendResult', payload);
 				}
-				store.dispatch('game/sendMatchResult', payload);
 				router.push({
-					name: 'gameResult',
-					params: { gameTag: 2 },
+					name: 'game2Result',
+					params: { mbti: MBTIResult },
 				});
 			}
 		};

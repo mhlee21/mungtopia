@@ -276,10 +276,6 @@ export default {
 			}).catch(err => {
 				console.error(err.response);
 			});
-			// .then(res => {
-			// 	console.log(res.body.data);
-
-			// })
 		},
 
 		sendMatchResult: ({ commit, rootGetters }, payload) => {

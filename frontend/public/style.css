@@ -2390,10 +2390,10 @@ body {
   text-align: center;
 }
 
+/* 게임 메뉴 페이지 */
 .game-menu-pg {
   overflow: hidden;
 }
-
 .game-menu-pg .game-menu-wrapper {
   display: flex;
   flex-direction: column;
@@ -2418,7 +2418,6 @@ body {
   box-sizing: border-box;
   margin: 0 8vw;
 }
-
 .game-menu-pg .game-menu-wrapper .game-list .game-btn1 {
   background-color: #BDD9F2;
 }
@@ -2428,12 +2427,10 @@ body {
 .game-menu-pg .game-menu-wrapper .game-list .game-btn3 {
   background-color: #88AABF;
 }
-
 .game-menu-pg .game-menu-wrapper .game-list .game-img {
   width: 40vw;
   height: 40vw;
   margin: 0 5vw 2vw;
-
 }
 .game-menu-pg .game-menu-wrapper .game-list .game-title {
   font-family: 'GongGothicBold';
@@ -2447,9 +2444,8 @@ body {
   background-color: white;
   height: 100vh;  
 }
-
 .game-main-pg .game-header {
-  background-color:#BDD9F2;
+  /* background-color:#BDD9F2; */
   height: 50vh;
   display: flex;
   justify-content: center;
@@ -2471,6 +2467,7 @@ body {
   line-height: 1.2;
   font-weight: 100;
   font-family: 'GongGothicLight';
+  white-space: pre-line;
 }
 .game-main-pg .game-body .button-wrapper {
   display: flex;

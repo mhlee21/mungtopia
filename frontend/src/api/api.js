@@ -130,10 +130,7 @@ export default {
 		// 채팅
 		chats: () => HOST + CHAT + 'log',
 		// 채팅방 정보 가져오기
-		chatInfo: chatRoomId => HOST + ADOPT + CHAT + `${chatRoomId}`,
-		// 채팅 보내기
-		chatCreate: (chatRoomId, userSeq) =>
-			HOST + ADOPT + CHAT + `${chatRoomId}/` + `${userSeq}`,
+		chatInfo: chatRoomId => HOST + CHAT + `${chatRoomId}`,
 		// 일정 가져오기
 		schedules: adoptionProcessId =>
 			HOST + ADOPT + SCHEDULE + `${adoptionProcessId}`,

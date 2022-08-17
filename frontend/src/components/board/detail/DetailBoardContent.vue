@@ -1,6 +1,6 @@
 <template>
 	<div class="dog-detail-wrap">
-		<ol class="dog-detail-ol">
+		<ol v-show="boardTag == '입양'" class="dog-detail-ol">
 			<li class="dog-detail-li">
 				<p class="tit">나이</p>
 				<p class="txt">{{ age }}</p>
@@ -56,8 +56,16 @@ export default {
 		);
 		const dogNature = computed(() => store.getters['board/board']['dogNature']);
 		const contents = computed(() => store.getters['board/board']['contents']);
-
-		return { age, weight, neutering, gender, dogNature, contents };
+		const boardTag = computed(() => store.getters['board/board']['boardTag']);
+		return {
+			age,
+			weight,
+			neutering,
+			gender,
+			dogNature,
+			contents,
+			boardTag,
+		};
 	},
 };
 </script>

@@ -109,6 +109,7 @@ body {
   align-items: center;
   position: sticky;
   margin: 3px;
+  margin-bottom: 1rem;
   box-shadow: -2px 3px 4px rgba(0,0,0,0.2),2px 2px 4px rgba(0,0,0,0.2);
 }
 .back-button {
@@ -174,7 +175,7 @@ body {
 /*하단 네비게이션*/
 .bottom-navigation {
   width: 100%;
-  max-width: 360px;
+  /* max-width: 360px; */
   position: fixed;
   bottom: 0;
   left: 50%;
@@ -531,6 +532,7 @@ body {
 .review-pg .dog-cont-box .text-box p{
   font-size: 14px;
   line-height: 1.25;
+  white-space: pre-wrap;
 }
 .review-pg .dog-cont-box .brief-box {
   display: flex;
@@ -685,6 +687,7 @@ body {
 .board-pg .dog-cont-box .text-box p{
   font-size: 14px;
   line-height: 1.25;
+  white-space: pre-wrap;
 }
 .board-pg .dog-cont-box .brief-box {
   display: flex;
@@ -955,10 +958,12 @@ body {
   background-color: #fff;
   border-radius: 10px;
   padding: 20px;
+ 
 }
 .adopt-detail-pg .dog-detail-wrap .textbox p {
   line-height: 1.25;
   font-size: 14px;
+  white-space: pre-wrap;
 }
 .adopt-detail-pg .adopt-detail-comment-wrap {
   margin-top: 20px;
@@ -1408,6 +1413,7 @@ body {
 .adopt-detail-protector-pg .application-list-component {
   display: flex;
 	height: 10vh;
+  flex-direction: row;
 	justify-content: center;
 	background-color: white;
 	border-radius: 1rem;
@@ -1415,11 +1421,15 @@ body {
   margin-bottom: 20px;
 }
 .adopt-detail-protector-pg .application-list-component .profile-img-wrapper {
-  width: 30%
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 30%;
 }
 .adopt-detail-protector-pg .application-list-component .profile-img {
   border-radius: 50%;
-  height: 100%;
+  height: 80%;
+  width: 80%;
 }
 .adopt-detail-protector-pg .application-list-component .username-wrapper {
   display: flex;
@@ -1910,7 +1920,10 @@ body {
   display: flex;
   margin: 10px 0;
   align-items: baseline;
+  /* font-size: 16px; */
 }
+
+
 .profile-info-pg .user-info-wrapper .user-info .user-input-label {
   width: 20vw;
 }
@@ -1922,6 +1935,9 @@ body {
 }
 .profile-info-pg .label {
   font-weight: 600;
+}
+.profile-info-pg .user-info-wrapper .user-info .fontsize {
+  font-size: 16px;
 }
 .profile-info-pg .user-info-wrapper .user-info .user-info-input {
   width: max-content;
@@ -1951,6 +1967,7 @@ body {
   display: flex;
   flex-direction: column;
   margin: 10px 0 10px;
+  /* font-size: 0.5rem; */
 }
 .profile-info-pg .user-info2 .user-info-address-box {
   background-color: #F2F2F2;
@@ -2783,4 +2800,125 @@ body {
   margin: 2vh;
   font-size: 18px;
   font-family: 'GongGothicLight';
+}
+/* 채팅 헤더 버튼 */
+.chat-view .chat-header{
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-view .chat-header .chat-nickname{
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 0.7rem;
+  color: white;
+}
+
+.chat-view .chat-header .chat-schedule-btn{
+  background-color: #F2F2F2;
+  border-radius: 15px;
+  border: none;
+  height: 30px;
+  width: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1rem;
+  color: #ff9898;
+}
+
+.chat-form .icon{
+  color: #666667;
+}
+
+/* mtbi 결과 페이지 */
+.mbti-frame{
+  width: 100vw;
+	height: 100vh;
+	background-color: white;
+	/* font-family: ; */
+}
+
+.mbti-frame .title {
+  margin: 6vh 0 2vh;
+  text-align: center;
+  font-family: 'GongGothicMedium';
+  font-size: 30px;
+  font-weight: 700;
+  color: #666667;
+}
+
+.mbti-result-frame .hashtag{
+  margin: 1rem 0;
+  text-align: center;
+  font-family: 'GongGothicLight';
+  display: flex;
+  justify-content: center;
+  /* color: #AEB9F2; */
+}
+.mbti-result-frame .hashtag li{
+  border-radius: 15px;
+  margin: 5px;
+}
+
+.mbti-result-frame .mbti {
+  margin: 1rem 0rem;
+  font-size: 30px;
+  font-family: 'GongGothicMedium';
+  text-align: center;
+}
+
+.mbti-result-frame .content{
+  text-align: center;
+  margin: 6vh 0 2vh;
+	font-weight: bold;
+  font-size: 20px;
+  font-family: 'GongGothicMedium';
+  text-align: center;
+  font-weight: 700;
+  color: #666667;
+}
+
+.mbti-result-frame .mbti-match{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  font-family: 'GongGothicLight';
+}
+
+.mbti-result-frame .button-wrapper {
+  background-color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 5vh;
+  text-align: center;
+}
+.mbti-result-frame .button-wrapper .menu-btn {
+  color: #848181;
+}
+.mbti-result-frame .button-wrapper .share-btn {
+  background-color: #AEB9F2;
+  color: white;
+  width: 70vw;
+  border: none;
+  height: 8vh;
+  border-radius: 1rem;
+  margin: 2vh;
+  font-size: 18px;
+  font-family: 'GongGothicLight';
+}
+.mbti-result-frame .dog-title{
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.mbti-result-frame .dog-img{
+  width: 80px;
+  height: 80px;
+}
+
+.mbti-match .dog-match{
+  padding: 5px;
 }

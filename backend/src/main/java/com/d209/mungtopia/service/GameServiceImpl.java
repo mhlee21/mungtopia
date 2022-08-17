@@ -59,20 +59,21 @@ public class GameServiceImpl implements GameService{
     @Override
     public MatchingGameRes postMatchingResult(MatchingGameReq gameReq) {
         List<Integer> userNature = gameReq.getMatchAnswer(); // value 결과 저장
-        Optional<User> user = Optional.ofNullable(infUserRepository.getReferenceById(gameReq.getUserSeq()));
-        if (user.isEmpty()) // null 처리
-            return null;
-        // 결과 저장로직
-        Optional<UserDogNature> userDogNature = infUserDogNatureRepository.findByUser(user.get());
-        if (userDogNature.isEmpty()){ // 없으면 새로 저장
-            UserDogNature saveUserDogNature = new UserDogNature();
-            saveUserDogNature.saveUser(user.get(), userNature);
-            infUserDogNatureRepository.save(saveUserDogNature);
-        }else { // 있으면 기존 것 수정
-            userDogNature.get().saveUser(user.get(), userNature);
-            infUserDogNatureRepository.save(userDogNature.get());
+        if (gameReq.getUserSeq() != 1){
+            Optional<User> user = Optional.ofNullable(infUserRepository.getReferenceById(gameReq.getUserSeq()));
+            if (user.isEmpty()){
+                return null;
+            }
+            Optional<UserDogNature> userDogNature = infUserDogNatureRepository.findByUser(user.get());
+            if (userDogNature.isEmpty()){ // 없으면 새로 저장
+                UserDogNature saveUserDogNature = new UserDogNature();
+                saveUserDogNature.saveUser(user.get(), userNature);
+                infUserDogNatureRepository.save(saveUserDogNature);
+            }else { // 있으면 기존 것 수정
+                userDogNature.get().saveUser(user.get(), userNature);
+                infUserDogNatureRepository.save(userDogNature.get());
+            }
         }
-
         // 결과 리턴하기
         List<DogNature>  dogNatureList = infDogNatureRepository.findAll();
         Map<Long, Integer> result = new HashMap<>();

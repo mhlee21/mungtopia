@@ -41,6 +41,11 @@ public class AdoptionStepDate {
         this.adoptionProcess = adoptionProcess;
     }
 
+    public AdoptionStepDate(int step, LocalDateTime date){
+        this.step = step;
+        this.date = date;
+    }
+
     public void setAdoptionProcess(AdoptionProcess adoptionProcess) {
         this.adoptionProcess = adoptionProcess;
     }

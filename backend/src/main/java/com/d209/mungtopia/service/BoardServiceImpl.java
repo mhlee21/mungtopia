@@ -215,6 +215,14 @@ public class BoardServiceImpl implements BoardService {
         return result;
     }
 
+    /**
+     * 글 검색
+     * @param tagNo
+     * @param pageNo
+     * @param userSeq
+     * @param keyword
+     * @return
+     */
     @Override
     public List<BoardListDto.Response> search(Long tagNo, int pageNo, long userSeq, String keyword) {
         System.out.println("keyword = " + keyword);
@@ -394,7 +402,7 @@ public class BoardServiceImpl implements BoardService {
                 .userInfo(user.getUserInfo())
                 .user(user)
                 .createtime(LocalDateTime.now())
-                .applicationStatus(0)
+                .applicationStatus(1)
                 .build();
 
         //입양 신청서 질문
@@ -431,7 +439,7 @@ public class BoardServiceImpl implements BoardService {
                 .build();
         adoptionProcessRepository.save(adoptionProcess);
 
-        AdoptionStepDate adoptionStepDate = new AdoptionStepDate();
+        AdoptionStepDate adoptionStepDate = new AdoptionStepDate(1, LocalDateTime.now());
         adoptionStepDate.setAdoptionProcess(adoptionProcess);
         adoptionStepDateRepository.save(adoptionStepDate);
         adoptionStepDateList.add(adoptionStepDate);

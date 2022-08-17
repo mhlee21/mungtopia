@@ -1,12 +1,6 @@
 <template>
 	<div class="chat-component">
 		<div class="chat-message-list" ref="scroll">
-			<infinite-scroll
-				direction="top"
-				@infinite-scroll="infiniteHandler"
-				force-use-infinite-wrapper=".chat-message-list__body-wrapper"
-			>
-			</infinite-scroll>
 			<div v-for="(chat, index) in chatList" :key="index">
 				<div class="chat-box" :class="{ 'chat-box-me': !isYou(chat.userSeq) }">
 					<small v-if="!isYou(chat.userSeq)" class="chat-time">{{
@@ -58,13 +52,9 @@ import { computed, onMounted, reactive, ref } from 'vue';
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
 import api from '@/api/api';
-import InfiniteScroll from 'infinite-loading-vue3';
 import axios from 'axios';
 
 export default {
-	components: {
-		InfiniteScroll,
-	},
 	setup() {
 		const store = useStore();
 
@@ -236,7 +226,7 @@ export default {
 }
 .chat-box {
 	display: flex;
-	justify-content: start;
+	justify-content: flex-start;
 }
 .chat-box-me {
 	justify-content: end;

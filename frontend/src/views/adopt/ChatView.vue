@@ -1,6 +1,6 @@
 <template>
 	<div class="chat-view">
-		<div style="height: 80%">
+		<div style="height: 80vh">
 			<div style="display: flex; position: relative; height: 10%">
 				<div style="width: 20%">
 					<button @click="goBack">back</button>
@@ -54,7 +54,10 @@ export default {
 		const route = useRoute();
 		const isReservated = computed(() => !(store.getters['adopt/date'] === ''));
 		const isApplicant = computed(() => store.getters['adopt/isApplicant']);
-		store.dispatch('adopt/fetchChatMain', route.params.chatRoomId);
+		store.dispatch('adopt/fetchChatMain', {
+			chatRoomId: route.params.chatRoomId,
+			page: 0,
+		});
 
 		const chatRoomId = computed(() => store.getters['adopt/chatRoomId']);
 		const adoptSchedule = () => {
@@ -79,8 +82,10 @@ export default {
 <style scoped>
 .chat-view {
 	background-color: #ff9898;
-	height: 100%;
+	overflow: hidden;
+	height: 100vh;
 	padding: 10% 7%;
+	box-sizing: border-box;
 }
 .chat-profile-image {
 	height: 100px;

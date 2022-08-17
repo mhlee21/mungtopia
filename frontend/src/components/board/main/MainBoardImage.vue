@@ -7,8 +7,8 @@
 			:pagination="{ clickable: true }"
 			loop
 		>
-			<swiper-slide v-for="image in imageList" :key="image.order"
-				><img :src="image.url" class="image"
+			<swiper-slide v-for="image in imageStrorageList" :key="image.order"
+				><img :src="image" class="image"
 			/></swiper-slide>
 		</swiper>
 	</div>
@@ -26,7 +26,7 @@ export default {
 		Swiper,
 		SwiperSlide,
 	},
-	props: { imageList: Array, boardTag: Number },
+	props: { imageStrorageList: Array, boardTag: Number },
 	setup(props) {
 		const tagImagePath = computed(() => {
 			if (props.boardTag === 1) {

@@ -48,15 +48,15 @@
 					<div class="label">주소</div>
 					<div class="user-info2">
 						<div class="user-info">
-							<div class="user-input-label label">우편번호</div>
+							<div class="user-input-label label fontsize">우편번호</div>
 							<div class="user-info-content">{{ userInfo?.zonecode }}</div>
 						</div>
 						<div class="user-info">
-							<div class="user-input-label label">도로명 주소</div>
+							<div class="user-input-label label fontsize">도로명 주소</div>
 							<div class="user-info-content">{{ userInfo?.roadAddress }}</div>
 						</div>
 						<div class="user-info">
-							<div class="user-input-label label">상세 주소</div>
+							<div class="user-input-label label fontsize">상세 주소</div>
 							<div class="user-info-content">{{ userInfo?.detailAddress }}</div>
 						</div>
 					</div>

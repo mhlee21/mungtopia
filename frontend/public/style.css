@@ -5,7 +5,12 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
+@font-face {
+  font-family: 'GongGothicBold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicBold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 @font-face {
   font-family: 'GongGothicMedium';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10@1.0/GongGothicMedium.woff') format('woff');
@@ -1761,6 +1766,7 @@ body {
 .profile-pg .info-wrapper .info-component .change-btn {
   color: #626262;
   padding: 1rem;
+  font-size: 0.8rem;
   /* padding-left: 4vw; */
 }
 .profile-pg .info-wrapper .info-component .change-input {
@@ -1770,8 +1776,8 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding-top: 1.8rem;
-  font-size: 18px;
+  padding-top: 1.2rem;
+  font-size: 1rem;
 }
 
 .profile-pg .info-wrapper .info-component .username-wrapper .username {
@@ -2384,6 +2390,58 @@ body {
   text-align: center;
 }
 
+.game-menu-pg {
+  overflow: hidden;
+}
+
+.game-menu-pg .game-menu-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.game-menu-pg .game-menu-wrapper .game-list {
+  display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+}
+.game-menu-pg .game-menu-wrapper .game-list .img-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.game-menu-pg .game-menu-wrapper .game-list .game-btn {
+  width: 100vw;
+  height: calc((100vh - 65px)/3);
+  display: flex;
+  align-items: center;
+  color:white;
+  box-sizing: border-box;
+  margin: 0 8vw;
+}
+
+.game-menu-pg .game-menu-wrapper .game-list .game-btn1 {
+  background-color: #BDD9F2;
+}
+.game-menu-pg .game-menu-wrapper .game-list .game-btn2 {
+  background-color: #AEB9F2;
+}
+.game-menu-pg .game-menu-wrapper .game-list .game-btn3 {
+  background-color: #88AABF;
+}
+
+.game-menu-pg .game-menu-wrapper .game-list .game-img {
+  width: 40vw;
+  height: 40vw;
+  margin: 0 5vw 2vw;
+
+}
+.game-menu-pg .game-menu-wrapper .game-list .game-title {
+  font-family: 'GongGothicBold';
+  font-size: 34px;
+  text-align: center;
+  line-height: 1.2;
+}
+
 /* 강아지식테스트 */
 .game-main-pg {
   background-color: white;
@@ -2531,7 +2589,7 @@ body {
 
 .game-result-pg {
   background-color: white;
-  height: 100vh;
+  height: 95vh;
   padding: 5vh 0 0;
   font-family: 'GongGothicLight';
 }
@@ -2550,7 +2608,11 @@ body {
 }
 .game-result-pg .dog-image-wrapper {
   border-radius: 2rem;
-  border: black 1px solid;
+  height: 70vw;
+  width: 70vw;
+  overflow: hidden;
+}
+.game-result-pg .dog-image-wrapper .dog-img{
   height: 70vw;
   width: 70vw;
 }
@@ -2592,7 +2654,7 @@ body {
   padding-top: 5vh;
 }
 .game-result-pg .button-wrapper .menu-btn {
-  color: #BFBFBF;
+  color: #848181;
 }
 .game-result-pg .button-wrapper .share-btn {
   background-color: #BDD9F2;

@@ -36,7 +36,7 @@
 			</li>
 			<li class="info">
 				<h5>중성화여부</h5>
-				<p>{{ board.dogInfo.neutering }}</p>
+				<p>{{ changeBoolean }}</p>
 			</li>
 		</ul>
 		<!-- 후기 잡담 -->
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+// import board from '@/store/modules/board';
 import { computed } from 'vue';
 export default {
 	props: {
@@ -78,9 +79,12 @@ export default {
 	},
 	emits: ['clickHeart', 'clickStar'],
 	setup(props) {
-		const isLike = computed(() => props.board.isLike);
-		const haveInterest = computed(() => props.board.haveInterest);
-		return { isLike, haveInterest };
+		const isLike = computed(() => props.board.like);
+		const haveInterest = computed(() => props.board.star);
+		const changeBoolean = computed(() => props.board.dogInfo.neutering)
+			? 'Y'
+			: 'N';
+		return { isLike, haveInterest, changeBoolean };
 	},
 };
 </script>

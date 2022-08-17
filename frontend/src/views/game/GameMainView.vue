@@ -87,18 +87,16 @@ export default {
 		const isClear = computed(() => store.getters['game/isClear']);
 		console.log(isClear);
 		const gameEnter = gameType => {
-			if (gameType === 2) {
-				router.push({
-					name: 'gameIntro',
-					params: { gameType: gameType },
-				});
-			} else {
-				store.dispatch('game/enterGame', gameType);
-				router.push({
-					name: 'GameIntro',
-					params: { gameType: gameType },
-				});
-			}
+			router.push({
+				name: 'gameIntro',
+				params: { gameType: gameType },
+			});
+
+			// store.dispatch('game/enterGame', gameType);
+			// router.push({
+			// 	name: 'GameIntro',
+			// 	params: { gameType: gameType },
+			// });
 		};
 		return { gameEnter, NavBar, isClear };
 	},

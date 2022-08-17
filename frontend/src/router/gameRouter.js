@@ -1,5 +1,5 @@
 import GameMainView from '@/views/game/GameMainView';
-import KnowledgeGameView from '@/views/game/KnowledgeGameView';
+// import KnowledgeGameView from '@/views/game/KnowledgeGameView';
 import GameIntroView from '@/views/game/GameIntroView';
 import KnowledgePlayView from '@/views/game/KnowledgePlayView';
 import KnowledgeFinishView from '@/views/game/KnowledgeFinishView';
@@ -14,7 +14,7 @@ export default [
 		component: GameMainView,
 	},
 	{
-		path: '/game/2/intro',
+		path: '/game/:gameType/intro',
 		name: 'gameIntro',
 		component: GameIntroView,
 	},
@@ -28,11 +28,11 @@ export default [
 		name: 'gameResult',
 		component: GameResultView,
 	},
-	{
-		path: '/game/:gameType',
-		name: 'GameIntro',
-		component: KnowledgeGameView,
-	},
+	// {
+	// 	path: '/game/:gameType',
+	// 	name: 'GameIntro',
+	// 	component: KnowledgeGameView,
+	// },
 	{
 		path: '/game/:gameType/play',
 		name: 'GamePlay',

@@ -17,7 +17,9 @@
 				</div>
 				<!-- 시간, 수정, 삭제 -->
 				<div>
-					<p class="time">{{ difTime(new Date(comment.createtime)) }}</p>
+					<p class="time">
+						{{ difTime(new Date(comment.createtime.replace(/-/g, '/'))) }}
+					</p>
 					<div class="motion-wrap">
 						<!-- 댓글 수정 및 삭제 -->
 						<!-- 댓글 작성자일 경우 -->
@@ -74,7 +76,9 @@
 						<p class="content">{{ reply.contents }}</p>
 					</div>
 					<div>
-						<p class="time">{{ difTime(new Date(reply.createtime)) }}</p>
+						<p class="time">
+							{{ difTime(new Date(reply.createtime.replace(/-/g, '/'))) }}
+						</p>
 						<!-- 대댓글 작성자가 본인	일 때 -->
 						<div class="motion-wrap" v-if="reply.author?.userSeq === userSeq">
 							<a @click.prevent="clickModalButton(2, comment, reply)">수정</a>

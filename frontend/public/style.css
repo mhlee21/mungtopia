@@ -1403,6 +1403,7 @@ body {
 .adopt-detail-protector-pg .application-list-component {
   display: flex;
 	height: 10vh;
+  flex-direction: row;
 	justify-content: center;
 	background-color: white;
 	border-radius: 1rem;
@@ -1410,11 +1411,15 @@ body {
   margin-bottom: 20px;
 }
 .adopt-detail-protector-pg .application-list-component .profile-img-wrapper {
-  width: 30%
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 30%;
 }
 .adopt-detail-protector-pg .application-list-component .profile-img {
   border-radius: 50%;
-  height: 100%;
+  height: 80%;
+  width: 80%;
 }
 .adopt-detail-protector-pg .application-list-component .username-wrapper {
   display: flex;

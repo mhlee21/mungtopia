@@ -136,6 +136,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
+					console.log(res.data.body.data.applicantProcessRes);
 					commit('SET_ADOPT_PROCESS', res.data.body.data.applicantProcessRes);
 					commit(
 						'SET_ADOPTION_PROCESS_ID',

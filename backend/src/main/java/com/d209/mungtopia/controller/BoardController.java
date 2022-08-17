@@ -45,8 +45,9 @@ public class BoardController {
     public ApiResponse search(@PathVariable("tag_no") Long tagNo,
                               @RequestParam int pageNo,
                               @RequestParam long userSeq,
-                              @RequestBody Keyword keyword) {
-        return ApiResponse.success("data", boardService.search(tagNo, pageNo, userSeq, keyword.getKeyword()));
+                              @RequestParam String keyword) {
+        System.out.println("======== keyword ======= " + keyword);
+        return ApiResponse.success("data", boardService.search(tagNo, pageNo, userSeq, keyword));
     }
 
     @PostMapping(value = "/",consumes = {"multipart/form-data"})

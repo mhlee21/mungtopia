@@ -42,8 +42,10 @@
 		</div>
 		<div>
 			<form class="chat-form" @submit.prevent="sendMessage()">
-				<input type="text" v-model="message" />
-				<button>보내기</button>
+				<input type="text" v-model="message" placeholder="메세지 보내기" />
+				<button>
+					<i class="fa-solid fa-paper-plane icon"></i>
+				</button>
 			</form>
 		</div>
 	</div>
@@ -143,7 +145,7 @@ export default {
 					createtime: date,
 					chatRoomId: chatRoomId,
 				};
-				console.log(msg);
+				console.log('=====', msg);
 				stompClient.value.send('/receive', JSON.stringify(msg), {});
 			}
 		};
@@ -269,13 +271,14 @@ export default {
 	z-index: 10;
 	bottom: 80px;
 	width: 320px;
-	height: 35px;
+	height: 45px;
 	padding: 5px 15px;
 	box-sizing: border-box;
 	left: 50%;
 	transform: translateX(-50%);
 	display: flex;
 	align-items: center;
+	// margin: 0px;
 	margin-bottom: 20px;
 }
 .chat-form input {

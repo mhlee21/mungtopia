@@ -3,8 +3,8 @@ import GameIntroView from '@/views/game/GameIntroView';
 import Game1PlayView from '@/views/game/Game1PlayView';
 import Game2PlayView from '@/views/game/Game2PlayView';
 import Game3PlayView from '@/views/game/Game3PlayView';
-// import Game1ResultView from '@/views/game/Game1ResultView';
-// import Game2ResultView from '@/views/game/Game2ResultView';
+import Game1ResultView from '@/views/game/Game1ResultView';
+import Game2ResultView from '@/views/game/Game2ResultView';
 import Game3ResultView from '@/views/game/Game3ResultView';
 
 export default [
@@ -33,16 +33,16 @@ export default [
 		name: 'game3Play',
 		component: Game3PlayView,
 	},
-	// {
-	// 	path: '/game/1/result',
-	// 	name: 'game1Result',
-	// 	component: Game1ResultView,
-	// },
-	// {
-	// 	path: '/game/2/result',
-	// 	name: 'game2Result',
-	// 	component: Game2ResultView,
-	// },
+	{
+		path: '/game/1/result',
+		name: 'game1Result',
+		component: Game1ResultView,
+	},
+	{
+		path: '/game/2/result/:mbti',
+		name: 'game2Result',
+		component: Game2ResultView,
+	},
 	{
 		path: '/game/3/result',
 		name: 'game3Result',

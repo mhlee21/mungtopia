@@ -58,7 +58,7 @@ export default {
 		SET_APPLICATION_STATUS: (state, applicationStatus) =>
 			(state.applicationStatus = applicationStatus),
 		SET_APPLICATION: (state, application) => (state.application = application),
-		SET_CHAT_LIST: (state, chatList) => (state.chatList = chatList),
+		SET_CHAT_LIST: (state, chatList) => state.chatList.unshift(...chatList),
 		SET_YOU: (state, you) => (state.you = you),
 		SET_DATE: (state, date) => (state.date = date),
 		SET_CHAT_ROOM_ID: (state, chatRoomId) => (state.chatRoomId = chatRoomId),
@@ -136,6 +136,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
+					console.log(res.data.body.data.applicantProcessRes);
 					commit('SET_ADOPT_PROCESS', res.data.body.data.applicantProcessRes);
 					commit(
 						'SET_ADOPTION_PROCESS_ID',
@@ -277,28 +278,28 @@ export default {
 			commit('SET_DATE', '08/17/2022, 14:56');
 		},
 		// chatList 받기
-		fetchChatMain: ({ commit, rootGetters }, chatRoomId) => {
+		fetchChatMain: ({ commit, rootGetters }, { chatRoomId, page }) => {
 			axios({
-				// url: api.adopt.chats(),
-				url: 'http://localhost:8081/api/v1/chat/log',
+				url: api.adopt.chats(),
 				method: 'get',
-				params: { page: 1, chat_room_id: 4 },
+				params: {
+					page: page,
+					chatRoomId: chatRoomId,
+					userSeq: rootGetters['auth/user'].userSeq,
+				},
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log('chatList', res.data.body.data.content);
+					console.log('chatList', res);
+					commit('SET_CHAT_LIST', res.data.body.data.chatLogDtoList);
+					commit('SET_CHAT_ROOM_ID', chatRoomId);
 
 					const you = {
-						// userSeq: res.body.data.userSeq,
-						// nickname: res.body.data.nickname,
-						// profile: res.body.data.profile,
-						userSeq: 1,
-						nickname: '이면',
-						profile: '',
+						userSeq: res.data.body.data.userSeq,
+						nickname: res.data.body.data.nickname,
+						profile: res.data.body.data.profile,
 					};
-					commit('SET_CHAT_LIST', res.data.body.data.content);
 					commit('SET_YOU', you);
-					commit('SET_CHAT_ROOM_ID', chatRoomId);
 				})
 				.catch(err => {
 					console.error(err.response);

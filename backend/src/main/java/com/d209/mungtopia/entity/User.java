@@ -24,7 +24,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "user_seq")
-    private long userSeq;
+    private Long userSeq;
 
     @Column(name = "status")
     private Integer status;

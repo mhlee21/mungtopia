@@ -22,8 +22,7 @@ export default {
 	},
 	board: {
 		// 전체 글 불러오기
-		boardMain: ({ tagNo, userSeq }) =>
-			HOST + BOARD + `${tagNo}/` + `${userSeq}`,
+		boardMain: ({ tagNo }) => HOST + BOARD + `${tagNo}`,
 		// 상세 글 불러오기
 		boardDetail: boardId => HOST + BOARD + `detail/` + `${boardId}`,
 		// 입양 상태 확인
@@ -126,8 +125,10 @@ export default {
 			HOST + ADOPT + PROTECTOR + `${adoptionProcessId}`,
 		// 입양 신청서
 		application: applicationId => HOST + ADOPT + `${applicationId}`,
+		// 웹소켓 연결
+		chatStart: () => HOST + CHAT,
 		// 채팅
-		chats: () => HOST + ADOPT + CHAT + 'log',
+		chats: () => HOST + CHAT + 'log',
 		// 채팅 보내기
 		chatCreate: (chatRoomId, userSeq) =>
 			HOST + ADOPT + CHAT + `${chatRoomId}/` + `${userSeq}`,

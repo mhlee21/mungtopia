@@ -37,9 +37,12 @@ export default {
 			{ name: '잡담' },
 		];
 		const clickFilter = num => {
+			// 태그 클릭하는 경우 검색 기록 초기화
+			store.commit('board/SET_KEYWORD', '');
+
 			store.dispatch('board/fetchBoardList', {
 				tagNo: num,
-				pageNum: 0,
+				pageNo: 0,
 			});
 		};
 

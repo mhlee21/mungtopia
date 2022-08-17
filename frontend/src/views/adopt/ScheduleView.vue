@@ -1,6 +1,8 @@
 <template>
 	<div class="schedule-view">
-		<div><button @click="goBack">back</button></div>
+		<div class="back-button-wrapper schedule-btn">
+			<i class="fa-solid fa-angle-left back-button" @click="goBack"></i>
+		</div>
 		<div class="schedule-component">
 			<div>
 				<h3 style="margin: 0">일정 예약</h3>
@@ -88,11 +90,21 @@ export default {
 
 <style lang="scss" scoped>
 .schedule-view {
-	padding: 10% 7%;
-	height: 80%;
+	padding: 0% 7%;
 	background-color: #ff9898;
-	height: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
 }
+
+.schedule-view .schedule-btn {
+	position: absolute;
+	top: 5%;
+	left: 7%;
+}
+
 .schedule-component {
 	background-color: white;
 	border-radius: 2rem;

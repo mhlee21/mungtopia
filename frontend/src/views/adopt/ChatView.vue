@@ -11,8 +11,7 @@
 							<h3 class="chat-nickname">{{ you.nickname }}</h3>
 						</div>
 
-						<!-- <div v-if="!isApplicant"> -->
-						<div>
+						<div v-if="!isApplicant">
 							<button
 								class="chat-schedule-btn"
 								v-if="!isReservated"

@@ -72,24 +72,14 @@
 <script>
 import { useStore } from 'vuex';
 import { computed } from 'vue';
-
-// import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import router from '@/router';
 
 export default {
 	setup() {
-		// window.Kakao.Share.createCustomButton({
-		// 	container: '#kakaotalk-sharing-btn',
-		// 	templateId: 81245,
-		// 	templateArgs: {
-		// 		title: '제목 영역입니다.',
-		// 		description: '설명 영역입니다.',
-		// 	},
-		// });
 		const route = useRoute();
 		const store = useStore();
-		const mbtiResult = computed(() => route.params.mbtiResult);
+		const mbtiResult = computed(() => route.params.mbti);
 		const onClickShareStory = () => {
 			window.Kakao.Link.sendCustom({
 				templateId: 81245,
@@ -100,9 +90,6 @@ export default {
 		};
 		store.dispatch('game/MbtiDogResult', mbtiResult.value);
 		const mbtiDog = computed(() => store.getters['game/mbtiDog']);
-		// window.Kakao.Share.createCustomButton({
-		// 	templateId: 81245,
-		// });
 		const gameMenu = () => {
 			router.push({ path: '/game' });
 		};

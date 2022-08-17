@@ -8,7 +8,7 @@
 			>
 			</infinite-scroll>
 			<div v-for="(chat, index) in chatList" :key="index">
-				<div>
+				<div class="chat-box" :class="{ 'chat-box-me': !isYou(chat.userSeq) }">
 					<small v-if="!isYou(chat.userSeq)" class="chat-time">{{
 						difTime(chat.createtime)
 					}}</small>
@@ -24,7 +24,7 @@
 				</div>
 			</div>
 			<div v-for="(chat, index) in newChatList" :key="index">
-				<div>
+				<div class="chat-box" :class="{ 'chat-box-me': !isYou(chat.userSeq) }">
 					<small v-if="!isYou(chat.userSeq)" class="chat-time">{{
 						difTime(chat.createtime)
 					}}</small>
@@ -41,7 +41,7 @@
 			</div>
 		</div>
 		<div>
-			<form @submit.prevent="sendMessage()">
+			<form class="chat-form" @submit.prevent="sendMessage()">
 				<input type="text" v-model="message" />
 				<button>보내기</button>
 			</form>
@@ -143,6 +143,7 @@ export default {
 					createtime: date,
 					chatRoomId: chatRoomId,
 				};
+				console.log(msg);
 				stompClient.value.send('/receive', JSON.stringify(msg), {});
 			}
 		};
@@ -231,9 +232,18 @@ export default {
 	height: 90%;
 	overflow: auto;
 }
+.chat-box {
+	display: flex;
+	justify-content: start;
+}
+.chat-box-me {
+	justify-content: end;
+}
 .chat-time {
 	font-size: 10px;
 	color: gray;
+	display: flex;
+	align-items: flex-end;
 }
 .chat-message {
 	margin-top: 2vh;
@@ -248,5 +258,40 @@ export default {
 .chat-message-me {
 	background-color: #efefef;
 	border-radius: 20px 20px 0px 20px;
+}
+.chat-form {
+	position: fixed;
+	bottom: 20px;
+	border: 1px solid #d6d6d6;
+	box-shadow: -2px 3px 4px rgba(0, 0, 0, 0.2), 2px 2px 4px rgba(0, 0, 0, 0.2);
+	border-radius: 30px;
+	background-color: #fff;
+	z-index: 10;
+	bottom: 80px;
+	width: 320px;
+	height: 35px;
+	padding: 5px 15px;
+	box-sizing: border-box;
+	left: 50%;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+	margin-bottom: 20px;
+}
+.chat-form input {
+	width: 200px;
+	margin-left: 5px;
+	border: none;
+	outline: none;
+	font-size: 14px;
+}
+.chat-form button {
+	padding: 0;
+	border: none;
+	background-color: transparent;
+	width: calc(100% - 218px);
+	text-align: right;
+	cursor: pointer;
+	font-size: 14px;
 }
 </style>

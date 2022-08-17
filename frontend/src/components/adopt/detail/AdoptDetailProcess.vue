@@ -172,6 +172,7 @@ export default {
 				return true;
 			}
 			if (index + 1 == 2) {
+				console.log(adoptProcess.value[index].date);
 				return new Date(adoptProcess.value[index].date) > new Date();
 			}
 			return false;

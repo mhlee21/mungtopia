@@ -1,56 +1,49 @@
 <template>
 	<div v-if="correctAnswer >= 7">
 		<div class="frame">
-			<div>
-				<h2 class="title">SUCCESS</h2>
-			</div>
 			<div style="text-align: center">
 				<img
 					:src="
-						require('@/assets/img/KNOWLEDGE/' +
-							'knowledge_' +
-							'success' +
-							'.jpg')
+						require('@/assets/img/' + 'dog-' + 'success' + randomNum + '.png')
 					"
-					width="150"
-					height="150"
+					class="result-img"
 					alt=""
 				/>
 			</div>
+			<div>
+				<h2 class="title success">SUCCESS</h2>
+			</div>
 			<div class="content">
-				<div>10문제 중 {{ correctAnswer }}문제를 맞춰 성공하였어요!</div>
+				<div>10문제 중 {{ correctAnswer }}문제를 맞춰 성공했어요!</div>
 			</div>
-			<div class="game-btn">
-				<div class="start-btn" @click="onClickShareStory">SHARE</div>
-			</div>
-			<div class="game-btn" @click="gameMenu">
-				<div class="start-btn">MENU</div>
+			<div class="button-wrapper">
+				<a class="menu-btn" @click="gameMenu">Back to Menu</a>
+				<button @click="onClickShareStory" class="share-btn success_back">
+					Share
+				</button>
 			</div>
 		</div>
 	</div>
 	<div v-else>
 		<div class="frame">
-			<div>
-				<h2 class="title">Fail</h2>
-			</div>
 			<div style="text-align: center">
 				<img
-					:src="
-						require('@/assets/img/KNOWLEDGE/' + 'knowledge_' + 'fail' + '.jpg')
-					"
-					width="150"
-					height="150"
+					:src="require('@/assets/img/' + 'dog-' + 'fail' + randomNum + '.png')"
 					alt=""
+					class="result-img"
 				/>
 			</div>
+			<div>
+				<h2 class="title fail">FAIL</h2>
+			</div>
 			<div class="content">
-				<div>10문제 중 {{ correctAnswer }}문제를 맞추었어요ㅠ</div>
+				<div>10문제 중 {{ correctAnswer }}문제를 맞춰 실패했어요</div>
 			</div>
-			<div class="game-btn">
-				<div class="start-btn" @click="onClickShareStory">SHARE</div>
-			</div>
-			<div class="game-btn" @click="gameMenu">
-				<div class="start-btn">MENU</div>
+			<div class="button-wrapper">
+				<a class="menu-btn" @click="gameMenu">Back to Menu</a>
+				<button @click="onClickShareStory" class="share-btn fail_back">
+					Share
+				</button>
 			</div>
 		</div>
 	</div>
@@ -64,16 +57,18 @@ import router from '@/router';
 export default {
 	setup() {
 		const store = useStore();
+		const randomNum = Math.floor(Math.random() * 3) + 1;
 		const correctAnswer = computed(() => store.getters['game/correctAnswer']);
 		const onClickShareStory = () => {
 			window.Kakao.Link.sendCustom({
 				templateId: 81263,
 			});
 		};
+
 		const gameMenu = () => {
 			router.push({ path: '/game' });
 		};
-		return { correctAnswer, onClickShareStory, gameMenu };
+		return { correctAnswer, onClickShareStory, gameMenu, randomNum };
 	},
 };
 </script>
@@ -82,47 +77,64 @@ export default {
 .frame {
 	width: 100vw;
 	height: 100vh;
-	background-color: #fffbf0;
-	border-radius: 1rem;
-	box-sizing: border-box;
+	background-color: white;
 	position: relative;
 	padding-top: 50px;
 	flex-direction: column;
 }
+.fail {
+	color: #ff8f91;
+}
+.fail_back {
+	background-color: #ff8f91;
+}
+.success {
+	color: #94de5e;
+}
+.success_back {
+	background-color: #94de5e;
+}
 .title {
 	text-align: center;
-	margin: 20px;
-	color: #000000;
-	padding: 10px;
-	font-size: 50px;
-}
-
-img {
-	width: 200px;
-	height: 200px;
+	margin: 3vh 0 2vh;
+	font-weight: bold;
+	font-size: 3rem;
+	font-family: 'GongGothicMedium';
+	text-align: center;
+	font-weight: 700;
 }
 
 .content {
+	margin-top: 1.5rem;
 	text-align: center;
-	margin: 20px;
-	padding: 30px;
-	font-weight: bold;
 }
-.game-btn {
-	width: 90px;
-	height: 50px;
-	background-color: #0d6aba;
+
+.result-img {
+	margin: 6vh 0 2vh;
+	width: 230px;
+	height: 230px;
+}
+.button-wrapper {
+	background-color: white;
+	border: none;
 	display: flex;
 	align-items: center;
+	flex-direction: column;
+	padding-top: 5vh;
 	text-align: center;
-	padding: 10px;
-	margin: 5px auto;
-	border-radius: 1rem;
 }
-.start-btn {
-	width: 100%;
-	color: #fffbf0;
-	font-size: 20px;
-	font-weight: bolder;
+.button-wrapper .menu-btn {
+	color: #848181;
+}
+.button-wrapper .share-btn {
+	// background-color: #88aabf;
+	color: white;
+	width: 70vw;
+	border: none;
+	height: 8vh;
+	border-radius: 1rem;
+	margin: 2vh;
+	font-size: 18px;
+	font-family: 'GongGothicLight';
 }
 </style>

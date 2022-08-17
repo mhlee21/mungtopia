@@ -1,11 +1,11 @@
 import GameMainView from '@/views/game/GameMainView';
-// import KnowledgeGameView from '@/views/game/KnowledgeGameView';
 import GameIntroView from '@/views/game/GameIntroView';
-import KnowledgePlayView from '@/views/game/KnowledgePlayView';
-import KnowledgeFinishView from '@/views/game/KnowledgeFinishView';
-import MbtiFinishView from '@/views/game/MbtiFinishView';
-import GamePlayView from '@/views/game/GamePlayView';
-import GameResultView from '@/views/game/GameResultView';
+import Game1PlayView from '@/views/game/Game1PlayView';
+import Game2PlayView from '@/views/game/Game2PlayView';
+import Game3PlayView from '@/views/game/Game3PlayView';
+// import Game1ResultView from '@/views/game/Game1ResultView';
+// import Game2ResultView from '@/views/game/Game2ResultView';
+import Game3ResultView from '@/views/game/Game3ResultView';
 
 export default [
 	{
@@ -14,38 +14,38 @@ export default [
 		component: GameMainView,
 	},
 	{
-		path: '/game/:gameType/intro',
+		path: '/game/:gameTag/intro',
 		name: 'gameIntro',
 		component: GameIntroView,
 	},
 	{
-		path: '/game/2/play',
-		name: 'gamePlay',
-		component: GamePlayView,
+		path: '/game/1/play',
+		name: 'game1Play',
+		component: Game1PlayView,
 	},
 	{
-		path: '/game/2/result',
-		name: 'gameResult',
-		component: GameResultView,
+		path: '/game/2/play',
+		name: 'game2Play',
+		component: Game2PlayView,
+	},
+	{
+		path: '/game/3/play',
+		name: 'game3Play',
+		component: Game3PlayView,
 	},
 	// {
-	// 	path: '/game/:gameType',
-	// 	name: 'GameIntro',
-	// 	component: KnowledgeGameView,
+	// 	path: '/game/1/result',
+	// 	name: 'game1Result',
+	// 	component: Game1ResultView,
+	// },
+	// {
+	// 	path: '/game/2/result',
+	// 	name: 'game2Result',
+	// 	component: Game2ResultView,
 	// },
 	{
-		path: '/game/:gameType/play',
-		name: 'GamePlay',
-		component: KnowledgePlayView,
-	},
-	{
-		path: '/game/0/finish',
-		name: 'GameFinish',
-		component: KnowledgeFinishView,
-	},
-	{
-		path: '/game/1/:mbtiResult',
-		name: 'MbtiFinish',
-		component: MbtiFinishView,
+		path: '/game/3/result',
+		name: 'game3Result',
+		component: Game3ResultView,
 	},
 ];

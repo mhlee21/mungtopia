@@ -2,13 +2,13 @@
 	<div class="game-main-pg">
 		<div class="game-header" :style="getBgColor">
 			<img
-				:src="require('@/assets/img/gameMain' + gameType + '.png')"
+				:src="require('@/assets/img/gameMain' + (gameTag - 1) + '.png')"
 				alt="개 아이콘  제작자: Freepik - Flaticon"
 			/>
 		</div>
 		<div class="game-body">
-			<div class="title">{{ mainTitle[gameType] }}</div>
-			<div class="description">{{ mainDescription[gameType] }}</div>
+			<div class="title">{{ mainTitle[gameTag - 1] }}</div>
+			<div class="description">{{ mainDescription[gameTag - 1] }}</div>
 			<div class="button-wrapper">
 				<button class="start-btn" :style="getBgColor" @click="clickStart">
 					Start
@@ -28,12 +28,12 @@ export default {
 	setup() {
 		const router = useRouter();
 		const route = useRoute();
-		const gameType = computed(() => Number(route.params.gameType));
+		const gameTag = computed(() => Number(route.params.gameTag));
 
 		// 배경색 바꾸기
 		const bgColor = ['#88AABF', '#AEB9F2', '#BDD9F2'];
 		const getBgColor = computed(() => ({
-			'background-color': bgColor[gameType.value],
+			'background-color': bgColor[gameTag.value - 1],
 		}));
 		const mainTitle = ['강아지식테스트', '댕BTI', '나와 잘맞는 반려견은?'];
 		const mainDescription = [
@@ -44,11 +44,26 @@ export default {
 		//
 		// 시작 버튼
 		const clickStart = () => {
-			router.push({
-				name: 'gamePlay',
-				params: { gameType: route.params.gameType },
-			});
+			// 강아지식 테스트
+			if (gameTag.value === 1) {
+				router.push({
+					name: 'game1Play',
+				});
+			}
+			// 댕BTI
+			else if (gameTag.value === 2) {
+				router.push({
+					name: 'game2Play',
+				});
+			}
+			// 나와 잘맞는 반려견은?
+			else {
+				router.push({
+					name: 'game3Play',
+				});
+			}
 		};
+
 		const clickBack = () => {
 			router.push({
 				name: 'game',
@@ -59,7 +74,7 @@ export default {
 			clickBack,
 			bgColor,
 			getBgColor,
-			gameType,
+			gameTag,
 			mainTitle,
 			mainDescription,
 		};

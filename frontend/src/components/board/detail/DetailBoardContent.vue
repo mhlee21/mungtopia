@@ -1,6 +1,6 @@
 <template>
 	<div class="dog-detail-wrap">
-		<ol v-show="isAdoption" class="dog-detail-ol">
+		<ol v-show="boardTag == '입양'" class="dog-detail-ol">
 			<li class="dog-detail-li">
 				<p class="tit">나이</p>
 				<p class="txt">{{ age }}</p>
@@ -39,12 +39,11 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 export default {
 	setup() {
 		const store = useStore();
-		const isAdoption = ref(true);
 		const age = computed(() => store.getters['board/board']['dogInfo']?.age);
 		const weight = computed(
 			() => store.getters['board/board']['dogInfo']?.weight,
@@ -57,20 +56,7 @@ export default {
 		);
 		const dogNature = computed(() => store.getters['board/board']['dogNature']);
 		const contents = computed(() => store.getters['board/board']['contents']);
-
-		if (contents.value == undefined || contents.value == null) {
-			return '';
-		}
-
-		contents.value = contents.value.replace(/\r\n/gi, '<br>');
-		contents.value = contents.value.replace(/\\n/gi, '<br>');
-		contents.value = contents.value.replace(/\n/gi, '<br>');
-
 		const boardTag = computed(() => store.getters['board/board']['boardTag']);
-		console.log('boardTag : ' + boardTag.value);
-		if (boardTag.value != '입양') {
-			isAdoption.value = false;
-		}
 		return {
 			age,
 			weight,
@@ -79,7 +65,6 @@ export default {
 			dogNature,
 			contents,
 			boardTag,
-			isAdoption,
 		};
 	},
 };

@@ -5,7 +5,9 @@
 				<img :src="profile" alt="username image" class="user-profile" />
 				<span class="user-name">{{ username }}</span>
 			</div>
-			<span class="time">{{ difTime(new Date(createtime)) }}</span>
+			<span class="time">{{
+				difTime(new Date(createtime.replace(/-/g, '/')))
+			}}</span>
 		</div>
 	</div>
 </template>

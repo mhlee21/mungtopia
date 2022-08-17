@@ -7,8 +7,10 @@
 			loop
 		>
 			<swiper-slide v-for="image in imageList" :key="image.orders">
-				<img :src="image.serverPath" class="image"
-			/></swiper-slide>
+				<div class="image-wrapper">
+					<img :src="image.serverPath" class="image" />
+				</div>
+			</swiper-slide>
 		</swiper>
 	</div>
 </template>
@@ -34,7 +36,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.image {
+.image-wrapper {
 	height: 40vh;
+	position: relative;
+}
+.image {
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform: translate(50, 50);
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	margin: auto;
 }
 </style>

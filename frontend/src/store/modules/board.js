@@ -23,6 +23,7 @@ export default {
 			applicationPageNum: 1,
 			adoptQuestionList: [],
 			application: Array(15).fill(''),
+			keyword: '',
 		};
 	},
 	getters: {
@@ -44,6 +45,7 @@ export default {
 		applicationPageNum: state => state.applicationPageNum,
 		adoptQuestionList: state => state.adoptQuestionList,
 		application: state => state.application,
+		keyword: state => state.keyword,
 	},
 	mutations: {
 		SET_BOARD_LIST: (state, boardList) => (state.boardList = boardList),
@@ -79,6 +81,9 @@ export default {
 		SET_STAR_IN_DETAIL: (state, haveStar) => (state.starInDetail = haveStar),
 		SET_ADOPT_QUESTION_LIST: (state, adoptQuestionList) => {
 			state.adoptQuestionList = adoptQuestionList;
+		},
+		SET_KEYWORD: (state, keyword) => {
+			state.keyword = keyword;
 		},
 	},
 	actions: {
@@ -128,8 +133,8 @@ export default {
 				},
 			})
 				.then(res => {
-					console.log(res);
-					commit('SET_BOARD_LIST', res.data.body.data.boardList);
+					console.log('searchBoard res', res);
+					commit('SET_BOARD_LIST', res.data.body.data);
 					commit('SET_PAGE_NO', pageNo + 1);
 				})
 				.catch(err => {

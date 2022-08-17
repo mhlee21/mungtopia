@@ -2,8 +2,8 @@
 	<div>
 		<div class="user-tit-box">
 			<div class="user-info">
-				<img :src="author.profile" alt="author image" class="user-profile" />
-				<span class="user-name">{{ author.nickname }}</span>
+				<img :src="profile" alt="username image" class="user-profile" />
+				<span class="user-name">{{ username }}</span>
 			</div>
 			<span class="time">{{ difTime(new Date(createtime)) }}</span>
 		</div>
@@ -12,7 +12,7 @@
 
 <script>
 export default {
-	props: { author: Object, createtime: String },
+	props: { username: String, profile: String, createtime: String },
 	setup() {
 		const difTime = timeValue => {
 			const today = new Date();

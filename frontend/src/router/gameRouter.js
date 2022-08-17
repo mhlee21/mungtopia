@@ -34,7 +34,7 @@ export default [
 		component: Game3PlayView,
 	},
 	{
-		path: '/game/1/result',
+		path: '/game/1/result/:score',
 		name: 'game1Result',
 		component: Game1ResultView,
 	},

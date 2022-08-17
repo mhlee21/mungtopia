@@ -85,7 +85,6 @@ export default {
 					const qIndex = questionType(idx) - 1;
 					result[qIndex] += answer[idx];
 				}
-				console.log(result);
 				const mbtiData = [
 					['I', 'E'],
 					['S', 'N'],
@@ -97,7 +96,6 @@ export default {
 						num < 2 ? mbtiData[index][0] : mbtiData[index][1],
 					)
 					.join('');
-				console.log(MBTIResult);
 				if (user.value) {
 					const payload = {
 						userSeq: store.getters['auth/user']['userSeq'],

@@ -2,12 +2,12 @@
 	<div class="chat-view">
 		<div style="height: 80vh">
 			<div style="display: flex; position: relative; height: 10%">
-				<h3>{{ you.nickname }}</h3>
+				<div style="width: 20%">
+					<button @click="goBack">back</button>
+				</div>
 				<div>
-					<div style="width: 20%">
-						<button @click="goBack">back</button>
-					</div>
 					<div style="width: 30%">
+						<h3>{{ you.nickname }}</h3>
 						<div v-if="!isApplicant">
 							<button
 								v-if="!isReservated"

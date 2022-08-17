@@ -163,8 +163,11 @@ export default {
 				method: 'get',
 				headers: rootGetters['auth/authHeader'],
 				params: {
-					keyword,
 					pageNo,
+					userSeq: rootGetters['auth/user'].userSeq,
+				},
+				data: {
+					keyword,
 				},
 			})
 				.then(res => {

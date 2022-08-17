@@ -32,7 +32,7 @@ public class ChatLog {
     private String content;
 
     @Column(name = "createtime")
-    private LocalDateTime createtime;
+    private Timestamp createtime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id", referencedColumnName = "chat_room_id")

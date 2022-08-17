@@ -7,12 +7,13 @@
 				:key="board.boardId"
 			>
 				<MainBoardHeader
-					:author="board.username"
+					:username="board.username"
 					:createtime="board.createtime"
+					:profile="board.profile"
 				></MainBoardHeader>
 				<div class="dog-cont-box">
 					<MainBoardImage
-						:image-list="board.imageList"
+						:image-list="board.imageStorageList"
 						:board-tag="board.boardTag"
 					></MainBoardImage>
 					<MainBoardBody

@@ -43,6 +43,9 @@ export default {
 		const store = useStore();
 		const router = useRouter();
 		const route = useRoute();
+
+		store.dispatch('adopt/getChatRoomInfo', route.params.chatRoomId);
+
 		const isReservated = computed(() => !(store.getters['adopt/date'] === ''));
 		const isApplicant = computed(() => store.getters['adopt/isApplicant']);
 		store.dispatch('adopt/fetchChatMain', {

@@ -439,7 +439,7 @@ public class BoardServiceImpl implements BoardService {
                 .build();
         adoptionProcessRepository.save(adoptionProcess);
 
-        AdoptionStepDate adoptionStepDate = new AdoptionStepDate();
+        AdoptionStepDate adoptionStepDate = new AdoptionStepDate(1, LocalDateTime.now());
         adoptionStepDate.setAdoptionProcess(adoptionProcess);
         adoptionStepDateRepository.save(adoptionStepDate);
         adoptionStepDateList.add(adoptionStepDate);

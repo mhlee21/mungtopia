@@ -129,6 +129,8 @@ export default {
 		chatStart: () => HOST + CHAT,
 		// 채팅
 		chats: () => HOST + CHAT + 'log',
+		// 채팅방 정보 가져오기
+		chatInfo: chatRoomId => HOST + ADOPT + CHAT + `${chatRoomId}`,
 		// 채팅 보내기
 		chatCreate: (chatRoomId, userSeq) =>
 			HOST + ADOPT + CHAT + `${chatRoomId}/` + `${userSeq}`,

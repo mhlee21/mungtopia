@@ -47,8 +47,11 @@ public class ManageController {
 
     @PostMapping("/schedule/{adoption_process_id}")
     @ApiOperation(value = "postSchedule - 일정 생성", notes = "일정을 저장한다")
-    public ApiResponse postSchedule(@PathVariable("adoption_process_id") Long adoptionProcessId, @RequestBody LocalDateTime date) {
-        if (manageService.postSchedule(adoptionProcessId, date))
+    public ApiResponse postSchedule(@PathVariable("adoption_process_id") Long adoptionProcessId,
+                                    @RequestBody DateDto date) {
+        System.out.println("date.getDate() = " + date.getDate());
+
+        if (manageService.postSchedule(adoptionProcessId, date.getDate()))
             return ApiResponse.success();
         else
             return ApiResponse.fail();
@@ -56,7 +59,9 @@ public class ManageController {
 
     @PutMapping("/schedule/{adoption_process_id}")
     @ApiOperation(value = "putSchedule - 일정 수정", notes = "일정을 수정한다")
-    public ApiResponse putSchedule(@PathVariable("adoption_process_id") Long adoptionProcessId, DateDto date) {
+    public ApiResponse putSchedule(@PathVariable("adoption_process_id") Long adoptionProcessId,
+                                   @RequestBody DateDto date) {
+        System.out.println("date.getDate() = " + date.getDate());
         if (manageService.postSchedule(adoptionProcessId, date.getDate()))
             return ApiResponse.success();
         else

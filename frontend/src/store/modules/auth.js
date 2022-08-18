@@ -19,6 +19,7 @@ export default {
 	getters: {
 		user: state => state.user,
 		token: state => state.token,
+		isLoggedIn: state => !!state.token,
 		authHeader: state =>
 			state.token ? { Authorization: `Bearer ${state.token}` } : '',
 	},

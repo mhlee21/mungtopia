@@ -593,7 +593,7 @@ export default {
 			commit('SET_ADOPT_QUESTION_LIST', data);
 		},
 		// commit
-		getApplicationList: ({ commit, rootGetters }, userSeq, boardId) => {
+		getApplicationList: ({ commit, rootGetters }, { userSeq, boardId }) => {
 			axios({
 				url: api.board.applicationList(userSeq),
 				method: 'get',
@@ -602,7 +602,7 @@ export default {
 				.then(res => {
 					const sendlist = res.data.body.data;
 					for (let i = 0; i < sendlist.length; i++) {
-						if (sendlist[i] === boardId) {
+						if (sendlist[i] == boardId) {
 							commit('SET_SEND_APPLICATION', true);
 							break;
 						}

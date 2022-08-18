@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -148,7 +149,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
         AdoptionStepDate newStep = new AdoptionStepDate(stepUpdateInfo.getStep() + 1, adoptionProcess);
         if (stepUpdateInfo.getStep() == 5){
             // 날짜 저장
-            newStep.changeDate(LocalDateTime.now());
+            newStep.changeDate(new Timestamp(System.currentTimeMillis()));
             // 5인 경우에 application status를 변경해줘야함!
 
         }
@@ -173,7 +174,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
             ApplicantProcessRes process = new ApplicantProcessRes();
 
             process.setStep(adoptionStepDate.getStep());
-            Optional<LocalDateTime> datetime = Optional.ofNullable(adoptionStepDate.getDate());
+            Optional<LocalDateTime> datetime = Optional.ofNullable(adoptionStepDate.getDate().toLocalDateTime());
             if (datetime.isEmpty())
                 process.setDate(null);
             else

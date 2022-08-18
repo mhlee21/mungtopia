@@ -4,6 +4,7 @@ import com.d209.mungtopia.dto.manage.ApplicationDto;
 import com.d209.mungtopia.dto.manage.ChatDto;
 import com.d209.mungtopia.dto.protector.ApplicantProcessRes;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public interface ManageService {
@@ -11,6 +12,6 @@ public interface ManageService {
     ChatDto getChatting();
     Object createChat();
     ApplicantProcessRes getSchedule(Long adoptionProcessId);
-    Boolean postSchedule(Long adoptionProcessId,  LocalDateTime dateTime);
+    Boolean postSchedule(Long adoptionProcessId,  Timestamp dateTime);
     Boolean deleteSchedule(Long adoptionProcessId);
 }

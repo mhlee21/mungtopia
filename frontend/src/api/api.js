@@ -87,6 +87,7 @@ export default {
 		// 입양신청서 작성
 		applicationCreate: boardId =>
 			HOST + BOARD + 'detail/' + `${boardId}/` + `applicant`,
+		applicationList: userSeq => HOST + BOARD + `application/` + `${userSeq}`,
 	},
 	game: {
 		// 게임 기록 저장

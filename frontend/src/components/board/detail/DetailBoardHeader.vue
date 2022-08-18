@@ -54,14 +54,10 @@ export default {
 			}
 		};
 
-		const isApplicationSend = () => {
-			store.dispatch(
-				'board/getApplicationList',
-				store.getters['auth/user']['userSeq'],
-				route.params.boardId,
-			);
-		};
-		isApplicationSend();
+		store.dispatch('board/getApplicationList', {
+			userSeq: store.getters['auth/user']['userSeq'],
+			boardId: route.params.boardId,
+		});
 
 		const isSend = computed(() => store.getters['board/isSendApplication']);
 
@@ -74,7 +70,6 @@ export default {
 			boardTag,
 			authorSeq,
 			userSeq,
-			isApplicationSend,
 			isSend,
 		};
 	},

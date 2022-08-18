@@ -212,22 +212,27 @@ export default {
 				}
 				console.log(step);
 			} else if (step === 2) {
-				const applicationIdPro = store.getters['adopt/protectorDetail'];
-				// store.getters['adopt/protectorDetail']['applicationList'][
-				// 	activeApplicant.value
-				// ]['applicationId'];
-				console.log('으아아악', applicationIdPro.value);
-				router.push({
-					name: 'meeting',
-					params: {
-						applicationId:
-							applicationIdPro.value === undefined
-								? route.params.applicationId
-								: store.getters['adopt/protectorDetail']['applicationList'][
-										activeApplicant.value
-								  ]['applicationId'],
-					},
-				});
+				// 입양자일 경우
+				if (route.name == 'applicantDetail') {
+					router.push({
+						name: 'meeting',
+						params: {
+							applicationId: route.params.applicationId,
+						},
+					});
+				}
+				// 보호자일 경우
+				else {
+					router.push({
+						name: 'meeting',
+						params: {
+							applicationId:
+								store.getters['adopt/protectorDetail']['applicationList'][
+									activeApplicant.value
+								]['applicationId'],
+						},
+					});
+				}
 
 				console.log(step);
 			} else if (step === 3) {

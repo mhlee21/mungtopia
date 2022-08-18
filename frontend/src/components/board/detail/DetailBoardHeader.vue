@@ -44,7 +44,7 @@ export default {
 		const authorSeq = computed(
 			() => store.getters['board/board']['user'].userSeq,
 		);
-		const userSeq = computed(() => store.getters['auth/user'].userSeq);
+		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
 		const adoptionApply = () => {
 			if (!isAdopting.value) {
 				router.push({

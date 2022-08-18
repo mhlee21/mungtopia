@@ -64,10 +64,17 @@ export default {
 					break;
 				case 'adopt':
 				case 'profile':
-					router.push({
-						name,
-						params: { userSeq: userSeq.value },
-					});
+					if (userSeq.value) {
+						router.push({
+							name,
+							params: { userSeq: userSeq.value },
+						});
+					} else {
+						alert('로그인이 필요합니다');
+						router.push({
+							name: 'login',
+						});
+					}
 					break;
 				default:
 					break;

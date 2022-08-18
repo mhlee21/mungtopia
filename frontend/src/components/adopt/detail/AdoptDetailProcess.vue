@@ -212,18 +212,20 @@ export default {
 				}
 				console.log(step);
 			} else if (step === 2) {
-				const applicationIdPro =
-					store.getters['adopt/protectorDetail']['applicationList'][
-						activeApplicant.value
-					]['applicationId'];
-
+				const applicationIdPro = store.getters['adopt/protectorDetail'];
+				// store.getters['adopt/protectorDetail']['applicationList'][
+				// 	activeApplicant.value
+				// ]['applicationId'];
+				console.log('으아아악', applicationIdPro.value);
 				router.push({
 					name: 'meeting',
 					params: {
 						applicationId:
-							applicationIdPro == null
+							applicationIdPro.value === undefined
 								? route.params.applicationId
-								: applicationIdPro,
+								: store.getters['adopt/protectorDetail']['applicationList'][
+										activeApplicant.value
+								  ]['applicationId'],
 					},
 				});
 

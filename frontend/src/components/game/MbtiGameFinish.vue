@@ -16,7 +16,8 @@
 			/>
 		</div>
 		<div class="mbti">
-			{{ mbtiResult }}
+			<div>{{ mbtiResult }}</div>
+			<!-- <div></div> -->
 		</div>
 		<div class="content">
 			<p>당신과 잘 맞는 MBTI는?</p>

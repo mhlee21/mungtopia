@@ -107,7 +107,11 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
             ApplicantProcessRes process = new ApplicantProcessRes();
 
             process.setStep(adoptionStepDate.getStep());
-            process.setDate(adoptionStepDate.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+//            System.out.println("process = " + process);
+            if (adoptionStepDate.getDate() != null)
+                process.setDate(adoptionStepDate.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            else
+                process.setDate("");
 
             if (adoptionStepDate.getStep() < curStep) {
                 process.setStepStatus(true);

@@ -97,7 +97,9 @@ export default {
 				method: 'get',
 				headers: rootGetters['auth/authHeader'],
 				params: {
-					userSeq: rootGetters['auth/user'].userSeq,
+					userSeq: rootGetters['auth/user']
+						? rootGetters['auth/user'].userSeq
+						: 0,
 					pageNo: pageNo,
 				},
 			})
@@ -115,20 +117,23 @@ export default {
 
 		//게시물 검색
 		searchBoard: ({ commit, rootGetters, getters }, { pageNo, keyword }) => {
-			console.log(
-				'searchBoard',
-				getters['tagNo'],
-				pageNo,
-				rootGetters,
-				keyword,
-			);
+			// console.log(
+			// 	'searchBoard',
+			// 	getters['tagNo'],
+			// 	pageNo,
+			// 	rootGetters,
+			// 	keyword,
+			// );
+
 			axios({
 				url: api.board.boardSearch(getters['tagNo']),
 				method: 'get',
 				headers: rootGetters['auth/authHeader'],
 				params: {
 					pageNo,
-					userSeq: rootGetters['auth/user'].userSeq,
+					userSeq: rootGetters['auth/user']
+						? rootGetters['auth/user'].userSeq
+						: 0,
 					keyword,
 				},
 			})
@@ -140,8 +145,6 @@ export default {
 				.catch(err => {
 					console.error(err.response);
 				});
-			// commit('SET_PAGE_NO', pageNo + 1);
-			// commit('SET_BOARD_LIST', boardList);
 		},
 
 		// 상세글 불러오기
@@ -176,9 +179,12 @@ export default {
 				});
 
 			// 좋아요 여부 가져오기
-			console.log(api.board.isLike(boardId, rootGetters['auth/user'].userSeq));
+			console.log(api.board.isLike(boardId, rootGetters['auth/user']?.userSeq));
 			axios({
-				url: api.board.isLike(boardId, rootGetters['auth/user'].userSeq),
+				url: api.board.isLike(
+					boardId,
+					rootGetters['auth/user'] ? rootGetters['auth/user'].userSeq : 0,
+				),
 				method: 'get',
 				headers: rootGetters['auth/authHeader'],
 			})
@@ -191,11 +197,14 @@ export default {
 				});
 
 			// 별표 여부 가져오기
-			console.log(
-				api.board.haveStar(boardId, rootGetters['auth/user'].userSeq),
-			);
+			// console.log(
+			// 	api.board.haveStar(boardId, rootGetters['auth/user'].userSeq),
+			// );
 			axios({
-				url: api.board.haveStar(boardId, rootGetters['auth/user'].userSeq),
+				url: api.board.haveStar(
+					boardId,
+					rootGetters['auth/user'] ? rootGetters['auth/user'].userSeq : 0,
+				),
 				method: 'get',
 				headers: rootGetters['auth/authHeader'],
 			})

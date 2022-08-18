@@ -5,13 +5,13 @@ export default {
 	namespaced: true,
 	state() {
 		return {
-			// user: null,
-			user: {
-				userSeq: 14,
-				username: '이미현',
-				userNickname: '이면',
-				profile: 'https://www.snsboom.co.kr/common/img/default_profile.png',
-			},
+			user: null,
+			// user: {
+			// 	userSeq: 14,
+			// 	username: '이미현',
+			// 	userNickname: '이면',
+			// 	profile: 'https://www.snsboom.co.kr/common/img/default_profile.png',
+			// },
 			token: localStorage.getItem('token') || '',
 			userInfo: null,
 		};

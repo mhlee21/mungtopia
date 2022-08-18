@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -25,14 +26,14 @@ public class AdoptionStepDate {
     private int step;
 
     @Column(name = "date", nullable = true)
-    private LocalDateTime date;
+    private Timestamp date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "adoption_process_id", referencedColumnName = "adoption_process_id")
     @JsonManagedReference
     private AdoptionProcess adoptionProcess;
 
-    public void changeDate(LocalDateTime date){
+    public void changeDate(Timestamp date){
         this.date = date;
     }
 
@@ -41,7 +42,7 @@ public class AdoptionStepDate {
         this.adoptionProcess = adoptionProcess;
     }
 
-    public AdoptionStepDate(int step, LocalDateTime date){
+    public AdoptionStepDate(int step, Timestamp date){
         this.step = step;
         this.date = date;
     }

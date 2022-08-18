@@ -350,7 +350,7 @@ export default {
 				axios({
 					url: api.adopt.scheduleUpdate(getters.adoptionProcessId),
 					method: 'put',
-					data: { payload },
+					data: { date },
 					headers: rootGetters['auth/authHeader'],
 				}).catch(err => {
 					console.error(err.response);

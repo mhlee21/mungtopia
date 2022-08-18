@@ -24,6 +24,7 @@ export default {
 			adoptQuestionList: [],
 			application: Array(15).fill(''),
 			keyword: '',
+			isSendApplication: false,
 		};
 	},
 	getters: {
@@ -46,6 +47,7 @@ export default {
 		adoptQuestionList: state => state.adoptQuestionList,
 		application: state => state.application,
 		keyword: state => state.keyword,
+		isSendApplication: state => state.isSendApplication,
 	},
 	mutations: {
 		SET_BOARD_LIST: (state, boardList) => (state.boardList = boardList),
@@ -85,6 +87,8 @@ export default {
 		SET_KEYWORD: (state, keyword) => {
 			state.keyword = keyword;
 		},
+		SET_SEND_APPLICATION: (state, isSendApplication) =>
+			(state.isSendApplication = isSendApplication),
 	},
 	actions: {
 		// 전체글 불러오기
@@ -587,6 +591,26 @@ export default {
 				question: d.question,
 			}));
 			commit('SET_ADOPT_QUESTION_LIST', data);
+		},
+		// commit
+		getApplicationList: ({ commit, rootGetters }, userSeq, boardId) => {
+			axios({
+				url: api.board.applicationList(userSeq),
+				method: 'get',
+				headers: rootGetters['auth/authHeader'],
+			})
+				.then(res => {
+					const sendlist = res.data.body.data;
+					for (let i = 0; i < sendlist.length; i++) {
+						if (sendlist[i] === boardId) {
+							commit('SET_SEND_APPLICATION', true);
+							break;
+						}
+					}
+				})
+				.catch(err => {
+					console.error(err.response);
+				});
 		},
 	},
 };

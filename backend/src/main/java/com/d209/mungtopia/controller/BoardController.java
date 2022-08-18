@@ -3,10 +3,7 @@ package com.d209.mungtopia.controller;
 import com.d209.mungtopia.common.ApiResponse;
 import com.d209.mungtopia.dto.board.*;
 import com.d209.mungtopia.dto.applicant.AppDto;
-import com.d209.mungtopia.entity.Board;
-import com.d209.mungtopia.entity.Comment;
-import com.d209.mungtopia.entity.Reply;
-import com.d209.mungtopia.entity.User;
+import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.*;
 import com.d209.mungtopia.repository.user.UserRepository;
 import com.d209.mungtopia.service.BoardService;
@@ -15,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,6 +31,7 @@ public class BoardController {
     private final BoardService boardService;
     private final InfLikeRepository likeRepository;
     private final InfStarRepository starRepository;
+    private final InfApplicationRepository infApplicationRepository;
 
     @GetMapping("/{tag_no}")
     @ApiOperation(value = "mainInfo - 전체 글 불러오기", notes = "태그 별 게시글 리스트를 제공")
@@ -287,6 +287,18 @@ public class BoardController {
         Reply reply = replyRepository.findById(replyId).get();
         // 기존 userSeq 와 userNickname 비교하여 유효성 검사 필요
         return ApiResponse.success("data", boardService.deleteReply(board, reply));
+    }
+
+    //
+    @GetMapping("/application/{userSeq}")
+    public ApiResponse getApplicationList(@PathVariable Long userSeq){
+        User user = userRepository.getReferenceById(userSeq);
+        List<Application> applicationList = infApplicationRepository.findApplicationByUser(user);
+        List<Long> response = new ArrayList<>();
+        for (Application application: applicationList) {
+            response.add(application.getBoardId());
+        }
+        return ApiResponse.success("data", response);
     }
 // 이미지 저장
 //    @PostMapping("/img/{boardId}")

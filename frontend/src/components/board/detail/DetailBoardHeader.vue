@@ -10,7 +10,7 @@
 		<!-- 입양신청한 강아지가 있다면 disabled -->
 		<!-- 입양글이 아니라면 안보임 -->
 		<a
-			v-show="boardTag == '입양' && userSeq != authorSeq"
+			v-show="boardTag == '입양' && userSeq != authorSeq && !isApplicationSend"
 			@click.prevent="adoptionApply()"
 			:class="{ 'is-adopting': isAdopting }"
 			class="brief-btn"
@@ -53,6 +53,18 @@ export default {
 				});
 			}
 		};
+
+		const isApplicationSend = () => {
+			store.dispatch(
+				'board/getApplicationList',
+				store.getters['auth/user']['userSeq'],
+				route.params.boardId,
+			);
+		};
+		isApplicationSend();
+
+		const isSend = computed(() => store.getters['board/isSendApplication']);
+
 		return {
 			dogName,
 			areaSido,
@@ -62,6 +74,8 @@ export default {
 			boardTag,
 			authorSeq,
 			userSeq,
+			isApplicationSend,
+			isSend,
 		};
 	},
 };

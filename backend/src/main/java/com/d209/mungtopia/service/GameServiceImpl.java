@@ -59,7 +59,7 @@ public class GameServiceImpl implements GameService{
     @Override
     public MatchingGameRes postMatchingResult(MatchingGameReq gameReq) {
         List<Integer> userNature = gameReq.getMatchAnswer(); // value 결과 저장
-        if (gameReq.getUserSeq() != 1){
+        if (gameReq.getUserSeq() != 0){
             Optional<User> user = Optional.ofNullable(infUserRepository.getReferenceById(gameReq.getUserSeq()));
             if (user.isEmpty()){
                 return null;

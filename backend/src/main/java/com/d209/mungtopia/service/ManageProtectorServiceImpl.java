@@ -6,6 +6,7 @@ import com.d209.mungtopia.dto.protector.ProtectorBoardListRes;
 import com.d209.mungtopia.dto.protector.StepRes;
 import com.d209.mungtopia.entity.*;
 import com.d209.mungtopia.repository.AdoptionProcessRepository;
+import com.d209.mungtopia.repository.InfAdoptionProcessRepository;
 import com.d209.mungtopia.repository.InfAdoptionStepDateRepository;
 import com.d209.mungtopia.repository.ManageProtectorRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
     private final ManageProtectorRepository manageProtectorRepository;
     private final AdoptionProcessRepository adoptionProcessRepository;
     private final InfAdoptionStepDateRepository infAdoptionStepDateRepository;
+    private final InfAdoptionProcessRepository infAdoptionProcessRepository;
 
     /**
      * 입양 보내기 메인
@@ -145,8 +147,11 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
      */
     @Transactional
     public List<ApplicantProcessRes> updateProcessStatus(Long adoptionProcessId, StepRes stepUpdateInfo){
-        AdoptionProcess adoptionProcess = adoptionProcessRepository.find(adoptionProcessId);
-        AdoptionStepDate newStep = new AdoptionStepDate(stepUpdateInfo.getStep() + 1, adoptionProcess);
+        Optional<AdoptionProcess> adoptionProcess = infAdoptionProcessRepository.findById(adoptionProcessId);
+        if (adoptionProcess.isEmpty())
+            return Collections.emptyList();
+
+        AdoptionStepDate newStep = new AdoptionStepDate(stepUpdateInfo.getStep() + 1, adoptionProcess.get());
         if (stepUpdateInfo.getStep() == 5){
             // 날짜 저장
             newStep.changeDate(new Timestamp(System.currentTimeMillis()));
@@ -155,9 +160,10 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
         }
 
         infAdoptionStepDateRepository.save(newStep);
-        adoptionProcess.setStep(stepUpdateInfo.getStep() + 1); // 기존에서 step을 증가 시킴
-        adoptionProcess.setStepStatus(false);
-        adoptionProcess.getApplication().changeApplicationStatus(stepUpdateInfo.getStep() + 1);
+        adoptionProcess.get().setStep(stepUpdateInfo.getStep() + 1); // 기존에서 step을 증가 시킴
+        adoptionProcess.get().setStepStatus(false);
+        adoptionProcess.get().getApplication().changeApplicationStatus(stepUpdateInfo.getStep() + 1);
+        infAdoptionProcessRepository.save(adoptionProcess.get());
 
         return applicationProcessList(adoptionProcessId);
     }
@@ -174,11 +180,12 @@ public class ManageProtectorServiceImpl implements ManageProtectorService{
             ApplicantProcessRes process = new ApplicantProcessRes();
 
             process.setStep(adoptionStepDate.getStep());
-            Optional<LocalDateTime> datetime = Optional.ofNullable(adoptionStepDate.getDate().toLocalDateTime());
+            System.out.println("adoptionStepDate = " + adoptionStepDate.getDate());
+            Optional<Timestamp> datetime = Optional.ofNullable(adoptionStepDate.getDate());
             if (datetime.isEmpty())
                 process.setDate(null);
             else
-                process.setDate(datetime.get().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                process.setDate(datetime.get().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
             if (adoptionStepDate.getStep() < curStep) {
                 process.setStepStatus(true);

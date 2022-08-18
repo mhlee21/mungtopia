@@ -340,7 +340,7 @@ export default {
 				axios({
 					url: api.adopt.scheduleCreate(getters.adoptionProcessId),
 					method: 'post',
-					data: { payload },
+					data: { date },
 					headers: rootGetters['auth/authHeader'],
 				}).catch(err => {
 					console.error(err.response);

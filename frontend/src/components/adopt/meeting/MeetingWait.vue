@@ -1,7 +1,7 @@
 <template>
 	<div class="meeting-wait">
 		<!-- 이름 -->
-		<div class="name"><h3>황희원</h3></div>
+		<div class="name"><h3>대기중...</h3></div>
 		<!-- 프로필 사진 -->
 		<div class="profile-wrapper">
 			<div class="profile-image-wrapper">

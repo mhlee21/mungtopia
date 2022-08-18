@@ -33,7 +33,7 @@ public class ChattingController {
         return ApiResponse.success("data", chattingService.chatLog(page, chatRoomId, userSeq));
     }
 
-    @GetMapping("/{chatRoomId}")
+    @GetMapping("/chatinfo/{chatRoomId}")
     public ApiResponse getChatroomId(@PathVariable("chatRoomId") Long chatRoomId) {
         ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).get();
         ChatRoomDto chatRoomDto = new ChatRoomDto(

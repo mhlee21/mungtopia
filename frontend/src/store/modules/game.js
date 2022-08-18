@@ -322,7 +322,7 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					// commit('SET_MATCH_DATA', res.body.data);
+					commit('SET_MATCH_DATA', res.body.data);
 					if (res.data.body.data[0]) {
 						commit('CLEAR_GAME', {
 							gameTag: res.data.body.data[0].gameTag,

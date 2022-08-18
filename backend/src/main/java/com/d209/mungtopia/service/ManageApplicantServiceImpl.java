@@ -109,7 +109,7 @@ public class ManageApplicantServiceImpl implements ManageApplicantService {
             process.setStep(adoptionStepDate.getStep());
 //            System.out.println("process = " + process);
             if (adoptionStepDate.getDate() != null)
-                process.setDate(adoptionStepDate.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                process.setDate(adoptionStepDate.getDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             else
                 process.setDate("");
 

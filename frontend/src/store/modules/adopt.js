@@ -279,6 +279,9 @@ export default {
 		},
 		// chatList 받기
 		fetchChatMain: ({ commit, rootGetters }, { chatRoomId, page }) => {
+			if (page === 0) {
+				commit('SET_CHAT_LIST', []);
+			}
 			axios({
 				url: api.adopt.chats(),
 				method: 'get',
@@ -332,27 +335,27 @@ export default {
 		saveSchedule: ({ commit, rootGetters, getters }, date) => {
 			const payload = { step: getters.applicationStatus, date };
 			console.log(payload, rootGetters);
-			// // 일정이 없을 때
-			// if (getters.date === '') {
-			// 	axios({
-			// 		url: api.adopt.scheduleCreate(getters.adoptionProcessId),
-			// 		method: 'post',
-			// 		data: { payload },
-			// 		headers: rootGetters['auth/authHeader'],
-			// 	}).catch(err => {
-			// 		console.error(err.response);
-			// 	});
-			// } else {
-			// 	// 일정이 있을 때(일정 수정)
-			// 	axios({
-			// 		url: api.adopt.scheduleUpdate(getters.adoptionProcessId),
-			// 		method: 'put',
-			// 		data: { payload },
-			// 		headers: rootGetters['auth/authHeader'],
-			// 	}).catch(err => {
-			// 		console.error(err.response);
-			// 	});
-			// }
+			// 일정이 없을 때
+			if (getters.date === '') {
+				axios({
+					url: api.adopt.scheduleCreate(getters.adoptionProcessId),
+					method: 'post',
+					data: { payload },
+					headers: rootGetters['auth/authHeader'],
+				}).catch(err => {
+					console.error(err.response);
+				});
+			} else {
+				// 일정이 있을 때(일정 수정)
+				axios({
+					url: api.adopt.scheduleUpdate(getters.adoptionProcessId),
+					method: 'put',
+					data: { payload },
+					headers: rootGetters['auth/authHeader'],
+				}).catch(err => {
+					console.error(err.response);
+				});
+			}
 			commit('SET_DATE', date);
 		},
 		// 일정 삭제

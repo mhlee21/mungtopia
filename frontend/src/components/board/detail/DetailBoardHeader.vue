@@ -10,7 +10,7 @@
 		<!-- 입양신청한 강아지가 있다면 disabled -->
 		<!-- 입양글이 아니라면 안보임 -->
 		<a
-			v-show="boardTag == '입양' && userSeq != authorSeq && !isApplicationSend"
+			v-show="boardTag == '입양' && userSeq != authorSeq && !isSend"
 			@click.prevent="adoptionApply()"
 			:class="{ 'is-adopting': isAdopting }"
 			class="brief-btn"

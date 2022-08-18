@@ -26,9 +26,15 @@
 						<div class="step-title">
 							{{ adoptProcessTitle[index] }}
 						</div>
-						<small v-if="adoptProcess[index]?.date" class="step-date">{{
-							format(new Date(adoptProcess[index]?.date))
-						}}</small>
+						<small
+							v-if="
+								adoptProcess[index]?.date == null
+									? ''
+									: adoptProcess[index]?.date
+							"
+							class="step-date"
+							>{{ format(new Date(adoptProcess[index]?.date)) }}</small
+						>
 					</div>
 					<!-- 아이콘 -->
 					<div
@@ -202,11 +208,25 @@ export default {
 				}
 				console.log(step);
 			} else if (step === 2) {
+				console.log(adoptProcess.value[1].date); // 현재 localdateTime이랑 가져온 값 비교하기
+
+				// const date = new Date();
+
+				// const year = date.getFullYear();
+				// const month = date.getMonth() + 1;
+				// const day = date.getDate();
+
+				// const hours = date.getHours();
+				// const minutes = date.getMinutes();
+				// const seconds = date.getSeconds();
+				// const milliseconds = date.getMilliseconds();
+
 				// 나중에 일정 예약시간 이전에는 disabled 처리할 것
 				// router.push({
 				// 	name: 'meeting',
 				// 	params: { meetingRoomId: meetingRoomId.value },
 				// });
+
 				console.log(step);
 			} else if (step === 3) {
 				// router.push({ name: 'user', params: { username: 'eduardo' }});

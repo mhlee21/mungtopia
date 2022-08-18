@@ -1,6 +1,7 @@
 package com.d209.mungtopia.controller;
 
 import com.d209.mungtopia.common.ApiResponse;
+import com.d209.mungtopia.dto.manage.DateDto;
 import com.d209.mungtopia.service.ManageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,8 +56,8 @@ public class ManageController {
 
     @PutMapping("/schedule/{adoption_process_id}")
     @ApiOperation(value = "putSchedule - 일정 수정", notes = "일정을 수정한다")
-    public ApiResponse putSchedule(@PathVariable("adoption_process_id") Long adoptionProcessId, @RequestBody LocalDateTime date) {
-        if (manageService.postSchedule(adoptionProcessId, date))
+    public ApiResponse putSchedule(@PathVariable("adoption_process_id") Long adoptionProcessId, DateDto date) {
+        if (manageService.postSchedule(adoptionProcessId, date.getDate()))
             return ApiResponse.success();
         else
             return ApiResponse.fail();

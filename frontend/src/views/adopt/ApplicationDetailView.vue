@@ -79,7 +79,7 @@
 					:key="index"
 				>
 					<div class="question">
-						Q{{ index + 1 }}. {{ adoptQuestion[index]?.question }}
+						Q{{ index + 1 }}. {{ adoptQuestion.adoptQuestion[index]?.question }}
 					</div>
 					<div class="answer">{{ question.answer }}</div>
 				</div>

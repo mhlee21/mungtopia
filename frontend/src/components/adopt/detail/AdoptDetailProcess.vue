@@ -26,15 +26,9 @@
 						<div class="step-title">
 							{{ adoptProcessTitle[index] }}
 						</div>
-						<small
-							v-if="
-								adoptProcess[index]?.date == null
-									? ''
-									: adoptProcess[index]?.date
-							"
-							class="step-date"
-							>{{ format(new Date(adoptProcess[index]?.date)) }}</small
-						>
+						<small v-if="adoptProcess[index]?.date" class="step-date">{{
+							format(new Date(adoptProcess[index]?.date))
+						}}</small>
 					</div>
 					<!-- 아이콘 -->
 					<div
@@ -124,7 +118,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter, useRoute } from 'vue-router';
 export default {
@@ -138,6 +132,7 @@ export default {
 			() => store.getters['adopt/applicationStatus'],
 		);
 		const userSeq = computed(() => store.getters['auth/user'].userSeq);
+		const meetBtnDisabled = ref(false);
 		const adoptProcessTitle = [
 			'입양신청',
 			'화상 면담',
@@ -179,10 +174,19 @@ export default {
 			}
 			if (index + 1 == 2) {
 				console.log(adoptProcess.value[index].date);
-				return new Date(adoptProcess.value[index].date) > new Date();
+				const datetemp = adoptProcess.value[index].date; // 현재 localdateTime이랑 가져온 값 비교하기
+				const meetingDate = new Date(datetemp);
+				const date = new Date();
+
+				const cha = Math.abs((meetingDate - date) / 1000 / 60);
+				console.log('시간체크 미팅', cha);
+
+				// return new Date(adoptProcess.value[index].date) > new Date();
+				return cha > 30;
 			}
 			return false;
 		};
+
 		const clickAdoptProcessIcon = step => {
 			if (step === 1) {
 				// 입양자일 경우
@@ -208,24 +212,15 @@ export default {
 				}
 				console.log(step);
 			} else if (step === 2) {
-				console.log(adoptProcess.value[1].date); // 현재 localdateTime이랑 가져온 값 비교하기
-
-				// const date = new Date();
-
-				// const year = date.getFullYear();
-				// const month = date.getMonth() + 1;
-				// const day = date.getDate();
-
-				// const hours = date.getHours();
-				// const minutes = date.getMinutes();
-				// const seconds = date.getSeconds();
-				// const milliseconds = date.getMilliseconds();
-
-				// 나중에 일정 예약시간 이전에는 disabled 처리할 것
-				// router.push({
-				// 	name: 'meeting',
-				// 	params: { meetingRoomId: meetingRoomId.value },
-				// });
+				router.push({
+					name: 'meeting',
+					params: {
+						applicationId:
+							store.getters['adopt/protectorDetail']['applicationList'][
+								activeApplicant.value
+							]['applicationId'],
+					},
+				});
 
 				console.log(step);
 			} else if (step === 3) {
@@ -280,6 +275,7 @@ export default {
 			buttonDisabled,
 			deleteAdoption,
 			isApplicant,
+			meetBtnDisabled,
 		};
 	},
 };

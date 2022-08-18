@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class ManageServiceImpl implements ManageService{
             return null;
         response.setStep(stepDate.get().getStep());
         if (stepDate.get().getDate() != null) // null일 수 있음!
-            response.setDate(stepDate.get().getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            response.setDate(stepDate.get().getDate().toLocalDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         else
             response.setDate(null);
         return response;
@@ -84,7 +85,7 @@ public class ManageServiceImpl implements ManageService{
 
     @Override
     @Transactional
-    public Boolean postSchedule(Long adoptionProcessId, LocalDateTime dateTime) {
+    public Boolean postSchedule(Long adoptionProcessId, Timestamp dateTime) {
         Optional<AdoptionProcess> adoptionProcess = infAdoptionProcessRepository.findById(adoptionProcessId);
         if (adoptionProcess.isEmpty())
             return false;

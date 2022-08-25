@@ -45,7 +45,6 @@ export default {
 			router.push({ name: 'boardDetail', params: { boardId } });
 		};
 		const clickHeart = (boardId, index, like) => {
-			console.log(like);
 			if (like) {
 				store.dispatch('board/deleteLike', { boardId, index });
 			} else {
@@ -53,7 +52,6 @@ export default {
 			}
 		};
 		const clickStar = (boardId, index, star) => {
-			console.log(star);
 			if (star) {
 				store.dispatch('board/deleteStar', { boardId, index });
 			} else {

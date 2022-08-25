@@ -20,11 +20,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// img {
-// 	width: 200px;
-// 	height: 200px;
-// }
-
 .content {
 	text-align: center;
 	margin: 0px 20px 0px 20px;

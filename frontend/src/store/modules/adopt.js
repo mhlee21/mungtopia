@@ -80,7 +80,6 @@ export default {
 	actions: {
 		// 입양하기/입양보내기 메인
 		fetchMainList: ({ commit, rootGetters }, { userSeq, adoptType }) => {
-			console.log(rootGetters, userSeq);
 			if (adoptType === 'applicant') {
 				axios({
 					url: api.adopt.applicantMain(userSeq),
@@ -117,7 +116,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_APPLICANT_DETAIL', res.data.body.data);
 					commit(
 						'SET_APPLICATION_STATUS',
@@ -136,7 +134,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data.applicantProcessRes);
 					commit('SET_ADOPT_PROCESS', res.data.body.data.applicantProcessRes);
 					commit(
 						'SET_ADOPTION_PROCESS_ID',
@@ -155,7 +152,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_PROTECTOR_DETAIL', res.data.body.data);
 				})
 				.catch(err => {
@@ -175,7 +171,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_ADOPT_PROCESS', res.data.body.data);
 				})
 				.catch(err => {
@@ -293,7 +288,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log('chatList', res);
 					commit('SET_CHAT_LIST', res.data.body.data.chatLogDtoList);
 					commit('SET_CHAT_ROOM_ID', chatRoomId);
 
@@ -317,7 +311,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log('chatInfo', res.data.body.data);
 					const chatRoomInfo = res.data.body.data;
 					const userSeq = rootGetters['auth/user'].userSeq;
 					if (userSeq === chatRoomInfo.protectorId) {
@@ -333,8 +326,6 @@ export default {
 
 		// 일정 예약 및 수정
 		saveSchedule: ({ commit, rootGetters, getters }, date) => {
-			const payload = { step: getters.applicationStatus, date };
-			console.log(payload, rootGetters);
 			// 일정이 없을 때
 			if (getters.date === '') {
 				axios({
@@ -381,8 +372,6 @@ export default {
 				// headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log('here');
-					console.log(res);
 					const openviduToken = res[0]; // Get token from response
 					console.warn(
 						'Request of TOKEN gone WELL (TOKEN:' + openviduToken + ')',
@@ -396,7 +385,6 @@ export default {
 		},
 		// 입양신청서 정보 받기
 		fetchApplication: ({ commit, rootGetters }, applicationId) => {
-			console.log(commit, rootGetters, applicationId);
 			axios({
 				url: api.adopt.application(applicationId),
 				method: 'get',

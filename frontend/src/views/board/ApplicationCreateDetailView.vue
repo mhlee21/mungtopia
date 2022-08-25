@@ -11,7 +11,6 @@
 
 <script>
 import ApplicationQuestion from '@/components/board/application/ApplicationQuestion.vue';
-// import { computed } from '@vue/reactivity';
 
 export default {
 	components: {

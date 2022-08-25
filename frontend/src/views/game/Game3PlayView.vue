@@ -100,7 +100,6 @@ export default {
 						matchAnswer: matchNum,
 					};
 				}
-				console.log(payload, user.value);
 				store.dispatch('game/sendMatchResult', payload);
 				router.push({
 					name: 'game3Result',

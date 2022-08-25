@@ -18,8 +18,7 @@ import { useRouter } from 'vue-router';
 
 export default {
 	props: { application: Object },
-	setup(props) {
-		console.log('here', props.application);
+	setup() {
 		const router = useRouter();
 		const clickApplication = applicationId => {
 			router.push({

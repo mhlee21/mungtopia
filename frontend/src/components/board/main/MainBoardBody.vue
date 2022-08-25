@@ -86,7 +86,6 @@ export default {
 			? 'Y'
 			: 'N';
 		const clickStarEve = () => {
-			console.log('star' + haveInterest.value);
 			if (haveInterest.value) {
 				haveInterest.value = false;
 			} else {
@@ -95,7 +94,6 @@ export default {
 			context.emit('clickStar');
 		};
 		const clickLikeEve = () => {
-			console.log('like' + haveInterest.value);
 			if (isLike.value) {
 				isLike.value = false;
 			} else {

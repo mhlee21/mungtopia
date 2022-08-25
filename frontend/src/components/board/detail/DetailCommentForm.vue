@@ -42,7 +42,6 @@ export default {
 					secret: isCommentSecret.value,
 					userNickname: userNickname.value,
 				};
-				console.log('payload', payload);
 				store.dispatch('board/createComment', payload);
 				newComment.value = null;
 				isCommentSecret.value = false;

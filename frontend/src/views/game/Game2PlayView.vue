@@ -76,7 +76,6 @@ export default {
 			// 마지막 문제가 아닐때
 			if (qNum.value < MBTI.value.length) {
 				qNum.value++;
-				console.log(answer);
 			} else {
 				// 마지막 문제일 때
 				// matchNum 결과 저장

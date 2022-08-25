@@ -257,12 +257,6 @@ export default {
 			for (let i = 0; i < files.value.length; i++) {
 				formData.append('files', files.value[i]);
 			}
-			// for (let key of formData.entries()) {
-			// 	console.log(key);
-			// 	if (key === 'files') {
-			// 		console.log('dd');
-			// 	}
-			// }
 			// 페이지 초기화
 			store.dispatch('board/setApplicationPageNum', 1);
 			store.dispatch('board/createBoard', formData);

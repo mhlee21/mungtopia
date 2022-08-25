@@ -61,7 +61,6 @@ export default {
 		//이전 기록 불러오기
 		const preChatList = reactive([]);
 		const chatList = reactive(store.getters['adopt/chatList']);
-		console.log('이전 기록 불러오기...', chatList.value);
 
 		const newChatList = reactive([]);
 		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
@@ -94,20 +93,15 @@ export default {
 			const serverURL = api.adopt.chatStart();
 			let socket = new SockJS(serverURL);
 			stompClient.value = Stomp.over(socket);
-			console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`);
 			stompClient.value.connect(
 				{},
-				frame => {
+				() => {
 					stompClient.value.connected = true;
-					console.log('소켓 연결 성공', frame);
 					stompClient.value.subscribe('/send', res => {
-						console.log('구독으로 받은 메시지 입니다.', res.body);
 						newChatList.push(JSON.parse(res.body));
-						console.log('newChatList', newChatList);
 					});
 				},
-				error => {
-					console.log('소켓 연결 실패', error);
+				() => {
 					stompClient.value.connected = false;
 				},
 			);
@@ -119,14 +113,12 @@ export default {
 		const route = useRoute();
 		const chatRoomId = route.params.chatRoomId;
 		const sendMessage = () => {
-			console.log('userSeq.value:', userSeq.value);
 			if (userSeq.value !== '' && message.value !== '') {
 				send();
 				message.value = '';
 			}
 		};
 		const send = () => {
-			console.log('Send message:' + message.value);
 			if (stompClient.value && stompClient.value.connected) {
 				const date = new Date(Date.now());
 				const msg = {
@@ -135,7 +127,6 @@ export default {
 					createtime: date,
 					chatRoomId: chatRoomId,
 				};
-				console.log('=====', msg);
 				stompClient.value.send('/receive', JSON.stringify(msg), {});
 			}
 		};
@@ -153,7 +144,6 @@ export default {
 			});
 		});
 		const infiniteHandler = () => {
-			console.log(chatRoomId, page.value, userSeq.value);
 			if (done.value === false) {
 				axios({
 					url: api.adopt.chats(),
@@ -169,10 +159,6 @@ export default {
 						if (res.data.body.data.chatLogDtoList.length === 0) {
 							done.value = true;
 						}
-						console.log('length', res.data.body.data.chatLogDtoList.length);
-						// console.log(chatRoomId, page, userSeq);
-						console.log('chatList', res);
-						console.log(res.data.body.data.chatLogDtoList);
 						store.commit(
 							'adopt/SET_CHAT_LIST',
 							res.data.body.data.chatLogDtoList,

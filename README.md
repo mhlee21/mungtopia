@@ -1,12 +1,12 @@
 ## 📌Index
 
-1. 멍토피아(Mungtopia) 서비스 이름 & 소개
-2. 주요 기술 스택
-3. 개발 기간 및 팀원 역할 소개
-4. 프로젝트 산출물
+1. [멍토피아(Mungtopia) 서비스 소개](#🐶멍토피아(Mungtopia)-서비스-소개)
+2. [주요 기술 스택](#🔧주요-기술-스택)
+3. [개발 기간 및 팀원 역할 소개](#👩‍👩‍👧개발-기간-및-팀원-역할-소개)
+4. [프로젝트 산출물](#📚프로젝트-산출물)
 
 
-# 🐶멍토피아(Mungtopia) 서비스 이름 & 소개
+# 🐶멍토피아(Mungtopia) 서비스 소개
 
 멍토피아는 '강아지와 함께할 수 있는 유토피아를 꿈꾼다' 라는 뜻을 가지고 있습니다.
 
@@ -18,9 +18,7 @@
 
 
 ### 게임을 통한 강아지 매칭
-<img src="README/game1.gif" height="500">
-<img src="README/game2.gif" height="500">
-<img src="README/game3.gif" height="500">
+<img src="README/game1.gif" height="500"><img src="README/game2.gif" height="500"><img src="README/game3.gif" height="500">
 
 
 ### 입양 신청부터 완료까지 모든 입양 절차를 한 플랫폼에서 진행 가능
@@ -36,13 +34,11 @@
 
 채팅
 
-<img src="README/chat-protector.gif" height="500">
-<img src="README/chat-applicant.gif" height="500">
+<img src="README/chat-protector.gif" height="500"><img src="README/chat-applicant.gif" height="500">
 
 화상미팅
 
-<img src="README/webRTC-protector.gif" height="500">
-<img src="README/webRTC-applicant.gif" height="500">
+<img src="README/webRTC-protector.gif" height="500"><img src="README/webRTC-applicant.gif" height="500">
 
 글 생성
 
@@ -57,7 +53,7 @@
 
 ![expected_effect](README/expected_effect.png)
 
-# ⚙ 주요 기술 스택
+# 🔧주요 기술 스택
 
 ![Architecture](README/Architecture.png)
 
@@ -155,6 +151,7 @@
 # 📚프로젝트 산출물
 ## Notion
 👉[Mungtopia 노션 바로가기](https://mountain-failing-553.notion.site/6360b0ee504e46d99089219e36723bc2)
+
 ![notion](README/notion.png)
 
 ## Mockup

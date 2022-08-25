@@ -14,40 +14,99 @@
 
 ## 주요 서비스 화면
 ### SNS 형식의 입양/후기/잡담 게시판
-<img src="README/mungtopia-main.gif" height="500">
+<div style="width:33%;">
+  <img src="README/mungtopia-main.gif">
+  <p align="center">메인 페이지</p>
+</div>
 
+<br>
 
 ### 게임을 통한 강아지 매칭
-<img src="README/game1.gif" height="500"><img src="README/game2.gif" height="500"><img src="README/game3.gif" height="500">
 
+✔ 나와 잘 맞는 반려견은?
+- 간단한 설문을 통해 게시판에 올라온 입양견 중 나와 가장 잘 맞는 강아지를 추천해줍니다.
+
+✔ 댕BTI
+- 내가 강아지라면? 나와 비슷한 성향을 가진 강아지를 알려줍니다.
+
+✔ 강아지식 테스트
+- 나는 과연 반려견을 맞이할 준비가 되어있을까? 반려견 상식 테스트
+
+<div style="display:flex; justify-content:space-between">
+  <div style="width:33%;">
+    <img src="README/game1.gif">
+    <p align="center">나와 잘 맞는 반려견은?</p>
+  </div>
+  <div style="width:33%;">
+    <img src="README/game2.gif">
+    <p align="center">댕BTI</p>
+  </div>
+  <div style="width:33%;">
+    <img src="README/game3.gif">
+    <p align="center">강아지식 테스트</p>
+  </div>
+</div>
+
+<br>
 
 ### 입양 신청부터 완료까지 모든 입양 절차를 한 플랫폼에서 진행 가능
 
-입양신청
+✔ 입양신청
 
-<img src="README/application.gif" height="500">
+<div style="width:33%;">
+  <img src="README/application.gif">
+  <p align="center">입양신청</p>
+</div>
+
+✔ 입양신청 - 허가
+
+<div style="width:33%;">
+  <img src="README/protector-pass.gif">
+  <p align="center">입양신청 - 허가</p>
+</div>
+
+✔ 채팅
+
+<div style="display:flex;">
+  <div style="width:33%; margin-right:0.5%;">
+    <img src="README/chat-protector.gif">
+    <p align="center">보호자 화면</p>
+  </div>
+  <div style="width:33%;">
+    <img src="README/chat-applicant.gif">
+    <p align="center">입양인 화면</p>
+  </div>
+</div>
+
+✔ 화상미팅
+
+<div style="display:flex;">
+  <div style="width:33%; margin-right:0.5%;">
+    <img src="README/webRTC-protector.gif">
+    <p align="center">보호자 화면</p>
+  </div>
+  <div style="width:33%;">
+    <img src="README/webRTC-applicant.gif">
+    <p align="center">입양인 화면</p>
+  </div>
+</div>
+
+✔ 글 생성
+
+<div style="width:33%;">
+  <img src="README/create_board.gif">
+  <p align="center">글 생성</p>
+</div>
+
+✔ 마이페이지
+
+<div style="width:33%;">
+  <img src="README/mypage.gif">
+  <p align="center">마이페이지</p>
+</div>
 
 
-입양신청 - 허가
-
-<img src="README/protector-pass.gif" height="500">
-
-채팅
-
-<img src="README/chat-protector.gif" height="500"><img src="README/chat-applicant.gif" height="500">
-
-화상미팅
-
-<img src="README/webRTC-protector.gif" height="500"><img src="README/webRTC-applicant.gif" height="500">
-
-글 생성
-
-<img src="README/create_board.gif" height="500">
-
-마이페이지
-
-<img src="README/mypage.gif" height="500">
-
+<br>
 
 ## 기대효과
 
@@ -158,4 +217,4 @@
 ![mockup](README/mockup.png)
 
 ## ERD
-
+![ERD](README/ERD.png)

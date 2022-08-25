@@ -46,7 +46,6 @@ export default {
 				headers: getters['authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.user);
 					commit('SET_USER', res.data.body.user);
 				})
 				.catch(err => {

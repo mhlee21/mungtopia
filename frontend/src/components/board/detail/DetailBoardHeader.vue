@@ -31,7 +31,6 @@ export default {
 		const dogName = computed(
 			() => store.getters['board/board']['dogInfo']?.name,
 		);
-		console.log('dogName', dogName.value);
 		const isAdopting = computed(() => store.getters['board/isAdopting']);
 		const areaSido = computed(
 			() => store.getters['board/board']['dogInfo']?.areaSido,
@@ -55,7 +54,7 @@ export default {
 		};
 
 		store.dispatch('board/getApplicationList', {
-			userSeq: store.getters['auth/user']['userSeq'],
+			userSeq: userSeq.value ? userSeq.value : 0,
 			boardId: route.params.boardId,
 		});
 

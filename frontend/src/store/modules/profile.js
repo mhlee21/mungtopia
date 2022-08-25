@@ -33,7 +33,6 @@ export default {
 			commit('SET_BOARD_TYPE', boardType);
 		},
 		fetchBoardList: ({ commit, dispatch, rootGetters }) => {
-			console.log('fetchBoardList');
 			axios({
 				url: api.user.profileBoardList(rootGetters['auth/user']?.userSeq),
 				method: 'get',
@@ -50,7 +49,6 @@ export default {
 				});
 		},
 		fetchUserInfo: ({ commit, rootGetters }) => {
-			console.log('fetchUserInfo');
 			axios({
 				url: api.user.profileDetail(rootGetters['auth/user']?.userSeq),
 				method: 'get',
@@ -64,7 +62,6 @@ export default {
 				});
 		},
 		updateUserInfo: ({ rootGetters }, payload) => {
-			console.log(payload);
 			axios({
 				url: api.user.profileDetailUpdate(rootGetters['auth/user'].userSeq),
 				method: 'put',
@@ -75,7 +72,6 @@ export default {
 			});
 		},
 		updateUserNickname: ({ rootGetters }, payload) => {
-			console.log(payload);
 			axios({
 				url: api.user.profileNameUpdate(rootGetters['auth/user'].userSeq),
 				method: 'put',
@@ -83,7 +79,6 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					this.state.userInfo.username = res.data.body.data;
 				})
 				.catch(err => {
@@ -101,7 +96,6 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					this.state.userInfo.profile = res.data.body.data;
 				})
 				.catch(err => {
@@ -115,7 +109,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_USER_INFO', res.data.body.data);
 				})
 				.catch(err => {

@@ -17,7 +17,6 @@ export default {
 		const message = ref('');
 		const userSeq = computed(() => store.getters['auth/user']['userSeq']);
 		const sendMessage = () => {
-			console.log(userSeq);
 			const date = new Date(Date.now());
 			const chat = {
 				userSeq: userSeq,

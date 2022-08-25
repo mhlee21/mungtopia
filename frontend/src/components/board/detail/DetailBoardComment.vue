@@ -122,7 +122,6 @@ export default {
 		};
 		const clickModalButton = (modalType, comment, reply) => {
 			showModal.value = true;
-			console.log(modalType, comment, reply);
 			selectModalType(modalType);
 			selectComment(comment);
 			selectReply(reply);

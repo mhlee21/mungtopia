@@ -173,15 +173,10 @@ export default {
 				return true;
 			}
 			if (index + 1 == 2) {
-				console.log(adoptProcess.value[index].date);
 				const datetemp = adoptProcess.value[index].date; // 현재 localdateTime이랑 가져온 값 비교하기
 				const meetingDate = new Date(datetemp);
 				const date = new Date();
-
 				const cha = Math.abs((meetingDate - date) / 1000 / 60);
-				console.log('시간체크 미팅', cha);
-
-				// return new Date(adoptProcess.value[index].date) > new Date();
 				return cha > 30;
 			}
 			return false;
@@ -210,7 +205,6 @@ export default {
 						},
 					});
 				}
-				console.log(step);
 			} else if (step === 2) {
 				// 입양자일 경우
 				if (route.name == 'applicantDetail') {
@@ -233,17 +227,12 @@ export default {
 						},
 					});
 				}
-
-				console.log(step);
 			} else if (step === 3) {
 				// router.push({ name: 'user', params: { username: 'eduardo' }});
-				console.log(step);
 			} else if (step === 4) {
 				// router.push({ name: 'user', params: { username: 'eduardo' }});
-				console.log(step);
 			} else {
 				// router.push({ name: 'user', params: { username: 'eduardo' }});
-				console.log(step);
 			}
 		};
 

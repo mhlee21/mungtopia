@@ -62,7 +62,7 @@
 <script>
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 import MeetingWait from '@/components/adopt/meeting/MeetingWait';
@@ -75,6 +75,7 @@ export default {
 		const router = useRouter();
 		const route = useRoute();
 		const store = useStore();
+		const userSeq = computed(() => store.getters['auth/user']?.userSeq);
 
 		let OV = ref(undefined);
 		let session = ref(undefined);
@@ -111,7 +112,6 @@ export default {
 
 			session.value.on('streamCreated', ({ stream }) => {
 				subscriber.value = session.value.subscribe(stream);
-				console.log(subscriber);
 			});
 
 			session.value.on('streamDestroyed', () => {
@@ -140,7 +140,6 @@ export default {
 						// --- Publish your stream ---
 
 						session.value.publish(publisher.value);
-						console.log(publisher.value);
 					})
 					.catch(error => {
 						console.log(
@@ -161,9 +160,8 @@ export default {
 			publisher.value = undefined;
 			subscriber.value = undefined;
 			OV.value = undefined;
-			console.log(162, 'userSeq넣기');
 			axios({
-				url: api.meeting.sessionDelete(1),
+				url: api.meeting.sessionDelete(userSeq.value),
 				method: 'delete',
 				headers: store.getters['auth/authHeader'],
 			}).catch(error => console.log(error.response));
@@ -176,12 +174,8 @@ export default {
 
 		const createToken = () => {
 			return new Promise((resolve, reject) => {
-				const userSeq = 1;
-				console.log(
-					JSON.stringify({ applicationId: route.params.applicationId }),
-				);
 				axios({
-					url: api.meeting.getOpenViduToken(userSeq),
+					url: api.meeting.getOpenViduToken(userSeq.value),
 					method: 'post',
 					headers: {
 						'Content-Type': 'application/json',

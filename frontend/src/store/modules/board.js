@@ -93,7 +93,6 @@ export default {
 	actions: {
 		// 전체글 불러오기
 		fetchBoardList: ({ commit, rootGetters }, { tagNo, pageNo }) => {
-			console.log('fetchBoardList', tagNo, pageNo, rootGetters);
 			axios({
 				url: api.board.boardMain({
 					tagNo,
@@ -108,7 +107,6 @@ export default {
 				},
 			})
 				.then(res => {
-					console.log(res.data.body.data.imageStorageList);
 					commit('SET_PAGE_NO', pageNo + 1);
 					commit('SET_BOARD_LIST', res.data.body.data);
 				})
@@ -121,14 +119,6 @@ export default {
 
 		//게시물 검색
 		searchBoard: ({ commit, rootGetters, getters }, { pageNo, keyword }) => {
-			// console.log(
-			// 	'searchBoard',
-			// 	getters['tagNo'],
-			// 	pageNo,
-			// 	rootGetters,
-			// 	keyword,
-			// );
-
 			axios({
 				url: api.board.boardSearch(getters['tagNo']),
 				method: 'get',
@@ -142,7 +132,6 @@ export default {
 				},
 			})
 				.then(res => {
-					console.log('searchBoard res', res);
 					commit('SET_BOARD_LIST', res.data.body.data);
 					commit('SET_PAGE_NO', pageNo + 1);
 				})
@@ -153,7 +142,6 @@ export default {
 
 		// 상세글 불러오기
 		fetchDetailBoard: ({ commit, rootGetters }, boardId) => {
-			console.log('featureDetailBoard', commit, rootGetters, boardId);
 			//상세 게시글 정보 가져오기
 			axios({
 				url: api.board.boardDetail(boardId),
@@ -161,7 +149,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log('boardDetail', res.data.body.data);
 					commit('SET_BOARD', res.data.body.data);
 				})
 				.catch(err => {
@@ -175,7 +162,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_COMMENT_LIST', res.data.body.data);
 				})
 				.catch(err => {
@@ -183,7 +169,6 @@ export default {
 				});
 
 			// 좋아요 여부 가져오기
-			console.log(api.board.isLike(boardId, rootGetters['auth/user']?.userSeq));
 			axios({
 				url: api.board.isLike(
 					boardId,
@@ -193,7 +178,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log('isLike', res.data.body.data);
 					commit('SET_LIKE_IN_DETAIL', res.data.body.data);
 				})
 				.catch(err => {
@@ -201,9 +185,7 @@ export default {
 				});
 
 			// 별표 여부 가져오기
-			// console.log(
-			// 	api.board.haveStar(boardId, rootGetters['auth/user'].userSeq),
-			// );
+
 			axios({
 				url: api.board.haveStar(
 					boardId,
@@ -213,7 +195,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log('haveStar', res.data.body.data);
 					commit('SET_STAR_IN_DETAIL', res.data.body.data);
 				})
 				.catch(err => {
@@ -243,8 +224,7 @@ export default {
 		},
 
 		// 글 쓰기
-		createBoard: ({ commit, rootGetters }, payload) => {
-			console.log('createBoard', commit, rootGetters, payload);
+		createBoard: ({ rootGetters }, payload) => {
 			axios({
 				url: api.board.boardCreate(),
 				method: 'post',
@@ -255,7 +235,6 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.data.body.data.boardId);
 					router.push({
 						name: 'boardDetail',
 						params: { boardId: res.data.body.data.boardId },
@@ -267,36 +246,26 @@ export default {
 		},
 
 		// 글 수정
-		updateBoard: ({ commit, rootGetters }, { boardId, payload }) => {
-			console.log('updateBoard', commit, rootGetters);
+		updateBoard: ({ rootGetters }, { boardId, payload }) => {
 			axios({
 				url: api.board.boardUpdate(boardId),
 				method: 'put',
 				headers: rootGetters['auth/authHeader'],
 				data: payload,
-			})
-				.then(res => {
-					console.log(res.data.body.data);
-				})
-				.catch(err => {
-					console.error(err.response);
-				});
+			}).catch(err => {
+				console.error(err.response);
+			});
 		},
 
 		// 글 삭제
-		deleteBoard: ({ commit, rootGetters }, boardId) => {
-			console.log('deleteBoard', commit, rootGetters);
+		deleteBoard: ({ rootGetters }, boardId) => {
 			axios({
 				url: api.board.boardDelete(boardId),
 				method: 'delete',
 				headers: rootGetters['auth/authHeader'],
-			})
-				.then(res => {
-					console.log(res.data.body.data);
-				})
-				.catch(err => {
-					console.error(err.response);
-				});
+			}).catch(err => {
+				console.error(err.response);
+			});
 		},
 
 		// 댓글 정보 저장
@@ -316,7 +285,6 @@ export default {
 
 		// 댓글 쓰기
 		createComment: ({ commit, getters, rootGetters }, payload) => {
-			console.log('createComment', commit, rootGetters);
 			const boardId = getters['boardId'];
 			axios({
 				url: api.board.commentCreate(boardId),
@@ -337,7 +305,6 @@ export default {
 			{ commit, rootGetters, getters },
 			{ commentId, payload },
 		) => {
-			console.log('updateComment', commit, rootGetters);
 			const boardId = getters['boardId'];
 			axios({
 				url: api.board.commentUpdate(boardId, commentId),
@@ -355,7 +322,6 @@ export default {
 
 		// 댓글 삭제
 		deleteComment: ({ commit, rootGetters, getters }, { commentId }) => {
-			console.log('deleteComment', commit, rootGetters);
 			const boardId = getters['boardId'];
 			axios({
 				url: api.board.commentDelete(boardId, commentId),
@@ -372,7 +338,6 @@ export default {
 
 		// 대댓글 쓰기
 		createReply: ({ commit, rootGetters, getters }, { commentId, payload }) => {
-			console.log('createReply', commit, rootGetters);
 			const boardId = getters['boardId'];
 			axios({
 				url: api.board.replyCreate(boardId, commentId),
@@ -393,7 +358,6 @@ export default {
 			{ commit, rootGetters, getters },
 			{ commentId, replyId, payload },
 		) => {
-			console.log('updateReply', commit, rootGetters);
 			const boardId = getters['boardId'];
 			axios({
 				url: api.board.replyUpdate(boardId, commentId, replyId),
@@ -414,7 +378,6 @@ export default {
 			{ commit, rootGetters, getters },
 			{ commentId, replyId, payload },
 		) => {
-			console.log('deleteReply', commit, rootGetters);
 			const boardId = getters['boardId'];
 			axios({
 				url: api.board.replyDelete(boardId, commentId, replyId),
@@ -423,7 +386,6 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log('delete', res.data.body.data);
 					commit('SET_COMMENT_LIST', res.data.body.data);
 				})
 				.catch(err => {
@@ -439,7 +401,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_LIKE_IN_DETAIL', res.data.body.data);
 				})
 				.catch(err => {
@@ -452,7 +413,6 @@ export default {
 			const payload = {
 				userSeq: rootGetters['auth/user'].userSeq,
 			};
-			console.log('createLike', commit, rootGetters, boardId, payload);
 			commit('UPDATE_IS_LIKE', index);
 
 			axios({
@@ -462,7 +422,6 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_LIKE_IN_DETAIL', res.data.body.data); // 상세 페이지
 					//
 				})
@@ -476,7 +435,6 @@ export default {
 			const payload = {
 				userSeq: rootGetters['auth/user'].userSeq,
 			};
-			console.log('deleteLike', commit, rootGetters, boardId, payload);
 			commit('UPDATE_IS_LIKE', index);
 
 			axios({
@@ -486,7 +444,6 @@ export default {
 				data: payload,
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_LIKE_IN_DETAIL', res.data.body.data); // 상세 페이지
 				})
 				.catch(err => {
@@ -502,7 +459,6 @@ export default {
 				headers: rootGetters['auth/authHeader'],
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_STAR_IN_DETAIL', res.data.body.data);
 				})
 				.catch(err => {
@@ -515,7 +471,6 @@ export default {
 			const payload = {
 				userSeq: rootGetters['auth/user'].userSeq,
 			};
-			console.log('createStar', commit, rootGetters, boardId, payload);
 			commit('UPDATE_HAVE_INTEREST', index);
 			axios({
 				url: api.board.starCreate(boardId, payload.userSeq),
@@ -524,7 +479,6 @@ export default {
 				data: rootGetters['auth/user'].userSeq,
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_STAR_IN_DETAIL', res.data.body.data); // 상세 페이지
 				})
 				.catch(err => {
@@ -537,7 +491,6 @@ export default {
 			const payload = {
 				userSeq: rootGetters['auth/user'].userSeq,
 			};
-			console.log('deleteStar', commit, rootGetters, boardId, payload);
 			commit('UPDATE_HAVE_INTEREST', index);
 			axios({
 				url: api.board.starDelete(boardId, payload.userSeq),
@@ -546,7 +499,6 @@ export default {
 				data: rootGetters['auth/user'].userSeq,
 			})
 				.then(res => {
-					console.log(res.data.body.data);
 					commit('SET_STAR_IN_DETAIL', res.data.body.data); // 상세 페이지
 				})
 				.catch(err => {
@@ -568,11 +520,6 @@ export default {
 				userSeq: rootGetters['auth/user']['userSeq'],
 				applicantAnswerList,
 			};
-			console.log(payload);
-			// const payload = {
-			// 	applicantAnswerList: getters['application'],
-			// 	userSeq: rootGetters['auth/user']['userSeq'],
-			// };
 			axios({
 				url: api.board.applicationCreate(boardId),
 				method: 'post',

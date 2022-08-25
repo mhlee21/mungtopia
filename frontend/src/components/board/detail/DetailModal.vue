@@ -83,7 +83,6 @@ export default {
 					buttonFunction: updateComment,
 					commentId: newComment.value?.commentId,
 				};
-				console.log('data', data);
 			} else if (modalType?.value === 1) {
 				data = {
 					title: '댓글 삭제',
